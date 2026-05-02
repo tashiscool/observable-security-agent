@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/config-authorization-scope.schema.json",
+  "title": "authorization-scope.yaml",
+  "type": "object",
+  "required": ["schema_version", "minimum_assessment_scope_applied", "included_components", "excluded_components"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "minimum_assessment_scope_applied": { "type": "boolean" },
+    "impact_level": { "type": "string" },
+    "deployment_model": { "type": "string" },
+    "cloud_provider": { "type": "string" },
+    "authorization_path": { "type": "string" },
+    "regions": { "type": "array", "items": { "type": "string" } },
+    "in_scope_services": { "type": "array" },
+    "out_of_scope": { "type": "array" },
+    "included_components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "environment",
+          "stores_processes_or_transmits_federal_data",
+          "scanner_required",
+          "log_required",
+          "backup_required",
+          "owner"
+        ],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "environment": { "type": "string" },
+          "stores_processes_or_transmits_federal_data": { "type": "boolean" },
+          "scanner_required": { "type": "boolean" },
+          "log_required": { "type": "boolean" },
+          "backup_required": { "type": "boolean" },
+          "owner": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "excluded_components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "rationale"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "rationale": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/ksi-result.schema.json",
+  "title": "KSI validation result",
+  "type": "object",
+  "required": ["ksi_id", "status", "summary"],
+  "properties": {
+    "ksi_id": { "type": "string", "minLength": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "PARTIAL", "OPEN", "NOT_APPLICABLE", "N/A"]
+    },
+    "summary": { "type": "string" },
+    "linked_eval_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "linked_nist_control_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "documented_manual_exception": {},
+    "manual_exception_documented": {},
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [
+          { "required": ["role"] },
+          {
+            "anyOf": [
+              { "required": ["artifact"] },
+              { "required": ["evidence_id"] }
+            ]
+          }
+        ],
+        "properties": {
+          "artifact": { "type": "string" },
+          "evidence_id": { "type": "string" },
+          "role": { "type": "string" },
+          "json_pointer": { "type": "string" },
+          "record_locator": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

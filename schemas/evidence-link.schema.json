@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/evidence-link.schema.json",
+  "title": "Evidence link",
+  "type": "object",
+  "required": ["link_id", "from_ref", "to_ref", "relationship"],
+  "properties": {
+    "link_id": { "type": "string", "minLength": 1 },
+    "from_ref": {
+      "type": "object",
+      "required": ["ref_type", "ref_id"],
+      "properties": {
+        "ref_type": { "type": "string" },
+        "ref_id": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "to_ref": {
+      "type": "object",
+      "required": ["ref_type", "ref_id"],
+      "properties": {
+        "ref_type": { "type": "string" },
+        "ref_id": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "relationship": { "type": "string" },
+    "artifact_uri": { "type": "string" },
+    "artifact_sha256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "description": "SHA-256 of the linked artifact when resolved on disk (hex)."
+    },
+    "record_locator": {
+      "type": "string",
+      "description": "Optional pointer into the artifact (e.g. JSON Pointer)."
+    }
+  },
+  "additionalProperties": true
+}

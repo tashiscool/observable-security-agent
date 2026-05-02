@@ -1,0 +1,16 @@
+[
+  {
+    "agent_id": "support-ticket-agent",
+    "name": "Tier-1 Support Ticket Agent",
+    "owner": "it-support@example.com",
+    "environment": "stage",
+    "purpose": "Read support tickets and create draft customer responses",
+    "allowed_tools": ["read_tickets", "draft_response"],
+    "allowed_data_scopes": ["https://support.example/tickets/"],
+    "allowed_actions": ["read", "draft"],
+    "human_approval_required_for": ["mutate_security_group", "delete_bucket", "cloud_admin_tool"],
+    "credentials_ref": "vault://kv/agents/support-ticket-agent",
+    "created_at": "2026-01-10T12:00:00Z",
+    "last_reviewed_at": "2026-04-28T09:00:00Z"
+  }
+]

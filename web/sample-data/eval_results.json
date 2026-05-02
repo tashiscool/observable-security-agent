@@ -1,0 +1,1040 @@
+{
+  "schema_version": "1.2",
+  "correlation_id": "CORR-001",
+  "overall_result": "FAIL",
+  "semantic_event": {
+    "event_type": "network.public_admin_port_opened",
+    "provider": "aws",
+    "actor": "alice@example.com",
+    "asset_id": "prod-api-01",
+    "resource_id": "sg-0123456789prodapi",
+    "timestamp": "2026-05-01T10:42:00Z",
+    "raw_event_ref": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0",
+    "port": 22,
+    "source_cidr": "0.0.0.0/0",
+    "metadata": {
+      "eventName": "AuthorizeSecurityGroupIngress",
+      "eventSource": "ec2.amazonaws.com"
+    }
+  },
+  "asset_evidence": {
+    "declared_inventory": true,
+    "discovered_cloud_asset": true,
+    "scanner_scope": false,
+    "central_log_seen_last_24h": false,
+    "criticality": "high"
+  },
+  "event": {
+    "event_type": "network.public_admin_port_opened",
+    "provider": "aws",
+    "actor": "alice@example.com",
+    "asset_id": "prod-api-01",
+    "resource_id": "sg-0123456789prodapi",
+    "timestamp": "2026-05-01T10:42:00Z",
+    "raw_event_ref": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0",
+    "port": 22,
+    "source_cidr": "0.0.0.0/0",
+    "metadata": {
+      "eventName": "AuthorizeSecurityGroupIngress",
+      "eventSource": "ec2.amazonaws.com"
+    }
+  },
+  "evidence_chain": {
+    "asset_in_inventory": "FAIL",
+    "scanner_scope": "FAIL",
+    "central_logging": "FAIL",
+    "alert_rule": "FAIL",
+    "event_correlation": "FAIL",
+    "exploitation_review": "FAIL",
+    "change_ticket": "FAIL",
+    "agent_tool_governance": "PASS",
+    "agent_permission_scope": "PASS",
+    "agent_memory_context_safety": "PASS",
+    "agent_approval_gates": "PASS",
+    "agent_policy_violations": "PASS",
+    "agent_auditability": "PASS",
+    "poam_entry": "OPEN"
+  },
+  "evaluations": [
+    {
+      "eval_id": "CM8_INVENTORY_RECONCILIATION",
+      "control_refs": [
+        "CM-8",
+        "CM-8(1)",
+        "CM-8(3)"
+      ],
+      "result": "FAIL",
+      "evidence": [
+        "Declared inventory contains duplicate name values; resolve naming collisions.",
+        "Declared inventory lists the same asset_id on multiple rows \u2014 authoritative IIW conflict.",
+        "Declared inventory record Production API (inv-prod-api-dupname) is in boundary but has no matching discovered cloud asset.",
+        "Discovered asset rogue-prod-worker-99 is not present in declared inventory.",
+        "Discovered production-class asset `rogue-prod-worker-99` is absent from authoritative inventory (rogue asset risk).",
+        "Declared inventory record Production API (stale CMDB row) expected private IP 10.254.0.99 but discovered ['10.0.1.50']."
+      ],
+      "gap": "Duplicate declared inventory names detected: ['production api'].; Duplicate declared asset_id values: ['prod-api-01'].; Declared inventory record Production API (inv-prod-api-dupname) is in boundary but has no matching discovered cloud asset.; Discovered asset rogue-prod-worker-99 is not present in declared inventory.; Declared inventory record Production API (stale CMDB row) expected private IP 10.254.0.99 but discovered ['10.0.1.50'].",
+      "recommended_action": "Update inventory.; Investigate rogue asset.; Add scanner/logging coverage if asset is in boundary.; Update Integrated Inventory Workbook (IIW) or authoritative CMDB to match discovered reality.; Investigate rogue assets absent from inventory; validate ownership and boundary placement.",
+      "severity": "high",
+      "summary": "CM-8 inventory reconciliation failed: authoritative gaps or rogue production assets detected.",
+      "name": "CM-8 Inventory Reconciliation",
+      "gaps": [
+        "Duplicate declared inventory names detected: ['production api'].",
+        "Duplicate declared asset_id values: ['prod-api-01'].",
+        "Declared inventory record Production API (inv-prod-api-dupname) is in boundary but has no matching discovered cloud asset.",
+        "Discovered asset rogue-prod-worker-99 is not present in declared inventory.",
+        "Declared inventory record Production API (stale CMDB row) expected private IP 10.254.0.99 but discovered ['10.0.1.50']."
+      ],
+      "affected_assets": [
+        "inv-prod-api-01-stale",
+        "inv-prod-api-dupname",
+        "prod-api-01",
+        "rogue-prod-worker-99"
+      ],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "RA5_SCANNER_SCOPE_COVERAGE",
+      "control_refs": [
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(6)",
+        "CA-7",
+        "SI-2"
+      ],
+      "result": "FAIL",
+      "evidence": [
+        "prod-api-01 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "prod-api-01 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "prod-api-standby-02 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "Discovered production compute asset `prod-api-01` has no scanner target coverage (not explicitly exempt).",
+        "Discovered production compute asset `rogue-prod-worker-99` has no scanner target coverage (not explicitly exempt).",
+        "Scanner finding `nessus-2026-0501-prod-api-01-87839` (high) on asset `prod-api-01` contradicts missing scanner target coverage for that asset."
+      ],
+      "gap": "prod-api-01 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.; prod-api-01 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.; prod-api-standby-02 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.; Discovered production compute asset `prod-api-01` has no scanner target coverage (not explicitly exempt).; Discovered production compute asset `rogue-prod-worker-99` has no scanner target coverage (not explicitly exempt).; Scanner finding `nessus-2026-0501-prod-api-01-87839` (high) on asset `prod-api-01` contradicts missing scanner target coverage for that asset.",
+      "recommended_action": "Add missing target to scanner scope.; Confirm credentialed scan configuration.; Export scanner target configuration as system-generated evidence.; Create POA&M if coverage cannot be fixed immediately.",
+      "severity": "high",
+      "summary": "RA-5 scanner scope failed: required assets lack coverage or findings contradict scope.",
+      "name": "RA-5 Scanner Scope Coverage",
+      "gaps": [
+        "prod-api-01 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "prod-api-01 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "prod-api-standby-02 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "Discovered production compute asset `prod-api-01` has no scanner target coverage (not explicitly exempt).",
+        "Discovered production compute asset `rogue-prod-worker-99` has no scanner target coverage (not explicitly exempt).",
+        "Scanner finding `nessus-2026-0501-prod-api-01-87839` (high) on asset `prod-api-01` contradicts missing scanner target coverage for that asset."
+      ],
+      "affected_assets": [
+        "prod-api-01",
+        "prod-api-standby-02",
+        "rogue-prod-worker-99"
+      ],
+      "remediation_disposition": "poam"
+    },
+    {
+      "eval_id": "AU6_CENTRALIZED_LOG_COVERAGE",
+      "control_refs": [
+        "AU-2",
+        "AU-3",
+        "AU-3(1)",
+        "AU-6",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-12",
+        "AU-9(2)",
+        "SI-4"
+      ],
+      "result": "FAIL",
+      "evidence": [
+        "prod-api-01 requires logging but has no active central log source.",
+        "prod-api-01 requires logging but has no active central log source.",
+        "Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+        "prod-storage-01 requires logging but has no active central log source.",
+        "Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+        "Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+        "Cloud control plane log source is active.",
+        "Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context."
+      ],
+      "gap": "prod-api-01 requires logging but has no active central log source.; prod-api-01 requires logging but has no active central log source.; Declared `Production API` requires logging but has no matching discovered asset to verify sources.; prod-storage-01 requires logging but has no active central log source.; Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.; Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.; Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context.",
+      "recommended_action": "Configure central log forwarding.; Provide local and central copy of same event.; Add source coverage dashboard/saved search.; Generate missing SIEM query.",
+      "severity": "high",
+      "summary": "AU-6/AU-12 centralized log coverage failed: missing or ineffective central ingestion for required signals.",
+      "name": "AU-6/AU-12 Centralized Log Coverage",
+      "gaps": [
+        "prod-api-01 requires logging but has no active central log source.",
+        "prod-api-01 requires logging but has no active central log source.",
+        "Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+        "prod-storage-01 requires logging but has no active central log source.",
+        "Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+        "Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+        "Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context."
+      ],
+      "affected_assets": [
+        "prod-api-01",
+        "prod-storage-01",
+        "rogue-prod-worker-99"
+      ],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "SI4_ALERT_INSTRUMENTATION",
+      "control_refs": [
+        "SI-4",
+        "SI-4(1)",
+        "SI-4(4)",
+        "SI-4(16)",
+        "AU-5",
+        "AU-6",
+        "AC-2(4)",
+        "AC-2(7)",
+        "CM-8(3)",
+        "CM-10",
+        "CM-11",
+        "SI-3"
+      ],
+      "result": "FAIL",
+      "evidence": [
+        "No enabled alert rule covers compute.untracked_asset_created.",
+        "Alert rule AC-2 \u2014 IAM admin role / policy attachment covers identity.admin_role_granted and has recipients soc@example.com, iam-governance@example.com.",
+        "Alert rule AU-12 \u2014 CloudTrail StopLogging / DeleteTrail attempts covers logging.audit_disabled and has recipients soc@example.com.",
+        "Alert rules reference network.public_admin_port_opened but none are enabled with recipients.",
+        "Alert rule `spl-ss-002` covers observed semantics ['logging.audit_disabled'] but has no sample_alert_ref and no recorded last_fired (no proof of firing)."
+      ],
+      "gap": "No enabled alert rule covers compute.untracked_asset_created.; Alert rules reference network.public_admin_port_opened but none are enabled with recipients.; Alert rule `spl-ss-002` covers observed semantics ['logging.audit_disabled'] but has no sample_alert_ref and no recorded last_fired (no proof of firing).",
+      "recommended_action": "Generate SPL/KQL/GCP/AWS query.; Add enabled alert.; Add recipient list.; Produce sample alert evidence.; Link alert to incident/change response workflow.",
+      "severity": "high",
+      "summary": "SI-4 alert instrumentation failed: missing, disabled, or unproven alerting for required semantics.",
+      "name": "SI-4 Alert Instrumentation Coverage",
+      "gaps": [
+        "No enabled alert rule covers compute.untracked_asset_created.",
+        "Alert rules reference network.public_admin_port_opened but none are enabled with recipients.",
+        "Alert rule `spl-ss-002` covers observed semantics ['logging.audit_disabled'] but has no sample_alert_ref and no recorded last_fired (no proof of firing)."
+      ],
+      "affected_assets": [
+        "compute.untracked_asset_created",
+        "network.public_admin_port_opened",
+        "spl-ss-002"
+      ],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "CROSS_DOMAIN_EVENT_CORRELATION",
+      "control_refs": [
+        "CM-8",
+        "RA-5",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "AU-12",
+        "SI-4",
+        "CM-3",
+        "CA-5",
+        "SC-7",
+        "AC-2",
+        "IR-4",
+        "SA-9",
+        "CM-8(1)",
+        "CM-8(3)",
+        "CM-7",
+        "AC-2(1)",
+        "AC-2(3)",
+        "AC-2(4)",
+        "AC-2(7)",
+        "AC-3",
+        "AC-5",
+        "AC-6",
+        "IA-2",
+        "IA-4",
+        "IA-5",
+        "AU-3(1)",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-9(2)",
+        "AC-4",
+        "AC-17",
+        "SC-7(3)",
+        "SC-7(4)",
+        "SC-7(5)"
+      ],
+      "result": "FAIL",
+      "evidence": [
+        "Event fixture:untracked-instance-001 compute.untracked_asset_created affected rogue-prod-worker-99; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false.",
+        "Event fixture:logging-audit-denied-001 logging.audit_disabled affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.",
+        "Event fixture:identity-admin-role-001 identity.admin_role_granted affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.",
+        "Event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened affected prod-api-01; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false."
+      ],
+      "gap": "fixture:untracked-instance-001: missing required observability (alert_rule, central_logging).; fixture:logging-audit-denied-001: missing required observability (central_logging).; fixture:identity-admin-role-001: missing required observability (central_logging).; /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging).",
+      "recommended_action": "Map detections to CMDB/inventory identifiers.; Ensure scanner scope covers in-boundary assets.; Enable central audit ingestion for the affected asset.; Enable alert rules with recipients for the semantic type.; Open and link an incident or change ticket to the event or asset.",
+      "severity": "high",
+      "summary": "Cross-domain correlation failed: one or more risky events lack alert, central logging, or required ticket linkage.",
+      "name": "Cross-Domain Security Event Correlation",
+      "gaps": [
+        "fixture:untracked-instance-001: missing required observability (alert_rule, central_logging).",
+        "fixture:logging-audit-denied-001: missing required observability (central_logging).",
+        "fixture:identity-admin-role-001: missing required observability (central_logging).",
+        "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging)."
+      ],
+      "affected_assets": [
+        "fixture:identity-admin-role-001",
+        "fixture:logging-audit-denied-001",
+        "prod-api-01",
+        "rogue-prod-worker-99"
+      ],
+      "generated_artifacts": [
+        "output/correlations.json"
+      ],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "RA5_EXPLOITATION_REVIEW",
+      "control_refs": [
+        "RA-5(8)"
+      ],
+      "result": "FAIL",
+      "evidence": [
+        "High finding nessus-2026-0501-prod-api-01-87839 affects prod-api-01 but central audit ingestion is not active for that asset.",
+        "High finding nessus-2026-0501-prod-api-01-87839 affects prod-api-01 but no linked exploitation-review ticket or artifact was found.",
+        "Generated exploitation review queries for CVE-2026-00001 and prod-api-01."
+      ],
+      "gap": "nessus-2026-0501-prod-api-01-87839: High/Critical finding on `prod-api-01` lacks active central log coverage for exploitation review.; nessus-2026-0501-prod-api-01-87839: missing exploitation review (ticket verification and/or finding review metadata).",
+      "recommended_action": "Run the generated Splunk / KQL / GCP queries and attach exports to the vulnerability ticket.; Link a ticket to the finding (`linked_finding_ids`) and record verification evidence.; Set exploitation_review.log_review_performed (or review artifact URL) on the finding row.; Confirm central log sources for the asset are active and cover the review window.",
+      "severity": "high",
+      "summary": "RA-5(8) failed: open High/Critical finding(s) lack central logging and/or exploitation review evidence.",
+      "name": "RA-5(8) High/Critical Vulnerability Exploitation Review",
+      "gaps": [
+        "nessus-2026-0501-prod-api-01-87839: High/Critical finding on `prod-api-01` lacks active central log coverage for exploitation review.",
+        "nessus-2026-0501-prod-api-01-87839: missing exploitation review (ticket verification and/or finding review metadata)."
+      ],
+      "affected_assets": [
+        "prod-api-01"
+      ],
+      "generated_artifacts": [
+        "output/exploitation_review_queries.md"
+      ],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "CM3_CHANGE_EVIDENCE_LINKAGE",
+      "control_refs": [
+        "CM-3",
+        "CM-4",
+        "CM-5",
+        "CM-6",
+        "MA-2",
+        "MA-3",
+        "MA-4",
+        "MA-5",
+        "SI-2",
+        "SA-10"
+      ],
+      "result": "FAIL",
+      "evidence": [
+        "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.",
+        "No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.",
+        "No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.",
+        "No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
+        "Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence."
+      ],
+      "gap": "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.; No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.; No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.; No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.; Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence.",
+      "recommended_action": "Create/link change ticket.; Add SIA.; Add test evidence.; Add approval.; Add deployment evidence.; Add verification scan evidence.",
+      "severity": "high",
+      "summary": "CM-3/SI-2 failed: high-risk change or High/Critical finding has no linked change ticket.",
+      "name": "CM-3/SI-2 Change Evidence Linkage",
+      "gaps": [
+        "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.",
+        "No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.",
+        "No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.",
+        "No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
+        "Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence."
+      ],
+      "affected_assets": [
+        "prod-api-01",
+        "rogue-prod-worker-99"
+      ],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_TOOL_GOVERNANCE",
+      "control_refs": [
+        "AC-6",
+        "CM-10",
+        "CM-11",
+        "SA-9"
+      ],
+      "result": "PASS",
+      "evidence": [
+        "Agent tool calls respect allow lists and policy decisions."
+      ],
+      "gap": "Agent tool calls respect allow lists and policy decisions.",
+      "recommended_action": "",
+      "severity": "low",
+      "summary": "Agent tool calls respect allow lists and policy decisions.",
+      "name": "Agent tool governance",
+      "gaps": [],
+      "affected_assets": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_PERMISSION_SCOPE",
+      "control_refs": [
+        "AC-2",
+        "AC-3",
+        "AC-6",
+        "IA-5"
+      ],
+      "result": "PASS",
+      "evidence": [
+        "Agent permissions match assigned workflow."
+      ],
+      "gap": "Agent permissions match assigned workflow.",
+      "recommended_action": "",
+      "severity": "low",
+      "summary": "Agent permissions match assigned workflow.",
+      "name": "Agent permission scope",
+      "gaps": [],
+      "affected_assets": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_MEMORY_CONTEXT_SAFETY",
+      "control_refs": [
+        "SC-28",
+        "AC-4",
+        "AU-9",
+        "SI-12"
+      ],
+      "result": "PASS",
+      "evidence": [
+        "Memory handling avoids improper sensitive retention."
+      ],
+      "gap": "Memory handling avoids improper sensitive retention.",
+      "recommended_action": "",
+      "severity": "low",
+      "summary": "Memory handling avoids improper sensitive retention.",
+      "name": "Agent memory context safety",
+      "gaps": [],
+      "affected_assets": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_APPROVAL_GATES",
+      "control_refs": [
+        "CM-3",
+        "CM-5",
+        "CA-7",
+        "SA-9"
+      ],
+      "result": "PASS",
+      "evidence": [
+        "Risky actions are approval-gated."
+      ],
+      "gap": "Risky actions are approval-gated.",
+      "recommended_action": "",
+      "severity": "low",
+      "summary": "Risky actions are approval-gated.",
+      "name": "Agent approval gates",
+      "gaps": [],
+      "affected_assets": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_POLICY_VIOLATIONS",
+      "control_refs": [
+        "IR-4",
+        "SI-4",
+        "AC-2",
+        "AC-6"
+      ],
+      "result": "PASS",
+      "evidence": [
+        "policy_violations[] is empty."
+      ],
+      "gap": "No agent policy violations recorded.",
+      "recommended_action": "",
+      "severity": "low",
+      "summary": "No agent policy violations recorded.",
+      "name": "Agent policy violations",
+      "gaps": [],
+      "affected_assets": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_AUDITABILITY",
+      "control_refs": [
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "AU-9"
+      ],
+      "result": "PASS",
+      "evidence": [
+        "Agent decisions are traceable end-to-end."
+      ],
+      "gap": "Agent decisions are traceable end-to-end.",
+      "recommended_action": "",
+      "severity": "low",
+      "summary": "Agent decisions are traceable end-to-end.",
+      "name": "Agent auditability",
+      "gaps": [],
+      "affected_assets": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "CA5_POAM_STATUS",
+      "control_refs": [
+        "CA-5",
+        "CA-7",
+        "RA-5",
+        "CP-9",
+        "CP-10"
+      ],
+      "result": "OPEN",
+      "evidence": [
+        "Added 7 POA&M row(s) for failing/partial evaluations (duplicates skipped: 0).",
+        "CM8_INVENTORY_RECONCILIATION: FAIL",
+        "RA5_SCANNER_SCOPE_COVERAGE: FAIL",
+        "AU6_CENTRALIZED_LOG_COVERAGE: FAIL",
+        "SI4_ALERT_INSTRUMENTATION: FAIL",
+        "CROSS_DOMAIN_EVENT_CORRELATION: FAIL",
+        "RA5_EXPLOITATION_REVIEW: FAIL",
+        "CM3_CHANGE_EVIDENCE_LINKAGE: FAIL"
+      ],
+      "gap": "Continuous monitoring evidence incomplete; new POA&M rows written to poam.csv.",
+      "recommended_action": "Enter responsible roles, funding, and milestone owners in the official POA&M system.",
+      "name": "CA-5 POA&M status and gap tracking",
+      "summary": "New POA&M rows generated for control gaps.",
+      "poam_rows_added": 7,
+      "skipped_duplicate": 0,
+      "generated_artifacts": [
+        "output/poam.csv"
+      ],
+      "remediation_disposition": "poam"
+    }
+  ],
+  "eval_result_records": [
+    {
+      "eval_id": "CM8_INVENTORY_RECONCILIATION",
+      "name": "CM-8 Inventory Reconciliation",
+      "controls": [
+        "CM-8",
+        "CM-8(1)",
+        "CM-8(3)"
+      ],
+      "result": "FAIL",
+      "severity": "high",
+      "summary": "CM-8 inventory reconciliation failed: authoritative gaps or rogue production assets detected.",
+      "evidence": [
+        "Declared inventory contains duplicate name values; resolve naming collisions.",
+        "Declared inventory lists the same asset_id on multiple rows \u2014 authoritative IIW conflict.",
+        "Declared inventory record Production API (inv-prod-api-dupname) is in boundary but has no matching discovered cloud asset.",
+        "Discovered asset rogue-prod-worker-99 is not present in declared inventory.",
+        "Discovered production-class asset `rogue-prod-worker-99` is absent from authoritative inventory (rogue asset risk).",
+        "Declared inventory record Production API (stale CMDB row) expected private IP 10.254.0.99 but discovered ['10.0.1.50']."
+      ],
+      "gaps": [
+        "Duplicate declared inventory names detected: ['production api'].",
+        "Duplicate declared asset_id values: ['prod-api-01'].",
+        "Declared inventory record Production API (inv-prod-api-dupname) is in boundary but has no matching discovered cloud asset.",
+        "Discovered asset rogue-prod-worker-99 is not present in declared inventory.",
+        "Declared inventory record Production API (stale CMDB row) expected private IP 10.254.0.99 but discovered ['10.0.1.50']."
+      ],
+      "affected_assets": [
+        "inv-prod-api-01-stale",
+        "inv-prod-api-dupname",
+        "prod-api-01",
+        "rogue-prod-worker-99"
+      ],
+      "recommended_actions": [
+        "Update inventory.",
+        "Investigate rogue asset.",
+        "Add scanner/logging coverage if asset is in boundary.",
+        "Update Integrated Inventory Workbook (IIW) or authoritative CMDB to match discovered reality.",
+        "Investigate rogue assets absent from inventory",
+        "validate ownership and boundary placement."
+      ],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "RA5_SCANNER_SCOPE_COVERAGE",
+      "name": "RA-5 Scanner Scope Coverage",
+      "controls": [
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(6)",
+        "CA-7",
+        "SI-2"
+      ],
+      "result": "FAIL",
+      "severity": "high",
+      "summary": "RA-5 scanner scope failed: required assets lack coverage or findings contradict scope.",
+      "evidence": [
+        "prod-api-01 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "prod-api-01 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "prod-api-standby-02 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "Discovered production compute asset `prod-api-01` has no scanner target coverage (not explicitly exempt).",
+        "Discovered production compute asset `rogue-prod-worker-99` has no scanner target coverage (not explicitly exempt).",
+        "Scanner finding `nessus-2026-0501-prod-api-01-87839` (high) on asset `prod-api-01` contradicts missing scanner target coverage for that asset."
+      ],
+      "gaps": [
+        "prod-api-01 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "prod-api-01 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "prod-api-standby-02 is in declared inventory and scanner_required=true, but no scanner target covers asset_id/name/IP.",
+        "Discovered production compute asset `prod-api-01` has no scanner target coverage (not explicitly exempt).",
+        "Discovered production compute asset `rogue-prod-worker-99` has no scanner target coverage (not explicitly exempt).",
+        "Scanner finding `nessus-2026-0501-prod-api-01-87839` (high) on asset `prod-api-01` contradicts missing scanner target coverage for that asset."
+      ],
+      "affected_assets": [
+        "prod-api-01",
+        "prod-api-standby-02",
+        "rogue-prod-worker-99"
+      ],
+      "recommended_actions": [
+        "Add missing target to scanner scope.",
+        "Confirm credentialed scan configuration.",
+        "Export scanner target configuration as system-generated evidence.",
+        "Create POA&M if coverage cannot be fixed immediately."
+      ],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam"
+    },
+    {
+      "eval_id": "AU6_CENTRALIZED_LOG_COVERAGE",
+      "name": "AU-6/AU-12 Centralized Log Coverage",
+      "controls": [
+        "AU-2",
+        "AU-3",
+        "AU-3(1)",
+        "AU-6",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-12",
+        "AU-9(2)",
+        "SI-4"
+      ],
+      "result": "FAIL",
+      "severity": "high",
+      "summary": "AU-6/AU-12 centralized log coverage failed: missing or ineffective central ingestion for required signals.",
+      "evidence": [
+        "prod-api-01 requires logging but has no active central log source.",
+        "prod-api-01 requires logging but has no active central log source.",
+        "Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+        "prod-storage-01 requires logging but has no active central log source.",
+        "Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+        "Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+        "Cloud control plane log source is active.",
+        "Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context."
+      ],
+      "gaps": [
+        "prod-api-01 requires logging but has no active central log source.",
+        "prod-api-01 requires logging but has no active central log source.",
+        "Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+        "prod-storage-01 requires logging but has no active central log source.",
+        "Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+        "Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+        "Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context."
+      ],
+      "affected_assets": [
+        "prod-api-01",
+        "prod-storage-01",
+        "rogue-prod-worker-99"
+      ],
+      "recommended_actions": [
+        "Configure central log forwarding.",
+        "Provide local and central copy of same event.",
+        "Add source coverage dashboard/saved search.",
+        "Generate missing SIEM query."
+      ],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "SI4_ALERT_INSTRUMENTATION",
+      "name": "SI-4 Alert Instrumentation Coverage",
+      "controls": [
+        "SI-4",
+        "SI-4(1)",
+        "SI-4(4)",
+        "SI-4(16)",
+        "AU-5",
+        "AU-6",
+        "AC-2(4)",
+        "AC-2(7)",
+        "CM-8(3)",
+        "CM-10",
+        "CM-11",
+        "SI-3"
+      ],
+      "result": "FAIL",
+      "severity": "high",
+      "summary": "SI-4 alert instrumentation failed: missing, disabled, or unproven alerting for required semantics.",
+      "evidence": [
+        "No enabled alert rule covers compute.untracked_asset_created.",
+        "Alert rule AC-2 \u2014 IAM admin role / policy attachment covers identity.admin_role_granted and has recipients soc@example.com, iam-governance@example.com.",
+        "Alert rule AU-12 \u2014 CloudTrail StopLogging / DeleteTrail attempts covers logging.audit_disabled and has recipients soc@example.com.",
+        "Alert rules reference network.public_admin_port_opened but none are enabled with recipients.",
+        "Alert rule `spl-ss-002` covers observed semantics ['logging.audit_disabled'] but has no sample_alert_ref and no recorded last_fired (no proof of firing)."
+      ],
+      "gaps": [
+        "No enabled alert rule covers compute.untracked_asset_created.",
+        "Alert rules reference network.public_admin_port_opened but none are enabled with recipients.",
+        "Alert rule `spl-ss-002` covers observed semantics ['logging.audit_disabled'] but has no sample_alert_ref and no recorded last_fired (no proof of firing)."
+      ],
+      "affected_assets": [
+        "compute.untracked_asset_created",
+        "network.public_admin_port_opened",
+        "spl-ss-002"
+      ],
+      "recommended_actions": [
+        "Generate SPL/KQL/GCP/AWS query.",
+        "Add enabled alert.",
+        "Add recipient list.",
+        "Produce sample alert evidence.",
+        "Link alert to incident/change response workflow."
+      ],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "CROSS_DOMAIN_EVENT_CORRELATION",
+      "name": "Cross-Domain Security Event Correlation",
+      "controls": [
+        "CM-8",
+        "RA-5",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "AU-12",
+        "SI-4",
+        "CM-3",
+        "CA-5",
+        "SC-7",
+        "AC-2",
+        "IR-4",
+        "SA-9",
+        "CM-8(1)",
+        "CM-8(3)",
+        "CM-7",
+        "AC-2(1)",
+        "AC-2(3)",
+        "AC-2(4)",
+        "AC-2(7)",
+        "AC-3",
+        "AC-5",
+        "AC-6",
+        "IA-2",
+        "IA-4",
+        "IA-5",
+        "AU-3(1)",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-9(2)",
+        "AC-4",
+        "AC-17",
+        "SC-7(3)",
+        "SC-7(4)",
+        "SC-7(5)"
+      ],
+      "result": "FAIL",
+      "severity": "high",
+      "summary": "Cross-domain correlation failed: one or more risky events lack alert, central logging, or required ticket linkage.",
+      "evidence": [
+        "Event fixture:untracked-instance-001 compute.untracked_asset_created affected rogue-prod-worker-99; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false.",
+        "Event fixture:logging-audit-denied-001 logging.audit_disabled affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.",
+        "Event fixture:identity-admin-role-001 identity.admin_role_granted affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.",
+        "Event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened affected prod-api-01; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false."
+      ],
+      "gaps": [
+        "fixture:untracked-instance-001: missing required observability (alert_rule, central_logging).",
+        "fixture:logging-audit-denied-001: missing required observability (central_logging).",
+        "fixture:identity-admin-role-001: missing required observability (central_logging).",
+        "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging)."
+      ],
+      "affected_assets": [
+        "fixture:identity-admin-role-001",
+        "fixture:logging-audit-denied-001",
+        "prod-api-01",
+        "rogue-prod-worker-99"
+      ],
+      "recommended_actions": [
+        "Map detections to CMDB/inventory identifiers.",
+        "Ensure scanner scope covers in-boundary assets.",
+        "Enable central audit ingestion for the affected asset.",
+        "Enable alert rules with recipients for the semantic type.",
+        "Open and link an incident or change ticket to the event or asset."
+      ],
+      "generated_artifacts": [
+        "output/correlations.json"
+      ],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "RA5_EXPLOITATION_REVIEW",
+      "name": "RA-5(8) High/Critical Vulnerability Exploitation Review",
+      "controls": [
+        "RA-5(8)"
+      ],
+      "result": "FAIL",
+      "severity": "high",
+      "summary": "RA-5(8) failed: open High/Critical finding(s) lack central logging and/or exploitation review evidence.",
+      "evidence": [
+        "High finding nessus-2026-0501-prod-api-01-87839 affects prod-api-01 but central audit ingestion is not active for that asset.",
+        "High finding nessus-2026-0501-prod-api-01-87839 affects prod-api-01 but no linked exploitation-review ticket or artifact was found.",
+        "Generated exploitation review queries for CVE-2026-00001 and prod-api-01."
+      ],
+      "gaps": [
+        "nessus-2026-0501-prod-api-01-87839: High/Critical finding on `prod-api-01` lacks active central log coverage for exploitation review.",
+        "nessus-2026-0501-prod-api-01-87839: missing exploitation review (ticket verification and/or finding review metadata)."
+      ],
+      "affected_assets": [
+        "prod-api-01"
+      ],
+      "recommended_actions": [
+        "Run the generated Splunk / KQL / GCP queries and attach exports to the vulnerability ticket.",
+        "Link a ticket to the finding (`linked_finding_ids`) and record verification evidence.",
+        "Set exploitation_review.log_review_performed (or review artifact URL) on the finding row.",
+        "Confirm central log sources for the asset are active and cover the review window."
+      ],
+      "generated_artifacts": [
+        "output/exploitation_review_queries.md"
+      ],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "CM3_CHANGE_EVIDENCE_LINKAGE",
+      "name": "CM-3/SI-2 Change Evidence Linkage",
+      "controls": [
+        "CM-3",
+        "CM-4",
+        "CM-5",
+        "CM-6",
+        "MA-2",
+        "MA-3",
+        "MA-4",
+        "MA-5",
+        "SI-2",
+        "SA-10"
+      ],
+      "result": "FAIL",
+      "severity": "high",
+      "summary": "CM-3/SI-2 failed: high-risk change or High/Critical finding has no linked change ticket.",
+      "evidence": [
+        "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.",
+        "No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.",
+        "No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.",
+        "No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
+        "Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence."
+      ],
+      "gaps": [
+        "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.",
+        "No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.",
+        "No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.",
+        "No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
+        "Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence."
+      ],
+      "affected_assets": [
+        "prod-api-01",
+        "rogue-prod-worker-99"
+      ],
+      "recommended_actions": [
+        "Create/link change ticket.",
+        "Add SIA.",
+        "Add test evidence.",
+        "Add approval.",
+        "Add deployment evidence.",
+        "Add verification scan evidence."
+      ],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_TOOL_GOVERNANCE",
+      "name": "Agent tool governance",
+      "controls": [
+        "AC-6",
+        "CM-10",
+        "CM-11",
+        "SA-9"
+      ],
+      "result": "PASS",
+      "severity": "low",
+      "summary": "Agent tool calls respect allow lists and policy decisions.",
+      "evidence": [
+        "Agent tool calls respect allow lists and policy decisions."
+      ],
+      "gaps": [],
+      "affected_assets": [],
+      "recommended_actions": [],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_PERMISSION_SCOPE",
+      "name": "Agent permission scope",
+      "controls": [
+        "AC-2",
+        "AC-3",
+        "AC-6",
+        "IA-5"
+      ],
+      "result": "PASS",
+      "severity": "low",
+      "summary": "Agent permissions match assigned workflow.",
+      "evidence": [
+        "Agent permissions match assigned workflow."
+      ],
+      "gaps": [],
+      "affected_assets": [],
+      "recommended_actions": [],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_MEMORY_CONTEXT_SAFETY",
+      "name": "Agent memory context safety",
+      "controls": [
+        "SC-28",
+        "AC-4",
+        "AU-9",
+        "SI-12"
+      ],
+      "result": "PASS",
+      "severity": "low",
+      "summary": "Memory handling avoids improper sensitive retention.",
+      "evidence": [
+        "Memory handling avoids improper sensitive retention."
+      ],
+      "gaps": [],
+      "affected_assets": [],
+      "recommended_actions": [],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_APPROVAL_GATES",
+      "name": "Agent approval gates",
+      "controls": [
+        "CM-3",
+        "CM-5",
+        "CA-7",
+        "SA-9"
+      ],
+      "result": "PASS",
+      "severity": "low",
+      "summary": "Risky actions are approval-gated.",
+      "evidence": [
+        "Risky actions are approval-gated."
+      ],
+      "gaps": [],
+      "affected_assets": [],
+      "recommended_actions": [],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_POLICY_VIOLATIONS",
+      "name": "Agent policy violations",
+      "controls": [
+        "IR-4",
+        "SI-4",
+        "AC-2",
+        "AC-6"
+      ],
+      "result": "PASS",
+      "severity": "low",
+      "summary": "No agent policy violations recorded.",
+      "evidence": [
+        "policy_violations[] is empty."
+      ],
+      "gaps": [],
+      "affected_assets": [],
+      "recommended_actions": [],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "AGENT_AUDITABILITY",
+      "name": "Agent auditability",
+      "controls": [
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "AU-9"
+      ],
+      "result": "PASS",
+      "severity": "low",
+      "summary": "Agent decisions are traceable end-to-end.",
+      "evidence": [
+        "Agent decisions are traceable end-to-end."
+      ],
+      "gaps": [],
+      "affected_assets": [],
+      "recommended_actions": [],
+      "generated_artifacts": [],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam_or_risk_acceptance"
+    },
+    {
+      "eval_id": "CA5_POAM_STATUS",
+      "name": "CA-5 POA&M status and gap tracking",
+      "controls": [
+        "CA-5",
+        "CA-7",
+        "RA-5",
+        "CP-9",
+        "CP-10"
+      ],
+      "result": "OPEN",
+      "severity": "unknown",
+      "summary": "New POA&M rows generated for control gaps.",
+      "evidence": [
+        "Added 7 POA&M row(s) for failing/partial evaluations (duplicates skipped: 0).",
+        "CM8_INVENTORY_RECONCILIATION: FAIL",
+        "RA5_SCANNER_SCOPE_COVERAGE: FAIL",
+        "AU6_CENTRALIZED_LOG_COVERAGE: FAIL",
+        "SI4_ALERT_INSTRUMENTATION: FAIL",
+        "CROSS_DOMAIN_EVENT_CORRELATION: FAIL",
+        "RA5_EXPLOITATION_REVIEW: FAIL",
+        "CM3_CHANGE_EVIDENCE_LINKAGE: FAIL"
+      ],
+      "gaps": [
+        "Continuous monitoring evidence incomplete; new POA&M rows written to poam.csv."
+      ],
+      "affected_assets": [],
+      "recommended_actions": [
+        "Enter responsible roles, funding, and milestone owners in the official POA&M system."
+      ],
+      "generated_artifacts": [
+        "output/poam.csv"
+      ],
+      "linked_ksi_ids": [],
+      "remediation_disposition": "poam"
+    }
+  ],
+  "correlations": {
+    "source": "correlations.json",
+    "embedded": false
+  },
+  "assessment_bundle_present": true
+}

@@ -1,0 +1,109 @@
+schema_version: "1.0"
+# FedRAMP-style shared responsibility: what the hyperscaler inherits, what remains customer/agency, and split KSIs.
+cloud_provider_inherited:
+  summary: >
+    Physical security, regional resilience, hypervisor integrity, and baseline
+    platform attestations are typically inherited from the CSP FedRAMP package.
+csp_responsible:
+  summary: >
+    Managed control plane APIs, default encryption of provider-managed stores where
+    contractually covered, and shared-tenant isolation boundaries per CSP ATO.
+customer_agency_responsible:
+  summary: >
+    Customer workload configuration, identity assignments, logging to customer SIEM,
+    vulnerability scanning scope for customer-managed OS, IR playbooks, and POA&M
+    for customer-introduced weaknesses.
+shared:
+  summary: >
+    Logging pipelines, encryption key custody (BYOK), hybrid network paths, and
+    third-party SaaS on top of CSP IaaS/PaaS require explicit boundary documentation.
+
+ksi_responsibility:
+  KSI-IAM-01:
+    cloud_provider_inherited: IdP platform availability and cryptographic primitives for managed directory SKUs.
+    csp_responsible: Managed IdP SKU baseline hardening where the CSP operates the directory service end-to-end.
+    customer_agency_responsible: Account lifecycle, role approvals, MFA policy, break-glass, federation claims mapping.
+    shared: Conditional access and workload IAM roles split between IdP and cloud resource policies.
+  KSI-LOG-01:
+    cloud_provider_inherited: Availability of managed log sinks and default retention floors where contractually inherited.
+    csp_responsible: Integrity of provider-managed log delivery APIs and storage durability SLAs.
+    customer_agency_responsible: Event selection, forwarding to SIEM, alert rules, RBAC on log stores, retention beyond SLA.
+    shared: Agent-based vs API-based collection for hybrid workloads; encryption keys (CMK vs provider-managed).
+  KSI-VULN-01:
+    cloud_provider_inherited: Underlying patch cadence for managed services where explicitly inherited in SSP.
+    csp_responsible: Scanner-less posture signals (e.g. native security services) offered as managed features.
+    customer_agency_responsible: Scanner scope for customer OS/containers, finding SLAs, POA&M for customer defects.
+    shared: Container image scanning shared between registry provider and runtime operator.
+  KSI-CM-01:
+    cloud_provider_inherited: Change windows for hyperscale maintenance affecting shared infrastructure only.
+    csp_responsible: Provider change notifications for platform deprecations impacting customer APIs.
+    customer_agency_responsible: Customer change tickets, SIA/testing, deployment evidence, drift detection for workloads.
+    shared: GitOps / pipeline automation ownership between platform and application teams.
+  KSI-INV-01:
+    cloud_provider_inherited: Asset metadata APIs that enable discovery when authorized by customer roles.
+    csp_responsible: Service catalog entries for first-party managed services in boundary diagrams.
+    customer_agency_responsible: Authoritative CMDB/IIW, reconciliation jobs, rogue asset handling, boundary tagging.
+    shared: Tagging standards and ownership of tag hygiene between FinOps and security.
+  KSI-IR-01:
+    cloud_provider_inherited: Provider security incident broadcast channels and shared-fate outage comms.
+    csp_responsible: Detection for provider-side abuse of customer credentials where CSP contract covers it.
+    customer_agency_responsible: SOC runbooks, case management, IR tickets, evidence preservation for customer scope.
+    shared: Managed detection services (MDR) vs internal SOC responsibilities must be explicit in contracts.
+  KSI-REC-01:
+    cloud_provider_inherited: Durability of managed backup stores where backup service is inherited control.
+    csp_responsible: Encryption-at-rest defaults for provider-managed backup vaults per CSP authorization.
+    customer_agency_responsible: Backup policy scope, restore tests, RTO/RPO mapping, key access for restores.
+    shared: Cross-account backup copies and KMS policies split between security and operations teams.
+  KSI-SCRM-01:
+    cloud_provider_inherited: CSP attestation artifacts (SOC, ISO) for listed inherited services in SSP.
+    csp_responsible: Supplier due diligence for CSP subservice providers per CSP ATO.
+    customer_agency_responsible: SaaS vendor inventory, SBOM program, POA&M for third-party defects, training evidence.
+    shared: Open-source dependency governance between engineering and GRC.
+  KSI-AGENT-01:
+    cloud_provider_inherited: Managed AI service identity primitives where the CSP operates the control plane identity.
+    csp_responsible: Baseline API authentication for first-party AI endpoints where contractually inherited.
+    customer_agency_responsible: Agent registry owners scopes approvals and non-shared credentials for customer-built agents.
+    shared: Federated workforce vs workload identity for hybrid agent deployments.
+  KSI-AGENT-02:
+    cloud_provider_inherited: Provider-managed audit sinks for native AI services where inherited in SSP.
+    csp_responsible: Availability of provider logging APIs for agent actions on managed AI SKUs.
+    customer_agency_responsible: Centralized logging for tool calls policy decisions approvals and memory access for agents in scope.
+    shared: SIEM parsers for proprietary agent telemetry vs open telemetry standards.
+  KSI-AGENT-03:
+    cloud_provider_inherited: Provider abuse detections for shared AI infrastructure where CSP ATO covers it.
+    csp_responsible: Coordinated disclosure channels for model or platform abuse affecting tenants.
+    customer_agency_responsible: Runbooks for prompt injection tool misuse compromised-agent hypotheses and containment.
+    shared: MDR coverage for agent gateways split between vendor SOC and customer SOC.
+  KSI-AGENT-04:
+    cloud_provider_inherited: Platform-managed change windows for AI control plane upgrades only.
+    csp_responsible: Deprecation notices for agent APIs affecting customer integrations.
+    customer_agency_responsible: Change tickets for new tools permission updates prompt or policy versions and review evidence.
+    shared: GitOps ownership for agent policy repos between platform and application teams.
+
+# Legacy flat list retained for tools that still expect customer-owned evidence classes.
+customer_responsibility:
+  - declared_system_inventory
+  - identity_provider_users
+  - privileged_group_membership
+  - scanner_target_export
+  - vulnerability_scan_findings
+  - central_log_source_export
+  - siem_alert_rule_export
+  - change_ticket_export
+  - incident_ticket_export
+  - cloud_control_plane_events
+  - correlation_assessment_export
+  - agent_assessment_export
+  - cloud_asset_inventory
+  - backup_configuration_export
+  - restore_test_records
+  - vendor_inventory
+  - sbom_export
+
+provider_responsibility_examples:
+  - Physical facility access logs (provider-controlled)
+  - Hypervisor integrity monitoring (provider-controlled)
+
+notes: >
+  Customer evidence must still demonstrate boundary and inherited controls per
+  agency authorization approach; this map is descriptive, not a waiver.

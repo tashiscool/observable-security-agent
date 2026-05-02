@@ -1,0 +1,19 @@
+{
+  "campaigns": [
+    {
+      "campaign_id": "AR-2026-Q1",
+      "name": "Q1 privileged access review",
+      "status": "completed",
+      "completed_date": "2026-04-15",
+      "scope": "privileged_interactive"
+    },
+    {
+      "campaign_id": "AR-2026-BG",
+      "name": "Break-glass account attestation",
+      "status": "overdue",
+      "due_date": "2026-04-01",
+      "outstanding_accounts": ["u-breakglass-01"],
+      "notes": "KSI-IAM-01 partial: one break-glass account review overdue."
+    }
+  ]
+}

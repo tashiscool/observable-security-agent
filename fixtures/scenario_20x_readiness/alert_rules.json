@@ -1,0 +1,50 @@
+{
+  "platform": "splunk",
+  "rules": [
+    {
+      "rule_id": "spl-20x-public-admin",
+      "name": "SI-4 — Public administrative port exposure (production)",
+      "enabled": true,
+      "event_types": [],
+      "matches_event_type": "network.public_admin_port_opened",
+      "mapped_semantic_types": ["network.public_admin_port_opened"],
+      "recipients": ["soc@example.com", "edge-team@example.com"],
+      "controls": ["SI-4", "SC-7", "AU-6"],
+      "last_fired": "2026-05-01T10:43:00Z",
+      "sample_alert_ref": "splunk://saved/alert/public_admin_sg"
+    },
+    {
+      "rule_id": "spl-20x-audit-disabled",
+      "name": "AU-12 — CloudTrail StopLogging / DeleteTrail attempts",
+      "enabled": true,
+      "event_types": ["logging.audit_disabled"],
+      "mapped_semantic_types": ["logging.audit_disabled"],
+      "recipients": ["soc@example.com"],
+      "controls": ["AU-2", "AU-12", "SI-4"],
+      "last_fired": null,
+      "sample_alert_ref": "splunk://saved/alert/audit_disabled_template"
+    },
+    {
+      "rule_id": "spl-20x-mfa-disabled",
+      "name": "IA-2 — Root / IAM user MFA disabled",
+      "enabled": true,
+      "event_types": ["identity.mfa_disabled"],
+      "mapped_semantic_types": ["identity.mfa_disabled"],
+      "recipients": ["soc@example.com", "iam-governance@example.com"],
+      "controls": ["IA-2", "SI-4", "AU-6"],
+      "last_fired": "2026-05-01T10:51:00Z",
+      "sample_alert_ref": "splunk://saved/alert/mfa_disabled_soc"
+    },
+    {
+      "rule_id": "spl-20x-high-vuln",
+      "name": "RA-5 — High/Critical vulnerability detected",
+      "enabled": true,
+      "event_types": ["scanner.high_vulnerability_detected"],
+      "mapped_semantic_types": ["scanner.high_vulnerability_detected"],
+      "recipients": ["vuln-mgmt@example.com"],
+      "controls": ["RA-5", "SI-4"],
+      "last_fired": "2026-05-01T11:02:00Z",
+      "sample_alert_ref": "splunk://saved/alert/nessus_high"
+    }
+  ]
+}

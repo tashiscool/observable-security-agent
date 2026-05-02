@@ -1,0 +1,96 @@
+{
+  "eval_id": "CROSS_DOMAIN_EVENT_CORRELATION",
+  "eval_name": "Cross-Domain Security Event Correlation",
+  "result": "FAIL",
+  "correlations": [
+    {
+      "event_id": "fixture:untracked-instance-001",
+      "semantic_type": "compute.untracked_asset_created",
+      "timestamp": "2026-05-01T08:30:00Z",
+      "actor": "automation@example.com",
+      "asset_id": "rogue-prod-worker-99",
+      "asset_name": "rogue-prod-worker-99",
+      "inventory_covered": false,
+      "scanner_covered": false,
+      "central_logging_active": false,
+      "alert_rule_enabled": false,
+      "alert_sample_available": false,
+      "linked_ticket_id": null,
+      "poam_item_id": null,
+      "exposure_duration": "unknown",
+      "missing_evidence": [
+        "inventory",
+        "scanner_scope",
+        "central_logging",
+        "alert_rule",
+        "linked_ticket"
+      ]
+    },
+    {
+      "event_id": "fixture:logging-audit-denied-001",
+      "semantic_type": "logging.audit_disabled",
+      "timestamp": "2026-05-01T09:55:00Z",
+      "actor": "malicious-actor@external",
+      "asset_id": null,
+      "asset_name": "",
+      "inventory_covered": false,
+      "scanner_covered": false,
+      "central_logging_active": false,
+      "alert_rule_enabled": true,
+      "alert_sample_available": false,
+      "linked_ticket_id": null,
+      "poam_item_id": null,
+      "exposure_duration": "unknown",
+      "missing_evidence": [
+        "inventory",
+        "scanner_scope",
+        "central_logging",
+        "alert_sample",
+        "linked_ticket"
+      ]
+    },
+    {
+      "event_id": "fixture:identity-admin-role-001",
+      "semantic_type": "identity.admin_role_granted",
+      "timestamp": "2026-05-01T10:15:00Z",
+      "actor": "bob@example.com",
+      "asset_id": null,
+      "asset_name": "",
+      "inventory_covered": false,
+      "scanner_covered": false,
+      "central_logging_active": false,
+      "alert_rule_enabled": true,
+      "alert_sample_available": true,
+      "linked_ticket_id": null,
+      "poam_item_id": null,
+      "exposure_duration": "unknown",
+      "missing_evidence": [
+        "inventory",
+        "scanner_scope",
+        "central_logging",
+        "linked_ticket"
+      ]
+    },
+    {
+      "event_id": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_agentic_risk/cloud_events.json#0",
+      "semantic_type": "network.public_admin_port_opened",
+      "timestamp": "2026-05-01T10:42:00Z",
+      "actor": "alice@example.com",
+      "asset_id": "prod-api-01",
+      "asset_name": "prod-api-01",
+      "inventory_covered": true,
+      "scanner_covered": false,
+      "central_logging_active": false,
+      "alert_rule_enabled": false,
+      "alert_sample_available": false,
+      "linked_ticket_id": "TICK-4477",
+      "poam_item_id": null,
+      "exposure_duration": "unknown",
+      "missing_evidence": [
+        "scanner_scope",
+        "central_logging",
+        "alert_rule"
+      ]
+    }
+  ]
+}

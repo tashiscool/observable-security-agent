@@ -1,0 +1,7 @@
+inventory_id,asset_id,name,asset_type,expected_provider,expected_region,expected_private_ip,expected_public_ip,in_boundary,scanner_required,log_required,owner,system_component
+inv-prod-api-01,prod-api-01,Production API,compute,aws,us-east-1,10.0.1.50,52.55.10.10,true,true,true,Platform Team,api-service
+inv-prod-api-01-stale,prod-api-01,Production API (stale CMDB row),compute,aws,us-east-1,10.254.0.99,52.55.10.10,true,true,true,Platform Team,api-service
+inv-prod-api-dupname,prod-api-standby-02,Production API,compute,aws,us-east-1,10.0.1.51,,true,true,true,Platform Team,api-standby
+inv-prod-db-01,prod-db-01,Primary PostgreSQL,database,aws,us-east-1,10.0.2.20,,true,true,true,Data Team,rds-primary
+inv-prod-lb-01,prod-lb-01,Public ALB,load_balancer,aws,us-east-1,10.0.3.5,,true,true,true,Platform Team,edge-lb
+inv-prod-storage-01,prod-storage-01,Application artifacts bucket,storage,aws,us-east-1,,,true,false,true,Platform Team,s3-artifacts

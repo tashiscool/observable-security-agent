@@ -1,0 +1,569 @@
+schema_version: "1.0"
+# Content version of this catalog (bump when KSIs/criteria change materially).
+catalog_version: "2026.05.02"
+catalog:
+  - ksi_id: KSI-IAM-01
+    theme: Identity and Access Management
+    title: Centralized identity and account lifecycle management
+    objective: >
+      Demonstrate that identities and privileged access are provisioned, monitored,
+      and deprovisioned in line with policy, with auditable approval and MFA posture.
+    legacy_controls:
+      rev4: [AC-2, AC-3, AC-5, IA-2, IA-4]
+      rev5: [AC-2, AC-3, AC-5, IA-2, IA-4]
+    validation_mode: hybrid
+    automation_target: true
+    evidence_sources:
+      [identity_provider_users, siem_alert_rule_export, incident_ticket_export, correlation_assessment_export]
+    pass_fail_criteria:
+      - criteria_id: IAM-CRI-001
+        description: Privileged users must be approved through a documented workflow.
+        validation_type: hybrid
+        expected_result: Approvals recorded and retrievable for privileged role assignments.
+        severity_if_failed: high
+        eval_refs: []
+        evidence_required: [incident_ticket_export, cloud_control_plane_events]
+      - criteria_id: IAM-CRI-002
+        description: Privileged users must have MFA enforced where required by policy.
+        validation_type: automated
+        expected_result: MFA enforcement evidenced for privileged accounts in scope.
+        severity_if_failed: high
+        eval_refs: []
+        evidence_required: [siem_alert_rule_export, central_log_source_export]
+      - criteria_id: IAM-CRI-003
+        description: Terminated users must not retain active access to in-scope systems.
+        validation_type: hybrid
+        expected_result: No active sessions or credentials for terminated identities.
+        severity_if_failed: critical
+        eval_refs: []
+        evidence_required: [identity_provider_users, cloud_asset_inventory, central_log_source_export]
+      - criteria_id: IAM-CRI-004
+        description: Break-glass accounts must be documented, monitored, and reviewed.
+        validation_type: manual
+        expected_result: Break-glass inventory, monitoring coverage, and periodic review artifacts.
+        severity_if_failed: high
+        eval_refs: []
+        evidence_required: [identity_provider_users, siem_alert_rule_export, incident_ticket_export]
+    reporting_sections:
+      assessor: Identity and privileged access evidence
+      executive: IAM posture summary
+      ao: AC / IA family KSI rollup
+
+  - ksi_id: KSI-LOG-01
+    theme: Monitoring, Logging, and Auditing
+    title: Centralized logging and security monitoring
+    objective: >
+      Demonstrate that security-relevant events are captured, forwarded to a central
+      platform, protected in transit and at rest, and can drive accountable alerting.
+    legacy_controls:
+      rev4: [AU-2, AU-6, AU-8, AU-9, AU-12]
+      rev5: [AU-2, AU-6, AU-8, AU-9, AU-12]
+    validation_mode: hybrid
+    automation_target: true
+    evidence_sources:
+      [central_log_source_export, siem_alert_rule_export, correlation_assessment_export]
+    pass_fail_criteria:
+      - criteria_id: LOG-CRI-001
+        description: Cloud control plane logs are enabled for in-scope accounts and regions.
+        validation_type: automated
+        expected_result: Control-plane log sources configured and active.
+        severity_if_failed: high
+        eval_refs: [AU6_CENTRALIZED_LOG_COVERAGE]
+        evidence_required: [central_log_source_export]
+      - criteria_id: LOG-CRI-002
+        description: Logs are centralized to the approved SIEM or log analytics service.
+        validation_type: hybrid
+        expected_result: Central ingestion paths documented with recent receipt evidence.
+        severity_if_failed: high
+        eval_refs: [AU6_CENTRALIZED_LOG_COVERAGE]
+        evidence_required: [central_log_source_export]
+      - criteria_id: LOG-CRI-003
+        description: Logs are encrypted and access-controlled per policy.
+        validation_type: manual
+        expected_result: Encryption and RBAC/retention settings evidenced for log stores.
+        severity_if_failed: medium
+        eval_refs: []
+        evidence_required: [central_log_source_export]
+      - criteria_id: LOG-CRI-004
+        description: Security-relevant events are alertable with accountable routing.
+        validation_type: hybrid
+        expected_result: Enabled rules with recipients mapped to high-risk semantics.
+        severity_if_failed: high
+        eval_refs: [SI4_ALERT_INSTRUMENTATION]
+        evidence_required: [siem_alert_rule_export]
+      - criteria_id: LOG-CRI-005
+        description: Local-to-central evidence is available where required for AU reviews.
+        validation_type: hybrid
+        expected_result: Sample local and matching central events retrievable for sampled assets.
+        severity_if_failed: medium
+        eval_refs: [AU6_CENTRALIZED_LOG_COVERAGE]
+        evidence_required: [central_log_source_export]
+    reporting_sections:
+      assessor: Logging and monitoring evidence
+      executive: Detection and logging posture
+      ao: AU / SI monitoring rollup
+
+  - ksi_id: KSI-VULN-01
+    theme: Service Configuration
+    title: Vulnerability and configuration risk management
+    objective: >
+      Demonstrate vulnerability scanning scope, timely handling of findings, and
+      exploitation-review discipline for high/critical issues aligned to inventory.
+    legacy_controls:
+      rev4: [RA-5, SI-2, SI-3]
+      rev5: [RA-5, SI-2, SI-3]
+    validation_mode: hybrid
+    automation_target: true
+    evidence_sources:
+      [scanner_target_export, vulnerability_scan_findings, declared_system_inventory, correlation_assessment_export]
+    pass_fail_criteria:
+      - criteria_id: VULN-CRI-001
+        description: All in-scope assets are covered by an authorized scanner scope.
+        validation_type: automated
+        expected_result: Scanner targets reconcile to authoritative inventory for in-boundary assets.
+        severity_if_failed: high
+        eval_refs: [RA5_SCANNER_SCOPE_COVERAGE, CM8_INVENTORY_RECONCILIATION]
+        evidence_required: [scanner_target_export, declared_system_inventory]
+      - criteria_id: VULN-CRI-002
+        description: High/critical vulnerabilities meet SLA or have an approved exception on record.
+        validation_type: hybrid
+        expected_result: SLA tracking or formal risk acceptance linked to the finding.
+        severity_if_failed: critical
+        eval_refs: []
+        evidence_required: [vulnerability_scan_findings, incident_ticket_export]
+      - criteria_id: VULN-CRI-003
+        description: Exploitation review is performed for high/critical vulnerabilities.
+        validation_type: hybrid
+        expected_result: Log review or ticket verification artifacts tied to qualifying findings.
+        severity_if_failed: high
+        eval_refs: [RA5_EXPLOITATION_REVIEW]
+        evidence_required: [vulnerability_scan_findings, central_log_source_export, incident_ticket_export]
+      - criteria_id: VULN-CRI-004
+        description: Scanner scope is system-generated and reconciled to inventory.
+        validation_type: automated
+        expected_result: Exportable target list with identifiers matching inventory keys.
+        severity_if_failed: high
+        eval_refs: [RA5_SCANNER_SCOPE_COVERAGE, CM8_INVENTORY_RECONCILIATION]
+        evidence_required: [scanner_target_export, declared_system_inventory]
+    reporting_sections:
+      assessor: Vulnerability management evidence
+      executive: Exposure and remediation posture
+      ao: RA / SI flaw-remediation rollup
+
+  - ksi_id: KSI-CM-01
+    theme: Change Management
+    title: Controlled change and release discipline
+    objective: >
+      Demonstrate that material changes follow approved workflows with security
+      analysis, testing, deployment, and verification evidence linked to records.
+    legacy_controls:
+      rev4: [CM-2, CM-3, CM-4, CM-5, CM-6, SI-2]
+      rev5: [CM-2, CM-3, CM-4, CM-5, CM-6, SI-2]
+    validation_mode: hybrid
+    automation_target: true
+    evidence_sources:
+      [change_ticket_export, cloud_control_plane_events, correlation_assessment_export]
+    pass_fail_criteria:
+      - criteria_id: CM-CRI-001
+        description: Risky changes have traceable tickets or equivalent change records.
+        validation_type: hybrid
+        expected_result: Change IDs linked to assets or events under assessment.
+        severity_if_failed: high
+        eval_refs: [CM3_CHANGE_EVIDENCE_LINKAGE]
+        evidence_required: [change_ticket_export, cloud_control_plane_events]
+      - criteria_id: CM-CRI-002
+        description: Change tickets include SIA, testing, approval, deployment, and verification evidence.
+        validation_type: manual
+        expected_result: Required CM-3 evidence flags satisfied or compensating artifacts attached.
+        severity_if_failed: high
+        eval_refs: [CM3_CHANGE_EVIDENCE_LINKAGE]
+        evidence_required: [change_ticket_export]
+      - criteria_id: CM-CRI-003
+        description: Deployment evidence links to the approved change record.
+        validation_type: hybrid
+        expected_result: Deployment timestamps or automation receipts tied to change ID.
+        severity_if_failed: medium
+        eval_refs: [CM3_CHANGE_EVIDENCE_LINKAGE]
+        evidence_required: [change_ticket_export]
+      - criteria_id: CM-CRI-004
+        description: Configuration drift is detectable for critical service classes.
+        validation_type: hybrid
+        expected_result: Drift detection sources or periodic attestations on file.
+        severity_if_failed: medium
+        eval_refs: []
+        evidence_required: [cloud_asset_inventory, correlation_assessment_export]
+    reporting_sections:
+      assessor: Change and release evidence
+      executive: Change risk posture
+      ao: CM / SI-2 change rollup
+
+  - ksi_id: KSI-INV-01
+    theme: Policy and Inventory
+    title: Authoritative inventory and boundary posture
+    objective: >
+      Demonstrate that declared inventory reconciles to discovery, includes required
+      attributes, and surfaces duplicate, stale, or rogue assets for resolution.
+    legacy_controls:
+      rev4: [CM-8, PL-2, RA-2]
+      rev5: [CM-8, PL-2, RA-2]
+    validation_mode: hybrid
+    automation_target: true
+    evidence_sources:
+      [declared_system_inventory, cloud_asset_inventory, correlation_assessment_export]
+    pass_fail_criteria:
+      - criteria_id: INV-CRI-001
+        description: Discovered assets reconcile with declared authoritative inventory.
+        validation_type: automated
+        expected_result: No unresolved rogue production-class assets absent from inventory.
+        severity_if_failed: high
+        eval_refs: [CM8_INVENTORY_RECONCILIATION]
+        evidence_required: [declared_system_inventory, cloud_asset_inventory]
+      - criteria_id: INV-CRI-002
+        description: Inventory includes boundary status, owner, component type, and scanner/log requirements.
+        validation_type: hybrid
+        expected_result: Required columns populated for in-scope rows sampled by assessor.
+        severity_if_failed: medium
+        eval_refs: [CM8_INVENTORY_RECONCILIATION]
+        evidence_required: [declared_system_inventory]
+      - criteria_id: INV-CRI-003
+        description: Duplicate, stale, or conflicting inventory rows are flagged and tracked.
+        validation_type: automated
+        expected_result: IIW/CMDB reconciliation process evidences collision handling.
+        severity_if_failed: high
+        eval_refs: [CM8_INVENTORY_RECONCILIATION]
+        evidence_required: [declared_system_inventory, cloud_asset_inventory]
+    reporting_sections:
+      assessor: Inventory and boundary evidence
+      executive: Asset visibility posture
+      ao: CM-8 / PL / RA-2 rollup
+
+  - ksi_id: KSI-IR-01
+    theme: Incident Response
+    title: Security incident readiness and traceable response
+    objective: >
+      Demonstrate that suspicious and declared incidents have timelines, accountable
+      actions, notifications, and closure aligned to monitoring signals.
+    legacy_controls:
+      rev4: [IR-4, IR-5, IR-6, SI-4]
+      rev5: [IR-4, IR-5, IR-6, SI-4]
+    validation_mode: hybrid
+    automation_target: true
+    evidence_sources:
+      [siem_alert_rule_export, incident_ticket_export, cloud_control_plane_events, correlation_assessment_export]
+    pass_fail_criteria:
+      - criteria_id: IR-CRI-001
+        description: Suspicious events have documented response evidence within policy timelines.
+        validation_type: hybrid
+        expected_result: Tickets or IR records with owner, timestamps, and disposition.
+        severity_if_failed: high
+        eval_refs: [CROSS_DOMAIN_EVENT_CORRELATION]
+        evidence_required: [incident_ticket_export, siem_alert_rule_export]
+      - criteria_id: IR-CRI-002
+        description: Incidents include event timeline, action log, notification, and closure evidence.
+        validation_type: manual
+        expected_result: Complete IR record set per agency IR plan.
+        severity_if_failed: high
+        eval_refs: []
+        evidence_required: [incident_ticket_export]
+      - criteria_id: IR-CRI-003
+        description: High-risk detections link to accountable tickets or cases.
+        validation_type: hybrid
+        expected_result: Correlation from alert to ticket ID for sampled high-risk semantics.
+        severity_if_failed: high
+        eval_refs: [CROSS_DOMAIN_EVENT_CORRELATION, SI4_ALERT_INSTRUMENTATION]
+        evidence_required: [siem_alert_rule_export, incident_ticket_export]
+    reporting_sections:
+      assessor: Incident response evidence
+      executive: IR readiness summary
+      ao: IR / SI-4 detection-response rollup
+
+  - ksi_id: KSI-REC-01
+    theme: Recovery Planning
+    title: Backup, recovery, and continuity evidence
+    objective: >
+      Demonstrate backups for critical assets, encryption, tested restores, and
+      documented RTO/RPO commitments.
+    legacy_controls:
+      rev4: [CP-9, CP-10]
+      rev5: [CP-9, CP-10]
+    validation_mode: hybrid
+    automation_target: false
+    evidence_sources: [backup_configuration_export, cloud_asset_inventory, restore_test_records]
+    pass_fail_criteria:
+      - criteria_id: REC-CRI-001
+        description: Critical assets have backups meeting policy frequency and retention.
+        validation_type: manual
+        expected_result: Backup policy excerpts plus scope list for critical assets.
+        severity_if_failed: high
+        eval_refs: []
+        evidence_required: [cloud_asset_inventory]
+      - criteria_id: REC-CRI-002
+        description: Backups are encrypted and access-controlled.
+        validation_type: manual
+        expected_result: Encryption and key management references for backup stores.
+        severity_if_failed: high
+        eval_refs: []
+        evidence_required: [backup_configuration_export]
+      - criteria_id: REC-CRI-003
+        description: Restore tests are documented with outcomes.
+        validation_type: manual
+        expected_result: Test reports or tickets with pass/fail and follow-up actions.
+        severity_if_failed: medium
+        eval_refs: []
+        evidence_required: [restore_test_records]
+      - criteria_id: REC-CRI-004
+        description: RTO/RPO evidence exists for prioritized workloads.
+        validation_type: manual
+        expected_result: BIA or service catalog fields mapping workloads to RTO/RPO.
+        severity_if_failed: medium
+        eval_refs: []
+        evidence_required: [declared_system_inventory]
+    reporting_sections:
+      assessor: Continuity and recovery evidence
+      executive: Recovery posture summary
+      ao: CP family rollup
+
+  - ksi_id: KSI-SCRM-01
+    theme: Supply Chain Risk
+    title: Supply chain and third-party dependency transparency
+    objective: >
+      Demonstrate vendor and dependency visibility, inheritance mapping for external
+      services, SBOM or equivalent tracking, and oversight of critical suppliers.
+    legacy_controls:
+      rev4: [SA-4, SA-8, SA-9, SA-11]
+      rev5: [SA-4, SA-8, SA-9, SA-11, SR-3, SR-5]
+    validation_mode: manual
+    automation_target: false
+    evidence_sources: [vendor_inventory, incident_ticket_export]
+    pass_fail_criteria:
+      - criteria_id: SCRM-CRI-001
+        description: Vendor inventory exists for in-scope external services and software.
+        validation_type: manual
+        expected_result: Register of vendors with service descriptions and data sensitivity.
+        severity_if_failed: medium
+        eval_refs: []
+        evidence_required: [vendor_inventory]
+      - criteria_id: SCRM-CRI-002
+        description: External services are mapped to authorization boundary and inheritance statements.
+        validation_type: manual
+        expected_result: SSP or annex tables linking CSP services to inherited controls.
+        severity_if_failed: high
+        eval_refs: []
+        evidence_required: [vendor_inventory]
+      - criteria_id: SCRM-CRI-003
+        description: Dependencies or SBOM artifacts are tracked for critical workloads.
+        validation_type: hybrid
+        expected_result: SBOM storage location and refresh cadence documented.
+        severity_if_failed: medium
+        eval_refs: []
+        evidence_required: [sbom_export]
+      - criteria_id: SCRM-CRI-004
+        description: Critical supplier risks are tracked with mitigation owners.
+        validation_type: manual
+        expected_result: Risk register entries or POA&M rows for supplier issues.
+        severity_if_failed: medium
+        eval_refs: []
+        evidence_required: [incident_ticket_export]
+    reporting_sections:
+      assessor: Supply chain evidence
+      executive: Third-party risk posture
+      ao: SA / SR rollup
+
+  - ksi_id: KSI-AGENT-01
+    theme: Identity and Access Management
+    title: AI agent identities are registered, scoped, and monitored
+    objective: >
+      Demonstrate that every in-scope AI agent has a registered identity, accountable owner and purpose,
+      explicit allowed data/tool scopes, approval-backed privileged actions, and credential posture
+      that does not share secrets with human operators.
+    legacy_controls:
+      rev4: [AC-2, AC-3, AC-6, IA-2, IA-4]
+      rev5: [AC-2, AC-3, AC-6, IA-2, IA-4]
+    validation_mode: hybrid
+    automation_target: true
+    evidence_sources: [agent_assessment_export, correlation_assessment_export, identity_provider_users]
+    pass_fail_criteria:
+      - criteria_id: AGENT-IAM-CRI-001
+        description: Every agent has a registered identity with stable agent_id in telemetry.
+        validation_type: hybrid
+        expected_result: agent_identities.json (or package slice) lists each agent with required attributes.
+        severity_if_failed: high
+        eval_refs: [AGENT_PERMISSION_SCOPE]
+        evidence_required: [agent_assessment_export]
+      - criteria_id: AGENT-IAM-CRI-002
+        description: Every agent has documented owner and purpose fields.
+        validation_type: hybrid
+        expected_result: Ownership and purpose recorded per agent identity row.
+        severity_if_failed: medium
+        eval_refs: [AGENT_PERMISSION_SCOPE]
+        evidence_required: [agent_assessment_export]
+      - criteria_id: AGENT-IAM-CRI-003
+        description: Every agent has explicit allowed scopes for tools and data.
+        validation_type: hybrid
+        expected_result: Allow lists and data scopes are present and enforced in policy checks.
+        severity_if_failed: high
+        eval_refs: [AGENT_TOOL_GOVERNANCE, AGENT_PERMISSION_SCOPE]
+        evidence_required: [agent_assessment_export]
+      - criteria_id: AGENT-IAM-CRI-004
+        description: Privileged or high-risk agent actions require recorded approvals.
+        validation_type: hybrid
+        expected_result: Approval metadata present on qualifying tool_calls rows.
+        severity_if_failed: high
+        eval_refs: [AGENT_APPROVAL_GATES]
+        evidence_required: [agent_assessment_export]
+      - criteria_id: AGENT-IAM-CRI-005
+        description: Agent credentials are not shared with human operators (no shared long-lived secrets).
+        validation_type: hybrid
+        expected_result: Identity and tool_call records show non-human scoped credentials only.
+        severity_if_failed: critical
+        eval_refs: [AGENT_PERMISSION_SCOPE]
+        evidence_required: [agent_assessment_export]
+    reporting_sections:
+      assessor: AI agent identity and access evidence
+      executive: Agent IAM posture summary
+      ao: Agent AC / IA rollup
+
+  - ksi_id: KSI-AGENT-02
+    theme: Monitoring, Logging, and Auditing
+    title: Agent decisions and tool use are logged and reviewable
+    objective: >
+      Demonstrate that agent tool invocations policy decisions approvals memory or context access
+      and high-risk behaviors are logged centrally and reviewable with accountable alerting where required.
+    legacy_controls:
+      rev4: [AU-2, AU-6, AU-12, SI-4]
+      rev5: [AU-2, AU-6, AU-12, SI-4]
+    validation_mode: hybrid
+    automation_target: true
+    evidence_sources: [agent_assessment_export, central_log_source_export, siem_alert_rule_export, correlation_assessment_export]
+    pass_fail_criteria:
+      - criteria_id: AGENT-LOG-CRI-001
+        description: Tool calls are logged with agent identity raw_ref and policy decision fields.
+        validation_type: hybrid
+        expected_result: tool_calls[] entries are complete for replay.
+        severity_if_failed: high
+        eval_refs: [AGENT_AUDITABILITY, AGENT_TOOL_GOVERNANCE]
+        evidence_required: [agent_assessment_export]
+      - criteria_id: AGENT-LOG-CRI-002
+        description: Policy decisions for agent actions are logged and attributable.
+        validation_type: hybrid
+        expected_result: policy_decision captured on tool_calls or companion audit stream.
+        severity_if_failed: high
+        eval_refs: [AGENT_AUDITABILITY]
+        evidence_required: [agent_assessment_export]
+      - criteria_id: AGENT-LOG-CRI-003
+        description: Approval decisions for gated actions are logged.
+        validation_type: hybrid
+        expected_result: approval_required rows include status and approver reference when executed.
+        severity_if_failed: high
+        eval_refs: [AGENT_APPROVAL_GATES]
+        evidence_required: [agent_assessment_export]
+      - criteria_id: AGENT-LOG-CRI-004
+        description: Memory and external context access events are logged and labeled.
+        validation_type: hybrid
+        expected_result: memory_events[] with classification for sensitive writes.
+        severity_if_failed: high
+        eval_refs: [AGENT_MEMORY_CONTEXT_SAFETY]
+        evidence_required: [agent_assessment_export]
+      - criteria_id: AGENT-LOG-CRI-005
+        description: Alerts exist for high-risk agent behavior semantics per SOC policy.
+        validation_type: hybrid
+        expected_result: Mapped SIEM rules or tickets for agent high-risk semantics.
+        severity_if_failed: medium
+        eval_refs: [AGENT_POLICY_VIOLATIONS]
+        evidence_required: [siem_alert_rule_export, correlation_assessment_export]
+    reporting_sections:
+      assessor: AI agent logging and monitoring evidence
+      executive: Agent telemetry posture
+      ao: Agent AU / SI rollup
+
+  - ksi_id: KSI-AGENT-03
+    theme: Incident Response
+    title: Agentic misuse is detectable and actionable
+    objective: >
+      Demonstrate detection and response for prompt injection unauthorized tool use compromised-agent
+      hypotheses with threat-hunt timelines and containment guidance documented.
+    legacy_controls:
+      rev4: [IR-4, IR-5, IR-6, SI-4]
+      rev5: [IR-4, IR-5, IR-6, SI-4]
+    validation_mode: hybrid
+    automation_target: true
+    evidence_sources: [agent_assessment_export, incident_ticket_export, correlation_assessment_export, siem_alert_rule_export]
+    pass_fail_criteria:
+      - criteria_id: AGENT-IR-CRI-001
+        description: Prompt injection or adversarial prompt detections are tracked with evidence.
+        validation_type: hybrid
+        expected_result: Detections or policy_violations rows cite injection-class events.
+        severity_if_failed: high
+        eval_refs: [AGENT_POLICY_VIOLATIONS]
+        evidence_required: [agent_assessment_export]
+      - criteria_id: AGENT-IR-CRI-002
+        description: Unauthorized tool use creates a security finding and accountable ticket path.
+        validation_type: hybrid
+        expected_result: Violations linked to tickets or IR cases where required.
+        severity_if_failed: high
+        eval_refs: [AGENT_POLICY_VIOLATIONS, AGENT_TOOL_GOVERNANCE]
+        evidence_required: [agent_assessment_export, incident_ticket_export]
+      - criteria_id: AGENT-IR-CRI-003
+        description: Compromised-agent hypotheses produce a documented threat-hunt timeline.
+        validation_type: hybrid
+        expected_result: Threat hunt output references agent_id and hypothesis identifiers.
+        severity_if_failed: medium
+        eval_refs: [AGENT_POLICY_VIOLATIONS]
+        evidence_required: [correlation_assessment_export]
+      - criteria_id: AGENT-IR-CRI-004
+        description: Containment guidance exists for high-severity agent incidents.
+        validation_type: manual
+        expected_result: Runbook or IR plan excerpt covering agent isolation and credential rotation.
+        severity_if_failed: medium
+        eval_refs: []
+        evidence_required: [incident_ticket_export]
+    reporting_sections:
+      assessor: AI agent incident response evidence
+      executive: Agentic misuse readiness
+      ao: Agent IR rollup
+
+  - ksi_id: KSI-AGENT-04
+    theme: Change Management
+    title: Agent tools and permissions are governed as system changes
+    objective: >
+      Demonstrate that new tools permission changes prompts and policies are versioned approved
+      and backed by review evidence consistent with CM and SA families.
+    legacy_controls:
+      rev4: [CM-3, CM-5, CM-6, SA-10]
+      rev5: [CM-3, CM-5, CM-6, SA-10]
+    validation_mode: hybrid
+    automation_target: true
+    evidence_sources: [agent_assessment_export, change_ticket_export, correlation_assessment_export]
+    pass_fail_criteria:
+      - criteria_id: AGENT-CM-CRI-001
+        description: New or expanded agent tools require documented approval before production use.
+        validation_type: hybrid
+        expected_result: Tool registration or change record ties tool_name to approver evidence.
+        severity_if_failed: high
+        eval_refs: [AGENT_TOOL_GOVERNANCE, AGENT_APPROVAL_GATES]
+        evidence_required: [agent_assessment_export, change_ticket_export]
+      - criteria_id: AGENT-CM-CRI-002
+        description: Tool permission changes are ticketed and traceable.
+        validation_type: hybrid
+        expected_result: CM-3 style linkage between permission deltas and tickets.
+        severity_if_failed: high
+        eval_refs: [AGENT_APPROVAL_GATES]
+        evidence_required: [change_ticket_export, agent_assessment_export]
+      - criteria_id: AGENT-CM-CRI-003
+        description: Prompts and agent policies are versioned with history.
+        validation_type: hybrid
+        expected_result: Version identifiers or commit refs for prompts/policies in evidence bundle.
+        severity_if_failed: medium
+        eval_refs: [AGENT_TOOL_GOVERNANCE]
+        evidence_required: [agent_assessment_export]
+      - criteria_id: AGENT-CM-CRI-004
+        description: Material policy changes include review evidence (peer or CAB).
+        validation_type: manual
+        expected_result: Reviewer sign-off or ticket attachment for policy change window.
+        severity_if_failed: medium
+        eval_refs: [AGENT_APPROVAL_GATES]
+        evidence_required: [incident_ticket_export, change_ticket_export]
+    reporting_sections:
+      assessor: AI agent change governance evidence
+      executive: Agent tool change posture
+      ao: Agent CM / SA rollup

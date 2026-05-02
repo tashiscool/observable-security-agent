@@ -1,0 +1,145 @@
+[
+  {
+    "_comment": "Primary assessment event — public SSH from 0.0.0.0/0 on prod-api-01 SG",
+    "_format": "aws_cloudtrail",
+    "_primary": true,
+    "_asset_id": "prod-api-01",
+    "detail": {
+      "eventVersion": "1.11",
+      "eventSource": "ec2.amazonaws.com",
+      "eventName": "AuthorizeSecurityGroupIngress",
+      "eventTime": "2026-05-01T10:42:00Z",
+      "awsRegion": "us-east-1",
+      "recipientAccountId": "111122223333",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "alice",
+        "arn": "arn:aws:iam::111122223333:user/alice"
+      },
+      "requestParameters": {
+        "groupId": "sg-0123456789prodapi",
+        "ipPermissions": {
+          "items": [
+            {
+              "ipProtocol": "tcp",
+              "fromPort": 22,
+              "toPort": 22,
+              "ipRanges": {
+                "items": [{ "cidrIp": "0.0.0.0/0" }]
+              }
+            }
+          ]
+        }
+      },
+      "responseElements": {
+        "requestId": "req-public-admin-001",
+        "_return": true
+      }
+    }
+  },
+  {
+    "_comment": "Semantic-style event — admin policy attach (Splunk/SIEM correlation sample)",
+    "event_type": "identity.admin_role_granted",
+    "provider": "aws",
+    "actor": "bob@example.com",
+    "asset_id": null,
+    "resource_id": "arn:aws:iam::111122223333:policy/AdminAccess",
+    "timestamp": "2026-05-01T10:15:00Z",
+    "raw_event_ref": "fixture:identity-admin-role-001",
+    "metadata": {
+      "target_principal": "arn:aws:iam::111122223333:user/bob",
+      "policy_arn": "arn:aws:iam::aws:policy/AdministratorAccess"
+    }
+  },
+  {
+    "_comment": "Semantic — CloudTrail stop denied (defense in depth)",
+    "event_type": "logging.audit_disabled",
+    "provider": "aws",
+    "actor": "malicious-actor@external",
+    "asset_id": null,
+    "resource_id": "arn:aws:cloudtrail:us-east-1:111122223333:trail/org-security-trail",
+    "timestamp": "2026-05-01T09:55:00Z",
+    "raw_event_ref": "fixture:logging-audit-denied-001",
+    "metadata": {
+      "outcome": "denied",
+      "errorCode": "AccessDenied",
+      "eventName": "StopLogging",
+      "reason": "ExplicitDeny from SCP"
+    }
+  },
+  {
+    "_comment": "Semantic — untracked EC2 not in IIW",
+    "event_type": "compute.untracked_asset_created",
+    "provider": "aws",
+    "actor": "automation@example.com",
+    "asset_id": "rogue-prod-worker-99",
+    "resource_id": "i-099rogueworker99",
+    "timestamp": "2026-05-01T08:30:00Z",
+    "raw_event_ref": "fixture:untracked-instance-001",
+    "metadata": {
+      "run_instances_request_id": "req-run-rogue-99",
+      "image_id": "ami-0deadbeef1234567"
+    }
+  },
+  {
+    "_comment": "Raw CloudTrail sample — AttachUserPolicy (supporting evidence only)",
+    "record_type": "supporting_cloudtrail",
+    "detail": {
+      "eventVersion": "1.11",
+      "eventSource": "iam.amazonaws.com",
+      "eventName": "AttachUserPolicy",
+      "eventTime": "2026-05-01T10:14:58Z",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "alice",
+        "arn": "arn:aws:iam::111122223333:user/alice"
+      },
+      "requestParameters": {
+        "userName": "bob",
+        "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+      }
+    }
+  },
+  {
+    "_comment": "Raw CloudTrail sample — RunInstances rogue worker",
+    "record_type": "supporting_cloudtrail",
+    "detail": {
+      "eventVersion": "1.11",
+      "eventSource": "ec2.amazonaws.com",
+      "eventName": "RunInstances",
+      "eventTime": "2026-05-01T08:29:45Z",
+      "userIdentity": {
+        "type": "AssumedRole",
+        "sessionContext": {
+          "sessionIssuer": {
+            "userName": "automation-deploy-role"
+          }
+        }
+      },
+      "responseElements": {
+        "instancesSet": {
+          "items": [{ "instanceId": "i-099rogueworker99" }]
+        }
+      }
+    }
+  },
+  {
+    "_comment": "Raw CloudTrail sample — StopLogging attempt (matches semantic logging.audit_disabled narrative)",
+    "record_type": "supporting_cloudtrail",
+    "detail": {
+      "eventVersion": "1.11",
+      "eventSource": "cloudtrail.amazonaws.com",
+      "eventName": "StopLogging",
+      "eventTime": "2026-05-01T09:55:01Z",
+      "errorCode": "AccessDenied",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "malicious-actor",
+        "arn": "arn:aws:iam::111122223333:user/malicious-actor"
+      },
+      "requestParameters": {
+        "name": "org-security-trail"
+      }
+    }
+  }
+]

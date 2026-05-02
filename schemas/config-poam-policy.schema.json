@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/config-poam-policy.schema.json",
+  "title": "poam-policy.yaml (merged with runtime defaults)",
+  "type": "object",
+  "required": ["schema_version", "default_due_days_by_severity"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "default_due_days_by_severity": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "type": "integer", "minimum": 1 }
+    },
+    "due_days_by_severity": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 1 } },
+    "risk_owner_default": { "type": "string" },
+    "system_owner_default": { "type": "string" },
+    "default_owners": {
+      "type": "object",
+      "properties": {
+        "risk": { "type": "string" },
+        "system": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "risk_acceptance_required_for": { "type": "array", "items": { "type": "string" } },
+    "closure_evidence_required": { "type": "boolean" },
+    "validation_required_for_closure_default": { "type": "boolean" },
+    "customer_impact_templates": { "type": "object", "additionalProperties": { "type": "string" } },
+    "poam_id_prefix_auto": { "type": "string" },
+    "source_column_names": { "type": "array", "items": { "type": "string" } },
+    "severity_normalization": { "type": "object", "additionalProperties": { "type": "string" } },
+    "default_status_open": { "type": "string" }
+  },
+  "additionalProperties": true
+}

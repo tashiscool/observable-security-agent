@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/poam-item.schema.json",
+  "title": "POA&M item",
+  "type": "object",
+  "required": ["poam_id"],
+  "properties": {
+    "poam_id": { "type": "string" },
+    "finding_id": { "type": "string" },
+    "controls": { "type": "string" },
+    "weakness_name": { "type": "string" },
+    "weakness_description": { "type": "string" },
+    "asset_identifier": { "type": "string" },
+    "status": { "type": "string" },
+    "source_eval_id": { "type": "string" },
+    "title": { "type": "string" },
+    "raw_row": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": true
+}

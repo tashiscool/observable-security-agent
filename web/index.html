@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Security Evidence Explorer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <nav class="side" id="nav">
+        <h1>Security Evidence Explorer</h1>
+        <p class="tagline">
+          Renders assessment artifacts — no findings recomputed. Trace eval logic from structured outputs.
+        </p>
+        <a class="nav-item active" href="#dashboard" data-panel="dashboard">Executive dashboard</a>
+        <a class="nav-item" href="#evals" data-panel="evals">Evaluations explorer</a>
+        <a class="nav-item" href="#graph" data-panel="graph">Evidence graph</a>
+        <a class="nav-item" href="#correlations" data-panel="correlations">Correlation timelines</a>
+        <a class="nav-item" href="#controls" data-panel="controls">Control view</a>
+        <a class="nav-item" href="#assets" data-panel="assets">Asset view</a>
+        <a class="nav-item" href="#poam" data-panel="poam">POA&amp;M</a>
+        <a class="nav-item" href="#instrumentation" data-panel="instrumentation">Instrumentation</a>
+        <a class="nav-item" href="#secure-agent" data-panel="secure-agent">Secure Agent Architecture</a>
+        <a class="nav-item" href="#agent-run" data-panel="agent-run">Agent run trace</a>
+        <a class="nav-item" href="#auditor" data-panel="auditor">Auditor questions</a>
+        <p class="nav-divider">FedRAMP 20x</p>
+        <a class="nav-item" href="#20x-dashboard" data-panel="20x-dashboard">20x package dashboard</a>
+        <a class="nav-item" href="#20x-ksi" data-panel="20x-ksi">KSI explorer</a>
+        <a class="nav-item" href="#20x-crosswalk" data-panel="20x-crosswalk">Crosswalk view</a>
+        <a class="nav-item" href="#20x-evidence" data-panel="20x-evidence">Evidence sources</a>
+        <a class="nav-item" href="#20x-findings" data-panel="20x-findings">Findings view</a>
+        <a class="nav-item" href="#20x-poam" data-panel="20x-poam">POA&amp;M (20x)</a>
+        <a class="nav-item" href="#20x-ao" data-panel="20x-ao">AO view</a>
+        <a class="nav-item" href="#20x-exec" data-panel="20x-exec">Executive view</a>
+        <a class="nav-item" href="#20x-recon" data-panel="20x-recon">Reconciliation</a>
+        <a class="nav-item" href="#ai" data-panel="ai">AI explain</a>
+        <p class="nav-divider">Tracker → 20x</p>
+        <a class="nav-item" href="#tracker-import" data-panel="tracker-import">Tracker Import</a>
+        <a class="nav-item" href="#tracker-gaps" data-panel="tracker-gaps">Evidence Gaps</a>
+        <a class="nav-item" href="#tracker-trace" data-panel="tracker-trace">Agent Run Trace</a>
+        <a class="nav-item" href="#tracker-llm" data-panel="tracker-llm">LLM Reasoning</a>
+        <a class="nav-item" href="#tracker-package" data-panel="tracker-package">20x Package</a>
+        <a class="nav-item" href="#tracker-derivation" data-panel="tracker-derivation">Derivation Trace</a>
+        <p class="tagline" style="margin-top: 1rem" id="load-status">Loading artifacts…</p>
+        <p class="tagline" id="20x-load-line"></p>
+        <p class="tagline" id="tracker-load-line"></p>
+      </nav>
+      <main>
+        <section class="panel active" id="panel-dashboard">
+          <h2>Executive dashboard</h2>
+          <div id="dashboard-cards" class="cards"></div>
+          <h3 style="font-size: 1rem; color: var(--muted)">Top failed controls</h3>
+          <div id="dashboard-controls"></div>
+        </section>
+
+        <section class="panel" id="panel-evals">
+          <h2>Evaluations explorer</h2>
+          <div class="filters" id="eval-filters"></div>
+          <div class="split">
+            <div>
+              <table class="data" id="eval-table">
+                <thead>
+                  <tr>
+                    <th>Result</th>
+                    <th>Eval ID</th>
+                    <th>Summary</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div id="eval-detail">
+              <p class="warn">Select an evaluation row.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-graph">
+          <h2>Evidence graph explorer</h2>
+          <div class="split">
+            <div>
+              <h3 style="font-size: 0.9rem; color: var(--muted)">Nodes</h3>
+              <div class="graph-node-list" id="graph-nodes"></div>
+            </div>
+            <div>
+              <h3 style="font-size: 0.9rem; color: var(--muted)">Edges &amp; neighbors</h3>
+              <div id="graph-detail" class="mono-block" style="min-height: 200px">Select a node.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-correlations">
+          <h2>Correlation timelines</h2>
+          <p class="warn" id="corr-primary"></p>
+          <div id="corr-timelines"></div>
+        </section>
+
+        <section class="panel" id="panel-controls">
+          <h2>Control view</h2>
+          <div id="control-list"></div>
+        </section>
+
+        <section class="panel" id="panel-assets">
+          <h2>Asset view</h2>
+          <div id="asset-list"></div>
+        </section>
+
+        <section class="panel" id="panel-poam">
+          <h2>POA&amp;M</h2>
+          <div class="filters" id="poam-filters"></div>
+          <table class="data" id="poam-table">
+            <thead id="poam-thead"></thead>
+            <tbody></tbody>
+          </table>
+          <div id="poam-detail" style="margin-top: 1rem"></div>
+        </section>
+
+        <section class="panel" id="panel-instrumentation">
+          <h2>Instrumentation</h2>
+          <h3 style="font-size: 1rem; margin-top: 0.25rem; color: var(--text)">Cloud control-plane (eval-driven)</h3>
+          <p style="color: var(--muted); font-size: 0.85rem">
+            From <code>instrumentation_plan.md</code> — Splunk, Sentinel, GCP, and AWS patterns for the primary semantic
+            event.
+          </p>
+          <div id="instrumentation-sections"></div>
+          <h3 style="font-size: 1rem; margin-top: 1.75rem; color: var(--text)">Agent telemetry (AI governance)</h3>
+          <p style="color: var(--muted); font-size: 0.85rem">
+            From <code>agent_instrumentation_plan.md</code> (same load order: <code>../output/</code> then
+            <code>web/sample-data/</code>). Detection stubs for agent gateways, policy violations, and memory planes.
+          </p>
+          <p><button type="button" id="copy-full-agent-inst">Copy full agent_instrumentation_plan.md</button></p>
+          <div id="agent-instrumentation-md" class="md-preview"></div>
+        </section>
+
+        <section class="panel" id="panel-secure-agent">
+          <h2>Secure Agent Architecture</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Loads <code>secure_agent_architecture.md</code> from <code>../output/</code> then <code>web/sample-data/</code>.
+            Regenerate with <code>python agent.py secure-agent-arch</code> or <code>assess --include-agent-security</code>.
+          </p>
+          <div id="secure-agent-md" class="md-preview"></div>
+        </section>
+
+        <section class="panel" id="panel-agent-run">
+          <h2>Bounded agent run trace</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Loads <code>agent_run_trace.json</code> and <code>agent_run_summary.md</code> from
+            <code>../output/</code> then <code>web/sample-data/</code>. Generate with
+            <code>python agent.py run-agent --provider fixture --scenario scenario_agentic_risk</code>.
+          </p>
+          <p><button type="button" id="copy-agent-trace-json">Copy trace JSON</button></p>
+          <h3 style="font-size: 1rem; color: var(--muted)">Summary</h3>
+          <div id="agent-run-summary" class="md-preview"></div>
+          <h3 style="font-size: 1rem; margin-top: 1rem; color: var(--muted)">Steps</h3>
+          <div id="agent-run-steps" class="table-wrap"></div>
+          <h3 style="font-size: 1rem; margin-top: 1rem; color: var(--muted)">Raw trace</h3>
+          <pre id="agent-run-trace-raw" class="mono-block" style="max-height: 320px; overflow: auto"></pre>
+        </section>
+
+        <section class="panel" id="panel-auditor">
+          <h2>Auditor questions</h2>
+          <div id="auditor-md" class="md-preview"></div>
+        </section>
+
+        <section class="panel" id="panel-20x-dashboard">
+          <h2>FedRAMP 20x — package dashboard</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Loads <code>evidence/package/fedramp20x-package.json</code> and sibling
+            <code>evidence/validation-results/*.json</code> (from repo root while using <code>scripts/serve_web.py</code>).
+          </p>
+          <div id="20x-dashboard-cards" class="cards"></div>
+          <h3 style="font-size: 1rem; color: var(--muted)">Artifact URLs (resolved)</h3>
+          <div id="20x-artifact-paths"></div>
+        </section>
+
+        <section class="panel" id="panel-20x-ksi">
+          <h2>KSI explorer</h2>
+          <div class="filters" id="20x-ksi-filters"></div>
+          <div class="split">
+            <div>
+              <table class="data" id="20x-ksi-table">
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>KSI ID</th>
+                  </tr>
+                </thead>
+                <tbody id="20x-ksi-list"></tbody>
+              </table>
+            </div>
+            <div id="20x-ksi-detail"><p class="warn">Select a KSI row.</p></div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-20x-crosswalk">
+          <h2>Crosswalk — Rev4 → Rev5 → KSI → evidence → validation</h2>
+          <div class="table-scroll" id="20x-crosswrap">
+            <div id="20x-crosswalk"></div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-20x-evidence">
+          <h2>Evidence source registry</h2>
+          <div class="table-scroll">
+            <div id="20x-evidence-sources"></div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-20x-findings">
+          <h2>Findings (20x)</h2>
+          <div id="20x-findings-cards" class="cards" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))"></div>
+        </section>
+
+        <section class="panel" id="panel-20x-poam">
+          <h2>POA&amp;M (machine fields)</h2>
+          <table class="data" id="20x-poam-table">
+            <thead>
+              <tr>
+                <th>POA&amp;M ID</th>
+                <th>Finding</th>
+                <th>Status</th>
+                <th>Controls</th>
+                <th>Weakness</th>
+                <th>Source eval</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </section>
+
+        <section class="panel" id="panel-20x-ao">
+          <h2>AO view</h2>
+          <div id="20x-ao-md" class="md-preview"></div>
+        </section>
+
+        <section class="panel" id="panel-20x-exec">
+          <h2>Executive view</h2>
+          <div id="20x-exec-md" class="md-preview"></div>
+        </section>
+
+        <section class="panel" id="panel-20x-recon">
+          <h2>Deep reconciliation</h2>
+          <div id="20x-recon-cards" class="cards" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr))"></div>
+        </section>
+
+        <section class="panel" id="panel-ai">
+          <h2>AI explain</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Calls <code>POST /api/explain</code> on <code>http://127.0.0.1:8081</code> when available. Otherwise builds a
+            grounded, copyable prompt (no invented evidence).
+          </p>
+          <div class="filters" id="ai-subtab-bar">
+            <button type="button" class="active" data-subtab="assessment">Assessment (evals)</button>
+            <button type="button" data-subtab="20x">FedRAMP 20x</button>
+          </div>
+          <textarea class="ai-input" id="ai-question" placeholder="Optional question"></textarea>
+          <div id="ai-sub-assessment">
+            <div class="toolbar" style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem">
+              <button type="button" data-ai="explain_eval">Explain selected eval</button>
+              <button type="button" data-ai="trace_derivation">Trace derivation</button>
+              <button type="button" data-ai="auditor_response">Draft auditor response</button>
+              <button type="button" data-ai="remediation_ticket">Draft remediation ticket</button>
+              <button type="button" data-ai="instrumentation_plan">Instrumentation guidance</button>
+              <button type="button" id="ai-copy-prompt">Copy AI prompt</button>
+            </div>
+          </div>
+          <div id="ai-sub-20x" style="display: none">
+            <p style="color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem">
+              Prompt includes selected KSI, linked findings, POA&amp;M rows, evidence refs, reconciliation checks, and the
+              instruction to use only artifacts.
+            </p>
+            <div class="toolbar" style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem">
+              <button type="button" data-ai20="explain_ksi">Explain KSI</button>
+              <button type="button" data-ai20="trace_ksi_evidence">Trace KSI to evidence</button>
+              <button type="button" data-ai20="explain_crosswalk">Explain Rev4 → 20x mapping</button>
+              <button type="button" data-ai20="assessor_response">Draft assessor response</button>
+              <button type="button" data-ai20="executive_summary">Draft executive summary</button>
+              <button type="button" data-ai20="ao_risk_brief">Draft AO risk explanation</button>
+              <button type="button" data-ai20="reconciliation_failure">Explain reconciliation failure</button>
+              <button type="button" data-ai20="poam_remediation_plan">POA&amp;M remediation plan</button>
+            </div>
+          </div>
+          <div class="ai-out mono-block" id="ai-output" style="margin-top: 1rem; min-height: 120px"></div>
+        </section>
+
+        <!-- =====================================================
+             Tracker → 20x panels
+             Loads from output_agent_run/ then output_tracker/ then web/sample-data/tracker/.
+             ===================================================== -->
+
+        <section class="panel" id="panel-tracker-import">
+          <h2>Tracker Import</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Loads <code>scenario_from_tracker/tracker_items.json</code> from
+            <code>output_agent_run/</code> → <code>output_tracker/</code> →
+            <code>web/sample-data/tracker/</code>.
+          </p>
+          <div class="filters" id="tracker-import-filters"></div>
+          <div class="split">
+            <div>
+              <table class="data" id="tracker-import-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Status</th>
+                    <th>Category</th>
+                    <th>Controls</th>
+                    <th>Owner</th>
+                    <th>Request (excerpt)</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div id="tracker-import-detail">
+              <p class="warn">Select a row to see the original text + classification.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-tracker-gaps">
+          <h2>Evidence Gaps</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            From <code>scenario_from_tracker/evidence_gaps.json</code> (schema 2.0). Each row is the
+            structured outcome of <code>classify_tracker_gap()</code>.
+          </p>
+          <div class="filters" id="tracker-gaps-filters"></div>
+          <div class="split">
+            <div>
+              <table class="data" id="tracker-gaps-table">
+                <thead>
+                  <tr>
+                    <th>Severity</th>
+                    <th>Gap ID</th>
+                    <th>Type</th>
+                    <th>Controls</th>
+                    <th>POA&amp;M?</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div id="tracker-gaps-detail">
+              <p class="warn">Select an evidence gap.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-tracker-trace">
+          <h2>Agent Run Trace</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Loads <code>output_agent_run/agent_run_trace.json</code> (schema 2.0 — categorical task graph).
+            Generate with
+            <code>python agent.py run-agent --workflow tracker-to-20x --input fixtures/assessment_tracker/sample_tracker.csv --output-dir output_agent_run</code>.
+          </p>
+          <div id="tracker-trace-overall" class="cards" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr))"></div>
+          <h3 style="font-size: 1rem; color: var(--muted)">Workflow DAG</h3>
+          <div id="tracker-trace-dag" class="dag"></div>
+          <h3 style="font-size: 1rem; color: var(--muted); margin-top: 1rem">Tasks</h3>
+          <div class="split">
+            <div>
+              <table class="data" id="tracker-trace-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Task</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Policy</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div id="tracker-trace-detail">
+              <p class="warn">Select a task to see inputs / outputs / artifacts / policy decision.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-tracker-llm">
+          <h2>LLM Reasoning</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Calls <code>POST /api/ai/reasoner</code> on <code>http://127.0.0.1:8081</code> when the
+            FastAPI server is running. Each response shows whether the answer came from the
+            <strong>LLM</strong> or the <strong>deterministic fallback</strong>, the cited artifact
+            fields, and the missing-evidence list. With no <code>AI_API_KEY</code> set, every call
+            falls back deterministically.
+          </p>
+          <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr))">
+            <div class="card"><div class="label">LLM endpoint</div><div class="value" id="tracker-llm-endpoint" style="font-size:0.95rem;font-family:var(--mono)">—</div></div>
+            <div class="card"><div class="label">Server reachable?</div><div class="value" id="tracker-llm-reachable" style="font-size:0.95rem">—</div></div>
+            <div class="card"><div class="label">AI_API_KEY set?</div><div class="value" id="tracker-llm-keyset" style="font-size:0.95rem">—</div></div>
+          </div>
+          <h3 style="font-size: 1rem; color: var(--muted)">Evidence contract (binding)</h3>
+          <div id="tracker-llm-contract" class="md-preview md-scroll"></div>
+          <h3 style="font-size: 1rem; color: var(--muted); margin-top: 1rem">Run a reasoner</h3>
+          <p style="color: var(--muted); font-size: 0.85rem">
+            Pick a reasoner; the input is built from the loaded tracker artifacts.
+          </p>
+          <div class="filters" id="tracker-llm-buttons"></div>
+          <div id="tracker-llm-output" class="ai-out mono-block" style="min-height: 160px">No reasoner run yet.</div>
+        </section>
+
+        <section class="panel" id="panel-tracker-package">
+          <h2>20x Package (tracker-derived)</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Loads <code>package_tracker/fedramp20x-package.json</code> generated from the assessment
+            tracker. Search order: <code>output_agent_run/package_tracker/</code> →
+            <code>output_tracker/package_tracker/</code> → <code>evidence/package_tracker/</code> →
+            <code>web/sample-data/tracker/package_tracker/</code>.
+          </p>
+          <div class="cards" id="tracker-package-cards"></div>
+          <h3 style="font-size: 1rem; color: var(--muted)">KSI rollup</h3>
+          <div class="table-scroll">
+            <table class="data" id="tracker-package-ksi-table">
+              <thead>
+                <tr><th>Status</th><th>KSI ID</th><th>Linked evals</th><th>Linked controls</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <h3 style="font-size: 1rem; color: var(--muted); margin-top: 1rem">Findings</h3>
+          <div class="cards" id="tracker-package-findings" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))"></div>
+          <h3 style="font-size: 1rem; color: var(--muted); margin-top: 1rem">POA&amp;M items</h3>
+          <div class="table-scroll">
+            <table class="data" id="tracker-package-poam-table">
+              <thead>
+                <tr><th>POA&amp;M ID</th><th>Status</th><th>Severity</th><th>Controls</th><th>Source eval</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <h3 style="font-size: 1rem; color: var(--muted); margin-top: 1rem">Reconciliation</h3>
+          <div id="tracker-package-recon"></div>
+        </section>
+
+        <section class="panel" id="panel-tracker-derivation">
+          <h2>Derivation Trace</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            For each tracker-derived finding, walks the chain:
+            <strong>tracker row → classifier rule → evidence gap → eval result → control mapping →
+            KSI mapping → finding → POA&amp;M item → report section</strong>.
+          </p>
+          <div class="filters" id="tracker-derivation-finding-bar"></div>
+          <div id="tracker-derivation-output"></div>
+        </section>
+      </main>
+    </div>
+    <script src="fedramp20x.js"></script>
+    <script src="tracker.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

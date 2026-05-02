@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/config-system-boundary.schema.json",
+  "title": "system-boundary.yaml",
+  "type": "object",
+  "required": ["schema_version", "system"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "system": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "impact_level",
+        "authorization_path",
+        "deployment_model",
+        "cloud_providers",
+        "regions"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "impact_level": { "type": "string" },
+        "authorization_path": { "type": "string" },
+        "deployment_model": { "type": "string" },
+        "boundary_type": { "type": "string" },
+        "notes": { "type": "string" },
+        "cloud_providers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "regions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "authorization_scope": {
+      "type": "object",
+      "properties": {
+        "included": { "type": "array", "items": { "type": "string" } },
+        "excluded": { "type": "array", "items": { "type": "string" } },
+        "boundary_rationale": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "data_types": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "external_services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "inherited_authorization", "responsibility", "evidence_needed"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "type": { "type": "string" },
+          "inherited_authorization": { "type": "boolean" },
+          "responsibility": { "type": "string" },
+          "evidence_needed": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

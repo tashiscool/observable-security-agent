@@ -1,0 +1,16 @@
+{
+  "as_of": "2026-05-01T12:00:00Z",
+  "summary": {
+    "total_human_accounts": 42,
+    "mfa_enforced_policy": true,
+    "mfa_registered_pct": 97.6
+  },
+  "exceptions": [
+    {
+      "user_id": "u-service-batch",
+      "reason": "service_principal_exemption",
+      "approved_by": "CISO",
+      "review_due": "2026-06-01"
+    }
+  ]
+}

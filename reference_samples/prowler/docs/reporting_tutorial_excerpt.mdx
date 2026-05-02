@@ -1,0 +1,100 @@
+---
+title: 'Reporting in Prowler'
+---
+
+Prowler generates security assessment reports in multiple formats, ensuring compatibility with various analysis tools and AWS integrations.
+
+## Default Report Generation
+
+By default, Prowler outputs reports in CSV and JSON-[OCSF](https://schema.ocsf.io/) formats:
+
+```console
+prowler <provider> -M csv json-ocsf json-asff html
+```
+
+If you require reports in JSON-ASFF (used by AWS Security Hub), set it using the `-M/--output-modes/--output-formats` flag, as in the following example:
+
+```console
+prowler <provider> --output-formats json-asff
+```
+
+## Compliance Reports
+
+All compliance-related reports are automatically generated when Prowler is executed. These outputs are stored in the `/output/compliance` directory.
+
+## Custom Output Flags
+
+By default, Prowler creates a file inside the `output` directory named: `prowler-output-ACCOUNT_NUM-OUTPUT_DATE.format`.
+
+However, both the output file name and directory can be personalised:
+
+- Custom output report name:
+
+You can use the flag `-F`/`--output-filename`
+
+```console
+prowler <provider> -M csv json-ocsf json-asff -F <custom_report_name>
+```
+
+
+- Custom output directory:
+
+You can use the flag `-o`/`--output-directory`
+
+```console
+prowler <provider> -M csv json-ocsf json-asff -o <custom_report_directory>
+```
+
+<Note>
+Both flags can be used simultaneously to provide a custom directory and filename. `console prowler <provider> -M csv json-ocsf json-asff \ -F <custom_report_name> -o <custom_report_directory>`
+
+</Note>
+## Output timestamp format
+
+By default, the timestamp format of the output files is ISO 8601. This can be changed with the flag `--unix-timestamp` generating the timestamp fields in pure unix timestamp format.
+
+## Supported Output Formats
+
+Prowler natively supports the following reporting output formats:
+
+- CSV
+- JSON-OCSF
+- JSON-ASFF (AWS only)
+- HTML
+- SARIF (IaC only)
+
+Hereunder is the structure for each of the supported report formats by Prowler:
+
+### CSV
+
+The CSV format follows a standardized structure across all providers. The following are the available columns:
+
+- AUTH\_METHOD
+- TIMESTAMP
+- ACCOUNT\_UID
+- ACCOUNT\_NAME
+- ACCOUNT\_EMAIL
+- ACCOUNT\_ORGANIZATION\_UID
+- ACCOUNT\_ORGANIZATION\_NAME
+- ACCOUNT\_TAGS
+- FINDING\_UID
+- PROVIDER
+- CHECK\_ID
+- CHECK\_TITLE
+- CHECK\_TYPE
+- STATUS
+- STATUS\_EXTENDED
+- MUTED
+- SERVICE\_NAME
+- SUBSERVICE\_NAME
+- SEVERITY
+- RESOURCE\_TYPE
+- RESOURCE\_UID
+- RESOURCE\_NAME
+- RESOURCE\_DETAILS
+- RESOURCE\_TAGS
+- PARTITION
+- REGION
+- DESCRIPTION
+- RISK
+- RELATED\_URL

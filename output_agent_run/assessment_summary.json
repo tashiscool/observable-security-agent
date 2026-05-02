@@ -1,0 +1,13 @@
+{
+  "assets": 0,
+  "events": 1,
+  "findings": 0,
+  "alert_rules": 0,
+  "tickets": 0,
+  "assessment_bundle": "present",
+  "eval_pass": 12,
+  "eval_fail": 1,
+  "eval_partial": 0,
+  "eval_open": 1,
+  "poam_rows_generated": 1
+}

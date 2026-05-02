@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "preview_only": true,
+  "candidate_finding_count": 3,
+  "candidates": [
+    {
+      "eval_id": "SI4_ALERT_INSTRUMENTATION",
+      "result": "FAIL",
+      "severity": "high",
+      "controls": [
+        "SI-4",
+        "SI-4(1)",
+        "SI-4(4)",
+        "SI-4(16)",
+        "AU-5",
+        "AU-6",
+        "AC-2(4)",
+        "AC-2(7)",
+        "CM-8(3)",
+        "CM-10",
+        "CM-11",
+        "SI-3"
+      ]
+    },
+    {
+      "eval_id": "CA5_POAM_STATUS",
+      "result": "OPEN",
+      "severity": null,
+      "controls": [
+        "CA-5",
+        "CA-7",
+        "RA-5",
+        "CP-9",
+        "CP-10"
+      ]
+    },
+    {
+      "eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "result": "FAIL",
+      "severity": "critical",
+      "controls": [
+        "CM-8",
+        "CM-3",
+        "CM-10",
+        "CM-11",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "AU-12",
+        "SI-4",
+        "SI-2",
+        "CA-5",
+        "CA-7",
+        "IR-4",
+        "IR-6",
+        "CP-9",
+        "CP-10",
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "IA-5",
+        "SC-7",
+        "SC-7(11)",
+        "SC-12",
+        "SC-13",
+        "SC-28"
+      ]
+    }
+  ]
+}

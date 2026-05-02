@@ -1,0 +1,44 @@
+# Authorization scope — operational inclusions/exclusions for assessment and package generation.
+# ``included_components`` / ``excluded_components`` are normalized to ``in_scope_services`` / ``out_of_scope``.
+
+schema_version: "1.0"
+
+minimum_assessment_scope_applied: true
+
+impact_level: "moderate"
+deployment_model: "customer_managed_cloud"
+cloud_provider: "multi-cloud"
+authorization_path: "FedRAMP"
+regions:
+  - "us-east-1"
+  - "us-west-2"
+
+included_components:
+  - id: "comp-compute-prod"
+    name: "Production compute fleet"
+    type: "compute_workloads"
+    environment: "production"
+    stores_processes_or_transmits_federal_data: true
+    scanner_required: true
+    log_required: true
+    backup_required: true
+    owner: "Example platform engineering team"
+
+  - id: "comp-sec-ops"
+    name: "Security operations toolchain"
+    type: "security_operations_evidence"
+    environment: "production"
+    stores_processes_or_transmits_federal_data: false
+    scanner_required: false
+    log_required: true
+    backup_required: false
+    owner: "Example security operations team"
+
+excluded_components:
+  - id: "exc-phys"
+    name: "Physical data centers"
+    rationale: "Inherited from cloud service provider; not customer-configurable."
+
+  - id: "exc-provider-fw"
+    name: "Provider-managed network edge"
+    rationale: "Outside customer administrative boundary; evidence limited to customer plane configuration."

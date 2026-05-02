@@ -1,0 +1,52 @@
+# Validation and rollup policy for evaluations → KSI → findings (sample defaults).
+
+schema_version: "1.0"
+
+ksi_status_precedence:
+  - "FAIL"
+  - "PARTIAL"
+  - "OPEN"
+  - "NOT_APPLICABLE"
+  - "PASS"
+
+eval_to_ksi_rollup: "worst_status_wins"
+require_package_schema_validation: true
+strict_evidence_links: false
+
+# --- Extended policy (documentation + future evaluators) ---
+severity_rules:
+  critical: "Immediate remediation or formal risk acceptance required before production promotion."
+  high: "Remediation within policy SLA; compensating controls must be time-bounded and evidenced."
+  medium: "Track to closure within standard POA&M windows."
+  low: "Best-effort remediation; document residual rationale if deferred."
+  info: "Informational gaps; close when convenient unless policy says otherwise."
+
+sla_rules:
+  critical_days: 15
+  high_days: 30
+  medium_days: 90
+  low_days: 180
+
+automation_thresholds:
+  minimum_automated_criteria_ratio: 0.4
+  prefer_continuous_collection_for: ["logging", "identity", "inventory"]
+
+required_ksi_themes:
+  - "Identity and Access Management"
+  - "Monitoring, Logging, and Auditing"
+  - "Service Configuration"
+  - "Change Management"
+  - "Policy and Inventory"
+
+evidence_maturity_minimums:
+  inventory_reconciliation: "reconciled_export_required"
+  scanner_coverage: "scoped_target_list_plus_sample_scan"
+  central_logging: "active_ingestion_within_24h_window"
+  alerting: "enabled_rule_with_recipient_and_sample_or_last_fired"
+
+finding_builder:
+  exclude_eval_ids:
+    - CA5_POAM_STATUS
+  finding_severity_override: {}
+  include_failed_ksi_rollup: false
+  include_open_result_eval_ids: []

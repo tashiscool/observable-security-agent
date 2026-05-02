@@ -1,0 +1,23 @@
+[
+  {
+    "plugin": "publicIpAddress",
+    "category": "EC2",
+    "cloud": "aws",
+    "status": 2,
+    "severity": "High",
+    "message": "EC2 instance \"i-0abc123def\" has a public IP address attached",
+    "region": "us-east-1",
+    "resource": "arn:aws:ec2:us-east-1:111122223333:instance/i-0abc123def",
+    "recommended_action": "Remove the public IP address from the EC2 instances to block public access to the instance"
+  },
+  {
+    "plugin": "publicIpAddress",
+    "category": "EC2",
+    "cloud": "aws",
+    "status": 0,
+    "severity": "Low",
+    "message": "EC2 instance \"i-099999999999\" does not have a public IP address attached",
+    "region": "us-west-2",
+    "resource": "arn:aws:ec2:us-west-2:111122223333:instance/i-099999999999"
+  }
+]

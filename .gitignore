@@ -1,0 +1,47 @@
+*.egg-info/
+.pytest_cache/
+
+# Secrets and local env (never publish)
+.env
+.env.*
+!.env.example
+creds.json
+creds.*.json
+*.pem
+
+__pycache__/
+*.py[cod]
+.Python
+.venv/
+venv/
+output/*.json
+output/*.md
+output/*.csv
+!output/.gitkeep
+!output/demo_walkthrough.md
+!output/demo_walkthrough_coalfire.md
+
+# Agentic fixture + bounded loop (make all / run-agent)
+output_agentic/
+
+# Ad-hoc 20x package from agentic output (not the primary evidence/package/)
+evidence/package_agentic/
+
+# Generated FedRAMP 20x evidence packages (reproducible via build-20x-package)
+evidence/package/
+
+# Generated assessment-tracker scenarios (reproducible via import-assessment-tracker)
+fixtures/scenario_from_tracker/
+
+# Read-only inspiration clones (full upstream repos for design study only).
+# scripts/validate_everything.py :: step_reference_reuse_audit verifies no
+# runtime module imports from this directory. Excerpts that ARE intentionally
+# tracked live under reference_samples/ instead.
+reference/
+
+# Demo bundle outputs (reproducible via scripts/package_demo_artifacts.py).
+demo_artifacts.zip
+demo_artifacts_manifest.json
+
+# Local validation harness output (reproducible via scripts/validate_everything.py).
+validation_run/

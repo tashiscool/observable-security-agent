@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/reconciliation.schema.json",
+  "title": "Reconciliation summary",
+  "type": "object",
+  "required": ["parity_status", "counts"],
+  "properties": {
+    "parity_status": {
+      "type": "string",
+      "enum": ["aligned", "review_required"]
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "findings_machine": { "type": "integer" },
+        "findings_human_reports": { "type": "integer" },
+        "poam_items_machine": { "type": "integer" },
+        "poam_items_human_reports": { "type": "integer" },
+        "ksi_results": { "type": "integer" },
+        "ksi_results_human_reports": { "type": "integer" },
+        "human_report_parse_applied": { "type": "boolean" },
+        "human_report_parse_errors": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "package_sha256": { "type": "string" },
+    "human_report_manifest": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "role": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

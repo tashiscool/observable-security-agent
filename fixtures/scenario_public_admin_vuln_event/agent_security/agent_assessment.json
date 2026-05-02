@@ -1,0 +1,60 @@
+{
+  "agent_identities": [
+    {
+      "agent_id": "buildlab-agent-1",
+      "name": "Evidence Agent",
+      "owner": "security@example.com",
+      "environment": "stage",
+      "purpose": "Read-only correlation over fixture evidence",
+      "allowed_tools": [
+        "fetch_doc",
+        "run_eval"
+      ],
+      "allowed_data_scopes": [
+        "s3://fixture-evidence-read/"
+      ],
+      "allowed_actions": [
+        "read",
+        "assess"
+      ],
+      "human_approval_required_for": [
+        "delete_bucket",
+        "mutate_security_group"
+      ],
+      "credentials_ref": "vault://kv/agents/buildlab-agent-1",
+      "created_at": "2026-05-01T10:00:00Z",
+      "last_reviewed_at": "2026-05-15T09:00:00Z"
+    }
+  ],
+  "tool_calls": [
+    {
+      "call_id": "audit-001",
+      "agent_id": "buildlab-agent-1",
+      "timestamp": "2026-05-01T11:00:00Z",
+      "tool_name": "run_eval",
+      "action": "assess",
+      "target_resource": "s3://fixture-evidence-read/bundle",
+      "input_summary": "fixture scenario_public_admin_vuln_event",
+      "output_summary": "eval pipeline completed",
+      "risk_level": "low",
+      "approved_by": null,
+      "approval_required": false,
+      "approval_status": "not_required",
+      "policy_decision": "allowed",
+      "raw_ref": "fixture://scenario_public_admin_vuln_event/eval-001"
+    }
+  ],
+  "memory_events": [],
+  "policy_violations": [],
+  "assessment_bundle": {
+    "assets": [],
+    "declared_inventory": [],
+    "events": [],
+    "scanner_targets": [],
+    "scanner_findings": [],
+    "log_sources": [],
+    "alert_rules": [],
+    "tickets": [],
+    "poam_items": []
+  }
+}

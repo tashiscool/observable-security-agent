@@ -1,0 +1,424 @@
+{
+  "version": "1.0",
+  "root_event": {
+    "event_type": "network.public_admin_port_opened",
+    "provider": "aws",
+    "actor": "alice@example.com",
+    "asset_id": "prod-api-01",
+    "resource_id": "sg-0123456789prodapi",
+    "timestamp": "2026-05-01T10:42:00Z",
+    "raw_event_ref": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0",
+    "port": 22,
+    "source_cidr": "0.0.0.0/0",
+    "metadata": {
+      "eventName": "AuthorizeSecurityGroupIngress",
+      "eventSource": "ec2.amazonaws.com"
+    }
+  },
+  "nodes": {
+    "inventory": [
+      {
+        "id": "prod-api-01",
+        "row": {
+          "inventory_id": "inv-prod-api-01",
+          "asset_id": "prod-api-01",
+          "name": "Production API",
+          "asset_type": "compute",
+          "expected_provider": "aws",
+          "expected_region": "us-east-1",
+          "expected_private_ip": "10.0.1.50",
+          "expected_public_ip": "52.55.10.10",
+          "in_boundary": "true",
+          "scanner_required": "true",
+          "log_required": "true",
+          "owner": "Platform Team",
+          "system_component": "api-service"
+        }
+      },
+      {
+        "id": "prod-api-01",
+        "row": {
+          "inventory_id": "inv-prod-api-01-stale",
+          "asset_id": "prod-api-01",
+          "name": "Production API (stale CMDB row)",
+          "asset_type": "compute",
+          "expected_provider": "aws",
+          "expected_region": "us-east-1",
+          "expected_private_ip": "10.254.0.99",
+          "expected_public_ip": "52.55.10.10",
+          "in_boundary": "true",
+          "scanner_required": "true",
+          "log_required": "true",
+          "owner": "Platform Team",
+          "system_component": "api-service"
+        }
+      },
+      {
+        "id": "prod-api-standby-02",
+        "row": {
+          "inventory_id": "inv-prod-api-dupname",
+          "asset_id": "prod-api-standby-02",
+          "name": "Production API",
+          "asset_type": "compute",
+          "expected_provider": "aws",
+          "expected_region": "us-east-1",
+          "expected_private_ip": "10.0.1.51",
+          "expected_public_ip": "",
+          "in_boundary": "true",
+          "scanner_required": "true",
+          "log_required": "true",
+          "owner": "Platform Team",
+          "system_component": "api-standby"
+        }
+      },
+      {
+        "id": "prod-db-01",
+        "row": {
+          "inventory_id": "inv-prod-db-01",
+          "asset_id": "prod-db-01",
+          "name": "Primary PostgreSQL",
+          "asset_type": "database",
+          "expected_provider": "aws",
+          "expected_region": "us-east-1",
+          "expected_private_ip": "10.0.2.20",
+          "expected_public_ip": "",
+          "in_boundary": "true",
+          "scanner_required": "true",
+          "log_required": "true",
+          "owner": "Data Team",
+          "system_component": "rds-primary"
+        }
+      },
+      {
+        "id": "prod-lb-01",
+        "row": {
+          "inventory_id": "inv-prod-lb-01",
+          "asset_id": "prod-lb-01",
+          "name": "Public ALB",
+          "asset_type": "load_balancer",
+          "expected_provider": "aws",
+          "expected_region": "us-east-1",
+          "expected_private_ip": "10.0.3.5",
+          "expected_public_ip": "",
+          "in_boundary": "true",
+          "scanner_required": "true",
+          "log_required": "true",
+          "owner": "Platform Team",
+          "system_component": "edge-lb"
+        }
+      },
+      {
+        "id": "prod-storage-01",
+        "row": {
+          "inventory_id": "inv-prod-storage-01",
+          "asset_id": "prod-storage-01",
+          "name": "Application artifacts bucket",
+          "asset_type": "storage",
+          "expected_provider": "aws",
+          "expected_region": "us-east-1",
+          "expected_private_ip": "",
+          "expected_public_ip": "",
+          "in_boundary": "true",
+          "scanner_required": "false",
+          "log_required": "true",
+          "owner": "Platform Team",
+          "system_component": "s3-artifacts"
+        }
+      }
+    ],
+    "scanner": [
+      {
+        "id": "87839",
+        "finding": {
+          "finding_id": "nessus-2026-0501-prod-api-01-87839",
+          "asset_id": "prod-api-01",
+          "target_id": "10.0.1.50",
+          "plugin_id": "87839",
+          "severity": "high",
+          "title": "OpenSSH 9.x with world-reachable listener and permissive security group",
+          "cve": [
+            "CVE-2026-00001",
+            "CVE-2026-00002"
+          ],
+          "first_seen": "2026-04-28T00:00:00Z",
+          "last_seen": "2026-05-01T10:00:00Z",
+          "status": "open",
+          "evidence": "Port 22/tcp open to 0.0.0.0/0; plugin 87839; credentialed scan 2026-05-01.",
+          "exploitation_review": {}
+        }
+      }
+    ],
+    "logs": [
+      {
+        "id": "splunk-forwarder-prod-api-01",
+        "source": {
+          "name": "splunk-forwarder-prod-api-01",
+          "log_source_id": "ls-api-01",
+          "asset_id": "prod-api-01",
+          "source_type": "os_auth",
+          "local_source": "/var/log/auth.log",
+          "central_destination": "splunk",
+          "seen_last_24h": false,
+          "local_only": true,
+          "index": "linux_secure",
+          "notes": "Forwarder installed but last indexed event > 72h ago \u2014 ingestion stale for prod-api-01."
+        }
+      }
+    ],
+    "alerts": [
+      {
+        "id": "AC-2 \u2014 IAM admin role / policy attachment",
+        "rule": {
+          "rule_id": "spl-ss-001",
+          "name": "AC-2 \u2014 IAM admin role / policy attachment",
+          "enabled": true,
+          "event_types": [
+            "identity.admin_role_granted"
+          ],
+          "matches_event_type": null,
+          "mapped_semantic_types": [
+            "identity.admin_role_granted"
+          ],
+          "recipients": [
+            "soc@example.com",
+            "iam-governance@example.com"
+          ],
+          "controls": [
+            "AC-2(7)",
+            "AU-6",
+            "SI-4"
+          ],
+          "last_fired": "2026-05-01T10:16:00Z",
+          "sample_alert_ref": "splunk://saved/alert/iam_admin_attach"
+        }
+      },
+      {
+        "id": "AU-12 \u2014 CloudTrail StopLogging / DeleteTrail attempts",
+        "rule": {
+          "rule_id": "spl-ss-002",
+          "name": "AU-12 \u2014 CloudTrail StopLogging / DeleteTrail attempts",
+          "enabled": true,
+          "event_types": [
+            "logging.audit_disabled"
+          ],
+          "mapped_semantic_types": [
+            "logging.audit_disabled"
+          ],
+          "recipients": [
+            "soc@example.com"
+          ],
+          "controls": [
+            "AU-2",
+            "AU-12",
+            "SI-4"
+          ],
+          "last_fired": null,
+          "sample_alert_ref": null
+        }
+      },
+      {
+        "id": "SI-4 \u2014 Public administrative port exposure (DISABLED pending tuning)",
+        "rule": {
+          "rule_id": "spl-ss-003",
+          "name": "SI-4 \u2014 Public administrative port exposure (DISABLED pending tuning)",
+          "enabled": false,
+          "event_types": [],
+          "matches_event_type": "network.public_admin_port_opened",
+          "mapped_semantic_types": [
+            "network.public_admin_port_opened"
+          ],
+          "recipients": [
+            "soc@example.com"
+          ],
+          "controls": [
+            "SI-4",
+            "SC-7"
+          ],
+          "last_fired": null,
+          "sample_alert_ref": null
+        }
+      },
+      {
+        "id": "RA-5 \u2014 High/Critical Nessus finding (DISABLED dry-run)",
+        "rule": {
+          "rule_id": "spl-ss-004",
+          "name": "RA-5 \u2014 High/Critical Nessus finding (DISABLED dry-run)",
+          "enabled": false,
+          "event_types": [
+            "scanner.high_vulnerability_detected"
+          ],
+          "mapped_semantic_types": [
+            "scanner.high_vulnerability_detected"
+          ],
+          "recipients": [
+            "vuln-mgmt@example.com"
+          ],
+          "controls": [
+            "RA-5",
+            "SI-4"
+          ],
+          "last_fired": null,
+          "sample_alert_ref": null
+        }
+      }
+    ],
+    "tickets": [
+      {
+        "id": "CHG-8842",
+        "ticket": {
+          "id": "CHG-8842",
+          "title": "Q2 kernel maintenance \u2014 prod-storage-01 dependency refresh",
+          "links_asset_id": "prod-storage-01",
+          "links_event_ref": "",
+          "linked_finding_ids": [],
+          "security_impact_analysis": true,
+          "test_evidence": true,
+          "approval_recorded": true,
+          "has_deployment_evidence": true,
+          "has_verification_evidence": true,
+          "post_deploy_verification": true,
+          "status": "Closed",
+          "created_at": "2026-04-10T14:00:00Z",
+          "closed_at": "2026-04-18T22:00:00Z"
+        }
+      },
+      {
+        "id": "VULN-9912",
+        "ticket": {
+          "id": "VULN-9912",
+          "title": "Track High OpenSSH / SG exposure \u2014 prod-api-01 (no CAB / event link)",
+          "links_asset_id": "",
+          "links_event_ref": "",
+          "linked_finding_ids": [
+            "nessus-2026-0501-prod-api-01-87839"
+          ],
+          "security_impact_analysis": false,
+          "test_evidence": false,
+          "approval_recorded": true,
+          "has_deployment_evidence": false,
+          "has_verification_evidence": false,
+          "post_deploy_verification": false,
+          "status": "In Progress",
+          "created_at": "2026-05-01T11:05:00Z",
+          "notes": "Vulnerability workstream only \u2014 intentionally NOT linked to prod-api-01 asset or AuthorizeSecurityGroupIngress event (no CM-3 chain for firewall change)."
+        }
+      },
+      {
+        "id": "CHG-9011",
+        "ticket": {
+          "id": "CHG-9011",
+          "title": "Unrelated firewall tweak \u2014 test VPC",
+          "links_asset_id": "sandbox-vpc-qa",
+          "links_event_ref": "",
+          "security_impact_analysis": true,
+          "test_evidence": true,
+          "approval_recorded": true,
+          "has_deployment_evidence": true,
+          "has_verification_evidence": true,
+          "post_deploy_verification": true,
+          "status": "Closed",
+          "created_at": "2026-04-01T09:00:00Z",
+          "closed_at": "2026-04-02T17:00:00Z"
+        }
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "id": "87839",
+        "finding": {
+          "finding_id": "nessus-2026-0501-prod-api-01-87839",
+          "asset_id": "prod-api-01",
+          "target_id": "10.0.1.50",
+          "plugin_id": "87839",
+          "severity": "high",
+          "title": "OpenSSH 9.x with world-reachable listener and permissive security group",
+          "cve": [
+            "CVE-2026-00001",
+            "CVE-2026-00002"
+          ],
+          "first_seen": "2026-04-28T00:00:00Z",
+          "last_seen": "2026-05-01T10:00:00Z",
+          "status": "open",
+          "evidence": "Port 22/tcp open to 0.0.0.0/0; plugin 87839; credentialed scan 2026-05-01.",
+          "exploitation_review": {}
+        }
+      }
+    ]
+  },
+  "edges": [
+    {
+      "source": {
+        "type": "event",
+        "id": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0"
+      },
+      "relationship": "targets_asset",
+      "target": {
+        "type": "asset",
+        "id": "prod-api-01"
+      },
+      "attributes": {}
+    },
+    {
+      "source": {
+        "type": "asset",
+        "id": "prod-api-01"
+      },
+      "relationship": "may_have_finding",
+      "target": {
+        "type": "vulnerability",
+        "id": "scanner-high"
+      },
+      "attributes": {
+        "severity": "high"
+      }
+    },
+    {
+      "source": {
+        "type": "asset",
+        "id": "prod-api-01"
+      },
+      "relationship": "has_log_source",
+      "target": {
+        "type": "log_source",
+        "id": "splunk-forwarder-prod-api-01"
+      },
+      "attributes": {}
+    },
+    {
+      "source": {
+        "type": "ticket",
+        "id": "CHG-8842"
+      },
+      "relationship": "references",
+      "target": {
+        "type": "asset",
+        "id": "prod-storage-01"
+      },
+      "attributes": {}
+    },
+    {
+      "source": {
+        "type": "ticket",
+        "id": "VULN-9912"
+      },
+      "relationship": "references",
+      "target": {
+        "type": "asset",
+        "id": ""
+      },
+      "attributes": {}
+    },
+    {
+      "source": {
+        "type": "ticket",
+        "id": "CHG-9011"
+      },
+      "relationship": "references",
+      "target": {
+        "type": "asset",
+        "id": "sandbox-vpc-qa"
+      },
+      "attributes": {}
+    }
+  ]
+}

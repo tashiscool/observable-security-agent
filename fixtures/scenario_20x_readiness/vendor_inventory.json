@@ -1,0 +1,30 @@
+{
+  "as_of": "2026-05-01T12:00:00Z",
+  "vendors": [
+    {
+      "vendor_id": "vnd-splunk",
+      "legal_name": "Splunk LLC",
+      "service_category": "siem",
+      "fedramp_status": "moderate_authorized",
+      "risk_score": 2.3,
+      "last_assessed": "2026-01-15"
+    },
+    {
+      "vendor_id": "vnd-nessus",
+      "legal_name": "Tenable Inc.",
+      "service_category": "vulnerability_management",
+      "fedramp_status": "moderate_authorized",
+      "risk_score": 2.1,
+      "last_assessed": "2026-02-01"
+    },
+    {
+      "vendor_id": "vnd-saas-xyz",
+      "legal_name": "SaaS Analytics XYZ",
+      "service_category": "analytics",
+      "fedramp_status": "not_authorized",
+      "risk_score": null,
+      "last_assessed": null,
+      "notes": "KSI-SCRM-01 partial: vendor risk score not yet recorded in authoritative GRC export."
+    }
+  ]
+}

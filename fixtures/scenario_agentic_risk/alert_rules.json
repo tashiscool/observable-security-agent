@@ -1,0 +1,51 @@
+{
+  "platform": "splunk",
+  "rules": [
+    {
+      "rule_id": "spl-ss-001",
+      "name": "AC-2 — IAM admin role / policy attachment",
+      "enabled": true,
+      "event_types": ["identity.admin_role_granted"],
+      "matches_event_type": null,
+      "mapped_semantic_types": ["identity.admin_role_granted"],
+      "recipients": ["soc@example.com", "iam-governance@example.com"],
+      "controls": ["AC-2(7)", "AU-6", "SI-4"],
+      "last_fired": "2026-05-01T10:16:00Z",
+      "sample_alert_ref": "splunk://saved/alert/iam_admin_attach"
+    },
+    {
+      "rule_id": "spl-ss-002",
+      "name": "AU-12 — CloudTrail StopLogging / DeleteTrail attempts",
+      "enabled": true,
+      "event_types": ["logging.audit_disabled"],
+      "mapped_semantic_types": ["logging.audit_disabled"],
+      "recipients": ["soc@example.com"],
+      "controls": ["AU-2", "AU-12", "SI-4"],
+      "last_fired": null,
+      "sample_alert_ref": null
+    },
+    {
+      "rule_id": "spl-ss-003",
+      "name": "SI-4 — Public administrative port exposure (DISABLED pending tuning)",
+      "enabled": false,
+      "event_types": [],
+      "matches_event_type": "network.public_admin_port_opened",
+      "mapped_semantic_types": ["network.public_admin_port_opened"],
+      "recipients": ["soc@example.com"],
+      "controls": ["SI-4", "SC-7"],
+      "last_fired": null,
+      "sample_alert_ref": null
+    },
+    {
+      "rule_id": "spl-ss-004",
+      "name": "RA-5 — High/Critical Nessus finding (DISABLED dry-run)",
+      "enabled": false,
+      "event_types": ["scanner.high_vulnerability_detected"],
+      "mapped_semantic_types": ["scanner.high_vulnerability_detected"],
+      "recipients": ["vuln-mgmt@example.com"],
+      "controls": ["RA-5", "SI-4"],
+      "last_fired": null,
+      "sample_alert_ref": null
+    }
+  ]
+}

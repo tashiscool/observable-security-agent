@@ -1,0 +1,60 @@
+# What is Prowler?
+
+**Prowler** is the world’s most widely used open-source cloud security platform that **automates security and compliance** across any cloud environment. With hundreds of ready-to-use security checks, remediation guidance, and compliance frameworks, Prowler delivers AI-driven, customizable, and easy-to-use monitoring and integrations, making cloud security simple, scalable, and cost-effective for organizations of any size.
+
+![](/images/products/overview.png)
+
+<Columns cols={2}>
+  <Card title="Prowler CLI" icon="terminal" href="/getting-started/products/prowler-cli">
+    Command Line Interface
+  </Card>
+  <Card title="Prowler App" icon="pen-to-square" href="/getting-started/products/prowler-app">
+    Web Application
+  </Card>
+  <Card title="Prowler Cloud" icon="pen-to-square" href="/getting-started/products/prowler-cloud">
+    A managed service built on top of Prowler App.
+  </Card>
+  <Card title="Prowler Hub" icon="map" href="/getting-started/products/prowler-hub">
+    A public library of versioned checks, cloud service artifacts, and compliance frameworks.
+  </Card>
+</Columns>
+
+## Supported Providers
+
+Prowler supports a wide range of providers organized by category:
+
+### Cloud Service Providers (Infrastructure)
+
+| Provider                                                                         | Support    | Audit Scope/Entities     | Interface    |
+| -------------------------------------------------------------------------------- | ---------- | ------------------------ | ------------ |
+| [Alibaba Cloud](/user-guide/providers/alibabacloud/getting-started-alibabacloud) | Official   | Accounts                 | UI, API, CLI |
+| [AWS](/user-guide/providers/aws/getting-started-aws)                             | Official   | Accounts                 | UI, API, CLI |
+| [Azure](/user-guide/providers/azure/getting-started-azure)                       | Official   | Subscriptions            | UI, API, CLI |
+| [Cloudflare](/user-guide/providers/cloudflare/getting-started-cloudflare)        | Official   | Accounts                 | UI, API, CLI |
+| [Google Cloud](/user-guide/providers/gcp/getting-started-gcp)                    | Official   | Projects                 | UI, API, CLI |
+| **NHN**                                                                          | Unofficial | Tenants                  | CLI          |
+| [OpenStack](/user-guide/providers/openstack/getting-started-openstack)           | Official   | Projects                 | UI, API, CLI |
+| [Oracle Cloud](/user-guide/providers/oci/getting-started-oci)                    | Official   | Tenancies / Compartments | UI, API, CLI |
+
+### Infrastructure as Code Providers
+
+| Provider                                                              | Support  | Audit Scope/Entities | Interface    |
+| --------------------------------------------------------------------- | -------- | -------------------- | ------------ |
+| [Infra as Code](/user-guide/providers/iac/getting-started-iac)        | Official | Repositories         | UI, API, CLI |
+
+### Software as a Service (SaaS) Providers
+
+| Provider                                                                                  | Support  | Audit Scope/Entities         | Interface    |
+| ----------------------------------------------------------------------------------------- | -------- | ---------------------------- | ------------ |
+| [GitHub](/user-guide/providers/github/getting-started-github)                             | Official | Organizations / Repositories | UI, API, CLI |
+| [Google Workspace](/user-guide/providers/googleworkspace/getting-started-googleworkspace)  | Official | Domains                      | CLI          |
+| [LLM](/user-guide/providers/llm/getting-started-llm)                                     | Official | Models                       | CLI          |
+| [M365](/user-guide/providers/microsoft365/getting-started-m365)                           | Official | Tenants                      | UI, API, CLI |
+| [MongoDB Atlas](/user-guide/providers/mongodbatlas/getting-started-mongodbatlas)           | Official | Organizations                | UI, API, CLI |
+| [Vercel](/user-guide/providers/vercel/getting-started-vercel)                             | Official | Teams / Projects             | CLI          |
+
+### Kubernetes
+
+| Provider                                                                   | Support  | Audit Scope/Entities | Interface    |
+| -------------------------------------------------------------------------- | -------- | -------------------- | ------------ |
+| [Kubernetes](/user-guide/providers/kubernetes/getting-started-k8s)         | Official | Clusters             | UI, API, CLI |

@@ -1,0 +1,295 @@
+schema_version: "1.0"
+# Per-KSI evidence expectations: ties KSI catalog themes to concrete registry ids and agent outputs.
+ksi_evidence:
+  KSI-IAM-01:
+    required_evidence_sources:
+      - identity_provider_users
+      - siem_alert_rule_export
+      - incident_ticket_export
+      - correlation_assessment_export
+    optional_evidence_sources:
+      - privileged_group_membership
+      - mfa_status
+      - scim_provisioning_logs
+      - aws_iam_credential_report
+      - cloud_control_plane_events
+      - central_log_source_export
+    machine_evidence:
+      - identity_provider_users
+      - siem_alert_rule_export
+      - cloud_control_plane_events
+      - central_log_source_export
+      - correlation_assessment_export
+      - aws_iam_credential_report
+    human_evidence:
+      - incident_ticket_export
+      - mfa_status
+      - privileged_group_membership
+    validation_outputs:
+      - CROSS_DOMAIN_EVENT_CORRELATION
+      - SI4_ALERT_INSTRUMENTATION
+    report_sections:
+      assessor: Identity and privileged access evidence
+      executive: IAM posture summary
+      ao: AC / IA family KSI rollup
+
+  KSI-LOG-01:
+    required_evidence_sources:
+      - central_log_source_export
+      - siem_alert_rule_export
+      - correlation_assessment_export
+    optional_evidence_sources:
+      - cloud_control_plane_events
+      - aws_cloudtrail
+      - aws_cloudwatch
+    machine_evidence:
+      - central_log_source_export
+      - siem_alert_rule_export
+      - cloud_control_plane_events
+      - aws_cloudtrail
+      - aws_cloudwatch
+      - correlation_assessment_export
+    human_evidence:
+      - central_log_source_export
+    validation_outputs:
+      - AU6_CENTRALIZED_LOG_COVERAGE
+      - SI4_ALERT_INSTRUMENTATION
+    report_sections:
+      assessor: Logging and monitoring evidence
+      executive: Detection and logging posture
+      ao: AU / SI monitoring rollup
+
+  KSI-VULN-01:
+    required_evidence_sources:
+      - scanner_target_export
+      - vulnerability_scan_findings
+      - declared_system_inventory
+      - correlation_assessment_export
+    optional_evidence_sources:
+      - incident_ticket_export
+      - central_log_source_export
+      - aws_securityhub
+      - aws_inspector
+      - poam_export
+    machine_evidence:
+      - scanner_target_export
+      - vulnerability_scan_findings
+      - correlation_assessment_export
+      - aws_securityhub
+      - aws_inspector
+    human_evidence:
+      - declared_system_inventory
+      - incident_ticket_export
+      - poam_export
+    validation_outputs:
+      - CM8_INVENTORY_RECONCILIATION
+      - RA5_SCANNER_SCOPE_COVERAGE
+      - RA5_EXPLOITATION_REVIEW
+      - CA5_POAM_STATUS
+    report_sections:
+      assessor: Vulnerability management evidence
+      executive: Exposure and remediation posture
+      ao: RA / SI flaw-remediation rollup
+
+  KSI-CM-01:
+    required_evidence_sources:
+      - change_ticket_export
+      - cloud_control_plane_events
+      - correlation_assessment_export
+    optional_evidence_sources:
+      - cloud_asset_inventory
+      - poam_export
+      - aws_config
+    machine_evidence:
+      - cloud_control_plane_events
+      - correlation_assessment_export
+      - aws_config
+    human_evidence:
+      - change_ticket_export
+      - poam_export
+    validation_outputs:
+      - CM3_CHANGE_EVIDENCE_LINKAGE
+      - CA5_POAM_STATUS
+    report_sections:
+      assessor: Change and release evidence
+      executive: Change risk posture
+      ao: CM / SI-2 change rollup
+
+  KSI-INV-01:
+    required_evidence_sources:
+      - declared_system_inventory
+      - cloud_asset_inventory
+      - correlation_assessment_export
+    optional_evidence_sources:
+      - scanner_target_export
+      - aws_config
+    machine_evidence:
+      - cloud_asset_inventory
+      - correlation_assessment_export
+      - aws_config
+    human_evidence:
+      - declared_system_inventory
+    validation_outputs:
+      - CM8_INVENTORY_RECONCILIATION
+      - CROSS_DOMAIN_EVENT_CORRELATION
+    report_sections:
+      assessor: Inventory and boundary evidence
+      executive: Asset visibility posture
+      ao: CM-8 / PL / RA-2 rollup
+
+  KSI-IR-01:
+    required_evidence_sources:
+      - siem_alert_rule_export
+      - incident_ticket_export
+      - cloud_control_plane_events
+      - correlation_assessment_export
+    optional_evidence_sources:
+      - central_log_source_export
+      - aws_guardduty
+      - aws_cloudwatch
+    machine_evidence:
+      - siem_alert_rule_export
+      - cloud_control_plane_events
+      - aws_guardduty
+      - aws_cloudwatch
+      - correlation_assessment_export
+    human_evidence:
+      - incident_ticket_export
+    validation_outputs:
+      - CROSS_DOMAIN_EVENT_CORRELATION
+      - SI4_ALERT_INSTRUMENTATION
+      - RA5_EXPLOITATION_REVIEW
+    report_sections:
+      assessor: Incident response evidence
+      executive: IR readiness summary
+      ao: IR / SI-4 detection-response rollup
+
+  KSI-REC-01:
+    required_evidence_sources:
+      - backup_configuration_export
+      - cloud_asset_inventory
+      - restore_test_records
+    optional_evidence_sources:
+      - declared_system_inventory
+      - aws_backup
+      - aws_rds
+      - aws_s3
+    machine_evidence:
+      - aws_backup
+      - aws_rds
+      - aws_s3
+      - cloud_asset_inventory
+    human_evidence:
+      - backup_configuration_export
+      - restore_test_records
+      - declared_system_inventory
+    validation_outputs: []
+    report_sections:
+      assessor: Continuity and recovery evidence
+      executive: Recovery posture summary
+      ao: CP family rollup
+
+  KSI-SCRM-01:
+    required_evidence_sources:
+      - vendor_inventory
+      - incident_ticket_export
+    optional_evidence_sources:
+      - sbom_export
+      - training_records
+      - poam_export
+    machine_evidence:
+      - sbom_export
+    human_evidence:
+      - vendor_inventory
+      - incident_ticket_export
+      - training_records
+      - poam_export
+    validation_outputs:
+      - CA5_POAM_STATUS
+    report_sections:
+      assessor: Supply chain evidence
+      executive: Third-party risk posture
+      ao: SA / SR rollup
+
+  KSI-AGENT-01:
+    required_evidence_sources:
+      - agent_assessment_export
+      - correlation_assessment_export
+    optional_evidence_sources:
+      - identity_provider_users
+      - incident_ticket_export
+    machine_evidence:
+      - agent_assessment_export
+      - correlation_assessment_export
+    human_evidence:
+      - incident_ticket_export
+    validation_outputs:
+      - AGENT_PERMISSION_SCOPE
+      - AGENT_APPROVAL_GATES
+    report_sections:
+      assessor: AI agent identity and access evidence
+      executive: Agent IAM posture summary
+      ao: Agent AC / IA rollup
+
+  KSI-AGENT-02:
+    required_evidence_sources:
+      - agent_assessment_export
+      - correlation_assessment_export
+    optional_evidence_sources:
+      - central_log_source_export
+      - siem_alert_rule_export
+    machine_evidence:
+      - agent_assessment_export
+      - correlation_assessment_export
+      - central_log_source_export
+      - siem_alert_rule_export
+    human_evidence:
+      - incident_ticket_export
+    validation_outputs:
+      - AGENT_TOOL_GOVERNANCE
+      - AGENT_MEMORY_CONTEXT_SAFETY
+      - AGENT_AUDITABILITY
+    report_sections:
+      assessor: AI agent logging and monitoring evidence
+      executive: Agent telemetry posture
+      ao: Agent AU / SI rollup
+
+  KSI-AGENT-03:
+    required_evidence_sources:
+      - agent_assessment_export
+      - correlation_assessment_export
+    optional_evidence_sources:
+      - incident_ticket_export
+      - siem_alert_rule_export
+    machine_evidence:
+      - agent_assessment_export
+      - correlation_assessment_export
+    human_evidence:
+      - incident_ticket_export
+    validation_outputs:
+      - AGENT_POLICY_VIOLATIONS
+    report_sections:
+      assessor: AI agent incident response evidence
+      executive: Agentic misuse readiness
+      ao: Agent IR rollup
+
+  KSI-AGENT-04:
+    required_evidence_sources:
+      - agent_assessment_export
+      - correlation_assessment_export
+    optional_evidence_sources:
+      - change_ticket_export
+      - incident_ticket_export
+    machine_evidence:
+      - agent_assessment_export
+      - correlation_assessment_export
+    human_evidence:
+      - change_ticket_export
+      - incident_ticket_export
+    validation_outputs:
+      - AGENT_TOOL_GOVERNANCE
+      - AGENT_APPROVAL_GATES
+    report_sections:
+      assessor: AI agent change governance evidence
+      executive: Agent tool change posture
+      ao: Agent CM / SA rollup

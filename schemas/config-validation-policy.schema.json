@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/config-validation-policy.schema.json",
+  "title": "validation-policy.yaml",
+  "type": "object",
+  "required": ["schema_version", "ksi_status_precedence"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "ksi_status_precedence": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "eval_to_ksi_rollup": { "type": "string" },
+    "require_package_schema_validation": { "type": "boolean" },
+    "strict_evidence_links": { "type": "boolean" },
+    "severity_rules": { "type": "object", "additionalProperties": { "type": "string" } },
+    "sla_rules": { "type": "object", "additionalProperties": true },
+    "automation_thresholds": { "type": "object", "additionalProperties": true },
+    "required_ksi_themes": { "type": "array", "items": { "type": "string" } },
+    "evidence_maturity_minimums": { "type": "object", "additionalProperties": { "type": "string" } },
+    "finding_builder": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": true
+}

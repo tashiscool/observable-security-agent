@@ -1,0 +1,54 @@
+{
+  "scanner": "nessus",
+  "export_time": "2026-05-01T11:00:00Z",
+  "findings": [
+    {
+      "finding_id": "nessus-2026-0501-prod-api-01-87839",
+      "asset_id": "prod-api-01",
+      "target_id": "10.0.1.50",
+      "plugin_id": "87839",
+      "severity": "high",
+      "title": "OpenSSH 9.x with world-reachable listener and permissive security group",
+      "cve": ["CVE-2026-00001", "CVE-2026-00002"],
+      "first_seen": "2026-04-28T00:00:00Z",
+      "last_seen": "2026-05-01T10:00:00Z",
+      "status": "open",
+      "evidence": "Port 22/tcp open to 0.0.0.0/0; plugin 87839; credentialed scan 2026-05-01.",
+      "exploitation_review": {}
+    },
+    {
+      "finding_id": "nessus-2026-0501-prod-db-01-12540",
+      "asset_id": "prod-db-01",
+      "target_id": "prod-db-01.internal",
+      "plugin_id": "12540",
+      "severity": "medium",
+      "title": "PostgreSQL minor version behind latest maintenance",
+      "cve": [],
+      "first_seen": "2026-04-01T00:00:00Z",
+      "last_seen": "2026-05-01T09:00:00Z",
+      "status": "open",
+      "evidence": "RDS engine 15.4 available upgrade to 15.5.",
+      "exploitation_review": {
+        "log_review_performed": true,
+        "queries": ["index=rds host=prod-db-01 upgrade"]
+      }
+    },
+    {
+      "finding_id": "nessus-2026-03-prod-lb-01-42000",
+      "asset_id": "prod-lb-01",
+      "target_id": "52.55.20.20",
+      "plugin_id": "42000",
+      "severity": "low",
+      "title": "TLS 1.0 listener deprecated cipher (remediated)",
+      "cve": [],
+      "first_seen": "2026-03-10T00:00:00Z",
+      "last_seen": "2026-03-25T00:00:00Z",
+      "status": "closed",
+      "evidence": "Listener policy updated; re-scan clean 2026-03-26.",
+      "exploitation_review": {
+        "log_review_performed": true,
+        "queries": ["index=alb host=prod-lb-01 tls1.0"]
+      }
+    }
+  ]
+}

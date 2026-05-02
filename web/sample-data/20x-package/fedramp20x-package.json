@@ -1,0 +1,1599 @@
+{
+  "schema_version": "1.0",
+  "package_id": "sample-agent-ksi-demo",
+  "package_version": "1.0.0",
+  "ksi_catalog": [
+    {
+      "ksi_id": "KSI-AGENT-01",
+      "theme": "Identity and Access Management",
+      "title": "AI agent identities are registered, scoped, and monitored",
+      "objective": "Demonstrate that every in-scope AI agent has a registered identity, accountable owner and purpose, explicit allowed data/tool scopes, approval-backed privileged actions, and credential posture that does not share secrets with human operators.",
+      "legacy_controls": {
+        "rev4": [
+          "AC-2",
+          "AC-3",
+          "AC-6",
+          "IA-2",
+          "IA-4"
+        ],
+        "rev5": [
+          "AC-2",
+          "AC-3",
+          "AC-6",
+          "IA-2",
+          "IA-4"
+        ]
+      },
+      "validation_mode": "hybrid",
+      "automation_target": true,
+      "evidence_sources": [
+        "agent_assessment_export",
+        "correlation_assessment_export",
+        "identity_provider_users"
+      ],
+      "pass_fail_criteria": [
+        {
+          "criteria_id": "AGENT-IAM-CRI-001",
+          "description": "Every agent has a registered identity with stable agent_id in telemetry.",
+          "validation_type": "hybrid",
+          "expected_result": "agent_identities.json (or package slice) lists each agent with required attributes.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_PERMISSION_SCOPE"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-IAM-CRI-002",
+          "description": "Every agent has documented owner and purpose fields.",
+          "validation_type": "hybrid",
+          "expected_result": "Ownership and purpose recorded per agent identity row.",
+          "severity_if_failed": "medium",
+          "eval_refs": [
+            "AGENT_PERMISSION_SCOPE"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-IAM-CRI-003",
+          "description": "Every agent has explicit allowed scopes for tools and data.",
+          "validation_type": "hybrid",
+          "expected_result": "Allow lists and data scopes are present and enforced in policy checks.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_TOOL_GOVERNANCE",
+            "AGENT_PERMISSION_SCOPE"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-IAM-CRI-004",
+          "description": "Privileged or high-risk agent actions require recorded approvals.",
+          "validation_type": "hybrid",
+          "expected_result": "Approval metadata present on qualifying tool_calls rows.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_APPROVAL_GATES"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-IAM-CRI-005",
+          "description": "Agent credentials are not shared with human operators (no shared long-lived secrets).",
+          "validation_type": "hybrid",
+          "expected_result": "Identity and tool_call records show non-human scoped credentials only.",
+          "severity_if_failed": "critical",
+          "eval_refs": [
+            "AGENT_PERMISSION_SCOPE"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        }
+      ],
+      "reporting_sections": {
+        "assessor": "AI agent identity and access evidence",
+        "executive": "Agent IAM posture summary",
+        "ao": "Agent AC / IA rollup"
+      }
+    },
+    {
+      "ksi_id": "KSI-AGENT-02",
+      "theme": "Monitoring, Logging, and Auditing",
+      "title": "Agent decisions and tool use are logged and reviewable",
+      "objective": "Demonstrate that agent tool invocations policy decisions approvals memory or context access and high-risk behaviors are logged centrally and reviewable with accountable alerting where required.",
+      "legacy_controls": {
+        "rev4": [
+          "AU-2",
+          "AU-6",
+          "AU-12",
+          "SI-4"
+        ],
+        "rev5": [
+          "AU-2",
+          "AU-6",
+          "AU-12",
+          "SI-4"
+        ]
+      },
+      "validation_mode": "hybrid",
+      "automation_target": true,
+      "evidence_sources": [
+        "agent_assessment_export",
+        "central_log_source_export",
+        "siem_alert_rule_export",
+        "correlation_assessment_export"
+      ],
+      "pass_fail_criteria": [
+        {
+          "criteria_id": "AGENT-LOG-CRI-001",
+          "description": "Tool calls are logged with agent identity raw_ref and policy decision fields.",
+          "validation_type": "hybrid",
+          "expected_result": "tool_calls[] entries are complete for replay.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_AUDITABILITY",
+            "AGENT_TOOL_GOVERNANCE"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-LOG-CRI-002",
+          "description": "Policy decisions for agent actions are logged and attributable.",
+          "validation_type": "hybrid",
+          "expected_result": "policy_decision captured on tool_calls or companion audit stream.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_AUDITABILITY"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-LOG-CRI-003",
+          "description": "Approval decisions for gated actions are logged.",
+          "validation_type": "hybrid",
+          "expected_result": "approval_required rows include status and approver reference when executed.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_APPROVAL_GATES"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-LOG-CRI-004",
+          "description": "Memory and external context access events are logged and labeled.",
+          "validation_type": "hybrid",
+          "expected_result": "memory_events[] with classification for sensitive writes.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_MEMORY_CONTEXT_SAFETY"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-LOG-CRI-005",
+          "description": "Alerts exist for high-risk agent behavior semantics per SOC policy.",
+          "validation_type": "hybrid",
+          "expected_result": "Mapped SIEM rules or tickets for agent high-risk semantics.",
+          "severity_if_failed": "medium",
+          "eval_refs": [
+            "AGENT_POLICY_VIOLATIONS"
+          ],
+          "evidence_required": [
+            "siem_alert_rule_export",
+            "correlation_assessment_export"
+          ]
+        }
+      ],
+      "reporting_sections": {
+        "assessor": "AI agent logging and monitoring evidence",
+        "executive": "Agent telemetry posture",
+        "ao": "Agent AU / SI rollup"
+      }
+    },
+    {
+      "ksi_id": "KSI-AGENT-03",
+      "theme": "Incident Response",
+      "title": "Agentic misuse is detectable and actionable",
+      "objective": "Demonstrate detection and response for prompt injection unauthorized tool use compromised-agent hypotheses with threat-hunt timelines and containment guidance documented.",
+      "legacy_controls": {
+        "rev4": [
+          "IR-4",
+          "IR-5",
+          "IR-6",
+          "SI-4"
+        ],
+        "rev5": [
+          "IR-4",
+          "IR-5",
+          "IR-6",
+          "SI-4"
+        ]
+      },
+      "validation_mode": "hybrid",
+      "automation_target": true,
+      "evidence_sources": [
+        "agent_assessment_export",
+        "incident_ticket_export",
+        "correlation_assessment_export",
+        "siem_alert_rule_export"
+      ],
+      "pass_fail_criteria": [
+        {
+          "criteria_id": "AGENT-IR-CRI-001",
+          "description": "Prompt injection or adversarial prompt detections are tracked with evidence.",
+          "validation_type": "hybrid",
+          "expected_result": "Detections or policy_violations rows cite injection-class events.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_POLICY_VIOLATIONS"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-IR-CRI-002",
+          "description": "Unauthorized tool use creates a security finding and accountable ticket path.",
+          "validation_type": "hybrid",
+          "expected_result": "Violations linked to tickets or IR cases where required.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_POLICY_VIOLATIONS",
+            "AGENT_TOOL_GOVERNANCE"
+          ],
+          "evidence_required": [
+            "agent_assessment_export",
+            "incident_ticket_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-IR-CRI-003",
+          "description": "Compromised-agent hypotheses produce a documented threat-hunt timeline.",
+          "validation_type": "hybrid",
+          "expected_result": "Threat hunt output references agent_id and hypothesis identifiers.",
+          "severity_if_failed": "medium",
+          "eval_refs": [
+            "AGENT_POLICY_VIOLATIONS"
+          ],
+          "evidence_required": [
+            "correlation_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-IR-CRI-004",
+          "description": "Containment guidance exists for high-severity agent incidents.",
+          "validation_type": "manual",
+          "expected_result": "Runbook or IR plan excerpt covering agent isolation and credential rotation.",
+          "severity_if_failed": "medium",
+          "eval_refs": [],
+          "evidence_required": [
+            "incident_ticket_export"
+          ]
+        }
+      ],
+      "reporting_sections": {
+        "assessor": "AI agent incident response evidence",
+        "executive": "Agentic misuse readiness",
+        "ao": "Agent IR rollup"
+      }
+    },
+    {
+      "ksi_id": "KSI-AGENT-04",
+      "theme": "Change Management",
+      "title": "Agent tools and permissions are governed as system changes",
+      "objective": "Demonstrate that new tools permission changes prompts and policies are versioned approved and backed by review evidence consistent with CM and SA families.",
+      "legacy_controls": {
+        "rev4": [
+          "CM-3",
+          "CM-5",
+          "CM-6",
+          "SA-10"
+        ],
+        "rev5": [
+          "CM-3",
+          "CM-5",
+          "CM-6",
+          "SA-10"
+        ]
+      },
+      "validation_mode": "hybrid",
+      "automation_target": true,
+      "evidence_sources": [
+        "agent_assessment_export",
+        "change_ticket_export",
+        "correlation_assessment_export"
+      ],
+      "pass_fail_criteria": [
+        {
+          "criteria_id": "AGENT-CM-CRI-001",
+          "description": "New or expanded agent tools require documented approval before production use.",
+          "validation_type": "hybrid",
+          "expected_result": "Tool registration or change record ties tool_name to approver evidence.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_TOOL_GOVERNANCE",
+            "AGENT_APPROVAL_GATES"
+          ],
+          "evidence_required": [
+            "agent_assessment_export",
+            "change_ticket_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-CM-CRI-002",
+          "description": "Tool permission changes are ticketed and traceable.",
+          "validation_type": "hybrid",
+          "expected_result": "CM-3 style linkage between permission deltas and tickets.",
+          "severity_if_failed": "high",
+          "eval_refs": [
+            "AGENT_APPROVAL_GATES"
+          ],
+          "evidence_required": [
+            "change_ticket_export",
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-CM-CRI-003",
+          "description": "Prompts and agent policies are versioned with history.",
+          "validation_type": "hybrid",
+          "expected_result": "Version identifiers or commit refs for prompts/policies in evidence bundle.",
+          "severity_if_failed": "medium",
+          "eval_refs": [
+            "AGENT_TOOL_GOVERNANCE"
+          ],
+          "evidence_required": [
+            "agent_assessment_export"
+          ]
+        },
+        {
+          "criteria_id": "AGENT-CM-CRI-004",
+          "description": "Material policy changes include review evidence (peer or CAB).",
+          "validation_type": "manual",
+          "expected_result": "Reviewer sign-off or ticket attachment for policy change window.",
+          "severity_if_failed": "medium",
+          "eval_refs": [
+            "AGENT_APPROVAL_GATES"
+          ],
+          "evidence_required": [
+            "incident_ticket_export",
+            "change_ticket_export"
+          ]
+        }
+      ],
+      "reporting_sections": {
+        "assessor": "AI agent change governance evidence",
+        "executive": "Agent tool change posture",
+        "ao": "Agent CM / SA rollup"
+      }
+    }
+  ],
+  "ksi_validation_results": [
+    {
+      "ksi_id": "KSI-AGENT-01",
+      "status": "FAIL",
+      "summary": "Rolled up from evaluations: AGENT_APPROVAL_GATES, AGENT_PERMISSION_SCOPE (precedence: FAIL, PARTIAL, OPEN, NOT_APPLICABLE, PASS).",
+      "linked_eval_ids": [
+        "AGENT_APPROVAL_GATES",
+        "AGENT_PERMISSION_SCOPE"
+      ],
+      "linked_nist_control_refs": [
+        "AC-2",
+        "AC-3",
+        "AC-6",
+        "CA-7",
+        "CM-3",
+        "CM-5",
+        "IA-5",
+        "SA-9"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-1BC6343FE36EC1D07370",
+          "role": "primary",
+          "json_pointer": "#/evaluations",
+          "artifact": "eval_results.json"
+        }
+      ]
+    },
+    {
+      "ksi_id": "KSI-AGENT-02",
+      "status": "FAIL",
+      "summary": "Rolled up from evaluations: AGENT_AUDITABILITY, AGENT_MEMORY_CONTEXT_SAFETY, AGENT_TOOL_GOVERNANCE, AU6_CENTRALIZED_LOG_COVERAGE, CROSS_DOMAIN_EVENT_CORRELATION (precedence: FAIL, PARTIAL, OPEN, NOT_APPLICABLE, PASS).",
+      "linked_eval_ids": [
+        "AGENT_AUDITABILITY",
+        "AGENT_MEMORY_CONTEXT_SAFETY",
+        "AGENT_TOOL_GOVERNANCE",
+        "AU6_CENTRALIZED_LOG_COVERAGE",
+        "CROSS_DOMAIN_EVENT_CORRELATION"
+      ],
+      "linked_nist_control_refs": [
+        "AC-17",
+        "AC-2",
+        "AC-2(1)",
+        "AC-2(3)",
+        "AC-2(4)",
+        "AC-2(7)",
+        "AC-3",
+        "AC-4",
+        "AC-5",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-3(1)",
+        "AU-6",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-9",
+        "AU-9(2)",
+        "CA-5",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-7",
+        "CM-8",
+        "CM-8(1)",
+        "CM-8(3)",
+        "IA-2",
+        "IA-4",
+        "IA-5",
+        "IR-4",
+        "RA-5",
+        "SA-9",
+        "SC-28",
+        "SC-7",
+        "SC-7(3)",
+        "SC-7(4)",
+        "SC-7(5)",
+        "SI-12",
+        "SI-4"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-1BC6343FE36EC1D07370",
+          "role": "primary",
+          "json_pointer": "#/evaluations",
+          "artifact": "eval_results.json"
+        }
+      ]
+    },
+    {
+      "ksi_id": "KSI-AGENT-03",
+      "status": "FAIL",
+      "summary": "Rolled up from evaluations: AGENT_POLICY_VIOLATIONS (precedence: FAIL, PARTIAL, OPEN, NOT_APPLICABLE, PASS).",
+      "linked_eval_ids": [
+        "AGENT_POLICY_VIOLATIONS"
+      ],
+      "linked_nist_control_refs": [
+        "AC-2",
+        "AC-6",
+        "IR-4",
+        "SI-4"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-1BC6343FE36EC1D07370",
+          "role": "primary",
+          "json_pointer": "#/evaluations",
+          "artifact": "eval_results.json"
+        }
+      ]
+    },
+    {
+      "ksi_id": "KSI-AGENT-04",
+      "status": "FAIL",
+      "summary": "Rolled up from evaluations: AGENT_APPROVAL_GATES, AGENT_TOOL_GOVERNANCE (precedence: FAIL, PARTIAL, OPEN, NOT_APPLICABLE, PASS).",
+      "linked_eval_ids": [
+        "AGENT_APPROVAL_GATES",
+        "AGENT_TOOL_GOVERNANCE"
+      ],
+      "linked_nist_control_refs": [
+        "AC-6",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-5",
+        "SA-9"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-1BC6343FE36EC1D07370",
+          "role": "primary",
+          "json_pointer": "#/evaluations",
+          "artifact": "eval_results.json"
+        }
+      ]
+    }
+  ],
+  "evidence_source_registry": {
+    "schema_version": "1.0",
+    "sources": [
+      {
+        "id": "central_log_source_export",
+        "name": "Central log source coverage and freshness export",
+        "category": "logging",
+        "collection_method": "hybrid",
+        "collector": "splunk_rest_api|sentinel_api|gcp_logging_export",
+        "frequency": "daily",
+        "owner": "Customer Security Operations",
+        "evidence_format": "json",
+        "authoritative_for": [
+          "AU-6",
+          "AU-12"
+        ],
+        "limitations": [
+          "Index retention and RBAC may limit assessor query scope."
+        ],
+        "automation_score": 4
+      },
+      {
+        "id": "siem_alert_rule_export",
+        "name": "SIEM detection and alert rule export",
+        "category": "logging",
+        "collection_method": "hybrid",
+        "collector": "splunk_rest_api|sentinel_api",
+        "frequency": "daily",
+        "owner": "Customer SOC",
+        "evidence_format": "mixed",
+        "authoritative_for": [
+          "SI-4",
+          "AU-5"
+        ],
+        "limitations": [
+          "Rule JSON may omit historical disabled rules unless archive is included."
+        ],
+        "automation_score": 4
+      },
+      {
+        "id": "change_ticket_export",
+        "name": "ITSM change record export",
+        "category": "change_management",
+        "collection_method": "file",
+        "collector": null,
+        "frequency": "event_driven",
+        "owner": "Customer Change Management",
+        "evidence_format": "json",
+        "authoritative_for": [
+          "CM-3",
+          "CM-4"
+        ],
+        "limitations": [
+          "Ticket payloads vary by ITSM product and custom fields."
+        ],
+        "automation_score": 2
+      },
+      {
+        "id": "incident_ticket_export",
+        "name": "ITSM security incident export",
+        "category": "incident_response",
+        "collection_method": "file",
+        "collector": null,
+        "frequency": "event_driven",
+        "owner": "Customer SOC",
+        "evidence_format": "json",
+        "authoritative_for": [
+          "IR-4",
+          "IR-5",
+          "IR-6"
+        ],
+        "limitations": [
+          "May exclude informal channel responses unless formally logged."
+        ],
+        "automation_score": 2
+      },
+      {
+        "id": "identity_provider_users",
+        "name": "Identity provider user directory export",
+        "category": "identity",
+        "collection_method": "api",
+        "collector": "okta_api|azure_ad_graph|google_workspace_admin",
+        "frequency": "daily",
+        "owner": "Customer Identity Team",
+        "evidence_format": "json",
+        "authoritative_for": [
+          "AC-2",
+          "IA-2"
+        ],
+        "limitations": [
+          "Directory snapshots exclude transient session-only principals unless separately logged."
+        ],
+        "automation_score": 4
+      },
+      {
+        "id": "correlation_assessment_export",
+        "name": "Observable Security Agent correlation and evaluation bundle",
+        "category": "configuration",
+        "collection_method": "file",
+        "collector": null,
+        "frequency": "event_driven",
+        "owner": "Customer Security Engineering",
+        "evidence_format": "json",
+        "authoritative_for": [
+          "cross_domain_observability_assessment"
+        ],
+        "limitations": [
+          "Outputs are only as complete as inputs supplied to the assessment engine."
+        ],
+        "automation_score": 3
+      },
+      {
+        "id": "agent_assessment_export",
+        "name": "AI agent telemetry and governance assessment bundle",
+        "category": "configuration",
+        "collection_method": "file",
+        "collector": null,
+        "frequency": "event_driven",
+        "owner": "Customer AI Security Engineering",
+        "evidence_format": "json",
+        "authoritative_for": [
+          "AC-2",
+          "AU-2",
+          "IR-4",
+          "CM-3"
+        ],
+        "limitations": [
+          "Reflects only agents tool gateways and policies present in the uploaded bundle."
+        ],
+        "automation_score": 3
+      }
+    ]
+  },
+  "findings": [
+    {
+      "finding_id": "FIND-AU6-CENTRALIZED-LOG-COVERAGE-C47704D15448",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "source": "eval_result",
+      "ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "legacy_controls": {
+        "rev4": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ],
+        "rev5": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ]
+      },
+      "severity": "high",
+      "status": "open",
+      "title": "AU-6/AU-12 Centralized Log Coverage",
+      "description": "No evidence was provided showing `prod-api-01` logs are centrally ingested and current within the assessment window. Observed gap: prod-api-01 requires logging but has no active central log source.",
+      "affected_assets": [
+        "prod-api-01",
+        "prod-storage-01",
+        "rogue-prod-worker-99"
+      ],
+      "evidence": [
+        "prod-api-01 requires logging but has no active central log source.",
+        "prod-api-01 requires logging but has no active central log source.",
+        "Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+        "prod-storage-01 requires logging but has no active central log source.",
+        "Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+        "Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+        "Cloud control plane log source is active.",
+        "Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context."
+      ],
+      "risk_statement": "At high severity, unresolved gaps tied to AU, SI increase audit and operational risk until evidence of remediation or formal risk acceptance is on record.",
+      "compensating_controls": [],
+      "recommended_remediation": "Configure central log forwarding.; Provide local and central copy of same event.; Add source coverage dashboard/saved search.; Generate missing SIEM query.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "linked_eval_ids": [
+        "AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "linked_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "nist_control_refs": [
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-3(1)",
+        "AU-6",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-9(2)",
+        "SI-4"
+      ],
+      "source_artifact_refs": [
+        "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "poam_id": "POAM-AUTO-AU6-CENTRALIZED-LOG-COVERAGE-003",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-1BC6343FE36EC1D07370",
+          "role": "primary",
+          "record_locator": "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+        }
+      ]
+    },
+    {
+      "finding_id": "FIND-AU6-CENTRALIZED-LOG-COVERAGE-9391EAE84CB0",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "source": "eval_result",
+      "ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "legacy_controls": {
+        "rev4": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ],
+        "rev5": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ]
+      },
+      "severity": "high",
+      "status": "open",
+      "title": "AU-6/AU-12 Centralized Log Coverage",
+      "description": "No evidence was provided showing `Production API` logs are centrally ingested and current within the assessment window. Observed gap: Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+      "affected_assets": [
+        "prod-api-01",
+        "prod-storage-01",
+        "rogue-prod-worker-99"
+      ],
+      "evidence": [
+        "prod-api-01 requires logging but has no active central log source.",
+        "prod-api-01 requires logging but has no active central log source.",
+        "Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+        "prod-storage-01 requires logging but has no active central log source.",
+        "Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+        "Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+        "Cloud control plane log source is active.",
+        "Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context."
+      ],
+      "risk_statement": "At high severity, unresolved gaps tied to AU, SI increase audit and operational risk until evidence of remediation or formal risk acceptance is on record.",
+      "compensating_controls": [],
+      "recommended_remediation": "Configure central log forwarding.; Provide local and central copy of same event.; Add source coverage dashboard/saved search.; Generate missing SIEM query.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "linked_eval_ids": [
+        "AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "linked_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "nist_control_refs": [
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-3(1)",
+        "AU-6",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-9(2)",
+        "SI-4"
+      ],
+      "source_artifact_refs": [
+        "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "poam_id": "POAM-AUTO-AU6-CENTRALIZED-LOG-COVERAGE-003",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-1BC6343FE36EC1D07370",
+          "role": "primary",
+          "record_locator": "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+        }
+      ]
+    },
+    {
+      "finding_id": "FIND-AU6-CENTRALIZED-LOG-COVERAGE-9D89177109CC",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "source": "eval_result",
+      "ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "legacy_controls": {
+        "rev4": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ],
+        "rev5": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ]
+      },
+      "severity": "high",
+      "status": "open",
+      "title": "AU-6/AU-12 Centralized Log Coverage",
+      "description": "No evidence was provided showing `prod-storage-01` logs are centrally ingested and current within the assessment window. Observed gap: prod-storage-01 requires logging but has no active central log source.",
+      "affected_assets": [
+        "prod-api-01",
+        "prod-storage-01",
+        "rogue-prod-worker-99"
+      ],
+      "evidence": [
+        "prod-api-01 requires logging but has no active central log source.",
+        "prod-api-01 requires logging but has no active central log source.",
+        "Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+        "prod-storage-01 requires logging but has no active central log source.",
+        "Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+        "Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+        "Cloud control plane log source is active.",
+        "Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context."
+      ],
+      "risk_statement": "At high severity, unresolved gaps tied to AU, SI increase audit and operational risk until evidence of remediation or formal risk acceptance is on record.",
+      "compensating_controls": [],
+      "recommended_remediation": "Configure central log forwarding.; Provide local and central copy of same event.; Add source coverage dashboard/saved search.; Generate missing SIEM query.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "linked_eval_ids": [
+        "AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "linked_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "nist_control_refs": [
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-3(1)",
+        "AU-6",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-9(2)",
+        "SI-4"
+      ],
+      "source_artifact_refs": [
+        "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "poam_id": "POAM-AUTO-AU6-CENTRALIZED-LOG-COVERAGE-003",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-1BC6343FE36EC1D07370",
+          "role": "primary",
+          "record_locator": "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+        }
+      ]
+    },
+    {
+      "finding_id": "FIND-AU6-CENTRALIZED-LOG-COVERAGE-7CB5A910DFC6",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "source": "eval_result",
+      "ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "legacy_controls": {
+        "rev4": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ],
+        "rev5": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ]
+      },
+      "severity": "high",
+      "status": "open",
+      "title": "AU-6/AU-12 Centralized Log Coverage",
+      "description": "No evidence was provided showing `prod-api-01` logs are centrally ingested and current within the assessment window. Observed gap: Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+      "affected_assets": [
+        "prod-api-01",
+        "prod-storage-01",
+        "rogue-prod-worker-99"
+      ],
+      "evidence": [
+        "prod-api-01 requires logging but has no active central log source.",
+        "prod-api-01 requires logging but has no active central log source.",
+        "Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+        "prod-storage-01 requires logging but has no active central log source.",
+        "Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+        "Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+        "Cloud control plane log source is active.",
+        "Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context."
+      ],
+      "risk_statement": "At high severity, unresolved gaps tied to AU, SI increase audit and operational risk until evidence of remediation or formal risk acceptance is on record.",
+      "compensating_controls": [],
+      "recommended_remediation": "Configure central log forwarding.; Provide local and central copy of same event.; Add source coverage dashboard/saved search.; Generate missing SIEM query.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "linked_eval_ids": [
+        "AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "linked_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "nist_control_refs": [
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-3(1)",
+        "AU-6",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-9(2)",
+        "SI-4"
+      ],
+      "source_artifact_refs": [
+        "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "poam_id": "POAM-AUTO-AU6-CENTRALIZED-LOG-COVERAGE-003",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-1BC6343FE36EC1D07370",
+          "role": "primary",
+          "record_locator": "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+        }
+      ]
+    },
+    {
+      "finding_id": "FIND-AU6-CENTRALIZED-LOG-COVERAGE-5437212041E1",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "source": "eval_result",
+      "ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "legacy_controls": {
+        "rev4": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ],
+        "rev5": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ]
+      },
+      "severity": "high",
+      "status": "open",
+      "title": "AU-6/AU-12 Centralized Log Coverage",
+      "description": "No evidence was provided showing `rogue-prod-worker-99` logs are centrally ingested and current within the assessment window. Observed gap: Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+      "affected_assets": [
+        "prod-api-01",
+        "prod-storage-01",
+        "rogue-prod-worker-99"
+      ],
+      "evidence": [
+        "prod-api-01 requires logging but has no active central log source.",
+        "prod-api-01 requires logging but has no active central log source.",
+        "Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+        "prod-storage-01 requires logging but has no active central log source.",
+        "Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+        "Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+        "Cloud control plane log source is active.",
+        "Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context."
+      ],
+      "risk_statement": "At high severity, unresolved gaps tied to AU, SI increase audit and operational risk until evidence of remediation or formal risk acceptance is on record.",
+      "compensating_controls": [],
+      "recommended_remediation": "Configure central log forwarding.; Provide local and central copy of same event.; Add source coverage dashboard/saved search.; Generate missing SIEM query.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "linked_eval_ids": [
+        "AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "linked_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "nist_control_refs": [
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-3(1)",
+        "AU-6",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-9(2)",
+        "SI-4"
+      ],
+      "source_artifact_refs": [
+        "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "poam_id": "POAM-AUTO-AU6-CENTRALIZED-LOG-COVERAGE-003",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-1BC6343FE36EC1D07370",
+          "role": "primary",
+          "record_locator": "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+        }
+      ]
+    },
+    {
+      "finding_id": "FIND-AU6-CENTRALIZED-LOG-COVERAGE-1061C0FD039E",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "source": "eval_result",
+      "ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "legacy_controls": {
+        "rev4": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ],
+        "rev5": [
+          "AU-12",
+          "AU-2",
+          "AU-3",
+          "AU-3(1)",
+          "AU-6",
+          "AU-6(1)",
+          "AU-6(3)",
+          "AU-7",
+          "AU-8",
+          "AU-9(2)",
+          "SI-4"
+        ]
+      },
+      "severity": "high",
+      "status": "open",
+      "title": "AU-6/AU-12 Centralized Log Coverage",
+      "description": "No evidence was provided showing `ls-api-01` logs are centrally ingested and current within the assessment window. Observed gap: Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context.",
+      "affected_assets": [
+        "prod-api-01",
+        "prod-storage-01",
+        "rogue-prod-worker-99"
+      ],
+      "evidence": [
+        "prod-api-01 requires logging but has no active central log source.",
+        "prod-api-01 requires logging but has no active central log source.",
+        "Declared `Production API` requires logging but has no matching discovered asset to verify sources.",
+        "prod-storage-01 requires logging but has no active central log source.",
+        "Critical compute asset `prod-api-01` lacks an active central log source seen within the last 24h window.",
+        "Critical compute asset `rogue-prod-worker-99` lacks an active central log source seen within the last 24h window.",
+        "Cloud control plane log source is active.",
+        "Central log source `ls-api-01` is stale beyond the 24h threshold for a required/high-sensitivity asset context."
+      ],
+      "risk_statement": "At high severity, unresolved gaps tied to AU, SI increase audit and operational risk until evidence of remediation or formal risk acceptance is on record.",
+      "compensating_controls": [],
+      "recommended_remediation": "Configure central log forwarding.; Provide local and central copy of same event.; Add source coverage dashboard/saved search.; Generate missing SIEM query.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "linked_eval_ids": [
+        "AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "linked_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-IR-01",
+        "KSI-LOG-01"
+      ],
+      "nist_control_refs": [
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-3(1)",
+        "AU-6",
+        "AU-6(1)",
+        "AU-6(3)",
+        "AU-7",
+        "AU-8",
+        "AU-9(2)",
+        "SI-4"
+      ],
+      "source_artifact_refs": [
+        "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+      ],
+      "poam_id": "POAM-AUTO-AU6-CENTRALIZED-LOG-COVERAGE-003",
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-1BC6343FE36EC1D07370",
+          "role": "primary",
+          "record_locator": "eval_results.json#/evaluations/AU6_CENTRALIZED_LOG_COVERAGE"
+        }
+      ]
+    }
+  ],
+  "poam_items": [
+    {
+      "poam_id": "POAM-F20X-FIND-AGENT-TOOL-GOVERNANCE-5BA2A0974B18",
+      "finding_id": "FIND-AGENT-TOOL-GOVERNANCE-5BA2A0974B18",
+      "title": "Agent tool governance",
+      "severity": "high",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "target_completion_date": "2026-06-01",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Create or link formal change / incident ticket for the assessed event.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Complete security impact analysis (SIA) and testing evidence per CM-3.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-09"
+        },
+        {
+          "step": 3,
+          "description": "Obtain documented approval aligned to change class.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-15"
+        },
+        {
+          "step": 4,
+          "description": "Attach deployment evidence (automation receipt or timestamped record).",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-20"
+        },
+        {
+          "step": 5,
+          "description": "Attach verification evidence (post-change scan or health check).",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-26"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Elevated exposure window with plausible exploitation or audit failure absent timely remediation.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-AGENT-04",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-SCRM-01"
+      ],
+      "source_controls": [
+        "AC-6",
+        "CM-10",
+        "CM-11",
+        "SA-9"
+      ],
+      "linked_eval_ids": [
+        "AGENT_TOOL_GOVERNANCE"
+      ],
+      "controls": "AC-6; CM-10; CM-11; SA-9",
+      "weakness_name": "Agent tool governance",
+      "weakness_description": "Evidence deficiency noted for evaluation `AGENT_TOOL_GOVERNANCE` affecting `cloud_admin_tool`: the assessment did not receive substantiating artifacts for this gap. Observed gap: Tool `cloud_admin_tool` not in allowed_tools for support-ticket-agent",
+      "asset_identifier": "cloud_admin_tool",
+      "source_eval_id": "AGENT_TOOL_GOVERNANCE",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-FIND-AGENT-PERMISSION-SCOPE-7DD06F290834",
+      "finding_id": "FIND-AGENT-PERMISSION-SCOPE-7DD06F290834",
+      "title": "Agent permission scope",
+      "severity": "high",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "target_completion_date": "2026-06-01",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Create or link formal change / incident ticket for the assessed event.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Complete security impact analysis (SIA) and testing evidence per CM-3.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-09"
+        },
+        {
+          "step": 3,
+          "description": "Obtain documented approval aligned to change class.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-15"
+        },
+        {
+          "step": 4,
+          "description": "Attach deployment evidence (automation receipt or timestamped record).",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-20"
+        },
+        {
+          "step": 5,
+          "description": "Attach verification evidence (post-change scan or health check).",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-26"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Elevated exposure window with plausible exploitation or audit failure absent timely remediation.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-01",
+        "KSI-IAM-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-3",
+        "AC-6",
+        "IA-5"
+      ],
+      "linked_eval_ids": [
+        "AGENT_PERMISSION_SCOPE"
+      ],
+      "controls": "AC-2; AC-3; AC-6; IA-5",
+      "weakness_name": "Agent permission scope",
+      "weakness_description": "Evidence deficiency noted for evaluation `AGENT_PERMISSION_SCOPE` affecting `prod-shaped`: the assessment did not receive substantiating artifacts for this gap. Observed gap: Non-prod agent support-ticket-agent touched prod-shaped resource arn:aws:ec2:us-east-1:111122223333:security-group/sg-prod-web.",
+      "asset_identifier": "prod-shaped",
+      "source_eval_id": "AGENT_PERMISSION_SCOPE",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-AGENT-MEMORY-CONTEXT-SAFETY-F9ED72C2D38A",
+      "finding_id": "FIND-AGENT-MEMORY-CONTEXT-SAFETY-F9ED72C2D38A",
+      "title": "Agent memory context safety",
+      "severity": "high",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "target_completion_date": "2026-06-01",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Create or link formal change / incident ticket for the assessed event.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Complete security impact analysis (SIA) and testing evidence per CM-3.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-09"
+        },
+        {
+          "step": 3,
+          "description": "Obtain documented approval aligned to change class.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-15"
+        },
+        {
+          "step": 4,
+          "description": "Attach deployment evidence (automation receipt or timestamped record).",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-20"
+        },
+        {
+          "step": 5,
+          "description": "Attach verification evidence (post-change scan or health check).",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-26"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Elevated exposure window with plausible exploitation or audit failure absent timely remediation.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-LOG-01"
+      ],
+      "source_controls": [
+        "AC-4",
+        "AU-9",
+        "SC-28",
+        "SI-12"
+      ],
+      "linked_eval_ids": [
+        "AGENT_MEMORY_CONTEXT_SAFETY"
+      ],
+      "controls": "AC-4; AU-9; SC-28; SI-12",
+      "weakness_name": "Agent memory context safety",
+      "weakness_description": "Evidence deficiency noted for evaluation `AGENT_MEMORY_CONTEXT_SAFETY` affecting `the affected in-scope asset`: the assessment did not receive substantiating artifacts for this gap. Observed gap: External context mem-ctx-ticket-4477 lacks trusted/untrusted labeling in source.",
+      "asset_identifier": "",
+      "source_eval_id": "AGENT_MEMORY_CONTEXT_SAFETY",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-AGENT-MEMORY-CONTEXT-SAFETY-850F10BF2F8F",
+      "finding_id": "FIND-AGENT-MEMORY-CONTEXT-SAFETY-850F10BF2F8F",
+      "title": "Agent memory context safety",
+      "severity": "high",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "target_completion_date": "2026-06-01",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Document root cause and in-scope impact for the finding.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Implement corrective actions per control family guidance.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-12"
+        },
+        {
+          "step": 3,
+          "description": "Collect objective evidence of remediation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-20"
+        },
+        {
+          "step": 4,
+          "description": "Schedule independent validation for POA&M closure.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-26"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Elevated exposure window with plausible exploitation or audit failure absent timely remediation.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-LOG-01"
+      ],
+      "source_controls": [
+        "AC-4",
+        "AU-9",
+        "SC-28",
+        "SI-12"
+      ],
+      "linked_eval_ids": [
+        "AGENT_MEMORY_CONTEXT_SAFETY"
+      ],
+      "controls": "AC-4; AU-9; SC-28; SI-12",
+      "weakness_name": "Agent memory context safety",
+      "weakness_description": "Evidence deficiency noted for evaluation `AGENT_MEMORY_CONTEXT_SAFETY` affecting `the affected in-scope asset`: the assessment did not receive substantiating artifacts for this gap. Observed gap: Sensitive write to long_term memory (mem-lt-pii-warn) without explicit block policy.",
+      "asset_identifier": "",
+      "source_eval_id": "AGENT_MEMORY_CONTEXT_SAFETY",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-AGENT-MEMORY-CONTEXT-SAFETY-0E2AC113EEE1",
+      "finding_id": "FIND-AGENT-MEMORY-CONTEXT-SAFETY-0E2AC113EEE1",
+      "title": "Agent memory context safety",
+      "severity": "high",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T03:22:08.197694+00:00",
+      "target_completion_date": "2026-06-01",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Document root cause and in-scope impact for the finding.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Implement corrective actions per control family guidance.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-12"
+        },
+        {
+          "step": 3,
+          "description": "Collect objective evidence of remediation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-20"
+        },
+        {
+          "step": 4,
+          "description": "Schedule independent validation for POA&M closure.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-26"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Elevated exposure window with plausible exploitation or audit failure absent timely remediation.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-LOG-01"
+      ],
+      "source_controls": [
+        "AC-4",
+        "AU-9",
+        "SC-28",
+        "SI-12"
+      ],
+      "linked_eval_ids": [
+        "AGENT_MEMORY_CONTEXT_SAFETY"
+      ],
+      "controls": "AC-4; AU-9; SC-28; SI-12",
+      "weakness_name": "Agent memory context safety",
+      "weakness_description": "Evidence deficiency noted for evaluation `AGENT_MEMORY_CONTEXT_SAFETY` affecting `the affected in-scope asset`: the assessment did not receive substantiating artifacts for this gap. Observed gap: Tool call tc-draft-ambiguous has empty raw_ref shortly after memory retrieve mem-vec-retrieve (traceability gap).",
+      "asset_identifier": "",
+      "source_eval_id": "AGENT_MEMORY_CONTEXT_SAFETY",
+      "raw_row": {}
+    }
+  ],
+  "reconciliation_summary": {
+    "human_report_manifest": [],
+    "parity_status": "aligned"
+  }
+}

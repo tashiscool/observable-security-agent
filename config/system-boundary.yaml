@@ -1,0 +1,60 @@
+# System boundary — sample program (no customer-identifying data).
+# Nested ``system`` is canonical; flat keys are derived at load time for backward compatibility.
+
+schema_version: "1.0"
+
+system:
+  id: "SYS-OBS-EXAMPLE-001"
+  name: "example_security_observability_program"
+  description: >
+    Logical boundary for a sample customer-managed cloud security program: production
+    workloads, shared security services (inventory, vulnerability scanning, centralized logging,
+    alerting, ticketing), and the correlation outputs produced by this assessment agent.
+  impact_level: "moderate"
+  authorization_path: "FedRAMP"
+  deployment_model: "hybrid_cloud"
+  cloud_providers:
+    - "aws"
+    - "gcp"
+  regions:
+    - "us-east-1"
+    - "us-west-2"
+  boundary_type: "logical"
+  notes: >
+    Physical facilities and hypervisor layers are inherited per the provider shared-responsibility
+    model; this boundary asserts only customer-configurable and customer-observable controls.
+
+# High-level boundary narrative (distinct from operational authorization-scope.yaml).
+authorization_scope:
+  included:
+    - "Customer-managed production accounts and workloads under change control"
+    - "Security operations evidence: inventory, scanner exports, SIEM paths, tickets"
+  excluded:
+    - "Cloud provider proprietary hardware and firmware outside customer configuration"
+    - "Non-production sandboxes unless explicitly listed in included_components"
+  boundary_rationale: >
+    The assessment targets demonstrable observability for in-scope production components.
+    Inherited provider controls are acknowledged but not re-tested here beyond customer evidence hooks.
+
+data_types:
+  - "system_security_event_metadata"
+  - "configuration_and_inventory_snapshots"
+  - "vulnerability_and_patch_status"
+  - "authentication_and_authorization_events"
+  - "change_and_incident_ticket_references"
+
+external_services:
+  - name: "Example SaaS identity provider"
+    type: "saas_identity"
+    inherited_authorization: false
+    responsibility: "customer"
+    evidence_needed:
+      - "identity_provider_users"
+      - "siem_alert_rule_export"
+  - name: "Example managed SIEM"
+    type: "managed_siem"
+    inherited_authorization: true
+    responsibility: "shared"
+    evidence_needed:
+      - "central_log_source_export"
+      - "siem_alert_rule_export"

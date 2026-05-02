@@ -1,0 +1,2 @@
+poam_id,weakness_name,controls,raw_severity,status,asset_identifier,notes
+POAM-2026-AGENT-001,Legacy gap — agent guardrail tuning backlog,"SA-9;SI-4",moderate,open,organization-wide,Pre-existing POA&M seed; agentic-risk scenario

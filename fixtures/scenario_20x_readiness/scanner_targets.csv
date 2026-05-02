@@ -1,0 +1,6 @@
+asset_id,scanner,target_type,hostname,ip,scan_profile,credentialed,notes
+prod-api-01,nessus,host,prod-api-01.internal,10.0.1.50,prod-credentialed,true,Credentialed weekly scan — in-scope API tier
+prod-db-01,nessus,rds,prod-db-01.internal,10.0.2.20,db-credentialed,true,Weekly credentialed RDS scan
+prod-lb-01,nessus,alb,prod-lb-01.elb.amazonaws.com,52.55.20.20,external-surface,false,Monthly external ALB checks
+prod-storage-01,nessus,s3,,,bucket-policy,false,Bucket policy posture review
+rogue-prod-worker-99,nessus,host,rogue-prod-worker-99.internal,10.0.99.99,adhoc,true,Rogue instance still in scanner scope pending inventory disposition

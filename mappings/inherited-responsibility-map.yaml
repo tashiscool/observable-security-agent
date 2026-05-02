@@ -1,0 +1,88 @@
+schema_version: "1.0"
+# Typical inheritance patterns for hybrid customer workloads; tailor per SSP.
+inherited_services:
+  - service_name: AWS IaaS (EC2 / VPC / EBS)
+    responsibility_type: inherited_partial
+    evidence_needed:
+      - aws_vpc
+      - aws_cloudtrail
+    inherited_authorization_status: customer_supplements_inherited_controls
+    customer_responsibility_notes: >
+      Attach CSP FedRAMP package excerpt (customer responsibility matrix) to the SSP.
+      Customer demonstrates security groups, IAM instance profiles, patch and
+      logging configuration, and boundary diagrams for workloads on shared regions.
+
+  - service_name: AWS PaaS (RDS / S3 / Backup)
+    responsibility_type: inherited_partial
+    evidence_needed:
+      - aws_rds
+      - aws_s3
+      - aws_backup
+    inherited_authorization_status: customer_supplements_inherited_controls
+    customer_responsibility_notes: >
+      Customer owns encryption keys (where BYOK), access policies, backup plans,
+      and restore testing for application data.
+
+  - service_name: Microsoft Azure IaaS/PaaS
+    responsibility_type: inherited_partial
+    evidence_needed:
+      - central_log_source_export
+      - cloud_control_plane_events
+    inherited_authorization_status: customer_supplements_inherited_controls
+    customer_responsibility_notes: >
+      Map Azure Policy / Defender exports to the same KSI evidence slots as AWS
+      equivalents; cite Azure FedRAMP package inheritance in SSP.
+
+  - service_name: Google Cloud Platform (Compute / GKE)
+    responsibility_type: inherited_partial
+    evidence_needed:
+      - cloud_asset_inventory
+      - central_log_source_export
+    inherited_authorization_status: customer_supplements_inherited_controls
+    customer_responsibility_notes: >
+      Customer documents org policies, VPC-SC boundaries, and centralized logging sinks.
+
+  - service_name: GitHub / CI pipelines
+    responsibility_type: shared
+    evidence_needed:
+      - change_ticket_export
+      - sbom_export
+    inherited_authorization_status: not_inherited_by_default
+    customer_responsibility_notes: >
+      Supply chain and change evidence for build systems is customer-controlled
+      unless explicitly inherited via managed build service in boundary.
+
+  - service_name: Enterprise IdP (Okta / Entra ID / Google Workspace)
+    responsibility_type: shared
+    evidence_needed:
+      - identity_provider_users
+      - privileged_group_membership
+      - mfa_status
+    inherited_authorization_status: customer_managed_saas
+    customer_responsibility_notes: >
+      IdP is usually customer ATO or agency SSO; inheritance statements must name
+      the authorizing package and residual customer controls.
+
+  - service_name: SIEM / centralized logging (Splunk / Sentinel / Chronicle)
+    responsibility_type: shared
+    evidence_needed:
+      - central_log_source_export
+      - siem_alert_rule_export
+    inherited_authorization_status: customer_managed_saas
+    customer_responsibility_notes: >
+      Log integrity, RBAC, and detection engineering remain customer responsibilities
+      even when hosted on CSP infrastructure.
+
+inherited_ksi_themes:
+  - Policy and Inventory
+  - Recovery Planning
+  - Supply Chain Risk
+
+inherited_control_prefix_examples:
+  - PE-
+  - CP-3
+  - CP-4
+
+notes: >
+  Populate inherited_authorization_status per agency boundary; defaults describe
+  common FedRAMP moderate hybrid posture without asserting a specific CSP ATO.

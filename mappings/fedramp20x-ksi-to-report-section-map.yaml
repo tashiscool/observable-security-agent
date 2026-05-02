@@ -1,0 +1,50 @@
+schema_version: "1.0"
+ksi_to_report_sections:
+  KSI-IAM-01:
+    assessor: [Identity and access evidence]
+    executive: [IAM posture]
+    ao: [AC / IA rollup]
+  KSI-LOG-01:
+    assessor: [Logging and monitoring evidence]
+    executive: [Detection and logging posture]
+    ao: [AU rollup]
+  KSI-VULN-01:
+    assessor: [Vulnerability management evidence]
+    executive: [Exposure posture]
+    ao: [RA / SI rollup]
+  KSI-CM-01:
+    assessor: [Change and POA&M evidence]
+    executive: [Change and remediation posture]
+    ao: [CM / CA rollup]
+  KSI-INV-01:
+    assessor: [Inventory evidence]
+    executive: [Asset visibility]
+    ao: [CM-8 rollup]
+  KSI-IR-01:
+    assessor: [Incident response evidence]
+    executive: [IR readiness]
+    ao: [IR rollup]
+  KSI-REC-01:
+    assessor: [Continuity evidence]
+    executive: [Recovery posture]
+    ao: [CP rollup]
+  KSI-SCRM-01:
+    assessor: [Supply chain evidence]
+    executive: [Third-party risk]
+    ao: [SA / SR rollup]
+  KSI-AGENT-01:
+    assessor: [AI agent identity and access evidence]
+    executive: [Agent IAM posture]
+    ao: [Agent AC / IA rollup]
+  KSI-AGENT-02:
+    assessor: [AI agent logging and monitoring evidence]
+    executive: [Agent telemetry posture]
+    ao: [Agent AU / SI rollup]
+  KSI-AGENT-03:
+    assessor: [AI agent incident response evidence]
+    executive: [Agentic misuse readiness]
+    ao: [Agent IR rollup]
+  KSI-AGENT-04:
+    assessor: [AI agent change governance evidence]
+    executive: [Agent tool change posture]
+    ao: [Agent CM / SA rollup]

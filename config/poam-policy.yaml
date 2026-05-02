@@ -1,0 +1,36 @@
+# POA&M generation policy — sample program defaults (no live customer data).
+
+schema_version: "1.0"
+
+severity_normalization:
+  medium: "moderate"
+
+default_status_open: "Open"
+poam_id_prefix_auto: "POAM-F20X"
+source_column_names:
+  - "Source Eval ID"
+  - "source_eval_id"
+
+# New canonical names (normalized to legacy keys at load time).
+due_days_by_severity:
+  critical: 15
+  high: 30
+  medium: 90
+  low: 180
+  info: 180
+
+risk_acceptance_required_for:
+  - "critical"
+  - "high"
+
+default_owners:
+  risk: "Example Chief Risk Officer (delegate)"
+  system: "Example System Owner (ISSO delegate)"
+
+closure_evidence_required: true
+
+customer_impact_templates:
+  critical: "Potential for severe service disruption, data exposure, or regulatory breach until remediated."
+  high: "Elevated exposure window with plausible exploitation or audit failure absent timely remediation."
+  medium: "Moderate residual risk; compensating monitoring may be needed until remediation completes."
+  low: "Limited exposure; routine remediation tracking applies."

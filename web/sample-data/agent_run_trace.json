@@ -1,0 +1,317 @@
+{
+  "schema_version": "1.0",
+  "bounded_playbook": true,
+  "provider": "fixture",
+  "scenario": "scenario_agentic_risk",
+  "scenario_root": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_agentic_risk",
+  "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic",
+  "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_run_20x",
+  "blocked_categories_reference": [
+    {
+      "id": "cloud_remediation",
+      "rationale": "Apply or revert changes in cloud accounts (CSP APIs)."
+    },
+    {
+      "id": "permission_change",
+      "rationale": "IAM / RBAC / policy mutations in live directories or clouds."
+    },
+    {
+      "id": "destructive_change",
+      "rationale": "Delete, overwrite production data, or modify non-local resources."
+    },
+    {
+      "id": "external_notification",
+      "rationale": "Email, Slack, PagerDuty, webhooks to third parties."
+    },
+    {
+      "id": "real_ticket_create",
+      "rationale": "Create or update tickets in Jira/ServiceNow/etc."
+    }
+  ],
+  "outputs": {
+    "trace_json": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_run_trace.json",
+    "summary_md": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_run_summary.md"
+  },
+  "steps": [
+    {
+      "phase": "observe",
+      "observation": {
+        "scenario_root": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_agentic_risk",
+        "evidence_file_count": 15,
+        "agent_telemetry_present": true,
+        "prior_artifacts": {
+          "eval_results.json": false,
+          "evidence_graph.json": false,
+          "agent_run_trace.json": false,
+          "agent_eval_results.json": false
+        }
+      },
+      "chosen_action": null,
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": null,
+      "verification": {
+        "status": "PASS",
+        "detail": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)"
+      },
+      "step_index": 0,
+      "timestamp": "2026-05-02T03:32:53.620600+00:00"
+    },
+    {
+      "phase": "plan",
+      "observation": {
+        "action_ids": [
+          "assess_run_evals",
+          "threat_hunt_agentic",
+          "normalize_findings",
+          "generate_instrumentation_recommendations",
+          "generate_poam_drafts",
+          "draft_tickets_json_only",
+          "build_20x_package",
+          "validate_assessment_outputs",
+          "validate_20x_package",
+          "reconcile_20x_reports"
+        ],
+        "notes": {
+          "eval_execution": "delegated to `agent.py assess` (all registered evals for bundle).",
+          "graph_and_reports": "produced inside assess (evidence_graph.json, markdown reports).",
+          "instrumentation": "instrumentation_plan.md and agent_instrumentation_plan.md from assess path.",
+          "poam_drafts": "poam.csv includes generated rows; agent_poam.csv when agent path runs.",
+          "tickets": "agent_draft_tickets.json only \u2014 no external systems.",
+          "blocked_categories": "cloud_remediation, permission_change, destructive_change, external_notification, real_ticket_create"
+        }
+      },
+      "chosen_action": "plan",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": null,
+      "verification": {
+        "status": "PASS",
+        "detail": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)"
+      },
+      "step_index": 1,
+      "timestamp": "2026-05-02T03:32:53.620726+00:00"
+    },
+    {
+      "phase": "act",
+      "observation": null,
+      "chosen_action": "assess_run_evals",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/eval_results.json",
+      "verification": {
+        "status": "PASS",
+        "detail": "Multi-Cloud Security Evidence Agent\n\nProvider: fixture\nScenario: scenario_agentic_risk\n\nAssets: 5\nEvents: 7\nScanner findings: 3\nAlert rules: 4\nTickets: 2\n\nEvaluations:\n[FAIL] CM-8 Inventory Reconciliation\n[FAIL] RA-5 Scanner Scope Coverage\n[FAIL] AU-6/AU-12 Centralized Log Coverage\n[FAIL] SI-4 Alert Instrumentation Coverage\n[FAIL] Cross-Domain Security Event Correlation\n[FAIL] RA-5(8) High/Critical Vulnerability Exploitation Review\n[FAIL] CM-3/SI-2 Change Evidence Linkage\n[FAIL] Agent tool governance\n[FAIL] Agent permission scope\n[FAIL] Agent memory context safety\n[FAIL] Agent approval gates\n[FAIL] Agent policy violations\n[PARTIAL] Agent auditability\n[OPEN] CA-5 POA&M rows generated\n\nArtifacts:\noutput_agentic/evidence_graph.json\noutput_agentic/eval_results.json\noutput_agentic/correlation_report.md\noutput_agentic/auditor_questions.md\noutput_agentic/instrumentation_plan.md\noutput_agentic/agent_instrumentation_plan.md\noutput_agentic/poam.csv\noutput_agentic/evidence_gap_matrix.csv\noutput_agentic/assessment_summary.json\noutput_agentic/agent_eval_results.json\noutput_agentic/agent_risk_report.md\noutput_agentic/agent_threat_hunt_findings.json\noutput_agentic/agent_poam.csv\noutput_agentic/secure_agent_architecture.md\n"
+      },
+      "step_index": 2,
+      "timestamp": "2026-05-02T03:32:53.819671+00:00"
+    },
+    {
+      "phase": "act",
+      "observation": null,
+      "chosen_action": "threat_hunt_agentic",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_threat_hunt_findings.json",
+      "verification": {
+        "status": "PASS",
+        "detail": "Threat hunt (agentic AI risk)\n\n  /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/threat_hunt_findings.json\n  /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/threat_hunt_timeline.md\n  /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agentic_risk_poam.csv\n  /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/threat_hunt_queries.md\n"
+      },
+      "step_index": 3,
+      "timestamp": "2026-05-02T03:32:54.011760+00:00"
+    },
+    {
+      "phase": "act",
+      "observation": null,
+      "chosen_action": "normalize_findings",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_normalized_findings.json",
+      "verification": {
+        "status": "PASS",
+        "detail": "wrote 20 rows"
+      },
+      "step_index": 4,
+      "timestamp": "2026-05-02T03:32:54.012537+00:00"
+    },
+    {
+      "phase": "act",
+      "observation": null,
+      "chosen_action": "generate_instrumentation_recommendations",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/instrumentation_plan.md",
+      "verification": {
+        "status": "PASS",
+        "detail": "instrumentation_plan.md=yes; agent_instrumentation_plan.md=yes"
+      },
+      "step_index": 5,
+      "timestamp": "2026-05-02T03:32:54.012559+00:00"
+    },
+    {
+      "phase": "act",
+      "observation": null,
+      "chosen_action": "generate_poam_drafts",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/poam.csv",
+      "verification": {
+        "status": "PASS",
+        "detail": "poam.csv=yes; agent_poam.csv=yes"
+      },
+      "step_index": 6,
+      "timestamp": "2026-05-02T03:32:54.012572+00:00"
+    },
+    {
+      "phase": "act",
+      "observation": null,
+      "chosen_action": "draft_tickets_json_only",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_draft_tickets.json",
+      "verification": {
+        "status": "PASS",
+        "detail": "draft tickets: 20"
+      },
+      "step_index": 7,
+      "timestamp": "2026-05-02T03:32:54.012901+00:00"
+    },
+    {
+      "phase": "act",
+      "observation": null,
+      "chosen_action": "build_20x_package",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_run_20x/fedramp20x-package.json",
+      "verification": {
+        "status": "PASS",
+        "detail": "Wrote package: /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_run_20x/fedramp20x-package.json\nReports under: /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_run_20x/reports\n"
+      },
+      "step_index": 8,
+      "timestamp": "2026-05-02T03:32:54.294817+00:00"
+    },
+    {
+      "phase": "act",
+      "observation": null,
+      "chosen_action": "validate_assessment_outputs",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/eval_results.json",
+      "verification": {
+        "status": "PASS",
+        "detail": "VALIDATION PASSED"
+      },
+      "step_index": 9,
+      "timestamp": "2026-05-02T03:32:54.295484+00:00"
+    },
+    {
+      "phase": "act",
+      "observation": null,
+      "chosen_action": "validate_20x_package",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_run_20x/fedramp20x-package.json",
+      "verification": {
+        "status": "PASS",
+        "detail": "FEDRAMP 20X PACKAGE SCHEMA: OK"
+      },
+      "step_index": 10,
+      "timestamp": "2026-05-02T03:32:54.306337+00:00"
+    },
+    {
+      "phase": "act",
+      "observation": null,
+      "chosen_action": "reconcile_20x_reports",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_run_20x",
+      "verification": {
+        "status": "PASS",
+        "detail": "RECONCILIATION: PASS\n"
+      },
+      "step_index": 11,
+      "timestamp": "2026-05-02T03:32:54.500730+00:00"
+    },
+    {
+      "phase": "explain",
+      "observation": {
+        "steps_completed": 12
+      },
+      "chosen_action": "write_agent_run_summary",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_run_summary.md",
+      "verification": {
+        "status": "PASS",
+        "detail": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)"
+      },
+      "step_index": 12,
+      "timestamp": "2026-05-02T03:32:54.500812+00:00"
+    },
+    {
+      "phase": "explain",
+      "observation": null,
+      "chosen_action": "write_trace_json",
+      "policy": {
+        "allowed": true,
+        "reason": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)",
+        "category": "autonomous"
+      },
+      "output_artifact": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/output_agentic/agent_run_trace.json",
+      "verification": {
+        "status": "PASS",
+        "detail": "listed in AUTONOMOUS_ACTION_IDS (local evidence only)"
+      },
+      "step_index": 13,
+      "timestamp": "2026-05-02T03:32:54.500817+00:00"
+    }
+  ],
+  "plan_rationale": "Fixture `scenario_agentic_risk` with agent_telemetry=True: run correlation evals + optional threat hunt, normalize outputs, emit draft ticket JSON, build and validate 20x package, reconcile, then summarize.",
+  "plan_notes": {
+    "eval_execution": "delegated to `agent.py assess` (all registered evals for bundle).",
+    "graph_and_reports": "produced inside assess (evidence_graph.json, markdown reports).",
+    "instrumentation": "instrumentation_plan.md and agent_instrumentation_plan.md from assess path.",
+    "poam_drafts": "poam.csv includes generated rows; agent_poam.csv when agent path runs.",
+    "tickets": "agent_draft_tickets.json only \u2014 no external systems.",
+    "blocked_categories": "cloud_remediation, permission_change, destructive_change, external_notification, real_ticket_create"
+  }
+}

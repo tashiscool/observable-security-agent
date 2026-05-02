@@ -1,0 +1,54 @@
+[
+  {
+    "_comment": "Primary — public SSH SG rule on prod-api-01; linked change ticket exists (partial CM-3 evidence).",
+    "_format": "aws_cloudtrail",
+    "_primary": true,
+    "_asset_id": "prod-api-01",
+    "detail": {
+      "eventVersion": "1.11",
+      "eventSource": "ec2.amazonaws.com",
+      "eventName": "AuthorizeSecurityGroupIngress",
+      "eventTime": "2026-05-01T10:42:00Z",
+      "awsRegion": "us-east-1",
+      "recipientAccountId": "111122223333",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "alice",
+        "arn": "arn:aws:iam::111122223333:user/alice"
+      },
+      "requestParameters": {
+        "groupId": "sg-0123456789prodapi",
+        "ipPermissions": {
+          "items": [
+            {
+              "ipProtocol": "tcp",
+              "fromPort": 22,
+              "toPort": 22,
+              "ipRanges": {
+                "items": [{ "cidrIp": "0.0.0.0/0" }]
+              }
+            }
+          ]
+        }
+      },
+      "responseElements": {
+        "requestId": "req-public-admin-20x-001",
+        "_return": true
+      }
+    }
+  },
+  {
+    "_comment": "MFA disabled on prod-lb-01 edge role — no ticket linked to this asset (cross-domain PARTIAL for KSI-IR-01); not a CM-3 risky-change semantic.",
+    "event_type": "identity.mfa_disabled",
+    "provider": "aws",
+    "actor": "edge-admin@example.com",
+    "asset_id": "prod-lb-01",
+    "resource_id": "arn:aws:iam::111122223333:user/alb-breakglass",
+    "timestamp": "2026-05-01T10:50:00Z",
+    "raw_event_ref": "fixture:20x-mfa-disabled-prod-lb-001",
+    "metadata": {
+      "serial_mfa_device_removed": true,
+      "console_session": true
+    }
+  }
+]

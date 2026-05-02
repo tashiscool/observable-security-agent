@@ -1,0 +1,71 @@
+# Human-readable reporting layout — filenames and audiences (sample values only).
+
+schema_version: "1.0"
+
+program:
+  display_name_key: "system.short_name"
+  full_title_key: "system.description"
+
+# Audience registry (documentation; primary filenames remain under ``reports``).
+audiences:
+  independent_assessor:
+    description: "3PAO / assessor — KSI-by-KSI evidence and methodology."
+  executive_sponsor:
+    description: "Leadership — readiness, headline risk, and investment framing."
+  authorizing_official:
+    description: "AO / DAO — residual risk and acceptance posture."
+  engineer:
+    description: "Implementation teams — actionable remediation and artifact names."
+
+report_sections:
+  assessor_bundle:
+    - "assessor-summary"
+    - "ksi-by-ksi-assessment"
+    - "evidence-index"
+    - "validation-methodology"
+    - "exceptions-manual"
+    - "poam"
+  executive_bundle:
+    - "executive-summary"
+    - "security-posture-dashboard"
+    - "authorization-readiness"
+    - "major-risks"
+  agency_ao_bundle:
+    - "ao-risk-brief"
+    - "inherited-controls-summary"
+
+tone_rules:
+  use_evidence_only_language: true
+  distinguish_evidence_gap_from_control_failure: true
+  cite_artifact_names: true
+
+required_reconciliation_checks:
+  - "REC-001"
+  - "REC-002"
+  - "REC-003"
+  - "REC-004"
+  - "REC-005"
+  - "REC-006"
+  - "REC-007"
+  - "REC-008"
+  - "REC-009"
+  - "REC-010"
+
+reports:
+  assessor:
+    filename: "assessor-summary.md"
+    audience: "independent_assessor"
+  executive:
+    filename: "executive-summary.md"
+    audience: "executive_sponsor"
+  agency_ao:
+    filename: "ao-risk-brief.md"
+    audience: "authorizing_official"
+
+reconciliation:
+  filename: "reconciliation_report.md"
+  include_sha256_of_package: true
+
+machine_readable:
+  primary_package_filename: "fedramp20x-package.json"
+  manifest_filename: "package.manifest.json"

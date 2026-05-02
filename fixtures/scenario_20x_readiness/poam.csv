@@ -1,0 +1,8 @@
+poam_id,weakness_name,controls,raw_severity,status,asset_identifier,notes,source_eval_id
+POAM-20X-LEGACY-014,Legacy scanner group missing RDS subnet targets,"RA-5;CA-7",moderate,open,prod-db-01,Pre-existing POA&M row (human),
+POAM-SEED-CM8,Declared inventory does not cover discovered in-boundary production asset,"CA-5;CP-9",high,open,organization-wide,Pre-seeded so CA-5 eval de-duplicates against FAIL gap,CM8_INVENTORY_RECONCILIATION
+POAM-SEED-RA5EXP,No exploitation-review evidence for High vulnerability,"CA-5;CP-9",high,open,organization-wide,Pre-seeded for RA-5(8) gap,RA5_EXPLOITATION_REVIEW
+POAM-SEED-AU6,No central log ingestion for production compute asset,"CA-5;CP-9",moderate,open,organization-wide,Pre-seeded for AU-6 partial,AU6_CENTRALIZED_LOG_COVERAGE
+POAM-SEED-SI4,No enabled alert for public administrative-port exposure,"CA-5;CP-9",moderate,open,organization-wide,Pre-seeded for SI-4 partial,SI4_ALERT_INSTRUMENTATION
+POAM-SEED-CROSS,Incomplete cross-domain security event correlation evidence,"CA-5;CP-9",moderate,open,organization-wide,Pre-seeded for correlation partial,CROSS_DOMAIN_EVENT_CORRELATION
+POAM-SEED-CM3,No linked change approval for firewall/security rule change,"CA-5;CP-9",moderate,open,organization-wide,Pre-seeded for CM-3 partial,CM3_CHANGE_EVIDENCE_LINKAGE

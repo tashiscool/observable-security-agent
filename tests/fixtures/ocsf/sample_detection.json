@@ -1,0 +1,16 @@
+{
+  "class_uid": 2004,
+  "category_uid": 2,
+  "activity_name": "Create",
+  "metadata": { "uid": "550e8400-e29b-41d4-a716-446655440000", "product": { "name": "Fixture" } },
+  "time": 1704000000000,
+  "severity_id": 5,
+  "status": "Open",
+  "finding_info": {
+    "title": "Public SSH ingress detected",
+    "desc": "Security group allows 0.0.0.0/0 to tcp/22",
+    "uid": "sub-finding-1"
+  },
+  "resource": { "uid": "arn:aws:ec2:us-east-1:111122223333:security-group/sg-fixture", "region": "us-east-1" },
+  "cloud": { "provider": "aws", "account": { "uid": "111122223333" } }
+}

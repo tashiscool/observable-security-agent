@@ -1,0 +1,32 @@
+[
+  {
+    "memory_event_id": "mem-ctx-ticket-4477",
+    "agent_id": "support-ticket-agent",
+    "timestamp": "2026-05-01T14:00:20Z",
+    "memory_type": "external_context",
+    "action": "read",
+    "sensitivity": "internal",
+    "source": "zendesk-webhook:batch-12/ticket/TICK-4477/plaintext",
+    "policy_decision": "allowed"
+  },
+  {
+    "memory_event_id": "mem-lt-pii-warn",
+    "agent_id": "support-ticket-agent",
+    "timestamp": "2026-05-01T14:02:30Z",
+    "memory_type": "long_term",
+    "action": "write",
+    "sensitivity": "pii",
+    "source": "session_buffer:customer_contact_fields",
+    "policy_decision": "warned"
+  },
+  {
+    "memory_event_id": "mem-vec-retrieve",
+    "agent_id": "support-ticket-agent",
+    "timestamp": "2026-05-01T14:03:05Z",
+    "memory_type": "vector",
+    "action": "retrieve",
+    "sensitivity": "internal",
+    "source": "trusted:vector-store/snippets-v1",
+    "policy_decision": "allowed"
+  }
+]

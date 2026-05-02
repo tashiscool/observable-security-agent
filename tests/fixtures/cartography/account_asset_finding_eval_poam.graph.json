@@ -1,0 +1,50 @@
+{
+  "version": "3.0",
+  "nodes": [
+    {
+      "type": "cloud_account",
+      "id": "aws:111122223333",
+      "data": { "scope_id": "aws:111122223333", "provider": "aws", "account_id": "111122223333" }
+    },
+    {
+      "type": "asset",
+      "id": "i-carto1",
+      "data": { "asset_id": "i-carto1", "name": "app-ec2", "provider": "aws" }
+    },
+    {
+      "type": "scanner_finding",
+      "id": "finding-carto-1",
+      "data": { "finding_id": "finding-carto-1", "title": "SSH open" }
+    },
+    {
+      "type": "evaluation",
+      "id": "eval-ksi-1",
+      "data": { "eval_id": "eval-ksi-1", "name": "KSI coverage", "result": "FAIL" }
+    },
+    {
+      "type": "poam_item",
+      "id": "poam-carto-1",
+      "data": { "poam_id": "poam-carto-1", "title": "Close SSH" }
+    }
+  ],
+  "edges": [
+    {
+      "from": "asset::i-carto1",
+      "to": "cloud_account::aws:111122223333",
+      "relationship": "BELONGS_TO_ACCOUNT",
+      "data": {}
+    },
+    {
+      "from": "asset::i-carto1",
+      "to": "scanner_finding::finding-carto-1",
+      "relationship": "HAS_FINDING",
+      "data": {}
+    },
+    {
+      "from": "evaluation::eval-ksi-1",
+      "to": "poam_item::poam-carto-1",
+      "relationship": "TRACKED_BY_POAM",
+      "data": {}
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:20x-readiness-demo-0001",
+  "metadata": {
+    "component": {
+      "type": "application",
+      "name": "fedramp-20x-readiness-api",
+      "version": "2.4.1"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "openssl",
+      "version": "3.2.1",
+      "purl": "pkg:generic/openssl@3.2.1"
+    },
+    {
+      "type": "library",
+      "name": "spring-boot",
+      "version": "3.2.5",
+      "purl": "pkg:maven/org.springframework.boot/spring-boot@3.2.5"
+    }
+  ]
+}

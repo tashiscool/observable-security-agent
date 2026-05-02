@@ -1,0 +1,10 @@
+{
+  "name": "@cloudgraph/cli",
+  "description": "Scan your cloud infrastructure data and query it with GraphQL",
+  "version": "0.25.1",
+  "license": "MPL-2.0",
+  "bin": {
+    "cg": "./bin/run"
+  },
+  "bugs": "https://github.com/cloudgraphdev/cli/issues"
+}

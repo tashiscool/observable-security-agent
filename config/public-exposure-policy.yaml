@@ -1,0 +1,370 @@
+# Public exposure & recon semantics — provider-neutral policy (AWS SG today; Azure NSG / GCP firewall later).
+# Reference harvest: docs/public_exposure_reference_harvest.md
+# Port/check alignment: reference_samples/electriceye/checks/electriceye_secgroup_auditor_config.json
+schema_version: "2.0"
+description: >
+  Maps well-known listening ports and scanner check metadata to SemanticType values.
+  AWS security-group and CloudTrail normalizers resolve ports via semantic_type_for_exposed_port();
+  Azure/GCP adapters can share the same catalog.
+
+services:
+  - service_name: ssh
+    ports: [22]
+    semantic_type: network.public_admin_port_opened
+    severity: critical
+    controls: [SC-7, SC-7(3), CM-7, AC-17]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-CM-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Remove 0.0.0.0/0 ingress on 22; use SSM/session manager, bastion, or VPN with MFA.
+    generated_query_keywords: [ssh, "port 22", "0.0.0.0/0", AuthorizeSecurityGroupIngress, "security-group-22"]
+    match_check_id_substrings: ["security-group-22", "port_22", "ssh", "electriceye_secgroup"]
+
+  - service_name: rdp
+    ports: [3389]
+    semantic_type: network.public_admin_port_opened
+    severity: critical
+    controls: [SC-7, SC-7(3), CM-7, AC-17]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-CM-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Restrict RDP with VPN/Zero Trust; disable 0.0.0.0/0; enforce NLA and patching.
+    generated_query_keywords: [rdp, "3389", "security-group-rdp"]
+    match_check_id_substrings: ["security-group-rdp", "rdp", "3389"]
+
+  - service_name: telnet
+    ports: [23]
+    semantic_type: network.public_admin_port_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-17]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-CM-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Disable Telnet; replace with SSH over private paths only.
+    generated_query_keywords: [telnet, "port 23", "security-group-telnet"]
+    match_check_id_substrings: ["telnet", "security-group-telnet"]
+
+  - service_name: ftp
+    ports: [20, 21]
+    semantic_type: network.public_admin_port_opened
+    severity: high
+    controls: [SC-7, CM-7, AC-17]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-CM-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Block anonymous FTP; use SFTP/FTPS behind private connectivity only.
+    generated_query_keywords: [ftp, "port 21", ftps]
+    match_check_id_substrings: ["ftp", "security-group-ftp"]
+
+  - service_name: smtp
+    ports: [25, 465, 587]
+    semantic_type: network.public_sensitive_service_opened
+    severity: high
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Relay through approved mail gateways; restrict ingress to postmaster paths.
+    generated_query_keywords: [smtp, "port 25", "security-group-smtp", "Secure Mail Transfer"]
+    match_check_id_substrings: ["smtp", "security-group-smtp"]
+
+  - service_name: smb
+    ports: [139, 445]
+    semantic_type: network.public_sensitive_service_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Never expose SMB to the internet; isolate behind VPN/private endpoints.
+    generated_query_keywords: [smb, "port 445", netbios, "security-group-winnetbios"]
+    match_check_id_substrings: ["netbios", "smb", "winnetbios", "security-group-winnetbios"]
+
+  - service_name: microsoft_sql_server
+    ports: [1433, 1434]
+    semantic_type: network.public_database_port_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Remove public listeners; private link / NSG or SG restriction to app tier only.
+    generated_query_keywords: [mssql, sqlserver, "1433", "security-group-mssql"]
+    match_check_id_substrings: ["mssql", "sql-server", "security-group-mssql", "port_1433"]
+
+  - service_name: mysql_mariadb
+    ports: [3306]
+    semantic_type: network.public_database_port_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Restrict DB security groups; require TLS in transit; no 0.0.0.0/0.
+    generated_query_keywords: [mysql, "3306", mariadb, "security-group-mysql"]
+    match_check_id_substrings: ["mysql", "mariadb", "security-group-mysql", "port_3306"]
+
+  - service_name: postgresql
+    ports: [5432]
+    semantic_type: network.public_database_port_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Use private subnets and security groups; rotate creds if exposure confirmed.
+    generated_query_keywords: [postgresql, postgres, "5432", "security-group-postgresql"]
+    match_check_id_substrings: ["postgres", "postgresql", "security-group-postgres", "port_5432"]
+
+  - service_name: oracle_db
+    ports: [1521]
+    semantic_type: network.public_database_port_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Isolate listener; enforce TNS encryption; revoke public ingress.
+    generated_query_keywords: [oracledb, oracle, "1521", "security-group-oracle"]
+    match_check_id_substrings: ["oracle", "oracledb", "security-group-oracle", "port_1521"]
+
+  - service_name: aws_redshift
+    ports: [5439]
+    semantic_type: network.public_database_port_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Remove public accessibility; require VPC routes and scoped SGs.
+    generated_query_keywords: [redshift, "5439", "security-group-redshift"]
+    match_check_id_substrings: ["redshift", "security-group-redshift"]
+
+  - service_name: cassandra_keyspaces
+    ports: [9142]
+    semantic_type: network.public_database_port_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Restrict CQL port to app subnets; enable auth and TLS.
+    generated_query_keywords: [cassandra, keyspaces, "9142", "security-group-cassandra"]
+    match_check_id_substrings: ["cassandra", "keyspaces", "security-group-cassandra"]
+
+  - service_name: mongodb_documentdb
+    ports: [27017]
+    semantic_type: network.public_database_port_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Enable auth; remove 0.0.0.0/0; use VPC peering or PrivateLink.
+    generated_query_keywords: [mongodb, documentdb, "27017", "security-group-documentdb"]
+    match_check_id_substrings: ["mongo", "documentdb", "security-group-documentdb"]
+
+  - service_name: redis
+    ports: [6379, 6380]
+    semantic_type: network.public_sensitive_service_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Require AUTH/TLS; security group to app tier only; disable dangerous commands exposure.
+    generated_query_keywords: [redis, "6379", "security-group-redis", elasticache]
+    match_check_id_substrings: ["redis", "elasticache-redis", "security-group-redis"]
+
+  - service_name: elasticsearch_kibana_opensearch
+    ports: [9200, 9300, 5601]
+    semantic_type: network.public_sensitive_service_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Place behind auth proxy; enable Fine-Grained Access; no anonymous binds.
+    generated_query_keywords: [elasticsearch, kibana, opensearch, "9200", "5601"]
+    match_check_id_substrings: ["elastic", "elasticsearch", "kibana", "opensearch"]
+
+  - service_name: kafka_streams
+    ports: [9092]
+    semantic_type: network.public_sensitive_service_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Use mTLS/SASL; private connectivity; no public plaintext brokers.
+    generated_query_keywords: [kafka, "9092", "security-group-kafka", "Kafka streams"]
+    match_check_id_substrings: ["kafka", "security-group-kafka"]
+
+  - service_name: kubernetes_api_kubelet
+    ports: [6443, 10250]
+    semantic_type: network.public_sensitive_service_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Restrict API server and kubelet to authorized networks; enable audit and RBAC reviews.
+    generated_query_keywords: [kubernetes, kubelet, "6443", "10250", "security-group-k8sapi", k8sapi]
+    match_check_id_substrings: ["k8sapi", "k8s", "kubernetes", "eks", "security-group-k8s"]
+
+  - service_name: docker_engine_api
+    ports: [2375, 2376]
+    semantic_type: network.public_sensitive_service_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Never expose Docker TCP API; use SSH tunnel or Docker context over mTLS.
+    generated_query_keywords: [docker, "2375", "2376", "security-group-docker"]
+    match_check_id_substrings: ["docker", "security-group-docker"]
+
+  - service_name: nfs_efs
+    ports: [2049]
+    semantic_type: network.public_sensitive_service_opened
+    severity: critical
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Restrict NFS to trusted CIDRs; prefer EFS mount targets in private subnets.
+    generated_query_keywords: [nfs, efs, "2049", "security-group-nfs", "Amazon EFS"]
+    match_check_id_substrings: ["nfs", "efs", "security-group-nfs"]
+
+  - service_name: splunk
+    ports: [8000, 8088, 8089, 9997]
+    semantic_type: network.public_sensitive_service_opened
+    severity: high
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Front with SSO/reverse proxy; lock management and HEC ports to admin nets.
+    generated_query_keywords: [splunk, hec, "8000", "8089", deployment_server]
+
+  - service_name: rabbitmq_amazonmq
+    ports: [5671, 5672, 61614, 61617]
+    semantic_type: network.public_sensitive_service_opened
+    severity: high
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-VULN-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Enforce TLS and auth; restrict broker SGs to producers/consumers only.
+    generated_query_keywords: [rabbitmq, amazonmq, amqp, "5672", "security-group-rabbitmq", "AmazonMQ"]
+    match_check_id_substrings: ["rabbitmq", "amazonmq", "amqp", "security-group-rabbitmq"]
+
+  - service_name: jenkins
+    ports: [8080, 8443]
+    semantic_type: network.public_sensitive_service_opened
+    severity: high
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-CM-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Require SSO; disable anonymous read; IP allowlist or private connectivity.
+    generated_query_keywords: [jenkins, "8080", "/script", "/manage"]
+
+  - service_name: openvpn_and_vpn_admin
+    ports: [1194, 943, 9433]
+    semantic_type: network.public_sensitive_service_opened
+    severity: high
+    controls: [SC-7, CM-7, AC-17]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-CM-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: false
+    default_remediation: Verify VPN profiles require cert/MFA; restrict AS admin UI to operations nets.
+    generated_query_keywords: [openvpn, "1194", "943", "security-group-openvpn"]
+    match_check_id_substrings: ["openvpn", "security-group-openvpn"]
+
+  - service_name: generic_web_admin_panels
+    ports: [443, 8888, 9000, 9090, 10443, 9443]
+    semantic_type: network.public_sensitive_service_opened
+    severity: high
+    controls: [SC-7, CM-7, AC-4]
+    linked_ksi_ids: [KSI-INV-01, KSI-LOG-01, KSI-CM-01]
+    alert_required: true
+    scanner_required: true
+    exploitation_review_required_if_vulnerable: true
+    default_remediation: Require authn/z, WAF, IP allowlists; separate admin from customer-facing endpoints.
+    generated_query_keywords: [admin, "/admin", "443", servlet, console]
+
+# ElectricEye / regex fallback rules (substring + title) — merged with per-service match_check_id_substrings.
+rules:
+  - id: admin_port_from_internet
+    semantic_type: network.public_admin_port_opened
+    match_check_id_substrings:
+      - "port_22"
+      - "port_3389"
+      - "ssh"
+      - "rdp"
+      - "security-group-22"
+      - "security-group-rdp"
+      - "telnet"
+      - "security-group-telnet"
+    match_title_regex: "(?i)(ssh|rdp|3389|port\\s*22|0\\.0\\.0\\.0/0.*22|admin)"
+
+  - id: database_from_internet
+    semantic_type: network.public_database_port_opened
+    match_check_id_substrings:
+      - "port_3306"
+      - "port_5432"
+      - "port_1433"
+      - "port_1521"
+      - "mysql"
+      - "postgresql"
+      - "mssql"
+      - "oracledb"
+    match_title_regex: "(?i)(mysql|postgres|mssql|oracle|3306|5432|1433|1521|rds|documentdb|mongo|redshift)"
+
+  - id: sensitive_service_from_internet
+    semantic_type: network.public_sensitive_service_opened
+    match_check_id_substrings:
+      - "kafka"
+      - "docker"
+      - "k8s"
+      - "k8sapi"
+      - "rabbitmq"
+      - "elastic"
+      - "nfs"
+      - "smtp"
+      - "splunk"
+      - "jenkins"
+      - "memcached"
+      - "openvpn"
+    match_title_regex: "(?i)(kubernetes|kubelet|6443|docker\\s*api|2375|kafka|elasticsearch|kibana|opensearch|redis|splunk|rabbitmq|amazonmq|nfs|2049|smtp|memcached|jenkins)"
+
+# Per-semantic exposure_rank used when summarizing CloudTrail AuthorizeSecurityGroupIngress (worst-wins).
+exposure_rank:
+  network.public_admin_port_opened: 50
+  network.public_database_port_opened: 40
+  network.public_sensitive_service_opened: 35
+  network.firewall_rule_changed: 10

@@ -1,0 +1,359 @@
+{
+  "mappings": {
+    "KSI-IAM": {
+      "description": "Identity and Access Management",
+      "evidence_sources": [
+        {
+          "source": "AWS",
+          "apis": [
+            "iam:ListUsers",
+            "iam:GetUser",
+            "iam:ListMFADevices",
+            "iam:ListGroupsForUser",
+            "iam:ListAttachedUserPolicies",
+            "iam:GetLoginProfile"
+          ],
+          "evaluation_method": "automated"
+        },
+        {
+          "source": "Drata",
+          "controls": [
+            "ACCESS-01",
+            "ACCESS-02",
+            "MFA-REQUIRED"
+          ],
+          "evaluation_method": "integrated"
+        }
+      ],
+      "validations": [
+        {
+          "id": "KSI-IAM-1",
+          "description": "MFA for privileged users",
+          "logic": "ALL privileged users MUST have MFA enabled"
+        },
+        {
+          "id": "KSI-IAM-2", 
+          "description": "Password policy compliance",
+          "logic": "Password policy MUST meet NIST 800-63B requirements"
+        },
+        {
+          "id": "KSI-IAM-3",
+          "description": "Access reviews",
+          "logic": "Quarterly access reviews MUST be completed and documented"
+        }
+      ]
+    },
+    "KSI-CNA": {
+      "description": "Cloud Native Architecture",
+      "evidence_sources": [
+        {
+          "source": "AWS",
+          "apis": [
+            "ecs:ListTaskDefinitions",
+            "ecs:DescribeTaskDefinition",
+            "eks:ListClusters",
+            "eks:DescribeCluster",
+            "lambda:ListFunctions",
+            "lambda:GetFunction"
+          ],
+          "evaluation_method": "automated"
+        },
+        {
+          "source": "WIZ",
+          "scanners": [
+            "container-security",
+            "kubernetes-compliance",
+            "serverless-security"
+          ],
+          "evaluation_method": "ai-validated"
+        }
+      ],
+      "validations": [
+        {
+          "id": "KSI-CNA-1",
+          "description": "Container immutability",
+          "logic": "Containers MUST use read-only root filesystems"
+        },
+        {
+          "id": "KSI-CNA-2",
+          "description": "Microservices architecture",
+          "logic": "Services MUST be independently deployable and scalable"
+        },
+        {
+          "id": "KSI-CNA-3",
+          "description": "Infrastructure as Code",
+          "logic": "ALL infrastructure MUST be defined in version-controlled IaC"
+        }
+      ]
+    },
+    "KSI-MLA": {
+      "description": "Monitoring, Logging, and Auditing",
+      "evidence_sources": [
+        {
+          "source": "AWS",
+          "apis": [
+            "cloudtrail:DescribeTrails",
+            "cloudtrail:GetTrailStatus",
+            "cloudwatch:DescribeAlarms",
+            "logs:DescribeLogGroups",
+            "config:DescribeConfigurationRecorders"
+          ],
+          "evaluation_method": "automated"
+        },
+        {
+          "source": "WIZ",
+          "scanners": [
+            "logging-compliance",
+            "monitoring-coverage"
+          ],
+          "evaluation_method": "automated"
+        }
+      ],
+      "validations": [
+        {
+          "id": "KSI-MLA-1",
+          "description": "CloudTrail multi-region",
+          "logic": "CloudTrail MUST be enabled in all regions with validation"
+        },
+        {
+          "id": "KSI-MLA-2",
+          "description": "Log retention",
+          "logic": "Logs MUST be retained for minimum 90 days"
+        },
+        {
+          "id": "KSI-MLA-3",
+          "description": "Security monitoring",
+          "logic": "GuardDuty MUST be enabled with high severity alerts"
+        }
+      ]
+    },
+    "KSI-SC": {
+      "description": "Service Configuration",
+      "evidence_sources": [
+        {
+          "source": "AWS",
+          "apis": [
+            "s3:ListBuckets",
+            "s3:GetBucketEncryption",
+            "ec2:DescribeInstances",
+            "rds:DescribeDBInstances",
+            "elasticloadbalancing:DescribeLoadBalancers"
+          ],
+          "evaluation_method": "automated"
+        },
+        {
+          "source": "WIZ",
+          "scanners": [
+            "configuration-compliance",
+            "cis-benchmarks"
+          ],
+          "evaluation_method": "ai-validated"
+        }
+      ],
+      "validations": [
+        {
+          "id": "KSI-SC-1",
+          "description": "Encryption at rest",
+          "logic": "ALL data stores MUST have encryption enabled"
+        },
+        {
+          "id": "KSI-SC-2",
+          "description": "Network segmentation",
+          "logic": "Production MUST be isolated from non-production"
+        },
+        {
+          "id": "KSI-SC-3",
+          "description": "Secure defaults",
+          "logic": "Services MUST follow security hardening guidelines"
+        }
+      ]
+    },
+    "KSI-CM": {
+      "description": "Change Management",
+      "evidence_sources": [
+        {
+          "source": "Drata",
+          "controls": [
+            "CHANGE-01",
+            "CHANGE-02",
+            "APPROVAL-WORKFLOW"
+          ],
+          "evaluation_method": "integrated"
+        },
+        {
+          "source": "GitHub",
+          "apis": [
+            "pulls",
+            "commits",
+            "deployments"
+          ],
+          "evaluation_method": "ai-validated"
+        }
+      ],
+      "validations": [
+        {
+          "id": "KSI-CM-1",
+          "description": "Change approval process",
+          "logic": "ALL production changes MUST have documented approval"
+        },
+        {
+          "id": "KSI-CM-2",
+          "description": "Emergency change procedures",
+          "logic": "Emergency process MUST be defined and tested"
+        }
+      ]
+    },
+    "KSI-PI": {
+      "description": "Privacy Impact",
+      "evidence_sources": [
+        {
+          "source": "Drata",
+          "controls": [
+            "PRIVACY-01",
+            "DATA-CLASS",
+            "PII-HANDLING"
+          ],
+          "evaluation_method": "integrated"
+        },
+        {
+          "source": "AWS",
+          "apis": [
+            "macie:ListFindings",
+            "s3:GetBucketTagging"
+          ],
+          "evaluation_method": "ai-validated"
+        }
+      ],
+      "validations": [
+        {
+          "id": "KSI-PI-1",
+          "description": "PII identification",
+          "logic": "PII MUST be identified and classified"
+        },
+        {
+          "id": "KSI-PI-2",
+          "description": "Privacy controls",
+          "logic": "Privacy controls MUST be implemented for PII"
+        }
+      ]
+    },
+    "KSI-3IR": {
+      "description": "Incident Response",
+      "evidence_sources": [
+        {
+          "source": "Drata",
+          "controls": [
+            "IR-01",
+            "IR-PLAN",
+            "IR-TEST"
+          ],
+          "evaluation_method": "integrated"
+        },
+        {
+          "source": "AWS",
+          "apis": [
+            "guardduty:ListFindings",
+            "securityhub:GetFindings"
+          ],
+          "evaluation_method": "automated"
+        }
+      ],
+      "validations": [
+        {
+          "id": "KSI-3IR-1",
+          "description": "IR plan existence",
+          "logic": "Current IR plan MUST exist and be tested"
+        },
+        {
+          "id": "KSI-3IR-2",
+          "description": "Incident detection",
+          "logic": "Automated incident detection MUST be configured"
+        }
+      ]
+    },
+    "KSI-CD": {
+      "description": "Continuous Diagnostics",
+      "evidence_sources": [
+        {
+          "source": "AWS",
+          "apis": [
+            "inspector:ListFindings",
+            "ssm:DescribeInstancePatchStates",
+            "config:DescribeComplianceByConfigRule"
+          ],
+          "evaluation_method": "automated"
+        },
+        {
+          "source": "WIZ",
+          "scanners": [
+            "vulnerability-management",
+            "compliance-monitoring"
+          ],
+          "evaluation_method": "automated"
+        }
+      ],
+      "validations": [
+        {
+          "id": "KSI-CD-1",
+          "description": "Continuous scanning",
+          "logic": "Vulnerability scanning MUST run continuously"
+        },
+        {
+          "id": "KSI-CD-2",
+          "description": "Patch management",
+          "logic": "Critical patches MUST be applied within SLA"
+        }
+      ]
+    },
+    "KSI-IR": {
+      "description": "Inventory and Risk",
+      "evidence_sources": [
+        {
+          "source": "AWS",
+          "apis": [
+            "All service List/Describe APIs",
+            "resourcegroupstaggingapi:GetResources"
+          ],
+          "evaluation_method": "automated"
+        },
+        {
+          "source": "Knox AI",
+          "scanners": [
+            "multi-account-discovery",
+            "resource-classification"
+          ],
+          "evaluation_method": "automated"
+        }
+      ],
+      "validations": [
+        {
+          "id": "KSI-IR-1",
+          "description": "Complete inventory",
+          "logic": "ALL resources MUST be discovered and cataloged"
+        },
+        {
+          "id": "KSI-IR-2",
+          "description": "Risk assessment",
+          "logic": "Risk scores MUST be assigned to all assets"
+        }
+      ]
+    }
+  },
+  "evaluation_methods": {
+    "automated": {
+      "description": "Direct API queries with deterministic logic",
+      "accuracy": 100,
+      "speed": "fast"
+    },
+    "ai-validated": {
+      "description": "AI analysis of complex relationships and patterns",
+      "accuracy": 98,
+      "speed": "medium"
+    },
+    "integrated": {
+      "description": "Data from integrated third-party platforms",
+      "accuracy": 95,
+      "speed": "fast"
+    }
+  }
+}

@@ -1,0 +1,1718 @@
+{
+  "schema_version": "1.0",
+  "poam_items": [
+    {
+      "poam_id": "POAM-F20X-D-SI4-ALERT-INSTRUMENTATION-7712019CD417",
+      "finding_id": "FIND-SI4-ALERT-INSTRUMENTATION-7712019CD417",
+      "title": "SI-4 Alert Instrumentation Coverage",
+      "severity": "high",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-06-01",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Implement or enable SIEM detection for the assessed semantic with accountable recipients.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Add on-call / governance distribution lists to the rule.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-09"
+        },
+        {
+          "step": 3,
+          "description": "Generate sample alert payload or saved-search proof with timestamps.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-16"
+        },
+        {
+          "step": 4,
+          "description": "Link alert to incident or change response workflow.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-22"
+        },
+        {
+          "step": 5,
+          "description": "Re-run SI-4 alert instrumentation evaluation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-28"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Elevated exposure window with plausible exploitation or audit failure absent timely remediation.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2(4)",
+        "AC-2(7)",
+        "AU-5",
+        "AU-6",
+        "CM-10",
+        "CM-11",
+        "CM-8(3)",
+        "SI-3",
+        "SI-4",
+        "SI-4(1)",
+        "SI-4(16)",
+        "SI-4(4)"
+      ],
+      "linked_eval_ids": [
+        "SI4_ALERT_INSTRUMENTATION"
+      ],
+      "controls": "AC-2(4); AC-2(7); AU-5; AU-6; CM-10; CM-11; CM-8(3); SI-3; SI-4; SI-4(1); SI-4(16); SI-4(4)",
+      "weakness_name": "SI-4 Alert Instrumentation Coverage",
+      "weakness_description": "No evidence was provided showing an enabled, accountable alert path exists for the assessed risk signal affecting `logging.audit_disabled`. Observed gap: No alert rules are defined while security-relevant semantic events require instrumentation.",
+      "asset_identifier": "logging.audit_disabled; network.public_admin_port_opened",
+      "source_eval_id": "SI4_ALERT_INSTRUMENTATION",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-D-SI4-ALERT-INSTRUMENTATION-3B5CDDC852D6",
+      "finding_id": "FIND-SI4-ALERT-INSTRUMENTATION-3B5CDDC852D6",
+      "title": "SI-4 Alert Instrumentation Coverage",
+      "severity": "high",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-06-01",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Implement or enable SIEM detection for the assessed semantic with accountable recipients.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Add on-call / governance distribution lists to the rule.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-09"
+        },
+        {
+          "step": 3,
+          "description": "Generate sample alert payload or saved-search proof with timestamps.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-16"
+        },
+        {
+          "step": 4,
+          "description": "Link alert to incident or change response workflow.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-22"
+        },
+        {
+          "step": 5,
+          "description": "Re-run SI-4 alert instrumentation evaluation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-28"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Elevated exposure window with plausible exploitation or audit failure absent timely remediation.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2(4)",
+        "AC-2(7)",
+        "AU-5",
+        "AU-6",
+        "CM-10",
+        "CM-11",
+        "CM-8(3)",
+        "SI-3",
+        "SI-4",
+        "SI-4(1)",
+        "SI-4(16)",
+        "SI-4(4)"
+      ],
+      "linked_eval_ids": [
+        "SI4_ALERT_INSTRUMENTATION"
+      ],
+      "controls": "AC-2(4); AC-2(7); AU-5; AU-6; CM-10; CM-11; CM-8(3); SI-3; SI-4; SI-4(1); SI-4(16); SI-4(4)",
+      "weakness_name": "SI-4 Alert Instrumentation Coverage",
+      "weakness_description": "No evidence was provided showing an enabled, accountable alert path exists for the assessed risk signal affecting `logging.audit_disabled`. Observed gap: No enabled alert rule covers logging.audit_disabled.",
+      "asset_identifier": "logging.audit_disabled; network.public_admin_port_opened",
+      "source_eval_id": "SI4_ALERT_INSTRUMENTATION",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-D-SI4-ALERT-INSTRUMENTATION-25E596D712C8",
+      "finding_id": "FIND-SI4-ALERT-INSTRUMENTATION-25E596D712C8",
+      "title": "SI-4 Alert Instrumentation Coverage",
+      "severity": "high",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-06-01",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Implement or enable SIEM detection for the assessed semantic with accountable recipients.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Add on-call / governance distribution lists to the rule.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-09"
+        },
+        {
+          "step": 3,
+          "description": "Generate sample alert payload or saved-search proof with timestamps.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-16"
+        },
+        {
+          "step": 4,
+          "description": "Link alert to incident or change response workflow.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-22"
+        },
+        {
+          "step": 5,
+          "description": "Re-run SI-4 alert instrumentation evaluation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-28"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Elevated exposure window with plausible exploitation or audit failure absent timely remediation.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2(4)",
+        "AC-2(7)",
+        "AU-5",
+        "AU-6",
+        "CM-10",
+        "CM-11",
+        "CM-8(3)",
+        "SI-3",
+        "SI-4",
+        "SI-4(1)",
+        "SI-4(16)",
+        "SI-4(4)"
+      ],
+      "linked_eval_ids": [
+        "SI4_ALERT_INSTRUMENTATION"
+      ],
+      "controls": "AC-2(4); AC-2(7); AU-5; AU-6; CM-10; CM-11; CM-8(3); SI-3; SI-4; SI-4(1); SI-4(16); SI-4(4)",
+      "weakness_name": "SI-4 Alert Instrumentation Coverage",
+      "weakness_description": "No evidence was provided showing an enabled, accountable alert path exists for the assessed risk signal affecting `network.public_admin_port_opened`. Observed gap: No enabled alert rule covers network.public_admin_port_opened.",
+      "asset_identifier": "logging.audit_disabled; network.public_admin_port_opened",
+      "source_eval_id": "SI4_ALERT_INSTRUMENTATION",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-A3849B0D23AD",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-A3849B0D23AD",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Investigate affected asset(s); confirm boundary placement and authoritative owner.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Update declared inventory / IIW; resolve duplicate or stale rows.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-04"
+        },
+        {
+          "step": 3,
+          "description": "Assign accountable owner for each in-scope asset row.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-07"
+        },
+        {
+          "step": 4,
+          "description": "Confirm scanner and central logging requirements for updated inventory classes.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 5,
+          "description": "Export refreshed inventory evidence and attach to POA&M milestone.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `1`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0001-inventory-mismatch [high/inventory_mismatch] row=1 controls=CM-8,CM-8(1),CM-8(3) poam_required=no :: Inventory mismatch: Provide the latest Integrated Inventory Workbook (IIW) plus",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-5D7AA2D77EAF",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-5D7AA2D77EAF",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Investigate affected asset(s); confirm boundary placement and authoritative owner.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Update declared inventory / IIW; resolve duplicate or stale rows.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-04"
+        },
+        {
+          "step": 3,
+          "description": "Assign accountable owner for each in-scope asset row.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-07"
+        },
+        {
+          "step": 4,
+          "description": "Confirm scanner and central logging requirements for updated inventory classes.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 5,
+          "description": "Export refreshed inventory evidence and attach to POA&M milestone.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `2`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0002-inventory-mismatch [high/inventory_mismatch] row=2 controls=CM-8,CA-7 poam_required=no :: Inventory mismatch: Inventory of Load Balancers (ALB/NLB) and S3 buckets includi",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-2BB8C505F95D",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-2BB8C505F95D",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Document root cause and in-scope impact for the finding.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Implement corrective actions per control family guidance.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-06"
+        },
+        {
+          "step": 3,
+          "description": "Collect objective evidence of remediation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 4,
+          "description": "Schedule independent validation for POA&M closure.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `3`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0003-credentialed-scan-evidence-missing [high/credentialed_scan_evidence_missing] row=3 controls=RA-5,RA-5(3),RA-5(5) poam_required=yes :: Credentialed scan evidence missing: Provide the Nessus scan target list and cred",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-A993E5B7AFB7",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-A993E5B7AFB7",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Document root cause and in-scope impact for the finding.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Implement corrective actions per control family guidance.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-06"
+        },
+        {
+          "step": 3,
+          "description": "Collect objective evidence of remediation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 4,
+          "description": "Schedule independent validation for POA&M closure.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `2`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0004-vulnerability-scan-evidence-missing [high/vulnerability_scan_evidence_missing] row=4 controls=RA-5,SI-2 poam_required=yes :: Vulnerability scan evidence missing: Latest Nessus vulnerability scan reports (f",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-9C44A567F119",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-9C44A567F119",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Run generated exploitation-review queries; retain analyst identity and time range.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Export SIEM/log results and attach to vulnerability ticket.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-06"
+        },
+        {
+          "step": 3,
+          "description": "Document analyst or agent conclusion for in-exploitability decision.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-09"
+        },
+        {
+          "step": 4,
+          "description": "Link ticket to scanner finding IDs (`linked_finding_ids`).",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-12"
+        },
+        {
+          "step": 5,
+          "description": "Re-run RA-5(8) evaluation with evidence pointers.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-14"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `5`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0005-exploitation-review-missing [critical/exploitation_review_missing] row=5 controls=RA-5(8) poam_required=yes :: Exploitation review missing: Exploitation review for all High/Critical vulnerabi",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-3FA19ABD06CE",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-3FA19ABD06CE",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Configure central log forwarding for affected assets and required event types.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Produce paired local + central log excerpts for the same event IDs.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-06"
+        },
+        {
+          "step": 3,
+          "description": "Validate last_seen / receipt timestamps meet policy window.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-09"
+        },
+        {
+          "step": 4,
+          "description": "Document retention, integrity, and RBAC for the central store.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-12"
+        },
+        {
+          "step": 5,
+          "description": "Re-run AU-6 style coverage evaluation and attach results.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-14"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `1`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0006-local-to-central-log-correlation-missing [high/local_to_central_log_correlation_missing] row=6 controls=AU-2,AU-3,AU-6,AU-12 poam_required=yes :: Local to central log correlation missing: Demonstrate centralized audit log aggr",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-0E9FED1E409E",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-0E9FED1E409E",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Implement or enable SIEM detection for the assessed semantic with accountable recipients.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Add on-call / governance distribution lists to the rule.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-05"
+        },
+        {
+          "step": 3,
+          "description": "Generate sample alert payload or saved-search proof with timestamps.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-09"
+        },
+        {
+          "step": 4,
+          "description": "Link alert to incident or change response workflow.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 5,
+          "description": "Re-run SI-4 alert instrumentation evaluation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-14"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `4`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0007-alert-sample-missing [high/alert_sample_missing] row=7 controls=AU-6,SI-4 poam_required=yes :: Alert sample missing: Provide the alert rules / saved searches with recipient li",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-5DE8A547F602",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-5DE8A547F602",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Implement or enable SIEM detection for the assessed semantic with accountable recipients.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Add on-call / governance distribution lists to the rule.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-05"
+        },
+        {
+          "step": 3,
+          "description": "Generate sample alert payload or saved-search proof with timestamps.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-09"
+        },
+        {
+          "step": 4,
+          "description": "Link alert to incident or change response workflow.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 5,
+          "description": "Re-run SI-4 alert instrumentation evaluation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-14"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `1`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0008-response-action-missing [high/response_action_missing] row=8 controls=SI-4(1),SI-4(4) poam_required=yes :: Response action missing: List CloudWatch alarms and GuardDuty findings considere",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-0F9750A869F5",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-0F9750A869F5",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Create or link formal change / incident ticket for the assessed event.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Complete security impact analysis (SIA) and testing evidence per CM-3.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-05"
+        },
+        {
+          "step": 3,
+          "description": "Obtain documented approval aligned to change class.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-08"
+        },
+        {
+          "step": 4,
+          "description": "Attach deployment evidence (automation receipt or timestamped record).",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 5,
+          "description": "Attach verification evidence (post-change scan or health check).",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `2`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0009-sia-missing [high/sia_missing] row=9 controls=CM-3,SI-2 poam_required=yes :: Sia missing: Sample change tickets in JIRA with full evidence chain: Security Im",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-5BC7696D857A",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-5BC7696D857A",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Document root cause and in-scope impact for the finding.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Implement corrective actions per control family guidance.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-06"
+        },
+        {
+          "step": 3,
+          "description": "Collect objective evidence of remediation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 4,
+          "description": "Schedule independent validation for POA&M closure.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `1`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0010-deviation-request-missing [moderate/deviation_request_missing] row=10 controls=CA-5 poam_required=yes :: Deviation request missing: POA&M updates: Provide the current POA&M with deviati",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-33EE70A2C5D0",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-33EE70A2C5D0",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Document root cause and in-scope impact for the finding.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Implement corrective actions per control family guidance.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-06"
+        },
+        {
+          "step": 3,
+          "description": "Collect objective evidence of remediation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 4,
+          "description": "Schedule independent validation for POA&M closure.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `1`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0011-response-action-missing [high/response_action_missing] row=11 controls=IR-4,IR-6 poam_required=yes :: Response action missing: Incident response evidence: any suspected or confirmed",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-4BAED87FEE15",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-4BAED87FEE15",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Document root cause and in-scope impact for the finding.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Implement corrective actions per control family guidance.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-06"
+        },
+        {
+          "step": 3,
+          "description": "Collect objective evidence of remediation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 4,
+          "description": "Schedule independent validation for POA&M closure.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `1`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0012-crypto-fips-evidence-missing [high/crypto_fips_evidence_missing] row=12 controls=SC-13,SC-28,SC-12 poam_required=no :: Crypto fips evidence missing: FIPS 140-2/3 evidence: list crypto modules in use",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-F27B227E58C1",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-F27B227E58C1",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Document root cause and in-scope impact for the finding.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Implement corrective actions per control family guidance.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-06"
+        },
+        {
+          "step": 3,
+          "description": "Collect objective evidence of remediation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 4,
+          "description": "Schedule independent validation for POA&M closure.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `1`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0013-restore-test-missing [high/restore_test_missing] row=13 controls=CP-9,CP-10 poam_required=yes :: Restore test missing: Backup and recovery evidence: most recent restore test (RT",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-135F006CD5F6",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-135F006CD5F6",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Document root cause and in-scope impact for the finding.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Implement corrective actions per control family guidance.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-06"
+        },
+        {
+          "step": 3,
+          "description": "Collect objective evidence of remediation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 4,
+          "description": "Schedule independent validation for POA&M closure.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `1`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0014-identity-listing-missing [high/identity_listing_missing] row=14 controls=AC-2,AC-2(7),AC-6 poam_required=no :: Identity listing missing: Account listings: full IAM user list with privileged-a",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    },
+    {
+      "poam_id": "POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS-6B0E86FC0760",
+      "finding_id": "FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-6B0E86FC0760",
+      "title": "Tracker Evidence Gap Analysis",
+      "severity": "critical",
+      "risk_owner": "Example Chief Risk Officer (delegate)",
+      "system_owner": "Example System Owner (ISSO delegate)",
+      "created_at": "2026-05-02T15:00:23.780345+00:00",
+      "target_completion_date": "2026-05-17",
+      "status": "Open",
+      "remediation_plan": [
+        {
+          "step": 1,
+          "description": "Document root cause and in-scope impact for the finding.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-02"
+        },
+        {
+          "step": 2,
+          "description": "Implement corrective actions per control family guidance.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-06"
+        },
+        {
+          "step": 3,
+          "description": "Collect objective evidence of remediation.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-11"
+        },
+        {
+          "step": 4,
+          "description": "Schedule independent validation for POA&M closure.",
+          "owner": "Example Chief Risk Officer (delegate)",
+          "due_date": "2026-05-13"
+        }
+      ],
+      "validation_required_for_closure": true,
+      "customer_impact": "Potential for severe service disruption, data exposure, or regulatory breach until remediated.",
+      "risk_acceptance": {
+        "required": false,
+        "accepted_by": null,
+        "expiration_date": null,
+        "conditions": []
+      },
+      "source_ksi_ids": [
+        "KSI-AGENT-02",
+        "KSI-CM-01",
+        "KSI-IAM-01",
+        "KSI-INV-01",
+        "KSI-IR-01",
+        "KSI-LOG-01",
+        "KSI-REC-01",
+        "KSI-VULN-01"
+      ],
+      "source_controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6",
+        "AU-12",
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "CA-5",
+        "CA-7",
+        "CM-10",
+        "CM-11",
+        "CM-3",
+        "CM-8",
+        "CP-10",
+        "CP-9",
+        "IA-5",
+        "IR-4",
+        "IR-6",
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)",
+        "RA-5(8)",
+        "SC-12",
+        "SC-13",
+        "SC-28",
+        "SC-7",
+        "SC-7(11)",
+        "SI-2",
+        "SI-4"
+      ],
+      "linked_eval_ids": [
+        "TRACKER_EVIDENCE_GAP_ANALYSIS"
+      ],
+      "controls": "AC-2; AC-2(7); AC-6; AU-12; AU-2; AU-3; AU-6; CA-5; CA-7; CM-10; CM-11; CM-3; CM-8; CP-10; CP-9; IA-5; IR-4; IR-6; RA-5; RA-5(3); RA-5(5); RA-5(8); SC-12; SC-13; SC-28; SC-7; SC-7(11); SI-2; SI-4",
+      "weakness_name": "Tracker Evidence Gap Analysis",
+      "weakness_description": "Evidence deficiency noted for evaluation `TRACKER_EVIDENCE_GAP_ANALYSIS` affecting `1`: the assessment did not receive substantiating artifacts for this gap. Observed gap: gap-0015-traffic-flow-policy-missing [high/traffic_flow_policy_missing] row=15 controls=SC-7,SC-7(11) poam_required=no :: Traffic flow policy missing: Traffic flow / boundary evidence: data flow diagram",
+      "asset_identifier": "1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15",
+      "source_eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
+      "raw_row": {}
+    }
+  ]
+}

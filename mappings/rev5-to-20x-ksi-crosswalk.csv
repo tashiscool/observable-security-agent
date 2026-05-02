@@ -1,0 +1,77 @@
+rev5_control,ksi_id,theme,capability,validation_focus,mapping_type,trace_note
+CM-8,KSI-INV-01,Policy and Inventory,Authoritative inventory reconciliation,CM-8/PL-2/RA-2 inventory posture in KSI-INV-01,primary,"Rev4 CM family inventory / asset mgmt → Rev5 CM-8 → KSI-INV-01 (authoritative inventory)."
+CM-8(1),KSI-INV-01,Policy and Inventory,Authoritative inventory reconciliation,CM-8/PL-2/RA-2 inventory posture in KSI-INV-01,secondary
+CM-8(3),KSI-INV-01,Policy and Inventory,Authoritative inventory reconciliation,CM-8/PL-2/RA-2 inventory posture in KSI-INV-01,secondary
+PL-2,KSI-INV-01,Policy and Inventory,Authoritative inventory reconciliation,CM-8/PL-2/RA-2 inventory posture in KSI-INV-01,secondary
+RA-2,KSI-INV-01,Policy and Inventory,Authoritative inventory reconciliation,CM-8/PL-2/RA-2 inventory posture in KSI-INV-01,secondary
+RA-5,KSI-VULN-01,Vulnerability and configuration risk management,"Scanning scope, findings, exploitation review",RA/SI flaw management in KSI-VULN-01,primary
+RA-5(3),KSI-VULN-01,Vulnerability and configuration risk management,"Scanning scope, findings, exploitation review",RA/SI flaw management in KSI-VULN-01,secondary
+RA-5(5),KSI-VULN-01,Vulnerability and configuration risk management,"Scanning scope, findings, exploitation review",RA/SI flaw management in KSI-VULN-01,secondary
+RA-5(6),KSI-VULN-01,Vulnerability and configuration risk management,"Scanning scope, findings, exploitation review",RA/SI flaw management in KSI-VULN-01,secondary
+RA-5(8),KSI-VULN-01,Vulnerability and configuration risk management,"Scanning scope, findings, exploitation review",RA/SI flaw management in KSI-VULN-01,secondary
+CA-7,KSI-VULN-01,Vulnerability and configuration risk management,"Scanning scope, findings, exploitation review",RA/SI flaw management in KSI-VULN-01,primary
+SI-2,KSI-VULN-01,Vulnerability and configuration risk management,"Scanning scope, findings, exploitation review",RA/SI flaw management in KSI-VULN-01,primary
+SI-2,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+SI-3,KSI-VULN-01,Vulnerability and configuration risk management,"Scanning scope, findings, exploitation review",RA/SI flaw management in KSI-VULN-01,secondary
+AU-2,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AU-3,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AU-3(1),KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AU-6,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,primary
+AU-6(1),KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AU-6(3),KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AU-7,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AU-8,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AU-9,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AU-12,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AU-9(2),KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AU-5,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+SI-4,KSI-IR-01,Incident Response,Detection to ticket accountability,IR/SI-4 response criteria in KSI-IR-01,primary
+SI-4(1),KSI-IR-01,Incident Response,Detection to ticket accountability,IR/SI-4 response criteria in KSI-IR-01,secondary
+SI-4(4),KSI-IR-01,Incident Response,Detection to ticket accountability,IR/SI-4 response criteria in KSI-IR-01,secondary
+SI-4(16),KSI-IR-01,Incident Response,Detection to ticket accountability,IR/SI-4 response criteria in KSI-IR-01,secondary
+IR-4,KSI-IR-01,Incident Response,Detection to ticket accountability,IR/SI-4 response criteria in KSI-IR-01,primary
+IR-5,KSI-IR-01,Incident Response,Detection to ticket accountability,IR/SI-4 response criteria in KSI-IR-01,secondary
+IR-6,KSI-IR-01,Incident Response,Detection to ticket accountability,IR/SI-4 response criteria in KSI-IR-01,secondary
+AC-2,KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,primary
+AC-2(1),KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,secondary
+AC-2(3),KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,secondary
+AC-2(4),KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,secondary
+AC-2(7),KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,secondary
+AC-3,KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,secondary
+AC-5,KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,secondary
+AC-6,KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,secondary
+IA-2,KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,secondary
+IA-4,KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,secondary
+IA-5,KSI-IAM-01,Identity and Access Management,Identity lifecycle and privileged access,AC/IA criteria in KSI-IAM-01,secondary
+CM-2,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+CM-3,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,primary
+CM-4,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+CM-5,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+CM-6,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+CM-10,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+CM-11,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+MA-2,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+MA-3,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+MA-4,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+MA-5,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+SA-10,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+CA-5,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,primary
+CP-9,KSI-REC-01,Recovery Planning,Backup scope and restore proof,CP-9/CP-10 continuity in KSI-REC-01,primary
+CP-10,KSI-REC-01,Recovery Planning,Backup scope and restore proof,CP-9/CP-10 continuity in KSI-REC-01,secondary
+SA-4,KSI-SCRM-01,Supply Chain Risk,Third-party and dependency transparency,SA/SR criteria in KSI-SCRM-01,secondary
+SA-8,KSI-SCRM-01,Supply Chain Risk,Third-party and dependency transparency,SA/SR criteria in KSI-SCRM-01,secondary
+SA-9,KSI-SCRM-01,Supply Chain Risk,Third-party and dependency transparency,SA/SR criteria in KSI-SCRM-01,secondary
+SA-11,KSI-SCRM-01,Supply Chain Risk,Third-party and dependency transparency,SA/SR criteria in KSI-SCRM-01,secondary
+SR-3,KSI-SCRM-01,Supply Chain Risk,Third-party and dependency transparency,SA/SR criteria in KSI-SCRM-01,secondary
+SR-5,KSI-SCRM-01,Supply Chain Risk,Third-party and dependency transparency,SA/SR criteria in KSI-SCRM-01,secondary
+AC-4,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+AC-17,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+SC-7,KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+SC-7(3),KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+SC-7(4),KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+SC-7(5),KSI-LOG-01,"Monitoring, Logging, and Auditing",Centralized logging and alerting,AU family criteria in KSI-LOG-01,secondary
+CM-7,KSI-CM-01,Change Management,Change records and drift linkage,CM maintenance and CA-5/CA-7 program ties in KSI-CM-01,secondary
+AC-2,KSI-AGENT-01,Identity and Access Management,AI agent identities,Registered scoped agent identities,secondary
+AU-2,KSI-AGENT-02,"Monitoring, Logging, and Auditing",Agent telemetry,Logged agent tool and policy decisions,secondary
+IR-4,KSI-AGENT-03,Incident Response,Agentic misuse,Detections tickets and threat hunt,secondary
+CM-3,KSI-AGENT-04,Change Management,Agent change control,Tool permission and policy versioning,secondary

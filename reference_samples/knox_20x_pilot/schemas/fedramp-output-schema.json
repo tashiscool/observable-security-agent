@@ -1,0 +1,236 @@
+{
+  "description": "JSON Schema for detailed FedRAMP compliance output with literal evidence",
+  "schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "FedRAMP Detailed Compliance Output",
+    "description": "Detailed FedRAMP compliance evidence with literal resources and full reasoning",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "required": [
+        "Unique Evidence Number",
+        "KSI Type",
+        "KSI Category",
+        "KSI Description",
+        "Compliance Status",
+        "Evidence Title",
+        "Evidence Collection Date",
+        "Evidence Owner",
+        "Literal Evidence",
+        "Pass/Fail Reason",
+        "Remediation Required",
+        "Remediation Plan",
+        "Score",
+        "Data Sources"
+      ],
+      "properties": {
+        "Unique Evidence Number": {
+          "type": "string",
+          "description": "Unique identifier for this evidence item (e.g., KSI-CNA-VP1)",
+          "pattern": "^KSI-[A-Z0-9]+-(VP)?[0-9]+$"
+        },
+        "KSI Type": {
+          "type": "string",
+          "description": "Key Security Indicator type",
+          "enum": [
+            "KSI-CNA",
+            "KSI-SC",
+            "KSI-IAM",
+            "KSI-MLA",
+            "KSI-CM",
+            "KSI-PI",
+            "KSI-3IR",
+            "KSI-CD",
+            "KSI-IR"
+          ]
+        },
+        "KSI Category": {
+          "type": "string",
+          "description": "Human-readable KSI category name",
+          "examples": [
+            "Cloud Native Architecture",
+            "Identity and Access Management"
+          ]
+        },
+        "KSI Description": {
+          "type": "string",
+          "description": "Detailed description of what this KSI validates"
+        },
+        "Compliance Status": {
+          "type": "string",
+          "description": "Pass/Fail status for this validation point",
+          "enum": [
+            "Pass",
+            "Fail",
+            "Unknown"
+          ]
+        },
+        "Evidence Title": {
+          "type": "string",
+          "description": "Specific requirement being validated",
+          "examples": [
+            "DoS Protection Implementation",
+            "Phishing-Resistant Multi-Factor Authentication"
+          ]
+        },
+        "Evidence Collection Date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date when evidence was collected (YYYY-MM-DD)"
+        },
+        "Evidence Owner": {
+          "type": "string",
+          "description": "Responsible party for this evidence",
+          "default": "System Administrator"
+        },
+        "Literal Evidence": {
+          "type": "array",
+          "description": "Actual resources and configurations supporting this validation",
+          "items": {
+            "type": "object",
+            "required": [
+              "type",
+              "source"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Type of evidence",
+                "examples": [
+                  "Load Balancer",
+                  "KMS Key",
+                  "IAM Role",
+                  "FedRAMP Document",
+                  "Drata Policy",
+                  "WIZ SBOM"
+                ]
+              },
+              "source": {
+                "type": "string",
+                "description": "Evidence source system",
+                "enum": [
+                  "aws",
+                  "documents",
+                  "drata",
+                  "wiz"
+                ]
+              },
+              "priority": {
+                "type": "string",
+                "description": "Evidence priority level",
+                "enum": [
+                  "primary",
+                  "supporting"
+                ]
+              },
+              "resourceArn": {
+                "type": "string",
+                "description": "AWS Resource ARN (for AWS resources)"
+              },
+              "resourceName": {
+                "type": "string",
+                "description": "Resource name or identifier"
+              },
+              "details": {
+                "type": "object",
+                "description": "Additional resource-specific details"
+              },
+              "fileName": {
+                "type": "string",
+                "description": "Document filename (for document evidence)"
+              },
+              "section": {
+                "type": "string",
+                "description": "Document section (for document evidence)"
+              },
+              "citation": {
+                "type": "string",
+                "description": "Full citation (for document evidence)"
+              }
+            }
+          }
+        },
+        "Pass/Fail Reason": {
+          "type": "string",
+          "description": "Detailed reasoning for the compliance status, including Gemini AI analysis"
+        },
+        "Remediation Required": {
+          "type": "string",
+          "description": "Whether remediation is needed",
+          "enum": [
+            "Yes",
+            "No"
+          ]
+        },
+        "Remediation Plan": {
+          "type": "string",
+          "description": "Specific remediation steps if required, or 'N/A'"
+        },
+        "Score": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "description": "Numerical score for this KSI (0-100)"
+        },
+        "Data Sources": {
+          "type": "array",
+          "description": "AWS services and systems that provided evidence",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Metadata": {
+          "type": "object",
+          "description": "Additional metadata for debugging and audit trail",
+          "properties": {
+            "evaluationId": {
+              "type": "integer",
+              "description": "Database ID of the evaluation"
+            },
+            "evaluationTimestamp": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Timestamp when evaluation was performed"
+            },
+            "evidenceCount": {
+              "type": [
+                "string",
+                "integer"
+              ],
+              "description": "Number of evidence items collected"
+            },
+            "awsServices": {
+              "type": "array",
+              "description": "AWS services that were queried",
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "validationPoint": {
+              "type": "object",
+              "description": "Validation point details",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "requirement": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

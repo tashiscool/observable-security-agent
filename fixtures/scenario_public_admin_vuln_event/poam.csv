@@ -1,0 +1,3 @@
+poam_id,weakness_name,controls,raw_severity,status,asset_identifier,notes
+POAM-2025-014,Legacy scanner group missing RDS subnet targets,"RA-5;CA-7",moderate,open,prod-db-01,Pre-existing POA&M from prior assessment cycle
+POAM-2025-022,WAF log delivery delay to SIEM,"AU-6;SI-4",low,in_progress,prod-lb-01,Operational backlog for edge logging only

@@ -1,0 +1,80 @@
+{
+  "siem": "splunk",
+  "sources": [
+    {
+      "name": "aws-cloudtrail-org",
+      "log_source_id": "ls-cloudtrail-org",
+      "asset_id": "org-wide-aws",
+      "source_type": "cloud_control_plane",
+      "local_source": "CloudTrail S3 + CloudWatch Logs delivery",
+      "central_destination": "splunk",
+      "last_seen": "2026-05-01T11:45:00Z",
+      "seen_last_24h": true,
+      "local_only": false,
+      "status": "active",
+      "index": "aws_cloudtrail",
+      "notes": "Org trail active in SIEM."
+    },
+    {
+      "name": "splunk-forwarder-prod-api-01",
+      "log_source_id": "ls-api-01",
+      "asset_id": "prod-api-01",
+      "source_type": "os_auth",
+      "local_source": "/var/log/auth.log",
+      "central_destination": "splunk",
+      "last_seen": "2026-05-01T11:30:00Z",
+      "seen_last_24h": true,
+      "local_only": false,
+      "status": "active",
+      "index": "linux_secure",
+      "sample_local_event_ref": "splunk://local/linux-evt-prod-api-1",
+      "sample_central_event_ref": "splunk://security/linux-evt-prod-api-1",
+      "notes": "Prod API forwarder healthy — supports RA-5(8) review."
+    },
+    {
+      "name": "splunk-forwarder-prod-db-01",
+      "log_source_id": "ls-db-01",
+      "asset_id": "prod-db-01",
+      "source_type": "db_audit",
+      "local_source": "/var/log/postgresql/",
+      "central_destination": "splunk",
+      "last_seen": "2026-05-01T11:20:00Z",
+      "seen_last_24h": true,
+      "local_only": false,
+      "status": "active",
+      "index": "rds_audit",
+      "sample_local_event_ref": "splunk://local/rds-evt-1",
+      "sample_central_event_ref": "splunk://security/rds-evt-1",
+      "notes": "RDS enhanced logging + forwarder."
+    },
+    {
+      "name": "splunk-forwarder-rogue-prod-worker-99",
+      "log_source_id": "ls-rogue-99",
+      "asset_id": "rogue-prod-worker-99",
+      "source_type": "os_auth",
+      "local_source": "/var/log/auth.log",
+      "central_destination": "splunk",
+      "last_seen": "2026-05-01T11:10:00Z",
+      "seen_last_24h": true,
+      "local_only": false,
+      "status": "active",
+      "index": "linux_secure",
+      "notes": "Rogue instance still forwards auth logs pending inventory disposition."
+    },
+    {
+      "name": "splunk-alb-partial-correlation",
+      "log_source_id": "ls-lb-partial-proof",
+      "asset_id": "prod-lb-01",
+      "source_type": "network_flow",
+      "local_source": "ALB access logs S3 (raw)",
+      "central_destination": "splunk",
+      "last_seen": "2026-05-01T11:00:00Z",
+      "seen_last_24h": true,
+      "local_only": false,
+      "status": "active",
+      "index": "alb_access",
+      "sample_local_event_ref": "s3://alb-logs/prefix/evt-local-only-1.json",
+      "notes": "Local ALB proof captured; SIEM-side duplicate query not yet attached (AU-6 partial)."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "incidents": [
+    {
+      "incident_id": "INC-20X-0042",
+      "title": "Suspicious IAM policy attachment — break-glass correlation",
+      "severity": "sev2",
+      "opened_at": "2026-05-01T09:20:00Z",
+      "status": "resolved",
+      "linked_event_refs": ["fixture:20x-mfa-disabled-prod-lb-001"],
+      "timeline_complete": true,
+      "customer_notification_logged": true,
+      "closure_evidence": {
+        "rca_document_uri": null,
+        "lessons_learned_signed": false,
+        "soc_manager_signoff": true
+      },
+      "notes": "KSI-IR-01 partial narrative: incident closed in ticketing but formal RCA / lessons-learned package incomplete."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "CheckID": "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22",
+    "CheckTitle": "Ensure no security groups allow SSH from 0.0.0.0/0",
+    "Status": "FAIL",
+    "StatusExtended": "Security group sg-abc123 allows ingress tcp/22 from 0.0.0.0/0.",
+    "Severity": "high",
+    "Provider": "aws",
+    "ServiceName": "ec2",
+    "ResourceId": "arn:aws:ec2:us-east-1:111122223333:security-group/sg-abc123",
+    "Region": "us-east-1",
+    "AccountId": "111122223333",
+    "RecommendedAction": "Restrict SSH to known corporate CIDRs or replace with SSM Session Manager.",
+    "Compliance": {
+      "NIST-800-53": ["AC-4", "SC-7"],
+      "FedRAMP-Moderate": ["SC-7"]
+    }
+  },
+  {
+    "CheckID": "s3_bucket_public_access_block",
+    "CheckTitle": "Check S3 bucket public access block",
+    "Status": "PASS",
+    "StatusExtended": "BlockPublicAcls and RestrictPublicBuckets enabled.",
+    "Severity": "medium",
+    "Provider": "aws",
+    "ServiceName": "s3",
+    "ResourceId": "arn:aws:s3:::example-app-logs",
+    "Region": "us-east-1",
+    "AccountId": "111122223333",
+    "RecommendedAction": "No change required."
+  }
+]

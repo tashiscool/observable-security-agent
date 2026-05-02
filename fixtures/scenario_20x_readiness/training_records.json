@@ -1,0 +1,19 @@
+{
+  "reporting_period": "FY2026-Q2",
+  "records": [
+    {
+      "user_id": "u-alice-platform",
+      "course_code": "SEC-101",
+      "title": "Security awareness fundamentals",
+      "completed_at": "2026-04-01",
+      "score_pct": 95
+    },
+    {
+      "user_id": "u-alice-platform",
+      "course_code": "IR-201",
+      "title": "Incident handling basics",
+      "completed_at": "2026-04-18",
+      "score_pct": 88
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "tests": [
+    {
+      "test_id": "RST-2026-01",
+      "asset_class": "database",
+      "sample_asset_id": "prod-db-01",
+      "executed_at": "2026-03-20T14:00:00Z",
+      "result": "pass",
+      "evidence_uri": "s3://evidence-bucket/restore-tests/rst-2026-01-report.pdf"
+    },
+    {
+      "test_id": "RST-2026-02",
+      "asset_class": "compute",
+      "sample_asset_id": "prod-api-01",
+      "executed_at": "2026-02-10T16:00:00Z",
+      "result": "pass",
+      "evidence_uri": "s3://evidence-bucket/restore-tests/rst-2026-02-report.pdf"
+    }
+  ],
+  "notes": "KSI-REC-01 narrative: periodic restore drills executed and evidenced."
+}

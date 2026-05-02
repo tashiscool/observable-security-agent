@@ -1,0 +1,4 @@
+asset_id,scanner,target_type,hostname,ip,scan_profile,credentialed,notes
+prod-db-01,nessus,rds,prod-db-01.internal,10.0.2.20,db-credentialed,true,Weekly credentialed RDS scan
+prod-lb-01,nessus,alb,prod-lb-01.elb.amazonaws.com,52.55.20.20,external-surface,false,Monthly external ALB checks
+prod-storage-01,nessus,s3,,,bucket-policy,false,Bucket policy and ACL review (no IP target)

@@ -1,0 +1,3 @@
+CheckID,CheckTitle,Status,StatusExtended,Severity,Provider,ServiceName,ResourceId,Region,AccountId,RecommendedAction,Compliance
+ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22,"Ensure no security groups allow SSH from 0.0.0.0/0",FAIL,"Security group sg-abc123 allows ingress tcp/22 from 0.0.0.0/0.",high,aws,ec2,arn:aws:ec2:us-east-1:111122223333:security-group/sg-abc123,us-east-1,111122223333,"Restrict SSH to known corporate CIDRs.",NIST-800-53:AC-4|SC-7
+s3_bucket_public_access_block,"Check S3 bucket public access block",PASS,"BlockPublicAcls enabled.",medium,aws,s3,arn:aws:s3:::example-app-logs,us-east-1,111122223333,"No change.",

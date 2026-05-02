@@ -1,0 +1,4 @@
+{
+  "anchor": "2026-05-01T11:45:00Z",
+  "comment": "Latest event in this scenario. The fixture provider shifts every datetime field by (now - anchor) at load time so AU-6 (24h freshness), AU-12 correlation, RA-5 stale-finding, CM-3 ticket recency, and SI-4 alert-recency evaluators stay deterministic regardless of when the scenario is replayed. See providers/fixture.py::_apply_fixture_clock_anchor."
+}

@@ -1,0 +1,53 @@
+{
+  "siem": "splunk",
+  "sources": [
+    {
+      "name": "aws-cloudtrail-org",
+      "log_source_id": "ls-cloudtrail-org",
+      "asset_id": "org-wide-aws",
+      "source_type": "cloud_control_plane",
+      "local_source": "CloudTrail S3 + CloudWatch Logs delivery",
+      "central_destination": "splunk",
+      "seen_last_24h": true,
+      "local_only": false,
+      "index": "aws_cloudtrail",
+      "notes": "Org trail active; control-plane events searchable in SIEM."
+    },
+    {
+      "name": "splunk-forwarder-prod-db-01",
+      "log_source_id": "ls-db-01",
+      "asset_id": "prod-db-01",
+      "source_type": "db_audit",
+      "local_source": "/var/log/postgresql/",
+      "central_destination": "splunk",
+      "seen_last_24h": true,
+      "local_only": false,
+      "index": "rds_audit",
+      "notes": "RDS enhanced logging + forwarder healthy."
+    },
+    {
+      "name": "splunk-forwarder-prod-api-01",
+      "log_source_id": "ls-api-01",
+      "asset_id": "prod-api-01",
+      "source_type": "os_auth",
+      "local_source": "/var/log/auth.log",
+      "central_destination": "splunk",
+      "seen_last_24h": false,
+      "local_only": true,
+      "index": "linux_secure",
+      "notes": "Forwarder installed but last indexed event > 72h ago — ingestion stale for prod-api-01."
+    },
+    {
+      "name": "splunk-alb-access-prod-lb-01",
+      "log_source_id": "ls-lb-01",
+      "asset_id": "prod-lb-01",
+      "source_type": "network_flow",
+      "local_source": "ALB access logs S3",
+      "central_destination": "splunk",
+      "seen_last_24h": true,
+      "local_only": false,
+      "index": "alb_access",
+      "notes": "S3-based ALB logs on-boarded to Splunk."
+    }
+  ]
+}

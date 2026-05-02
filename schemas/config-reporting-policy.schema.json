@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/config-reporting-policy.schema.json",
+  "title": "reporting-policy.yaml",
+  "type": "object",
+  "required": ["schema_version", "reports", "reconciliation", "machine_readable"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "program": { "type": "object", "additionalProperties": true },
+    "audiences": { "type": "object", "additionalProperties": true },
+    "report_sections": { "type": "object", "additionalProperties": true },
+    "tone_rules": { "type": "object", "additionalProperties": true },
+    "required_reconciliation_checks": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "reports": {
+      "type": "object",
+      "required": ["assessor", "executive", "agency_ao"],
+      "properties": {
+        "assessor": {
+          "type": "object",
+          "required": ["filename", "audience"],
+          "properties": {
+            "filename": { "type": "string" },
+            "audience": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "executive": {
+          "type": "object",
+          "required": ["filename", "audience"],
+          "properties": {
+            "filename": { "type": "string" },
+            "audience": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "agency_ao": {
+          "type": "object",
+          "required": ["filename", "audience"],
+          "properties": {
+            "filename": { "type": "string" },
+            "audience": { "type": "string" }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "reconciliation": {
+      "type": "object",
+      "properties": {
+        "filename": { "type": "string" },
+        "include_sha256_of_package": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "machine_readable": {
+      "type": "object",
+      "properties": {
+        "primary_package_filename": { "type": "string" },
+        "manifest_filename": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

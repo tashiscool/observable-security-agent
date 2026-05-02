@@ -1,0 +1,93 @@
+{
+  "version": "2.0.0",
+  "description": "Complete evidence-to-control mappings for all 106 NIST CSF 2.0 subcategories. Defines which evidence types satisfy which controls.",
+  "mappings_sample": [
+    {
+      "control_id": "GV.OC-01",
+      "required_evidence_types": [
+        "security_policies"
+      ],
+      "optional_evidence_types": [
+        "audit_logs"
+      ],
+      "platforms": [
+        "okta",
+        "zendesk",
+        "zoom"
+      ],
+      "logic": "all_required",
+      "freshness_days": 90,
+      "description": "Organizational context requires documented security policies"
+    },
+    {
+      "control_id": "GV.OC-02",
+      "required_evidence_types": [
+        "user_inventory",
+        "access_control"
+      ],
+      "optional_evidence_types": [
+        "audit_logs"
+      ],
+      "platforms": [
+        "okta",
+        "jira",
+        "gitlab",
+        "notion",
+        "slab"
+      ],
+      "logic": "any_required",
+      "freshness_days": 90,
+      "description": "Internal and external stakeholders are understood"
+    },
+    {
+      "control_id": "GV.RM-01",
+      "required_evidence_types": [
+        "security_findings"
+      ],
+      "optional_evidence_types": [
+        "detection_rules"
+      ],
+      "platforms": [
+        "aws",
+        "datadog"
+      ],
+      "logic": "any_required",
+      "freshness_days": 30,
+      "description": "Risk management requires visibility into security findings"
+    },
+    {
+      "control_id": "GV.RM-02",
+      "required_evidence_types": [
+        "security_config",
+        "security_policies"
+      ],
+      "optional_evidence_types": [
+        "audit_logs"
+      ],
+      "platforms": [
+        "okta",
+        "zoom",
+        "zendesk"
+      ],
+      "logic": "any_required",
+      "freshness_days": 30,
+      "description": "Risk appetite is determined and expressed"
+    },
+    {
+      "control_id": "GV.SC-01",
+      "required_evidence_types": [
+        "access_policies",
+        "user_inventory"
+      ],
+      "optional_evidence_types": [],
+      "platforms": [
+        "okta",
+        "snowflake",
+        "aws"
+      ],
+      "logic": "all_required",
+      "freshness_days": 30,
+      "description": "Supply chain risk management requires access control policies"
+    }
+  ]
+}

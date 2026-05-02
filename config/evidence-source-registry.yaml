@@ -1,0 +1,413 @@
+schema_version: "1.0"
+# Evidence source registry — FedRAMP / NIST 800-53–oriented stable ids (this is not a NIST CSF 2.0–only model).
+# Optional `typical_channel` documents how evidence is usually produced (SaaS read-only API, batch export,
+# or manual governance attestation). It mirrors aggregation-tool patterns (e.g. Nisify-style connectors)
+# for assessor communication; maturity *scoring* still uses collection_method, frequency, and evidence_format.
+
+sources:
+  - id: cloud_asset_inventory
+    name: Cloud asset discovery inventory
+    category: inventory
+    collection_method: hybrid
+    collector: providers.fixture|providers.aws_evidence_raw
+    frequency: daily
+    owner: Customer Cloud Security Engineering
+    evidence_format: json
+    authoritative_for: [CM-8, asset_discovery]
+    limitations:
+      - Scope limited to connected cloud accounts and API permissions at collection time.
+    automation_score: 3
+
+  - id: declared_system_inventory
+    name: Declared authoritative system inventory
+    category: inventory
+    collection_method: file
+    frequency: weekly
+    owner: Customer Configuration Management
+    evidence_format: csv
+    authoritative_for: [CM-8, PL-2, RA-2]
+    limitations:
+      - Manual CMDB extracts may lag live discovery until reconciliation job runs.
+    automation_score: 2
+
+  - id: scanner_target_export
+    name: Vulnerability scanner target configuration export
+    category: vulnerability_management
+    collection_method: file
+    frequency: weekly
+    owner: Customer Vulnerability Management
+    evidence_format: csv
+    authoritative_for: [RA-5]
+    limitations:
+      - Reflects scanner configuration at export time only.
+    automation_score: 2
+
+  - id: vulnerability_scan_findings
+    name: Vulnerability scan findings export
+    category: vulnerability_management
+    collection_method: hybrid
+    collector: nessus_api|tenable_io_export|qualys_export
+    frequency: weekly
+    owner: Customer Vulnerability Management
+    evidence_format: json
+    authoritative_for: [RA-5, SI-2]
+    limitations:
+      - Plugin coverage depends on scanner feed currency.
+    automation_score: 4
+
+  - id: central_log_source_export
+    name: Central log source coverage and freshness export
+    category: logging
+    collection_method: hybrid
+    collector: splunk_rest_api|sentinel_api|gcp_logging_export
+    frequency: daily
+    owner: Customer Security Operations
+    evidence_format: json
+    authoritative_for: [AU-6, AU-12]
+    limitations:
+      - Index retention and RBAC may limit assessor query scope.
+    automation_score: 4
+    typical_channel: saas_api_readonly
+
+  - id: siem_alert_rule_export
+    name: SIEM detection and alert rule export
+    category: logging
+    collection_method: hybrid
+    collector: splunk_rest_api|sentinel_api
+    frequency: daily
+    owner: Customer SOC
+    evidence_format: mixed
+    authoritative_for: [SI-4, AU-5]
+    limitations:
+      - Rule JSON may omit historical disabled rules unless archive is included.
+    automation_score: 4
+
+  - id: cloud_control_plane_events
+    name: Normalized cloud control plane security events
+    category: logging
+    collection_method: hybrid
+    collector: providers.aws|providers.azure_gcp_normalizers
+    frequency: continuous
+    owner: Customer Security Operations
+    evidence_format: json
+    authoritative_for: [AU-2, AU-3, IR-4]
+    limitations:
+      - Event completeness depends on trail and sink configuration in each region.
+    automation_score: 4
+
+  - id: change_ticket_export
+    name: ITSM change record export
+    category: change_management
+    collection_method: file
+    frequency: event_driven
+    owner: Customer Change Management
+    evidence_format: json
+    authoritative_for: [CM-3, CM-4]
+    limitations:
+      - Ticket payloads vary by ITSM product and custom fields.
+    automation_score: 2
+
+  - id: incident_ticket_export
+    name: ITSM security incident export
+    category: incident_response
+    collection_method: file
+    frequency: event_driven
+    owner: Customer SOC
+    evidence_format: json
+    authoritative_for: [IR-4, IR-5, IR-6]
+    limitations:
+      - May exclude informal channel responses unless formally logged.
+    automation_score: 2
+
+  - id: poam_export
+    name: Plan of Action and Milestones export
+    category: change_management
+    collection_method: file
+    frequency: quarterly
+    owner: Customer ISSO
+    evidence_format: csv
+    authoritative_for: [CA-5, CA-7]
+    limitations:
+      - Row semantics depend on agency POA&M template version.
+    automation_score: 2
+
+  - id: identity_provider_users
+    name: Identity provider user directory export
+    category: identity
+    collection_method: api
+    collector: okta_api|azure_ad_graph|google_workspace_admin
+    frequency: daily
+    owner: Customer Identity Team
+    evidence_format: json
+    authoritative_for: [AC-2, IA-2]
+    limitations:
+      - Directory snapshots exclude transient session-only principals unless separately logged.
+    automation_score: 4
+
+  - id: privileged_group_membership
+    name: Privileged group and role membership evidence
+    category: identity
+    collection_method: api
+    collector: idp_privileged_access_report|azure_pim_export
+    frequency: weekly
+    owner: Customer Identity Team
+    evidence_format: json
+    authoritative_for: [AC-6, AC-2(7)]
+    limitations:
+      - Nested group expansion depends on IdP configuration.
+    automation_score: 4
+
+  - id: mfa_status
+    name: MFA enrollment and enforcement status export
+    category: identity
+    collection_method: hybrid
+    collector: idp_mfa_report|conditional_access_export
+    frequency: daily
+    owner: Customer Identity Team
+    evidence_format: csv
+    authoritative_for: [IA-2(1), IA-5]
+    limitations:
+      - Per-device MFA posture may require supplemental EDR evidence.
+    automation_score: 3
+
+  - id: scim_provisioning_logs
+    name: SCIM / provisioning audit logs
+    category: identity
+    collection_method: hybrid
+    collector: idp_audit_export
+    frequency: continuous
+    owner: Customer Identity Team
+    evidence_format: json
+    authoritative_for: [AC-2, IA-4]
+    limitations:
+      - High volume environments may sample or aggregate logs in SIEM.
+    automation_score: 3
+
+  - id: backup_configuration_export
+    name: Backup policy and scope configuration export
+    category: recovery
+    collection_method: file
+    frequency: monthly
+    owner: Customer Operations
+    evidence_format: yaml
+    authoritative_for: [CP-9]
+    limitations:
+      - Does not by itself prove successful restore without test records.
+    automation_score: 2
+
+  - id: restore_test_records
+    name: Backup restore test evidence
+    category: recovery
+    collection_method: manual
+    frequency: quarterly
+    owner: Customer Operations
+    evidence_format: pdf
+    authoritative_for: [CP-10]
+    limitations:
+      - Manual attestations must include scope and outcome for sampled workloads.
+    automation_score: 1
+
+  - id: vendor_inventory
+    name: Third-party and vendor service inventory
+    category: supply_chain
+    collection_method: manual
+    frequency: annual
+    owner: Customer Supply Chain Risk
+    evidence_format: markdown
+    authoritative_for: [SA-9, SR-3]
+    limitations:
+      - Maturity varies; linkage to SSP inheritance narrative is often manual.
+    automation_score: 1
+    typical_channel: manual_governance_attestation
+
+  - id: sbom_export
+    name: Software bill of materials export
+    category: supply_chain
+    collection_method: file
+    frequency: monthly
+    owner: Customer Engineering
+    evidence_format: json
+    authoritative_for: [SA-10, SR-5]
+    limitations:
+      - SBOM completeness depends on build pipeline instrumentation.
+    automation_score: 2
+
+  - id: training_records
+    name: Security and privacy role-based training records
+    category: training
+    collection_method: manual
+    frequency: annual
+    owner: Customer Training Office
+    evidence_format: mixed
+    authoritative_for: [AT-2, AT-3]
+    limitations:
+      - Completion exports may lag LMS by one billing cycle.
+    automation_score: 1
+
+  - id: correlation_assessment_export
+    name: Observable Security Agent correlation and evaluation bundle
+    category: configuration
+    collection_method: file
+    frequency: event_driven
+    owner: Customer Security Engineering
+    evidence_format: json
+    authoritative_for: [cross_domain_observability_assessment]
+    limitations:
+      - Outputs are only as complete as inputs supplied to the assessment engine.
+    automation_score: 3
+
+  - id: agent_assessment_export
+    name: AI agent telemetry and governance assessment bundle
+    category: configuration
+    collection_method: file
+    frequency: event_driven
+    owner: Customer AI Security Engineering
+    evidence_format: json
+    authoritative_for: [AC-2, AU-2, IR-4, CM-3]
+    limitations:
+      - Reflects only agents tool gateways and policies present in the uploaded bundle.
+    automation_score: 3
+
+  # --- AWS-specific collection (read-only API / export patterns) ---
+  - id: aws_iam_credential_report
+    name: AWS IAM credential report
+    category: identity
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: weekly
+    owner: Customer Cloud Security Engineering
+    evidence_format: csv
+    authoritative_for: [AC-2, IA-5]
+    limitations:
+      - Report reflects IAM users only; federated-only environments need supplemental IdP evidence.
+    automation_score: 4
+
+  - id: aws_cloudtrail
+    name: AWS CloudTrail trails and event history
+    category: logging
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: continuous
+    owner: Customer Cloud Security Engineering
+    evidence_format: json
+    authoritative_for: [AU-2, AU-12, IR-4]
+    limitations:
+      - Organization trail vs account trail gaps must be documented per region.
+    automation_score: 5
+
+  - id: aws_config
+    name: AWS Config recorder and compliance snapshots
+    category: configuration
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: daily
+    owner: Customer Cloud Security Engineering
+    evidence_format: json
+    authoritative_for: [CM-2, CM-6, SI-2]
+    limitations:
+      - Recorder pause windows create coverage gaps unless noted.
+    automation_score: 4
+
+  - id: aws_guardduty
+    name: Amazon GuardDuty findings export
+    category: incident_response
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: continuous
+    owner: Customer SOC
+    evidence_format: json
+    authoritative_for: [IR-4, SI-4]
+    limitations:
+      - Finding volume may require sampling for assessor review packages.
+    automation_score: 4
+
+  - id: aws_securityhub
+    name: AWS Security Hub controls and findings aggregate
+    category: vulnerability_management
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: daily
+    owner: Customer Cloud Security Engineering
+    evidence_format: json
+    authoritative_for: [RA-5, CA-7]
+    limitations:
+      - Standards subscriptions and suppressions affect visible posture.
+    automation_score: 4
+
+  - id: aws_inspector
+    name: Amazon Inspector vulnerability findings
+    category: vulnerability_management
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: weekly
+    owner: Customer Vulnerability Management
+    evidence_format: json
+    authoritative_for: [RA-5]
+    limitations:
+      - EC2 vs ECR vs Lambda coverage differs by assessment target type.
+    automation_score: 4
+
+  - id: aws_s3
+    name: Amazon S3 bucket inventory and policy evidence
+    category: configuration
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: weekly
+    owner: Customer Cloud Security Engineering
+    evidence_format: json
+    authoritative_for: [SC-28, CM-7]
+    limitations:
+      - Large bucket counts may require paginated exports.
+    automation_score: 3
+
+  - id: aws_rds
+    name: Amazon RDS configuration and security group evidence
+    category: configuration
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: weekly
+    owner: Customer Data Platform
+    evidence_format: json
+    authoritative_for: [SC-28, SI-2]
+    limitations:
+      - Read replicas and cross-region DR must be scoped explicitly.
+    automation_score: 3
+
+  - id: aws_backup
+    name: AWS Backup vault and job evidence
+    category: recovery
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: daily
+    owner: Customer Operations
+    evidence_format: json
+    authoritative_for: [CP-9, CP-10]
+    limitations:
+      - Cross-account copy jobs require additional IAM evidence.
+    automation_score: 4
+
+  - id: aws_vpc
+    name: Amazon VPC and network boundary configuration evidence
+    category: network
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: weekly
+    owner: Customer Network Engineering
+    evidence_format: json
+    authoritative_for: [SC-7, AC-4]
+    limitations:
+      - Shared VPC and transit gateway topologies need architecture diagrams.
+    automation_score: 3
+
+  - id: aws_cloudwatch
+    name: Amazon CloudWatch Logs and metric filters
+    category: logging
+    collection_method: api
+    collector: providers.aws_evidence_raw
+    frequency: continuous
+    owner: Customer Security Operations
+    evidence_format: json
+    authoritative_for: [AU-6, SI-4]
+    limitations:
+      - Log group retention and subscription filter gaps must be reconciled to central SIEM.
+    automation_score: 4

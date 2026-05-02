@@ -1,0 +1,31 @@
+{
+  "backup_controller": "veeam_aws_s3",
+  "as_of": "2026-05-01T12:00:00Z",
+  "assets": [
+    {
+      "asset_id": "prod-db-01",
+      "backup_tier": "gold",
+      "rpo_hours": 4,
+      "rto_hours": 8,
+      "last_successful_backup": "2026-05-01T06:00:00Z",
+      "encryption_at_rest": true,
+      "immutable_copy": true
+    },
+    {
+      "asset_id": "prod-api-01",
+      "backup_tier": "silver",
+      "rpo_hours": 24,
+      "rto_hours": 24,
+      "last_successful_backup": "2026-04-30T22:00:00Z",
+      "encryption_at_rest": true,
+      "immutable_copy": false
+    },
+    {
+      "asset_id": "prod-storage-01",
+      "backup_tier": "silver",
+      "rpo_hours": 24,
+      "last_successful_backup": "2026-05-01T04:00:00Z",
+      "encryption_at_rest": true
+    }
+  ]
+}

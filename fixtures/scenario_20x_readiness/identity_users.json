@@ -1,0 +1,24 @@
+{
+  "as_of": "2026-05-01T12:00:00Z",
+  "users": [
+    {
+      "user_id": "u-alice-platform",
+      "principal": "alice@example.com",
+      "display_name": "Alice Chen",
+      "account_type": "standard",
+      "privileged": false,
+      "last_login": "2026-04-29T08:00:00Z",
+      "mfa_enrolled": true
+    },
+    {
+      "user_id": "u-breakglass-01",
+      "principal": "breakglass-use1",
+      "display_name": "Break-glass emergency operator",
+      "account_type": "break_glass",
+      "privileged": true,
+      "last_login": "2026-05-01T09:14:00Z",
+      "mfa_enrolled": true,
+      "notes": "KSI-IAM-01 narrative: quarterly privileged review overdue for this account."
+    }
+  ]
+}

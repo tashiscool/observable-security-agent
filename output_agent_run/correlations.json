@@ -1,0 +1,6 @@
+{
+  "eval_id": "CROSS_DOMAIN_EVENT_CORRELATION",
+  "eval_name": "Cross-Domain Security Event Correlation",
+  "result": "PASS",
+  "correlations": []
+}

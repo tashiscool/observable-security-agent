@@ -1,0 +1,54 @@
+{
+  "primary_package": "fedramp20x-package.json",
+  "package_manifest": {
+    "description": "Machine-readable primary package and mirrored validation slices (AuditKit-inspired folder ideas; not AuditKit software output).",
+    "primary_package_filename": "fedramp20x-package.json",
+    "validation_artifacts_relative": [
+      "evidence/validation-results/ksi-results.json",
+      "evidence/validation-results/findings.json",
+      "evidence/validation-results/poam-items.json",
+      "evidence/validation-results/evidence-links.json"
+    ],
+    "report_directories_relative": {
+      "assessor": "reports/assessor/",
+      "executive": "reports/executive/",
+      "agency_ao": "reports/agency-ao/"
+    }
+  },
+  "validation_run": {
+    "nested_package_schema_label": "FedRAMP 20x\u2013style nested bundle (schemas/fedramp20x-package.schema.json)",
+    "schema_validation_outcome": "passed",
+    "note": "Outcome set to passed only if validate_fedramp20x_document succeeds.",
+    "validated_at": "2026-05-02T15:00:23.801144+00:00"
+  },
+  "input_artifact_manifest": [
+    {
+      "path": "eval_results.json",
+      "sha256": "54dd23a5fbaf79da292e93c5e67e3fce13419ab0e7eb9d20c734084ceefbf9fe",
+      "size_bytes": 41992
+    },
+    {
+      "path": "evidence_graph.json",
+      "sha256": "a59de68264d1040aacd85196279e63d8371f731d3fef69eb366c01ee9d04174a",
+      "size_bytes": 63938
+    },
+    {
+      "path": "assessment_summary.json",
+      "sha256": "0197b61dd762882496d5bdc2f6d0ff11193620e7d01a15b8072b109511c7475c",
+      "size_bytes": 223
+    },
+    {
+      "path": "poam.csv",
+      "sha256": "dc26c1aa2faca41ea84920ee780756e23eac80f45507b87941c34672b037633a",
+      "size_bytes": 901
+    }
+  ],
+  "tool_version": "0.1.0",
+  "fedramp20x_style_schema": {
+    "label": "FedRAMP 20x\u2013style evidence package schema",
+    "project_relative_path": "schemas/fedramp20x-package.schema.json",
+    "schema_id_uri": "https://observable-security-agent.local/schemas/fedramp20x-package.schema.json"
+  },
+  "generated_at": "2026-05-02T15:00:23.784753+00:00",
+  "package_generation_timestamp_utc": "2026-05-02T15:00:23.784757+00:00"
+}

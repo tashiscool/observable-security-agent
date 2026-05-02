@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "package_metadata": {
+    "generated_at": "2026-05-01T00:00:00Z",
+    "generator_id": "observable-security-agent-test",
+    "assessment_output_uri": "file:///tmp/assessment"
+  },
+  "findings": [{ "finding_id": "F-001", "title": "Sample", "severity": "high" }],
+  "evidence_links": [{ "link_id": "EL-001", "finding_id": "F-001" }],
+  "poam_items": [{ "poam_id": "PM-001", "title": "Track remediation" }]
+}

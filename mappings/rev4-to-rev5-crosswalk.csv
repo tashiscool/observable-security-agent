@@ -1,0 +1,72 @@
+rev4_control,rev5_control,relationship,notes
+AC-2,AC-2,same,account management
+AC-3,AC-3,same,access enforcement
+AC-5,AC-5,same,separation of duties
+IA-2,IA-2,same,identification and authentication
+IA-4,IA-4,same,identifier management
+AU-2,AU-2,same,audit events
+AU-6,AU-6,same,audit review analysis reporting
+AU-8,AU-8,same,time stamps
+AU-9,AU-9,same,protection of audit information
+AU-12,AU-12,same,audit generation
+RA-5,RA-5,same,vulnerability scanning
+SI-2,SI-2,same,flaw remediation
+SI-3,SI-3,same,malicious code protection
+CM-2,CM-2,same,baseline configuration
+CM-3,CM-3,same,configuration change control
+CM-4,CM-4,same,security impact analysis for changes
+CM-5,CM-5,same,access restrictions for change
+CM-6,CM-6,same,configuration settings
+CM-8,CM-8,same,inventory
+PL-2,PL-2,same,system security plan
+IR-4,IR-4,same,incident handling
+IR-5,IR-5,same,incident monitoring
+IR-6,IR-6,same,incident reporting
+CP-9,CP-9,same,system backup
+CP-10,CP-10,same,system recovery and reconstitution
+SA-4,SA-4,mapped_or_expanded,Rev5 SA/SR alignment; map evidence to SR supplier and development controls where applicable.
+SA-8,SA-8,mapped_or_expanded,Rev5 SA/SR alignment; map evidence to SR supplier and development controls where applicable.
+SA-9,SA-9,mapped_or_expanded,Rev5 SA/SR alignment; map evidence to SR supplier and development controls where applicable.
+SA-10,SA-10,mapped_or_expanded,Rev5 SA/SR alignment; map evidence to SR supplier and development controls where applicable.
+SA-11,SA-11,mapped_or_expanded,Rev5 SA/SR alignment; map evidence to SR supplier and development controls where applicable.
+SR-3,SR-3,new_in_rev5,SR family formalized in SP 800-53 Rev.5.
+SR-5,SR-5,new_in_rev5,SR family formalized in SP 800-53 Rev.5.
+CM-8(1),CM-8(1),same,inventory enhancement
+CM-8(3),CM-8(3),same,automated unauthorized components
+RA-5(3),RA-5(3),same,scan processes
+RA-5(5),RA-5(5),same,scan processes
+RA-5(6),RA-5(6),same,scan processes
+RA-5(8),RA-5(8),same,exploitation review
+CA-7,CA-7,same,continuous monitoring
+AU-3,AU-3,same,audit content
+AU-3(1),AU-3(1),same,audit content
+AU-6(1),AU-6(1),same,process integration
+AU-6(3),AU-6(3),same,correlation
+AU-7,AU-7,same,audit reduction and report generation
+AU-9(2),AU-9(2),same,protection of audit information
+AU-5,AU-5,same,response to audit processing failures
+SI-4,SI-4,same,system monitoring
+SI-4(1),SI-4(1),same,monitoring
+SI-4(4),SI-4(4),same,inbound and outbound communications traffic
+SI-4(16),SI-4(16),same,monitoring wireless to mobile devices
+AC-2(1),AC-2(1),same,automated system account management
+AC-2(3),AC-2(3),same,disable accounts
+AC-2(4),AC-2(4),same,automated audit actions
+AC-2(7),AC-2(7),same,privileged user accounts
+AC-6,AC-6,same,least privilege
+IA-5,IA-5,same,authenticator management
+CM-10,CM-10,same,software usage restrictions
+CM-11,CM-11,same,user-installed software
+MA-2,MA-2,same,controlled maintenance
+MA-3,MA-3,same,maintenance tools
+MA-4,MA-4,same,nonlocal maintenance
+MA-5,MA-5,same,maintenance personnel
+CA-5,CA-5,same,plan of action and milestones
+AC-4,AC-4,same,information flow enforcement
+AC-17,AC-17,same,remote access
+SC-7,SC-7,same,boundary protection
+SC-7(3),SC-7(3),same,access points
+SC-7(4),SC-7(4),same,external telecommunications services
+SC-7(5),SC-7(5),same,deny by default allow by exception
+CM-7,CM-7,same,least functionality
+RA-2,RA-2,same,security categorization

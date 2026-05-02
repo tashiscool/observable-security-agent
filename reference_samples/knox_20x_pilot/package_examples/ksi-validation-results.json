@@ -1,0 +1,237 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "generated_at": "2024-11-14T20:00:00Z",
+    "evaluation_id": "eval-20241114-200000",
+    "knox_ai_version": "2.5.1",
+    "schema_version": "fedramp-20x-v1",
+    "note": "This is sample data for demonstration purposes. For live, real-time assessment data, visit https://trustcenter.knoxsystems.com/"
+  },
+  "summary": {
+    "total_validations": 150,
+    "passed": 145,
+    "failed": 5,
+    "unknown": 0,
+    "overall_score": 96.7,
+    "evaluation_duration_seconds": 287
+  },
+  "evidence": [
+    {
+      "Unique Evidence Number": "KSI-IAM-1",
+      "KSI Type": "IAM",
+      "KSI Category": "Identity and Access Management",
+      "KSI Description": "Multi-factor authentication is enforced for all privileged users",
+      "Compliance Status": "Pass",
+      "Evidence Title": "MFA Enforcement for Privileged Users",
+      "Evidence Collection Date": "2024-11-14T20:00:00Z",
+      "Evidence Owner": "Knox AI Automated Scanner",
+      "Literal Evidence": [
+        {
+          "type": "aws_iam_user",
+          "account_id": "123456789012",
+          "region": "us-east-1",
+          "user_name": "admin-user-1",
+          "mfa_enabled": true,
+          "has_console_access": true,
+          "is_privileged": true,
+          "groups": ["Administrators"],
+          "last_activity": "2024-11-14T18:30:00Z"
+        },
+        {
+          "type": "aws_iam_user",
+          "account_id": "123456789012",
+          "region": "us-east-1", 
+          "user_name": "admin-user-2",
+          "mfa_enabled": true,
+          "has_console_access": true,
+          "is_privileged": true,
+          "groups": ["Administrators", "SecurityAuditors"],
+          "last_activity": "2024-11-14T15:45:00Z"
+        }
+      ],
+      "Pass/Fail Reason": "All 47 privileged users across 3 AWS accounts have MFA enabled. No exceptions found.",
+      "Remediation Required": "No",
+      "Remediation Plan": "N/A",
+      "Score": 100,
+      "Data Sources": ["AWS"],
+      "Metadata": {
+        "accounts_scanned": 3,
+        "total_users_evaluated": 182,
+        "privileged_users_found": 47,
+        "evaluation_method": "automated",
+        "confidence_score": 100
+      }
+    },
+    {
+      "Unique Evidence Number": "KSI-CNA-1",
+      "KSI Type": "CNA",
+      "KSI Category": "Cloud Native Architecture",
+      "KSI Description": "Containers are configured with immutable infrastructure patterns",
+      "Compliance Status": "Pass",
+      "Evidence Title": "Container Immutability Configuration",
+      "Evidence Collection Date": "2024-11-14T20:00:00Z",
+      "Evidence Owner": "Knox AI Automated Scanner",
+      "Literal Evidence": [
+        {
+          "type": "ecs_task_definition",
+          "account_id": "123456789012",
+          "region": "us-east-1",
+          "task_definition": "app-service:15",
+          "container_name": "web-app",
+          "read_only_root_filesystem": true,
+          "privileged": false,
+          "user": "nonroot",
+          "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/app:v1.2.3"
+        },
+        {
+          "type": "kubernetes_deployment",
+          "cluster": "production-eks",
+          "namespace": "default",
+          "deployment": "api-service",
+          "security_context": {
+            "readOnlyRootFilesystem": true,
+            "runAsNonRoot": true,
+            "runAsUser": 1000,
+            "allowPrivilegeEscalation": false
+          }
+        }
+      ],
+      "Pass/Fail Reason": "All 156 container definitions across ECS and EKS have immutable configurations with read-only root filesystems",
+      "Remediation Required": "No",
+      "Remediation Plan": "N/A",
+      "Score": 100,
+      "Data Sources": ["AWS", "WIZ"],
+      "Metadata": {
+        "ecs_tasks_evaluated": 89,
+        "eks_pods_evaluated": 67,
+        "evaluation_method": "ai-validated",
+        "ai_reasoning": "Analyzed container configurations for immutability patterns including read-only filesystems, non-root users, and no privilege escalation"
+      }
+    },
+    {
+      "Unique Evidence Number": "KSI-MLA-1",
+      "KSI Type": "MLA",
+      "KSI Category": "Monitoring, Logging, and Auditing",
+      "KSI Description": "CloudTrail is enabled in all regions with log validation",
+      "Compliance Status": "Fail",
+      "Evidence Title": "CloudTrail Multi-Region Configuration",
+      "Evidence Collection Date": "2024-11-14T20:00:00Z",
+      "Evidence Owner": "Knox AI Automated Scanner",
+      "Literal Evidence": [
+        {
+          "type": "aws_cloudtrail",
+          "account_id": "234567890123",
+          "region": "ap-southeast-2",
+          "trail_name": "organization-trail",
+          "is_multiregion": false,
+          "log_file_validation": true,
+          "event_selectors": ["All"],
+          "status": "active"
+        }
+      ],
+      "Pass/Fail Reason": "CloudTrail in account 234567890123 (Production-APAC) is not configured for multi-region. Single region trail found in ap-southeast-2.",
+      "Remediation Required": "Yes",
+      "Remediation Plan": "Update CloudTrail configuration to enable multi-region trail. Use AWS CLI: aws cloudtrail update-trail --name organization-trail --is-multi-region-trail",
+      "Score": 85,
+      "Data Sources": ["AWS"],
+      "Metadata": {
+        "total_accounts": 3,
+        "compliant_accounts": 2,
+        "non_compliant_accounts": ["234567890123"],
+        "evaluation_method": "automated"
+      }
+    },
+    {
+      "Unique Evidence Number": "KSI-SC-1",
+      "KSI Type": "SC",
+      "KSI Category": "Service Configuration", 
+      "KSI Description": "All S3 buckets have encryption at rest enabled",
+      "Compliance Status": "Pass",
+      "Evidence Title": "S3 Bucket Encryption Configuration",
+      "Evidence Collection Date": "2024-11-14T20:00:00Z",
+      "Evidence Owner": "Knox AI Automated Scanner",
+      "Literal Evidence": [
+        {
+          "type": "s3_bucket_summary",
+          "total_buckets": 47,
+          "encrypted_buckets": 47,
+          "encryption_types": {
+            "AES256": 12,
+            "aws:kms": 35
+          },
+          "sample_buckets": [
+            {
+              "name": "prod-app-assets",
+              "encryption": "aws:kms",
+              "kms_key_id": "arn:aws:kms:us-east-1:123456789012:key/abc-123"
+            }
+          ]
+        }
+      ],
+      "Pass/Fail Reason": "All 47 S3 buckets across all accounts have encryption enabled. 35 use KMS encryption, 12 use AES256.",
+      "Remediation Required": "No",
+      "Remediation Plan": "N/A",
+      "Score": 100,
+      "Data Sources": ["AWS", "WIZ"],
+      "Metadata": {
+        "buckets_per_account": {
+          "123456789012": 23,
+          "234567890123": 15,
+          "345678901234": 9
+        },
+        "evaluation_method": "automated"
+      }
+    },
+    {
+      "Unique Evidence Number": "KSI-CD-1",
+      "KSI Type": "CD",
+      "KSI Category": "Continuous Diagnostics",
+      "KSI Description": "Vulnerability scanning is performed continuously with automated remediation tracking",
+      "Compliance Status": "Pass",
+      "Evidence Title": "Continuous Vulnerability Scanning Implementation",
+      "Evidence Collection Date": "2024-11-14T20:00:00Z",
+      "Evidence Owner": "Knox AI Automated Scanner",
+      "Literal Evidence": [
+        {
+          "type": "vulnerability_scanning_config",
+          "tool": "AWS Inspector",
+          "enabled": true,
+          "scan_frequency": "continuous",
+          "coverage": {
+            "ec2_instances": 156,
+            "containers": 234,
+            "lambda_functions": 89
+          },
+          "findings_last_24h": {
+            "critical": 0,
+            "high": 2,
+            "medium": 15,
+            "low": 43
+          }
+        },
+        {
+          "type": "wiz_integration",
+          "status": "active",
+          "last_scan": "2024-11-14T19:45:00Z",
+          "auto_remediation_enabled": true,
+          "remediation_sla": {
+            "critical": "4 hours",
+            "high": "24 hours",
+            "medium": "7 days"
+          }
+        }
+      ],
+      "Pass/Fail Reason": "Continuous vulnerability scanning is active across all environments with AWS Inspector and Wiz. Automated remediation tracking is configured.",
+      "Remediation Required": "No",
+      "Remediation Plan": "N/A",
+      "Score": 98,
+      "Data Sources": ["AWS", "WIZ"],
+      "Metadata": {
+        "scan_coverage_percentage": 100,
+        "mean_time_to_remediation": "18 hours",
+        "evaluation_method": "ai-validated",
+        "ai_reasoning": "Verified continuous scanning configuration, coverage completeness, and remediation workflow integration"
+      }
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "system": "jira",
+  "tickets": [
+    {
+      "id": "CHG-20X-9201",
+      "title": "Emergency SG change prod-api-01 — SSH rule (incomplete CAB packet)",
+      "links_asset_id": "prod-api-01",
+      "links_event_ref": "",
+      "linked_finding_ids": [],
+      "security_impact_analysis": false,
+      "test_evidence": false,
+      "approval_recorded": true,
+      "has_deployment_evidence": true,
+      "has_verification_evidence": true,
+      "post_deploy_verification": true,
+      "status": "Closed",
+      "created_at": "2026-05-01T10:35:00Z",
+      "closed_at": "2026-05-01T10:50:00Z",
+      "notes": "Linked by asset for AuthorizeSecurityGroupIngress; SIA and formal test evidence missing (KSI-CM-01 partial)."
+    },
+    {
+      "id": "VULN-20X-9912",
+      "title": "High OpenSSH / SG exposure — prod-api-01",
+      "links_asset_id": "prod-api-01",
+      "links_event_ref": "",
+      "linked_finding_ids": ["nessus-2026-0501-prod-api-01-87839"],
+      "security_impact_analysis": false,
+      "test_evidence": false,
+      "approval_recorded": true,
+      "has_deployment_evidence": false,
+      "has_verification_evidence": false,
+      "post_deploy_verification": false,
+      "status": "In Progress",
+      "created_at": "2026-05-01T11:05:00Z",
+      "notes": "Remediation ticket without exploitation-review closure (KSI-VULN-01 fail)."
+    },
+    {
+      "id": "CHG-20X-8842",
+      "title": "Q2 dependency refresh — prod-storage-01",
+      "links_asset_id": "prod-storage-01",
+      "links_event_ref": "",
+      "linked_finding_ids": [],
+      "security_impact_analysis": true,
+      "test_evidence": true,
+      "approval_recorded": true,
+      "has_deployment_evidence": true,
+      "has_verification_evidence": true,
+      "post_deploy_verification": true,
+      "status": "Closed",
+      "created_at": "2026-04-10T14:00:00Z",
+      "closed_at": "2026-04-18T22:00:00Z"
+    }
+  ]
+}

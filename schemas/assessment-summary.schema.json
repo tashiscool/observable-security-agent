@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/assessment-summary.schema.json",
+  "title": "Assessment summary (machine-readable rollup)",
+  "type": "object",
+  "required": [
+    "assessment_bundle",
+    "eval_pass",
+    "eval_fail",
+    "eval_partial",
+    "eval_open",
+    "poam_rows_generated"
+  ],
+  "properties": {
+    "assets": { "type": ["integer", "null"] },
+    "events": { "type": ["integer", "null"] },
+    "findings": { "type": ["integer", "null"] },
+    "alert_rules": { "type": ["integer", "null"] },
+    "tickets": { "type": ["integer", "null"] },
+    "assessment_bundle": { "type": "string" },
+    "eval_pass": { "type": "integer", "minimum": 0 },
+    "eval_fail": { "type": "integer", "minimum": 0 },
+    "eval_partial": { "type": "integer", "minimum": 0 },
+    "eval_open": { "type": "integer", "minimum": 0 },
+    "poam_rows_generated": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": true
+}

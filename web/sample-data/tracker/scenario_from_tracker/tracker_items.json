@@ -1,0 +1,518 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-02T15:00:23Z",
+  "source_input": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/assessment_tracker/sample_tracker.csv",
+  "with_meta_event": true,
+  "row_count": 16,
+  "rows": [
+    {
+      "row_index": 1,
+      "controls": [
+        "CM-8",
+        "CM-8(1)",
+        "CM-8(3)"
+      ],
+      "request_text": "Provide the latest Integrated Inventory Workbook (IIW) plus an authoritative AWS account dump (EC2, RDS, ELB/ALB, S3, VPC) so we can reconcile declared vs. discovered inventory.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-19",
+      "status": "Open",
+      "owner": "CSP Eng",
+      "assessor_comment": "Prior cycle had stale rows for prod-api-01; please confirm CMDB owner and scrub orphaned entries.",
+      "csp_comment": "Will export from CloudWatch Inventory and TrendMicro inventory; expect to deliver by 2026-04-18.",
+      "category": "inventory",
+      "classification_signals": [
+        "integrated inventory workbook",
+        "iiw",
+        "aws account dump",
+        "trendmicro inventory"
+      ],
+      "raw": {
+        "col_0": "CM-8, CM-8(1), CM-8(3)",
+        "col_1": "Provide the latest Integrated Inventory Workbook (IIW) plus an authoritative AWS account dump (EC2, RDS, ELB/ALB, S3, VPC) so we can reconcile declared vs. discovered inventory.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-19",
+        "col_4": "Open",
+        "col_5": "CSP Eng",
+        "col_6": "Prior cycle had stale rows for prod-api-01; please confirm CMDB owner and scrub orphaned entries.",
+        "col_7": "Will export from CloudWatch Inventory and TrendMicro inventory; expect to deliver by 2026-04-18."
+      }
+    },
+    {
+      "row_index": 2,
+      "controls": [
+        "CM-8",
+        "CA-7"
+      ],
+      "request_text": "Inventory of Load Balancers (ALB/NLB) and S3 buckets including IP ranges and public-exposure flag.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-22",
+      "status": "In Progress",
+      "owner": "CSP Eng",
+      "assessor_comment": null,
+      "csp_comment": "S3 inventory dump generated 2026-04-15; ALB/NLB inventory pending.",
+      "category": "inventory",
+      "classification_signals": [
+        "inventory of",
+        "load balancer",
+        "s3 inventory",
+        "ip ranges"
+      ],
+      "raw": {
+        "col_0": "CM-8, CA-7",
+        "col_1": "Inventory of Load Balancers (ALB/NLB) and S3 buckets including IP ranges and public-exposure flag.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-22",
+        "col_4": "In Progress",
+        "col_5": "CSP Eng",
+        "col_6": "",
+        "col_7": "S3 inventory dump generated 2026-04-15; ALB/NLB inventory pending."
+      }
+    },
+    {
+      "row_index": 3,
+      "controls": [
+        "RA-5",
+        "RA-5(3)",
+        "RA-5(5)"
+      ],
+      "request_text": "Provide the Nessus scan target list and credentialed-scan profile evidence for the boundary; show that all in-boundary assets are in scope and credentialed.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-26",
+      "status": "Open",
+      "owner": "Vuln Mgmt",
+      "assessor_comment": "Last cycle excluded prod-db-01 RDS subnet; need confirmation it is now in scope.",
+      "csp_comment": "Tenable scan policy attached; will provide credentialed-scan plugin coverage.",
+      "category": "scanner",
+      "classification_signals": [
+        "nessus",
+        "scan target list",
+        "plugin",
+        "tenable"
+      ],
+      "raw": {
+        "col_0": "RA-5, RA-5(3), RA-5(5)",
+        "col_1": "Provide the Nessus scan target list and credentialed-scan profile evidence for the boundary; show that all in-boundary assets are in scope and credentialed.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-26",
+        "col_4": "Open",
+        "col_5": "Vuln Mgmt",
+        "col_6": "Last cycle excluded prod-db-01 RDS subnet; need confirmation it is now in scope.",
+        "col_7": "Tenable scan policy attached; will provide credentialed-scan plugin coverage."
+      }
+    },
+    {
+      "row_index": 4,
+      "controls": [
+        "RA-5",
+        "SI-2"
+      ],
+      "request_text": "Latest Nessus vulnerability scan reports (full scope) plus Burp web-app scan signatures and any deltas vs. prior cycle.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-26",
+      "status": "Open",
+      "owner": "Vuln Mgmt",
+      "assessor_comment": "Highlight any net-new High/Critical findings.",
+      "csp_comment": "Burp scan was rerun against the public ALB; Nessus weekly scan attached.",
+      "category": "scanner",
+      "classification_signals": [
+        "nessus",
+        "burp",
+        "vulnerability scan",
+        "signature",
+        "scan report"
+      ],
+      "raw": {
+        "col_0": "RA-5, SI-2",
+        "col_1": "Latest Nessus vulnerability scan reports (full scope) plus Burp web-app scan signatures and any deltas vs. prior cycle.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-26",
+        "col_4": "Open",
+        "col_5": "Vuln Mgmt",
+        "col_6": "Highlight any net-new High/Critical findings.",
+        "col_7": "Burp scan was rerun against the public ALB; Nessus weekly scan attached."
+      }
+    },
+    {
+      "row_index": 5,
+      "controls": [
+        "RA-5(8)"
+      ],
+      "request_text": "Exploitation review for all High/Critical vulnerabilities open >30 days. Show IoC search and historical audit log review for each finding.",
+      "request_date": "2026-04-19",
+      "due_date": "2026-05-03",
+      "status": "Open",
+      "owner": "SOC",
+      "assessor_comment": "Per FedRAMP guidance, HIGH/CRITICAL >30 days require a documented exploitation review with IoC matches and historical log queries.",
+      "csp_comment": "Splunk searches saved under app `vuln_exploit_review`; will provide rendered evidence.",
+      "category": "exploitation_review",
+      "classification_signals": [
+        "exploitation review",
+        "ioc",
+        "historical audit log"
+      ],
+      "raw": {
+        "col_0": "RA-5(8)",
+        "col_1": "Exploitation review for all High/Critical vulnerabilities open >30 days. Show IoC search and historical audit log review for each finding.",
+        "col_2": "2026-04-19",
+        "col_3": "2026-05-03",
+        "col_4": "Open",
+        "col_5": "SOC",
+        "col_6": "Per FedRAMP guidance, HIGH/CRITICAL >30 days require a documented exploitation review with IoC matches and historical log queries.",
+        "col_7": "Splunk searches saved under app `vuln_exploit_review`; will provide rendered evidence."
+      }
+    },
+    {
+      "row_index": 6,
+      "controls": [
+        "AU-2",
+        "AU-3",
+        "AU-6",
+        "AU-12"
+      ],
+      "request_text": "Demonstrate centralized audit log aggregation: provide Splunk dashboards/searches showing CloudTrail, VPC Flow Logs, CloudWatch Logs, and OS auth.log are reaching the SIEM.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-19",
+      "status": "Open",
+      "owner": "Logging",
+      "assessor_comment": "Need both centralized view AND a local log example from a production host to prove forwarder is healthy.",
+      "csp_comment": "Splunk app `aws_central_logs` dashboards; local `auth.log` sample from prod-api-01 attached separately.",
+      "category": "logging",
+      "classification_signals": [
+        "splunk",
+        "centralized audit log",
+        "local log",
+        "cloudwatch logs",
+        "vpc flow logs",
+        "vpc flow log",
+        "siem",
+        "log aggregation"
+      ],
+      "raw": {
+        "col_0": "AU-2, AU-3, AU-6, AU-12",
+        "col_1": "Demonstrate centralized audit log aggregation: provide Splunk dashboards/searches showing CloudTrail, VPC Flow Logs, CloudWatch Logs, and OS auth.log are reaching the SIEM.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-19",
+        "col_4": "Open",
+        "col_5": "Logging",
+        "col_6": "Need both centralized view AND a local log example from a production host to prove forwarder is healthy.",
+        "col_7": "Splunk app `aws_central_logs` dashboards; local `auth.log` sample from prod-api-01 attached separately."
+      }
+    },
+    {
+      "row_index": 7,
+      "controls": [
+        "AU-6",
+        "SI-4"
+      ],
+      "request_text": "Provide the alert rules / saved searches with recipient lists (SOC, IR, IAM Governance) and at least one example alert that fired and was actioned.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-26",
+      "status": "Open",
+      "owner": "SOC",
+      "assessor_comment": "We need the recipient list explicitly; ensure GuardDuty notifications also route to a monitored mailbox.",
+      "csp_comment": "Splunk alert export attached; GuardDuty -> EventBridge -> SOC PagerDuty.",
+      "category": "alerting",
+      "classification_signals": [
+        "alert rule",
+        "guardduty",
+        "saved search"
+      ],
+      "raw": {
+        "col_0": "AU-6, SI-4",
+        "col_1": "Provide the alert rules / saved searches with recipient lists (SOC, IR, IAM Governance) and at least one example alert that fired and was actioned.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-26",
+        "col_4": "Open",
+        "col_5": "SOC",
+        "col_6": "We need the recipient list explicitly; ensure GuardDuty notifications also route to a monitored mailbox.",
+        "col_7": "Splunk alert export attached; GuardDuty -> EventBridge -> SOC PagerDuty."
+      }
+    },
+    {
+      "row_index": 8,
+      "controls": [
+        "SI-4(1)",
+        "SI-4(4)"
+      ],
+      "request_text": "List CloudWatch alarms and GuardDuty findings considered \"suspicious activity\"; map each to a documented response action.",
+      "request_date": "2026-04-19",
+      "due_date": "2026-05-03",
+      "status": "Open",
+      "owner": "SOC",
+      "assessor_comment": null,
+      "csp_comment": null,
+      "category": "alerting",
+      "classification_signals": [
+        "guardduty",
+        "cloudwatch alarm",
+        "cloudwatch alarms",
+        "suspicious activity"
+      ],
+      "raw": {
+        "col_0": "SI-4(1), SI-4(4)",
+        "col_1": "List CloudWatch alarms and GuardDuty findings considered \"suspicious activity\"; map each to a documented response action.",
+        "col_2": "2026-04-19",
+        "col_3": "2026-05-03",
+        "col_4": "Open",
+        "col_5": "SOC",
+        "col_6": "",
+        "col_7": ""
+      }
+    },
+    {
+      "row_index": 9,
+      "controls": [
+        "CM-3",
+        "SI-2"
+      ],
+      "request_text": "Sample change tickets in JIRA with full evidence chain: Security Impact Analysis, testing artifacts, CAB approval, deployment evidence, post-deploy verification.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-26",
+      "status": "Open",
+      "owner": "Change Mgmt",
+      "assessor_comment": "At least 5 sampled tickets including one VULN-* remediation; verify SIA was performed BEFORE deployment.",
+      "csp_comment": "Pulled CHG-8842, CHG-9011, VULN-9912 from JIRA; will provide SIA + test + approval + deploy + verify per ticket.",
+      "category": "change_ticket",
+      "classification_signals": [
+        "jira",
+        "change ticket",
+        "sia",
+        "security impact analysis",
+        "deployment evidence",
+        "post-deploy",
+        "cab approval"
+      ],
+      "raw": {
+        "col_0": "CM-3, SI-2",
+        "col_1": "Sample change tickets in JIRA with full evidence chain: Security Impact Analysis, testing artifacts, CAB approval, deployment evidence, post-deploy verification.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-26",
+        "col_4": "Open",
+        "col_5": "Change Mgmt",
+        "col_6": "At least 5 sampled tickets including one VULN-* remediation; verify SIA was performed BEFORE deployment.",
+        "col_7": "Pulled CHG-8842, CHG-9011, VULN-9912 from JIRA; will provide SIA + test + approval + deploy + verify per ticket."
+      }
+    },
+    {
+      "row_index": 10,
+      "controls": [
+        "CA-5"
+      ],
+      "request_text": "POA&M updates: Provide the current POA&M with deviation requests, vendor dependencies, and operational requirements clearly noted.",
+      "request_date": "2026-04-19",
+      "due_date": "2026-04-30",
+      "status": "In Progress",
+      "owner": "GRC",
+      "assessor_comment": "Please cite which open POA&Ms are blocked on vendor or operational requirements vs. internal scheduling.",
+      "csp_comment": "Updated POA&M attached as `poam_2026Q2.csv` with deviation columns.",
+      "category": "poam",
+      "classification_signals": [
+        "poam",
+        "poa&m",
+        "deviation request",
+        "operational requirement"
+      ],
+      "raw": {
+        "col_0": "CA-5",
+        "col_1": "POA&M updates: Provide the current POA&M with deviation requests, vendor dependencies, and operational requirements clearly noted.",
+        "col_2": "2026-04-19",
+        "col_3": "2026-04-30",
+        "col_4": "In Progress",
+        "col_5": "GRC",
+        "col_6": "Please cite which open POA&Ms are blocked on vendor or operational requirements vs. internal scheduling.",
+        "col_7": "Updated POA&M attached as `poam_2026Q2.csv` with deviation columns."
+      }
+    },
+    {
+      "row_index": 11,
+      "controls": [
+        "IR-4",
+        "IR-6"
+      ],
+      "request_text": "Incident response evidence: any suspected or confirmed incidents in the past 12 months, including US-CERT/CISA notifications and incident closure records.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-05-10",
+      "status": "Open",
+      "owner": "IR",
+      "assessor_comment": "If there were no incidents, provide a signed attestation; otherwise provide the IR ticket(s) and CISA report.",
+      "csp_comment": "No confirmed incidents; one suspected (false positive) \u2014 full IR ticket IR-2026-014 attached.",
+      "category": "incident",
+      "classification_signals": [
+        "incident response",
+        " ir ",
+        "ir-",
+        "us-cert",
+        "cisa report",
+        "confirmed incident",
+        "incident closure"
+      ],
+      "raw": {
+        "col_0": "IR-4, IR-6",
+        "col_1": "Incident response evidence: any suspected or confirmed incidents in the past 12 months, including US-CERT/CISA notifications and incident closure records.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-05-10",
+        "col_4": "Open",
+        "col_5": "IR",
+        "col_6": "If there were no incidents, provide a signed attestation; otherwise provide the IR ticket(s) and CISA report.",
+        "col_7": "No confirmed incidents; one suspected (false positive) \u2014 full IR ticket IR-2026-014 attached."
+      }
+    },
+    {
+      "row_index": 12,
+      "controls": [
+        "SC-13",
+        "SC-28",
+        "SC-12"
+      ],
+      "request_text": "FIPS 140-2/3 evidence: list crypto modules in use (AWS KMS, ALB ciphers, RDS encryption-at-rest), cipher list, and key rotation evidence for KMS keys.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-26",
+      "status": "Open",
+      "owner": "Crypto",
+      "assessor_comment": "Confirm ALB TLS cipher list excludes deprecated ciphers; KMS key rotation enabled annually.",
+      "csp_comment": "KMS rotation export + ALB listener policy attached.",
+      "category": "crypto",
+      "classification_signals": [
+        "fips 140",
+        "crypto module",
+        "cipher list",
+        "tls cipher",
+        "kms key",
+        "key rotation"
+      ],
+      "raw": {
+        "col_0": "SC-13, SC-28, SC-12",
+        "col_1": "FIPS 140-2/3 evidence: list crypto modules in use (AWS KMS, ALB ciphers, RDS encryption-at-rest), cipher list, and key rotation evidence for KMS keys.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-26",
+        "col_4": "Open",
+        "col_5": "Crypto",
+        "col_6": "Confirm ALB TLS cipher list excludes deprecated ciphers; KMS key rotation enabled annually.",
+        "col_7": "KMS rotation export + ALB listener policy attached."
+      }
+    },
+    {
+      "row_index": 13,
+      "controls": [
+        "CP-9",
+        "CP-10"
+      ],
+      "request_text": "Backup and recovery evidence: most recent restore test (RTO/RPO measurements) and snapshot evidence for RDS + AMI snapshots.",
+      "request_date": "2026-04-19",
+      "due_date": "2026-05-10",
+      "status": "Open",
+      "owner": "Ops",
+      "assessor_comment": "Need actual restore-test ticket, not just the policy.",
+      "csp_comment": "Restore test executed 2026-04-22 in DR region; ticket DR-2026-007 attached.",
+      "category": "backup",
+      "classification_signals": [
+        "restore test",
+        "rpo",
+        "rto",
+        "snapshot evidence"
+      ],
+      "raw": {
+        "col_0": "CP-9, CP-10",
+        "col_1": "Backup and recovery evidence: most recent restore test (RTO/RPO measurements) and snapshot evidence for RDS + AMI snapshots.",
+        "col_2": "2026-04-19",
+        "col_3": "2026-05-10",
+        "col_4": "Open",
+        "col_5": "Ops",
+        "col_6": "Need actual restore-test ticket, not just the policy.",
+        "col_7": "Restore test executed 2026-04-22 in DR region; ticket DR-2026-007 attached."
+      }
+    },
+    {
+      "row_index": 14,
+      "controls": [
+        "AC-2",
+        "AC-2(7)",
+        "AC-6"
+      ],
+      "request_text": "Account listings: full IAM user list with privileged-account tagging, MFA report, and most recent quarterly access review.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-26",
+      "status": "Open",
+      "owner": "IAM Governance",
+      "assessor_comment": "Cross-check that every privileged account has MFA AND was reviewed in the latest cycle.",
+      "csp_comment": "IAM listing + MFA report + Q1 access review export attached.",
+      "category": "iam",
+      "classification_signals": [
+        "account listing",
+        "iam user",
+        "privileged account",
+        "mfa report",
+        "access review"
+      ],
+      "raw": {
+        "col_0": "AC-2, AC-2(7), AC-6",
+        "col_1": "Account listings: full IAM user list with privileged-account tagging, MFA report, and most recent quarterly access review.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-26",
+        "col_4": "Open",
+        "col_5": "IAM Governance",
+        "col_6": "Cross-check that every privileged account has MFA AND was reviewed in the latest cycle.",
+        "col_7": "IAM listing + MFA report + Q1 access review export attached."
+      }
+    },
+    {
+      "row_index": 15,
+      "controls": [
+        "SC-7",
+        "SC-7(11)"
+      ],
+      "request_text": "Traffic flow / boundary evidence: data flow diagram, security group inventory with ingress/egress rules, and the ports-and-protocols matrix.",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-26",
+      "status": "Open",
+      "owner": "Network",
+      "assessor_comment": "Highlight any ingress rule allowing 0.0.0.0/0 to administrative ports.",
+      "csp_comment": "SG inventory + DFD + ports/protocols matrix attached; one tagged exception for break-glass remains.",
+      "category": "traffic_flow",
+      "classification_signals": [
+        "traffic flow",
+        "data flow diagram",
+        "security group",
+        "ingress rule",
+        "egress rule"
+      ],
+      "raw": {
+        "col_0": "SC-7, SC-7(11)",
+        "col_1": "Traffic flow / boundary evidence: data flow diagram, security group inventory with ingress/egress rules, and the ports-and-protocols matrix.",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-26",
+        "col_4": "Open",
+        "col_5": "Network",
+        "col_6": "Highlight any ingress rule allowing 0.0.0.0/0 to administrative ports.",
+        "col_7": "SG inventory + DFD + ports/protocols matrix attached; one tagged exception for break-glass remains."
+      }
+    },
+    {
+      "row_index": 16,
+      "controls": [
+        "AC-2"
+      ],
+      "request_text": "Closed item \u2014 prior-cycle access review attestation (already accepted).",
+      "request_date": "2026-04-12",
+      "due_date": "2026-04-19",
+      "status": "Closed",
+      "owner": "IAM Governance",
+      "assessor_comment": "Accepted from prior cycle.",
+      "csp_comment": "No further action.",
+      "category": "iam",
+      "classification_signals": [
+        "access review"
+      ],
+      "raw": {
+        "col_0": "AC-2",
+        "col_1": "Closed item \u2014 prior-cycle access review attestation (already accepted).",
+        "col_2": "2026-04-12",
+        "col_3": "2026-04-19",
+        "col_4": "Closed",
+        "col_5": "IAM Governance",
+        "col_6": "Accepted from prior cycle.",
+        "col_7": "No further action."
+      }
+    }
+  ]
+}

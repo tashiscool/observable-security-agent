@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/finding.schema.json",
+  "title": "Assessment finding",
+  "type": "object",
+  "required": ["finding_id", "severity", "title", "description"],
+  "properties": {
+    "finding_id": { "type": "string", "minLength": 1 },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low", "info"]
+    },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "status": { "type": "string" },
+    "created_at": { "type": "string" },
+    "source": { "type": "string" },
+    "poam_id": { "type": "string" },
+    "linked_eval_ids": { "type": "array", "items": { "type": "string" } },
+    "linked_ksi_ids": { "type": "array", "items": { "type": "string" } },
+    "ksi_ids": { "type": "array", "items": { "type": "string" } },
+    "nist_control_refs": { "type": "array", "items": { "type": "string" } },
+    "source_artifact_refs": { "type": "array", "items": { "type": "string" } },
+    "legacy_controls": { "type": "object", "additionalProperties": true },
+    "affected_assets": { "type": "array", "items": { "type": "string" } },
+    "evidence": { "type": "array" },
+    "risk_statement": { "type": "string" },
+    "compensating_controls": { "type": "array" },
+    "recommended_remediation": { "type": "string" },
+    "risk_acceptance": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": true
+}

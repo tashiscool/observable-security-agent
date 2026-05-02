@@ -1,0 +1,1 @@
+inventory_id,asset_id,name,asset_type,expected_provider,expected_region,expected_private_ip,expected_public_ip,in_boundary,scanner_required,log_required,owner,system_component
