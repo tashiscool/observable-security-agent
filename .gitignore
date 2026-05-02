@@ -21,6 +21,9 @@ output/*.csv
 !output/demo_walkthrough.md
 !output/demo_walkthrough_coalfire.md
 
+# Local agent run output (regenerable; may contain machine-local paths)
+output_agent_run/
+
 # Agentic fixture + bounded loop (make all / run-agent)
 output_agentic/
 
