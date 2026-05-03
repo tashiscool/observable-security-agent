@@ -49,6 +49,10 @@ demo_artifacts_manifest.json
 # Local validation harness output (reproducible via scripts/validate_everything.py).
 validation_run/
 
+# Local mirror/sync logs (scripts/sync_public_github.sh)
+sync_gh.log
+sync_gh.exit
+
 # --- Security Evidence Explorer (web/) -------------------------------------
 # Never commit macOS filesystem mirrors (e.g. copied /Applications, /Library)
 # or a full second copy of this repo under web/.
