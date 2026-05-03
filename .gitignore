@@ -48,3 +48,23 @@ demo_artifacts_manifest.json
 
 # Local validation harness output (reproducible via scripts/validate_everything.py).
 validation_run/
+
+# --- Security Evidence Explorer (web/) -------------------------------------
+# Never commit macOS filesystem mirrors (e.g. copied /Applications, /Library)
+# or a full second copy of this repo under web/.
+web/Applications/
+web/Library/
+web/System/
+web/FedRAMP20xMCP/
+web/.tracker_artifacts/
+
+# Only intentional explorer assets live at web/ root; everything else is noise.
+web/*
+!web/sample-data/
+!web/sample-data/**
+!web/index.html
+!web/app.js
+!web/styles.css
+!web/fedramp20x.js
+!web/tracker.js
+!web/README.md
