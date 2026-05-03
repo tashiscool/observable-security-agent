@@ -8,39 +8,39 @@
       "severity": "high",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-06-01",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-06-02",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Implement or enable SIEM detection for the assessed semantic with accountable recipients.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Add on-call / governance distribution lists to the rule.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-09"
+          "due_date": "2026-05-10"
         },
         {
           "step": 3,
           "description": "Generate sample alert payload or saved-search proof with timestamps.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-16"
+          "due_date": "2026-05-17"
         },
         {
           "step": 4,
           "description": "Link alert to incident or change response workflow.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-22"
+          "due_date": "2026-05-23"
         },
         {
           "step": 5,
           "description": "Re-run SI-4 alert instrumentation evaluation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-28"
+          "due_date": "2026-05-29"
         }
       ],
       "validation_required_for_closure": true,
@@ -90,39 +90,39 @@
       "severity": "high",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-06-01",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-06-02",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Implement or enable SIEM detection for the assessed semantic with accountable recipients.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Add on-call / governance distribution lists to the rule.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-09"
+          "due_date": "2026-05-10"
         },
         {
           "step": 3,
           "description": "Generate sample alert payload or saved-search proof with timestamps.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-16"
+          "due_date": "2026-05-17"
         },
         {
           "step": 4,
           "description": "Link alert to incident or change response workflow.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-22"
+          "due_date": "2026-05-23"
         },
         {
           "step": 5,
           "description": "Re-run SI-4 alert instrumentation evaluation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-28"
+          "due_date": "2026-05-29"
         }
       ],
       "validation_required_for_closure": true,
@@ -172,39 +172,39 @@
       "severity": "high",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-06-01",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-06-02",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Implement or enable SIEM detection for the assessed semantic with accountable recipients.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Add on-call / governance distribution lists to the rule.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-09"
+          "due_date": "2026-05-10"
         },
         {
           "step": 3,
           "description": "Generate sample alert payload or saved-search proof with timestamps.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-16"
+          "due_date": "2026-05-17"
         },
         {
           "step": 4,
           "description": "Link alert to incident or change response workflow.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-22"
+          "due_date": "2026-05-23"
         },
         {
           "step": 5,
           "description": "Re-run SI-4 alert instrumentation evaluation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-28"
+          "due_date": "2026-05-29"
         }
       ],
       "validation_required_for_closure": true,
@@ -254,39 +254,39 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Investigate affected asset(s); confirm boundary placement and authoritative owner.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Update declared inventory / IIW; resolve duplicate or stale rows.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-04"
+          "due_date": "2026-05-05"
         },
         {
           "step": 3,
           "description": "Assign accountable owner for each in-scope asset row.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-07"
+          "due_date": "2026-05-08"
         },
         {
           "step": 4,
           "description": "Confirm scanner and central logging requirements for updated inventory classes.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 5,
           "description": "Export refreshed inventory evidence and attach to POA&M milestone.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,
@@ -355,39 +355,39 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Investigate affected asset(s); confirm boundary placement and authoritative owner.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Update declared inventory / IIW; resolve duplicate or stale rows.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-04"
+          "due_date": "2026-05-05"
         },
         {
           "step": 3,
           "description": "Assign accountable owner for each in-scope asset row.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-07"
+          "due_date": "2026-05-08"
         },
         {
           "step": 4,
           "description": "Confirm scanner and central logging requirements for updated inventory classes.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 5,
           "description": "Export refreshed inventory evidence and attach to POA&M milestone.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,
@@ -456,33 +456,33 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Document root cause and in-scope impact for the finding.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Implement corrective actions per control family guidance.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-06"
+          "due_date": "2026-05-07"
         },
         {
           "step": 3,
           "description": "Collect objective evidence of remediation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 4,
           "description": "Schedule independent validation for POA&M closure.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,
@@ -551,33 +551,33 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Document root cause and in-scope impact for the finding.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Implement corrective actions per control family guidance.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-06"
+          "due_date": "2026-05-07"
         },
         {
           "step": 3,
           "description": "Collect objective evidence of remediation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 4,
           "description": "Schedule independent validation for POA&M closure.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,
@@ -646,39 +646,39 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Run generated exploitation-review queries; retain analyst identity and time range.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Export SIEM/log results and attach to vulnerability ticket.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-06"
+          "due_date": "2026-05-07"
         },
         {
           "step": 3,
           "description": "Document analyst or agent conclusion for in-exploitability decision.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-09"
+          "due_date": "2026-05-10"
         },
         {
           "step": 4,
           "description": "Link ticket to scanner finding IDs (`linked_finding_ids`).",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-12"
+          "due_date": "2026-05-13"
         },
         {
           "step": 5,
           "description": "Re-run RA-5(8) evaluation with evidence pointers.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-14"
+          "due_date": "2026-05-15"
         }
       ],
       "validation_required_for_closure": true,
@@ -747,39 +747,39 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Configure central log forwarding for affected assets and required event types.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Produce paired local + central log excerpts for the same event IDs.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-06"
+          "due_date": "2026-05-07"
         },
         {
           "step": 3,
           "description": "Validate last_seen / receipt timestamps meet policy window.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-09"
+          "due_date": "2026-05-10"
         },
         {
           "step": 4,
           "description": "Document retention, integrity, and RBAC for the central store.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-12"
+          "due_date": "2026-05-13"
         },
         {
           "step": 5,
           "description": "Re-run AU-6 style coverage evaluation and attach results.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-14"
+          "due_date": "2026-05-15"
         }
       ],
       "validation_required_for_closure": true,
@@ -848,39 +848,39 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Implement or enable SIEM detection for the assessed semantic with accountable recipients.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Add on-call / governance distribution lists to the rule.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-05"
+          "due_date": "2026-05-06"
         },
         {
           "step": 3,
           "description": "Generate sample alert payload or saved-search proof with timestamps.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-09"
+          "due_date": "2026-05-10"
         },
         {
           "step": 4,
           "description": "Link alert to incident or change response workflow.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 5,
           "description": "Re-run SI-4 alert instrumentation evaluation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-14"
+          "due_date": "2026-05-15"
         }
       ],
       "validation_required_for_closure": true,
@@ -949,39 +949,39 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Implement or enable SIEM detection for the assessed semantic with accountable recipients.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Add on-call / governance distribution lists to the rule.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-05"
+          "due_date": "2026-05-06"
         },
         {
           "step": 3,
           "description": "Generate sample alert payload or saved-search proof with timestamps.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-09"
+          "due_date": "2026-05-10"
         },
         {
           "step": 4,
           "description": "Link alert to incident or change response workflow.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 5,
           "description": "Re-run SI-4 alert instrumentation evaluation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-14"
+          "due_date": "2026-05-15"
         }
       ],
       "validation_required_for_closure": true,
@@ -1050,39 +1050,39 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Create or link formal change / incident ticket for the assessed event.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Complete security impact analysis (SIA) and testing evidence per CM-3.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-05"
+          "due_date": "2026-05-06"
         },
         {
           "step": 3,
           "description": "Obtain documented approval aligned to change class.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-08"
+          "due_date": "2026-05-09"
         },
         {
           "step": 4,
           "description": "Attach deployment evidence (automation receipt or timestamped record).",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 5,
           "description": "Attach verification evidence (post-change scan or health check).",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,
@@ -1151,33 +1151,33 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Document root cause and in-scope impact for the finding.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Implement corrective actions per control family guidance.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-06"
+          "due_date": "2026-05-07"
         },
         {
           "step": 3,
           "description": "Collect objective evidence of remediation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 4,
           "description": "Schedule independent validation for POA&M closure.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,
@@ -1246,33 +1246,33 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Document root cause and in-scope impact for the finding.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Implement corrective actions per control family guidance.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-06"
+          "due_date": "2026-05-07"
         },
         {
           "step": 3,
           "description": "Collect objective evidence of remediation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 4,
           "description": "Schedule independent validation for POA&M closure.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,
@@ -1341,33 +1341,33 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Document root cause and in-scope impact for the finding.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Implement corrective actions per control family guidance.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-06"
+          "due_date": "2026-05-07"
         },
         {
           "step": 3,
           "description": "Collect objective evidence of remediation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 4,
           "description": "Schedule independent validation for POA&M closure.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,
@@ -1436,33 +1436,33 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Document root cause and in-scope impact for the finding.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Implement corrective actions per control family guidance.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-06"
+          "due_date": "2026-05-07"
         },
         {
           "step": 3,
           "description": "Collect objective evidence of remediation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 4,
           "description": "Schedule independent validation for POA&M closure.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,
@@ -1531,33 +1531,33 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Document root cause and in-scope impact for the finding.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Implement corrective actions per control family guidance.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-06"
+          "due_date": "2026-05-07"
         },
         {
           "step": 3,
           "description": "Collect objective evidence of remediation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 4,
           "description": "Schedule independent validation for POA&M closure.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,
@@ -1626,33 +1626,33 @@
       "severity": "critical",
       "risk_owner": "Example Chief Risk Officer (delegate)",
       "system_owner": "Example System Owner (ISSO delegate)",
-      "created_at": "2026-05-02T15:00:23.780345+00:00",
-      "target_completion_date": "2026-05-17",
+      "created_at": "2026-05-03T02:01:20.187038+00:00",
+      "target_completion_date": "2026-05-18",
       "status": "Open",
       "remediation_plan": [
         {
           "step": 1,
           "description": "Document root cause and in-scope impact for the finding.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-02"
+          "due_date": "2026-05-03"
         },
         {
           "step": 2,
           "description": "Implement corrective actions per control family guidance.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-06"
+          "due_date": "2026-05-07"
         },
         {
           "step": 3,
           "description": "Collect objective evidence of remediation.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-11"
+          "due_date": "2026-05-12"
         },
         {
           "step": 4,
           "description": "Schedule independent validation for POA&M closure.",
           "owner": "Example Chief Risk Officer (delegate)",
-          "due_date": "2026-05-13"
+          "due_date": "2026-05-14"
         }
       ],
       "validation_required_for_closure": true,

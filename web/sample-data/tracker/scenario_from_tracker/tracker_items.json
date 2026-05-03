@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-05-02T15:00:23Z",
+  "generated_at": "2026-05-03T02:01:19Z",
   "source_input": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/assessment_tracker/sample_tracker.csv",
   "with_meta_event": true,
   "row_count": 16,

@@ -267,7 +267,7 @@ no_policy = [s for s in steps if not s.get("policy")]
 assert not no_policy, f"steps without policy decision: {[s.get('chosen_action') for s in no_policy]}"
 # Blocked categories cited (ensures the loop is bounded).
 assert {b.get("id") for b in t.get("blocked_categories_reference") or []} >= {
-    "cloud_remediation", "permission_change", "destructive_change",
+    "cloud_modification", "permission_change", "destructive_change",
     "external_notification", "real_ticket_create",
 }, "blocked_categories_reference incomplete"
 print(f"act steps: {len(acts)} / phases: {sorted(set(phases))}")

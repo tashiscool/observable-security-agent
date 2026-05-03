@@ -4,7 +4,7 @@ This index lists traceable artifacts referenced in the package snapshot. Checksu
 
 | Artifact | Path / URI | Checksum or digest |
 | --- | --- | --- |
-| Machine-readable package (body hash) | `fedramp20x-package.json` | `eb63d41f2fd6a4aeb1ec87750ba7a96dfcd119fae6d79cb5c29982dce8d69c7d` |
+| Machine-readable package (body hash) | `fedramp20x-package.json` | `006e4c4071304c8a6149a3cdb124a8e5ce9302d6306cafab234cae7a2ce5f445` |
 | Assessment output directory | `/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker` | Not computed here. |
 | Evidence graph / link target | `evidence_graph.json` | Not recorded per link in package. |
 

@@ -66,8 +66,13 @@ verify-demo:
 
 # Exhaustive feature verification: every agent.py subcommand, every script, FastAPI server, static web, all scenarios.
 # Optional live AWS path via OS_AGENT_CSV=/path/to/accessKeys.csv (REGION=us-gov-west-1 default).
+# Optional: OS_AGENT_CSV=/path/to/accessKeys.csv REGION=us-gov-west-1 make verify-all-features
+# (Only sets OS_AGENT_CSV/REGION in the child shell when passed as Make vars, so a pre-exported OS_AGENT_CSV still works.)
 verify-all-features:
-	bash scripts/verify_all_features.sh
+	bash -c '\
+	  [ -n "$(OS_AGENT_CSV)" ] && export OS_AGENT_CSV="$(OS_AGENT_CSV)"; \
+	  [ -n "$(REGION)" ] && export REGION="$(REGION)"; \
+	  exec scripts/verify_all_features.sh'
 
 aws-bootstrap-verify:
 	@test -n "$(CSV_FILE)" || (echo "Set CSV_FILE=/path/to/accessKeys.csv (and optional REGION=...)" >&2; exit 2)

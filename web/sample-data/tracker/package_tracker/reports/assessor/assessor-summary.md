@@ -46,17 +46,17 @@ Use **`evidence-index.md`** in this directory for artifact paths, package digest
 ### Schema validation
 
 - **Outcome:** `passed`
-- **Validated at:** `2026-05-02T15:00:23.801144+00:00`
+- **Validated at:** `2026-05-03T02:01:20.207241+00:00`
 - **Tool version:** `0.1.0`
 - **CLI:** `agent.py run-agent --workflow tracker-to-20x --input /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/assessment_tracker/sample_tracker.csv --output-dir /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker`
-- **Package generation (UTC):** `2026-05-02T15:00:23.784757+00:00`
+- **Package generation (UTC):** `2026-05-03T02:01:20.191221+00:00`
 
 ### Input artifacts (assessment directory)
 
 | Path | SHA-256 (prefix) | Size (bytes) |
 | --- | --- | ---: |
-| `eval_results.json` | `54dd23a5fbaf79da…` | 41992 |
-| `evidence_graph.json` | `a59de68264d1040a…` | 63938 |
+| `eval_results.json` | `11ecf5b15b7644d3…` | 41992 |
+| `evidence_graph.json` | `b7907e2457fdc21b…` | 63938 |
 | `assessment_summary.json` | `0197b61dd7628824…` | 223 |
 | `poam.csv` | `dc26c1aa2faca41e…` | 901 |
 
@@ -150,7 +150,7 @@ Rev4/Rev5 controls → **20x KSI** (`ksi_catalog` / results) → **criteria** (`
 
 ## Metadata
 
-- **Generated at:** 2026-05-02T15:00:23.784753+00:00
+- **Generated at:** 2026-05-03T02:01:20.191218+00:00
 - **Generator:** observable-security-agent/fedramp20x
 - **Assessment output URI:** `/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker`
 - **Reconciliation parity:** `aligned`

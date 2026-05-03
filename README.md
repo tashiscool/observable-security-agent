@@ -1,5 +1,13 @@
 # Observable Security Agent
 
+**Public mirror:** [github.com/tashiscool/observable-security-agent](https://github.com/tashiscool/observable-security-agent) (Apache-2.0). This monorepo directory is the working tree; the GitHub repo is a standalone export without internal-only paths or vendored `reference/` clones.
+
+---
+
+**BuildLab / competition:** judge-focused pitch, GovCloud verification proof, and Explorer capture → [COMPETITION_README.md](COMPETITION_README.md).
+
+---
+
 ## Positioning
 
 **Observable Security Agent** is an **evidence-correlation and assessment-evaluation layer**. It sits above scanners, asset graphs, and log schemas; it does not replace them.

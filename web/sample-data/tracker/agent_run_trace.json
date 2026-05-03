@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "workflow": "tracker-to-20x",
-  "started_at": "2026-05-02T15:00:23.517511+00:00",
+  "started_at": "2026-05-03T02:01:19.935801+00:00",
   "input_path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/assessment_tracker/sample_tracker.csv",
   "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker",
   "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker",
@@ -239,8 +239,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.517678+00:00",
-      "completed_at": "2026-05-02T15:00:23.522353+00:00",
+      "started_at": "2026-05-03T02:01:19.935973+00:00",
+      "completed_at": "2026-05-03T02:01:19.940820+00:00",
       "inputs": {
         "input_path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/assessment_tracker/sample_tracker.csv",
         "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker"
@@ -332,8 +332,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.522360+00:00",
-      "completed_at": "2026-05-02T15:00:23.522434+00:00",
+      "started_at": "2026-05-03T02:01:19.940828+00:00",
+      "completed_at": "2026-05-03T02:01:19.940916+00:00",
       "inputs": {
         "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker"
       },
@@ -381,8 +381,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.522439+00:00",
-      "completed_at": "2026-05-02T15:00:23.522471+00:00",
+      "started_at": "2026-05-03T02:01:19.940921+00:00",
+      "completed_at": "2026-05-03T02:01:19.941001+00:00",
       "inputs": {
         "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker"
       },
@@ -456,8 +456,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.522476+00:00",
-      "completed_at": "2026-05-02T15:00:23.522738+00:00",
+      "started_at": "2026-05-03T02:01:19.941006+00:00",
+      "completed_at": "2026-05-03T02:01:19.941404+00:00",
       "inputs": {
         "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker"
       },
@@ -488,8 +488,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.522743+00:00",
-      "completed_at": "2026-05-02T15:00:23.729388+00:00",
+      "started_at": "2026-05-03T02:01:19.941409+00:00",
+      "completed_at": "2026-05-03T02:01:20.139965+00:00",
       "inputs": {
         "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker",
         "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker",
@@ -528,8 +528,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.729419+00:00",
-      "completed_at": "2026-05-02T15:00:23.732325+00:00",
+      "started_at": "2026-05-03T02:01:20.139993+00:00",
+      "completed_at": "2026-05-03T02:01:20.142960+00:00",
       "inputs": {
         "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker",
         "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker"
@@ -685,8 +685,8 @@
         "category": "autonomous"
       },
       "status": "skipped",
-      "started_at": "2026-05-02T15:00:23.732334+00:00",
-      "completed_at": "2026-05-02T15:00:23.732357+00:00",
+      "started_at": "2026-05-03T02:01:20.142970+00:00",
+      "completed_at": "2026-05-03T02:01:20.143008+00:00",
       "inputs": {
         "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker",
         "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker",
@@ -715,8 +715,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.732362+00:00",
-      "completed_at": "2026-05-02T15:00:23.732835+00:00",
+      "started_at": "2026-05-03T02:01:20.143013+00:00",
+      "completed_at": "2026-05-03T02:01:20.143474+00:00",
       "inputs": {
         "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker"
       },
@@ -749,8 +749,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.732844+00:00",
-      "completed_at": "2026-05-02T15:00:23.733012+00:00",
+      "started_at": "2026-05-03T02:01:20.143479+00:00",
+      "completed_at": "2026-05-03T02:01:20.143682+00:00",
       "inputs": {
         "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker"
       },
@@ -786,8 +786,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.733021+00:00",
-      "completed_at": "2026-05-02T15:00:23.733113+00:00",
+      "started_at": "2026-05-03T02:01:20.143688+00:00",
+      "completed_at": "2026-05-03T02:01:20.143785+00:00",
       "inputs": {
         "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker"
       },
@@ -827,8 +827,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.733117+00:00",
-      "completed_at": "2026-05-02T15:00:23.837045+00:00",
+      "started_at": "2026-05-03T02:01:20.143790+00:00",
+      "completed_at": "2026-05-03T02:01:20.243650+00:00",
       "inputs": {
         "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker",
         "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker",
@@ -865,8 +865,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.837055+00:00",
-      "completed_at": "2026-05-02T15:00:23.841496+00:00",
+      "started_at": "2026-05-03T02:01:20.243660+00:00",
+      "completed_at": "2026-05-03T02:01:20.247726+00:00",
       "inputs": {
         "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker",
         "config_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/config"
@@ -913,8 +913,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.841504+00:00",
-      "completed_at": "2026-05-02T15:00:23.843780+00:00",
+      "started_at": "2026-05-03T02:01:20.247734+00:00",
+      "completed_at": "2026-05-03T02:01:20.249898+00:00",
       "inputs": {
         "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker"
       },
@@ -947,8 +947,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.843786+00:00",
-      "completed_at": "2026-05-02T15:00:23.859210+00:00",
+      "started_at": "2026-05-03T02:01:20.249907+00:00",
+      "completed_at": "2026-05-03T02:01:20.265472+00:00",
       "inputs": {
         "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker",
         "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker",
@@ -986,8 +986,8 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-02T15:00:23.859221+00:00",
-      "completed_at": "2026-05-02T15:00:23.859358+00:00",
+      "started_at": "2026-05-03T02:01:20.265479+00:00",
+      "completed_at": "2026-05-03T02:01:20.265590+00:00",
       "inputs": {
         "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker"
       },
@@ -1005,6 +1005,6 @@
     }
   ],
   "overall_status": "success",
-  "completed_at": "2026-05-02T15:00:23.859361+00:00",
+  "completed_at": "2026-05-03T02:01:20.265594+00:00",
   "halted_by": null
 }
