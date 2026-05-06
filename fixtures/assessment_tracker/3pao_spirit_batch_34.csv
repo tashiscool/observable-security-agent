@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CA-5, RA-5","CA-5 SAR appendix POA&M CSV export with official POA&M milestone percent complete refreshed after vulnerability scan import cycle and row keys aligned to SAR appendix tables.",2019-11-27,2020-02-27,Open,ISSM,"Comment from Assessor: Export must show milestone dates in ISO-8601 not locale-formatted cells only.","CSP: CA5-poam-201911.csv."
+
+"AU-6, AC-2","AU-6 periodic log review export for admin tier access paths with log review sign-off listing reviewer employee IDs and sampled SIEM search query identifiers.",2019-10-22,2020-01-22,Open,Observability,"Comment from Assessor: Export must cite search head revision hashes not analyst inbox screenshots only.","CSP: AU6-logreview-201910.pdf."
+
+"SA-11, CM-3","SA-11 application security testing gate report from pipeline security workflows with static application security testing findings export and dynamic run pass or fail summary.",2019-09-14,2019-12-14,Open,AppSec,"Comment from Assessor: Report must cite CI job URLs with UTC timestamps not local timezone captures only.","CSP: SA11-sast-201909.pdf."
+
+"RA-5, SI-4","RA-5 Nessus vulnerability scan report folder for DMZ subnets with scan tool version strings and recurring vulnerability scan cadence policy hyperlink to documented frequency.",2019-12-30,2020-03-30,Open,Vuln Mgmt,"Comment from Assessor: Folder must include plugin feed stamp not host agent inventory substitute.","CSP: RA5-nessus-201912.zip."
+
+"SC-7, PL-8","SC-7 data flow diagram packet linking security group inventory to ports and protocols matrix for boundary VPC attachments with segmentation diagram revision hash.",2020-01-28,2020-04-28,Open,Net Sec,"Comment from Assessor: Packet must cite Terraform state revision hash not slide deck only.","CSP: SC7-dfd-202001.pdf."

@@ -2,9 +2,10 @@
 """
 Fail fast if the build does not produce the complete evidence package.
 
-Checks required artifacts, eval_results.json eval coverage, at least one FAIL,
-generated POA&M rows, instrumentation plan platform coverage, auditor control
-references, and evidence graph shape.
+Checks required artifacts, eval_results.json eval coverage, instrumentation
+plan platform coverage, auditor control references, and evidence graph shape.
+Demo mode also requires at least one FAIL and generated POA&M row; live mode
+allows clean environments.
 """
 
 from __future__ import annotations
@@ -28,9 +29,15 @@ def main() -> int:
         default=Path("output"),
         help="Directory containing evidence_graph.json, eval_results.json, etc. (default: output)",
     )
+    p.add_argument(
+        "--mode",
+        choices=["demo", "live"],
+        default="demo",
+        help="Validation profile: demo preserves fixture expectations; live allows clean environments.",
+    )
     args = p.parse_args()
     od: Path = args.output_dir.resolve()
-    errors = validate_evidence_package(od)
+    errors = validate_evidence_package(od, mode=args.mode)
     if errors:
         for line in errors:
             print(line, file=sys.stderr)

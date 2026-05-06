@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"IR-4, IR-5, IR-6","System-generated listing of suspected and confirmed security incidents in the past twelve months including external reports closure status and reference tickets.",2019-11-07,2020-03-06,Open,IR Lead,"Comment from Assessor: False positives must still appear with investigation outcome not omitted from export.","CSP: IR index export v2 excludes noise — will merge FP rows."
+
+"SI-4, AU-6","Evidence that monitoring was placed in a heightened posture after the vendor zero-day advisory including ticket memo and extended log review cadence for thirty days.",2020-02-24,2020-03-26,Open,SOC,"Comment from Assessor: Link advisory ID to saved-search schedule change and named reviewers.","CSP: VULN-ADV-2020-03 ticket cross-linked."
+
+"AU-9, AU-11","System-generated evidence audit logs and trail stores use append-only or WORM-style settings replication to immutable bucket with object lock and separation of duties for delete.",2019-11-07,2020-03-24,Open,Logging,"Comment from Assessor: Console shots must show retention lock policy not only bucket name.","CSP: S3 Object Lock policy JSON attached."
+
+"PS-7, PS-6","Evidence that third-party individuals with boundary access are monitored for personnel security compliance at least annually with sampling methodology.",2019-11-07,2020-02-14,Open,HR Sec,"Comment from Assessor: Sampling plan must name population and frequency meets org policy.","CSP: Vendor review SOP excerpt attached."
+
+"SI-4, AU-6","One exported example alert or SOC email notification from the past quarter showing rule name severity recipients and link to follow-up ticket.",2019-11-07,2020-02-26,Open,SOC,"Comment from Assessor: PDF export must include message headers not redacted beyond PII policy.","CSP: Sample IR-AL-2020-044 .eml converted."

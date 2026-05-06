@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0",
+  "obligations": [
+    {"id": "CM-8", "cadence": "monthly", "activity": "Inventory updated and reconciled", "coverage": "partial", "last_evidence": "fixture://inventory/reconcile", "reasonableness_gaps": ["Discovery export and inventory workbook timestamps must be close enough for assessor sampling."]},
+    {"id": "RA-5", "cadence": "monthly", "activity": "Authenticated vulnerability scans", "coverage": "partial", "last_evidence": "fixture://scanner/findings", "reasonableness_gaps": ["Scan results alone do not prove all in-boundary targets were in scanner scope."]},
+    {"id": "AU-6", "cadence": "weekly", "activity": "Audit log review", "coverage": "gap", "last_evidence": "fixture://logs/central", "reasonableness_gaps": ["Central log forwarding proof exists for some assets; reviewer sign-off sample is missing."]},
+    {"id": "SI-4", "cadence": "continuous", "activity": "Alerting and system monitoring", "coverage": "partial", "last_evidence": "fixture://alerts/rules", "reasonableness_gaps": ["Enabled rules need sample alert proof or last-fired evidence for key semantic types."]}
+  ]
+}

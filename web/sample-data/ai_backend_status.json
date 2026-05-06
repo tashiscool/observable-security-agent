@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "configured_backend": "deterministic fallback",
+  "supported_backends": ["deterministic fallback", "ollama", "litellm", "bedrock-compatible"],
+  "evidence_contract": "LLM output can explain, classify unknown tracker rows, and draft remediation. It cannot mark evidence as passing without deterministic artifact support.",
+  "last_reasoning_mode": "fallback",
+  "health": "available"
+}

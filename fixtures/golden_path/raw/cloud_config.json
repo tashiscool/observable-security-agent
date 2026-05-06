@@ -1,0 +1,68 @@
+{
+  "configurations": [
+    {
+      "findingId": "gp-config-001",
+      "scanner": "aws-config-fixture",
+      "title": "CloudTrail management events are delivered to central logging",
+      "description": "CloudTrail management events are configured for the demo account and forwarded to the central audit log destination.",
+      "severity": "INFORMATIONAL",
+      "status": "PASS",
+      "accountId": "123456789012",
+      "region": "us-east-1",
+      "resourceId": "trail/demo-management-events",
+      "resourceArn": "arn:aws:cloudtrail:us-east-1:123456789012:trail/demo-management-events",
+      "resourceType": "cloudtrail.trail",
+      "observedAt": "2026-05-06T12:00:00+00:00",
+      "controlIds": ["AU-6"],
+      "rawRef": "fixtures/golden_path/raw/cloud_config.json#/configurations/0"
+    },
+    {
+      "findingId": "gp-config-002",
+      "scanner": "aws-config-fixture",
+      "title": "CIS baseline configuration evidence collected",
+      "description": "Configuration baseline evidence records CIS benchmark checks for the demo application instance.",
+      "severity": "INFORMATIONAL",
+      "status": "PASS",
+      "accountId": "123456789012",
+      "region": "us-east-1",
+      "resourceId": "i-demo001",
+      "resourceArn": "arn:aws:ec2:us-east-1:123456789012:instance/i-demo001",
+      "resourceType": "ec2.instance",
+      "observedAt": "2026-05-06T12:00:00+00:00",
+      "controlIds": ["CM-6"],
+      "rawRef": "fixtures/golden_path/raw/cloud_config.json#/configurations/1"
+    },
+    {
+      "findingId": "gp-config-003",
+      "scanner": "aws-config-fixture",
+      "title": "IAM privileged access review evidence collected",
+      "description": "Identity and access evidence shows IAM role assignments, MFA posture, and privileged access review export for the demo account.",
+      "severity": "INFORMATIONAL",
+      "status": "PASS",
+      "accountId": "123456789012",
+      "region": "us-east-1",
+      "resourceId": "iam/demo-admin-role",
+      "resourceArn": "arn:aws:iam::123456789012:role/demo-admin-role",
+      "resourceType": "iam.role",
+      "observedAt": "2026-05-06T12:00:00+00:00",
+      "controlIds": ["AC-2", "IA-2"],
+      "rawRef": "fixtures/golden_path/raw/cloud_config.json#/configurations/2"
+    },
+    {
+      "findingId": "gp-config-004",
+      "scanner": "aws-config-fixture",
+      "title": "Security Hub control finding export available",
+      "description": "Cloud configuration evidence records Security Hub control results for encryption and configuration monitoring.",
+      "severity": "INFORMATIONAL",
+      "status": "PASS",
+      "accountId": "123456789012",
+      "region": "us-east-1",
+      "resourceId": "securityhub/demo-standards",
+      "resourceArn": "arn:aws:securityhub:us-east-1:123456789012:hub/default",
+      "resourceType": "securityhub.hub",
+      "observedAt": "2026-05-06T12:00:00+00:00",
+      "controlIds": ["SC-13"],
+      "rawRef": "fixtures/golden_path/raw/cloud_config.json#/configurations/3"
+    }
+  ]
+}

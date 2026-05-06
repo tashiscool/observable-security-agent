@@ -35,7 +35,7 @@ We **study** full trees under `reference/` (gitignored) and ship **small excerpt
 **Final command** (from repo root `observable-security-agent/`; exit `0` when overall is PASS or WARN):
 
 ```bash
-cd /Users/tkhan/IdeaProjects/security-infra/observable-security-agent
+cd <repo>
 
 python scripts/validate_everything.py \
   --tracker fixtures/assessment_tracker/sample_tracker.csv \

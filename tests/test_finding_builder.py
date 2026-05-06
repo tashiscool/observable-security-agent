@@ -133,6 +133,43 @@ def test_findings_from_evaluations_backward_compat() -> None:
     assert f and f[0]["finding_id"]
 
 
+def test_assessor_workpaper_fields_survive_into_formal_findings() -> None:
+    evs = [
+        {
+            "eval_id": "WORKPAPER_TEST",
+            "result": "PARTIAL",
+            "severity": "medium",
+            "name": "workpaper",
+            "control_refs": ["RA-5"],
+            "gaps": ["scanner target export missing for asset-a"],
+            "affected_assets": ["asset-a"],
+            "evidence": ["asset evidence loaded"],
+            "recommended_action": "Export scanner target inventory; link target to asset-a",
+            "assessor_findings": [
+                {
+                    "finding_id": "WORKPAPER_TEST-GAP-001",
+                    "control_refs": ["RA-5"],
+                    "current_state": "scanner target export missing for asset-a",
+                    "target_state": "Scanner coverage is exported and matched to asset-a.",
+                    "remediation_steps": ["Export scanner target inventory", "Re-run assessment"],
+                    "estimated_effort": "0.5 day",
+                    "priority": "moderate",
+                    "affected_subjects": ["asset-a"],
+                }
+            ],
+        }
+    ]
+    findings = build_findings(evs)
+    assert findings
+    wp = findings[0]["assessor_workpaper"]
+    assert wp["source_assessor_finding_id"] == "WORKPAPER_TEST-GAP-001"
+    assert findings[0]["current_state"] == "scanner target export missing for asset-a"
+    assert findings[0]["target_state"] == "Scanner coverage is exported and matched to asset-a."
+    assert findings[0]["remediation_steps"] == ["Export scanner target inventory", "Re-run assessment"]
+    assert findings[0]["estimated_effort"] == "0.5 day"
+    assert findings[0]["priority"] == "moderate"
+
+
 def test_ksi_rollup_findings_when_enabled() -> None:
     evs = _evaluations()
     rev4, rev5, edef = _crosswalks()

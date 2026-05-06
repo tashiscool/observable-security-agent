@@ -1451,6 +1451,7 @@ def step_web_sample_data_preparation(ctx: Context) -> StepResult:
             ssub = pkg_src / sub
             if ssub.is_dir():
                 shutil.copytree(ssub, pkg_dst / sub)
+    _redact_sample_data_paths(sd, ctx.repo_root)
     return _finish_step(
         step,
         started_perf=started,
@@ -1458,6 +1459,29 @@ def step_web_sample_data_preparation(ctx: Context) -> StepResult:
         summary=f"web/sample-data/tracker refreshed ({len(copied)} top-level files)",
         artifacts=copied[:8],
     )
+
+
+def _redact_sample_data_paths(root: Path, repo_root: Path) -> None:
+    """Keep committed web sample data portable and free of local temp/user paths."""
+    import re
+
+    replacements: list[tuple[re.Pattern[str], str]] = [
+        (re.compile(re.escape(str(repo_root.resolve()))), "<repo>"),
+        (re.compile(r"/private/var/folders/[^\s\"`]+/validation_run/agent_run_tracker"), "<tmp>/validation_run/agent_run_tracker"),
+        (re.compile(r"/private/var/folders/[^\s\"`]+/pytest-of-[^/\s\"`]+/[^\s\"`]+"), "<tmp>/pytest-run"),
+    ]
+    for path in root.rglob("*"):
+        if not path.is_file() or path.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".pdf", ".zip", ".gz", ".tgz"}:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        new = text
+        for pattern, replacement in replacements:
+            new = pattern.sub(replacement, new)
+        if new != text:
+            path.write_text(new, encoding="utf-8")
 
 
 # ---------------------------------------------------------------------------

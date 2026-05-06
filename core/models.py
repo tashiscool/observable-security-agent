@@ -342,6 +342,7 @@ class EvidenceGap(BaseModel):
     title: str = Field(..., min_length=1)
     description: str = Field(default="")
     assessor_comment: str | None = None
+    csp_comment: str | None = None
     owner: str | None = None
     status: str | None = None
     due_date: str | None = None

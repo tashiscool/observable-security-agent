@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"AC-3, CM-3","AC-3 evidence of review and approval export for SAML federation metadata publication showing approver distinguished name and change advisory board date.",2019-11-05,2020-02-05,Open,IdP Admin,"Comment from Assessor: Export must bind to IdP configuration version hash not narrative-only sign-off.","CSP: AC3-saml-approve-201911.pdf."
+
+"CM-3, SA-10","CM-3 post-deploy verification checklist for quarterly TLS certificate rotation with verification evidence links to live listener probe results.",2019-10-10,2020-01-10,Open,Platform,"Comment from Assessor: Checklist must cite probe job IDs with pass or fail outcome not spreadsheet-only dates.","CSP: CM3-tls-verify-201910.xlsx."
+
+"CM-3, SI-2","CM-3 change request record for kernel livepatch rollout tying Jira export key to approved maintenance window and security patch bundle digest.",2019-09-05,2019-12-05,Open,Linux SRE,"Comment from Assessor: Record must show RFC number in change tool not forwarded email thread.","CSP: CM3-livepatch-201909.json."
+
+"CP-9, SC-28","CP-9 RDS snapshot retention report listing snapshot evidence export IDs for production database clusters with customer-managed KMS key ARNs per region.",2019-12-18,2020-03-18,Open,Data Protection,"Comment from Assessor: Report must exclude non-production clones explicitly in a filter clause not footnote only.","CSP: CP9-rds-201912.csv."
+
+"AC-2, AC-6","AC-2 IAM role inventory export with privileged account flag for breakglass roles and last access governance recertification completion timestamps.",2019-08-14,2019-11-14,Open,IAM,"Comment from Assessor: Export must come from governance tool API pull not hand-maintained spreadsheet.","CSP: AC2-roles-201908.csv."

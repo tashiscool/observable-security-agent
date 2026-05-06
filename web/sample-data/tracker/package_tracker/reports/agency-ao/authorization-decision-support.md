@@ -20,7 +20,7 @@
 **Rationale:** 8 KSI(s) in FAIL status. 15 open critical finding(s).
 
 - **System id:** `SYS-OBS-EXAMPLE-001`
-- **Assessment output:** `/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker`
+- **Assessment output:** `<tmp>/validation_run/agent_run_tracker`
 
 ## POA&M summary (package snapshot)
 
@@ -28,24 +28,24 @@
 
 | POA&M ID | Status | Finding ID | Severity | Target completion |
 | --- | --- | --- | --- | --- |
-| `POAM-F20X-D-SI4-ALERT-INSTRUMENTATION...` | Open | `FIND-SI4-ALERT-INSTRUMENTATIO...` | high | 2026-06-02 |
-| `POAM-F20X-D-SI4-ALERT-INSTRUMENTATION...` | Open | `FIND-SI4-ALERT-INSTRUMENTATIO...` | high | 2026-06-02 |
-| `POAM-F20X-D-SI4-ALERT-INSTRUMENTATION...` | Open | `FIND-SI4-ALERT-INSTRUMENTATIO...` | high | 2026-06-02 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
-| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-18 |
+| `POAM-F20X-D-SI4-ALERT-INSTRUMENTATION...` | Open | `FIND-SI4-ALERT-INSTRUMENTATIO...` | high | 2026-06-05 |
+| `POAM-F20X-D-SI4-ALERT-INSTRUMENTATION...` | Open | `FIND-SI4-ALERT-INSTRUMENTATIO...` | high | 2026-06-05 |
+| `POAM-F20X-D-SI4-ALERT-INSTRUMENTATION...` | Open | `FIND-SI4-ALERT-INSTRUMENTATIO...` | high | 2026-06-05 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
+| `POAM-F20X-ACKER-EVIDENCE-GAP-ANALYSIS...` | Open | `FIND-TRACKER-EVIDENCE-GAP-ANA...` | critical | 2026-05-21 |
 
 ## Risk acceptance candidates (package fields only)
 
@@ -111,7 +111,7 @@ Findings below are **open** in the package and carry a `risk_acceptance` object.
 - **Severity:** critical
 - **risk_acceptance (JSON excerpt):** `{"required": false, "accepted_by": null, "expiration_date": null, "conditions": []}`
 
-### `FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-5BC7696D857A`
+### `FIND-TRACKER-EVIDENCE-GAP-ANALYSIS-B89FA44F2251`
 
 - **Severity:** critical
 - **risk_acceptance (JSON excerpt):** `{"required": false, "accepted_by": null, "expiration_date": null, "conditions": []}`

@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CM-3, CP-10","CM-3 production change ticket export with approval workflow IDs and deployment timeline correlation fields.",2019-10-17,2020-01-17,Open,Release Eng,"Comment from Assessor: Need to see actual ticketing system export.","CSP: CM3-ticket-export.csv."
+
+"CP-9","CP-9 backup execution log with success/failure status and retention mapping.",2019-09-18,2019-12-18,Open,SRE,"Comment from Assessor: Log must show completion status.","CSP: CP9-backup-log.jsonl."
+
+"AU-4","AU-4 centralized log forwarder configuration mapping local event types to the central SIEM destination.",2019-12-22,2020-03-22,Open,SecOps,"Comment from Assessor: Forwarder config must specify destination.","CSP: AU4-forwarder.conf."
+
+"SA-9","SA-9 supply chain deviation request for unapproved third-party component inclusion.",2020-01-30,2020-04-30,Open,AppSec,"Comment from Assessor: Need formal FedRAMP deviation form.","CSP: SA9-deviation-form.pdf."
+
+"AC-2","AC-2 privileged account listing with role assignments and access justification records.",2019-11-24,2020-02-24,Open,IAM,"Comment from Assessor: Need access justification records.","CSP: AC2-priv-roles.xlsx."

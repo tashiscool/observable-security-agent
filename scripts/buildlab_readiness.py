@@ -20,6 +20,7 @@ import tempfile
 import threading
 import urllib.error
 import urllib.request
+import csv
 from dataclasses import dataclass
 from http.server import SimpleHTTPRequestHandler
 from pathlib import Path
@@ -44,6 +45,13 @@ CORE_JSON_FILES = (
     "correlations.json",
     "assessment_summary.json",
 )
+ASSESSOR_GAP_COLUMNS = {
+    "current_state",
+    "target_state",
+    "priority",
+    "estimated_effort",
+    "remediation_steps",
+}
 SECRET_REGEXES = (
     re.compile(r"AKIA[0-9A-Z]{16}"),
     re.compile(r"ASIA[0-9A-Z]{16}"),
@@ -180,14 +188,11 @@ def _fixture_demos(rows: list[Row], root: Path, work: Path) -> bool:
             continue
         from core.output_validation import validate_evidence_package
 
-        errs = validate_evidence_package(od)
-        # scenario_20x_readiness is a "green path" bundle: all PASS is intentional, so no POAM-AUTO / FAIL rows.
-        if scenario == "scenario_20x_readiness":
-            skip_fragments = (
-                "POAM-AUTO",
-                "at least one evaluation with result FAIL",
-            )
-            errs = [e for e in errs if not any(s in e for s in skip_fragments)]
+        # scenario_20x_readiness is a green/readiness path: all PASS and no generated
+        # POA&M rows are intentional, so validate it with the same mode used for
+        # arbitrary live environments.
+        mode = "live" if scenario == "scenario_20x_readiness" else "demo"
+        errs = validate_evidence_package(od, mode=mode)
         if errs:
             ok = False
             _add(rows, "FAIL", "fixture", f"validate package {scenario}", "\n".join(errs[:12]))
@@ -326,6 +331,90 @@ def _web_readiness(rows: list[Row], root: Path) -> bool:
     else:
         _add(rows, "PASS", "web", "sample-data/agent_run_summary.md", "present")
 
+    gap = sd / "evidence_gap_matrix.csv"
+    if not gap.is_file():
+        ok = False
+        _add(rows, "FAIL", "web", "sample-data/evidence_gap_matrix.csv", "missing")
+    else:
+        try:
+            with gap.open("r", encoding="utf-8-sig", newline="") as f:
+                gap_rows = list(csv.DictReader(f))
+            headers = set(gap_rows[0].keys()) if gap_rows else set()
+            missing = sorted(ASSESSOR_GAP_COLUMNS - headers)
+            actionable = [
+                r
+                for r in gap_rows
+                if r.get("result") in {"FAIL", "PARTIAL"}
+                and r.get("current_state")
+                and r.get("target_state")
+                and r.get("remediation_steps")
+            ]
+            if missing:
+                ok = False
+                _add(rows, "FAIL", "web", "sample-data/evidence_gap_matrix.csv", "missing columns: " + ", ".join(missing))
+            elif not actionable:
+                ok = False
+                _add(
+                    rows,
+                    "FAIL",
+                    "web",
+                    "sample-data assessor workpapers",
+                    "expected at least one FAIL/PARTIAL row with current, target, and remediation",
+                )
+            else:
+                _add(
+                    rows,
+                    "PASS",
+                    "web",
+                    "sample-data assessor workpapers",
+                    f"{len(actionable)} actionable matrix row(s)",
+                )
+        except Exception as e:
+            ok = False
+            _add(rows, "FAIL", "web", "sample-data/evidence_gap_matrix.csv", str(e))
+
+    app_js = root / "web" / "app.js"
+    if not app_js.is_file():
+        ok = False
+        _add(rows, "FAIL", "web", "web/app.js", "missing")
+    else:
+        text = app_js.read_text(encoding="utf-8", errors="replace")
+        required = (
+            'if (name === "evidence_gap_matrix.csv")',
+            "state.gapMatrix = rows",
+            "matrixRowsForEval",
+            "Assessor workpaper",
+            "renderCapabilities",
+            "renderReasonableTest",
+            "renderLiveCoverage",
+            "renderConmonWorkbench",
+        )
+        missing = [needle for needle in required if needle not in text]
+        if missing:
+            ok = False
+            _add(rows, "FAIL", "web", "Explorer assessor UI contract", "missing: " + ", ".join(missing))
+        else:
+            _add(rows, "PASS", "web", "Explorer assessor UI contract", "gap matrix renders as assessor context")
+
+    html = root / "web" / "index.html"
+    if html.is_file():
+        htext = html.read_text(encoding="utf-8", errors="replace")
+        workbench_labels = (
+            "Capabilities &amp; References",
+            "3PAO Reasonable Test",
+            "Live Collection Coverage",
+            "ConMon Workbench",
+            "Public Exposure",
+            "Package Diff",
+            "AI Backend Status",
+        )
+        missing = [label for label in workbench_labels if label not in htext]
+        if missing:
+            ok = False
+            _add(rows, "FAIL", "web", "Assessment workbench panels", "missing: " + ", ".join(missing))
+        else:
+            _add(rows, "PASS", "web", "Assessment workbench panels", "reference, reasonableness, live, ConMon, exposure, diff, AI status")
+
     return ok
 
 
@@ -377,6 +466,32 @@ def _scan_secrets_in_output(rows: list[Row], out_dir: Path) -> bool:
     return True
 
 
+def _guard_curated_live_artifacts(rows: list[Row], root: Path) -> bool:
+    try:
+        from scripts.guard_live_artifacts import DEFAULT_ALLOWED_ACCOUNTS, DEFAULT_PATHS, scan_paths
+    except Exception as e:
+        _add(rows, "FAIL", "submission", "live artifact guard import", str(e))
+        return False
+
+    findings = scan_paths(
+        [p.resolve() for p in DEFAULT_PATHS],
+        allowed_accounts=set(DEFAULT_ALLOWED_ACCOUNTS),
+        base=root,
+    )
+    if findings:
+        detail = "; ".join(f"{f.file}:{f.line}" for f in findings[:8])
+        _add(rows, "FAIL", "submission", "no live AWS ids in curated artifacts", detail)
+        return False
+    _add(
+        rows,
+        "PASS",
+        "submission",
+        "no live AWS ids in curated artifacts",
+        "sample-data, evidence packages, reports, and validation_run are clean",
+    )
+    return True
+
+
 def _submission_docs(rows: list[Row], root: Path) -> bool:
     ok = True
     readme = root / "README.md"
@@ -408,6 +523,65 @@ def _submission_docs(rows: list[Row], root: Path) -> bool:
         _add(rows, "FAIL", "submission", "reference justification", "missing docs/why_this_is_not_reinventing_the_wheel.md")
 
     return ok
+
+
+def _conmon_reasonableness_readiness(rows: list[Row], root: Path) -> bool:
+    catalog = root / "config" / "conmon-catalog.yaml"
+    tracker = root / "fixtures" / "assessment_tracker" / "conmon_19_tracker.csv"
+    out_dir = root / "output" / "conmon_reasonableness"
+    code, tail = _run_agent(
+        [
+            "conmon-reasonableness",
+            "--catalog",
+            str(catalog),
+            "--tracker",
+            str(tracker),
+            "--output-dir",
+            str(out_dir),
+        ],
+        root,
+    )
+    if code != 0:
+        _add(rows, "FAIL", "submission", "ConMon reasonableness", tail.strip()[-2000:])
+        return False
+    report = out_dir / "conmon_reasonableness.md"
+    payload = out_dir / "conmon_reasonableness.json"
+    if not report.is_file() or not payload.is_file():
+        _add(rows, "FAIL", "submission", "ConMon reasonableness outputs", "missing markdown or JSON output")
+        return False
+    try:
+        data = json.loads(payload.read_text(encoding="utf-8"))
+        summary = data.get("summary") or {}
+        ecosystems = data.get("evidence_ecosystems") or {}
+        text = report.read_text(encoding="utf-8")
+        required_text = ("AWS CloudTrail", "Splunk", "Wazuh", "Smartsheet", "Jira", "ServiceNow", "3PAO")
+        if int(summary.get("obligations") or 0) < 15 or not all(s in text for s in required_text):
+            _add(rows, "FAIL", "submission", "ConMon reasonableness coverage", "catalog/report missing required 3PAO evidence-system coverage")
+            return False
+        if "ticketing" not in ecosystems or "aws" not in ecosystems or "siem" not in ecosystems:
+            _add(rows, "FAIL", "submission", "ConMon reasonableness ecosystems", "missing aws/siem/ticketing ecosystem metadata")
+            return False
+        from ai import explain_conmon_reasonableness, llm_backend_status
+
+        ai_out = explain_conmon_reasonableness(conmon_result=data)
+        status = llm_backend_status(reasoners=["explain_conmon_reasonableness"])
+        if ai_out.referenced_eval_id != "CONMON_REASONABLENESS" or not ai_out.citations:
+            _add(rows, "FAIL", "submission", "ConMon AI reasoner", "missing typed reasoner citation/eval reference")
+            return False
+        if "explain_conmon_reasonableness" not in (status.get("reasoners") or []):
+            _add(rows, "FAIL", "submission", "ConMon AI backend status", "reasoner not advertised")
+            return False
+    except Exception as e:
+        _add(rows, "FAIL", "submission", "ConMon reasonableness parse", str(e))
+        return False
+    _add(
+        rows,
+        "PASS",
+        "submission",
+        "ConMon reasonableness",
+        f"{summary.get('obligations')} obligations; 3PAO ecosystem report + AI reasoner present",
+    )
+    return True
 
 
 def _zip_safe_artifact_list(root: Path) -> list[str]:
@@ -489,7 +663,9 @@ def main() -> int:
     web_ok = _web_readiness(rows, root)
     _cloud_readiness(rows)
     submission_docs_ok = _submission_docs(rows, root)
+    conmon_ok = _conmon_reasonableness_readiness(rows, root)
     secrets_ok = _scan_secrets_in_output(rows, root / "output")
+    live_artifacts_ok = _guard_curated_live_artifacts(rows, root)
 
     zip_lines = _zip_safe_artifact_list(root)
     _add(rows, "PASS", "submission", "zip-safe artifact list", "see section below")
@@ -513,6 +689,12 @@ def main() -> int:
         "",
         "# Bounded autonomous loop (fixture; writes trace + agentic assess under output_agentic/ by default)",
         "python agent.py run-agent --provider fixture --scenario scenario_agentic_risk",
+        "",
+        "# ConMon / 3PAO reasonableness over Smartsheet/Jira/ServiceNow-style exports",
+        "python agent.py conmon-reasonableness --tracker fixtures/assessment_tracker/conmon_19_tracker.csv --output-dir output/conmon_reasonableness",
+        "# Optional LLM backends use OpenAI-compatible transport:",
+        "#   LiteLLM/Bedrock: AI_API_BASE=http://127.0.0.1:4000/v1 AI_MODEL=bedrock/... AI_API_KEY=...",
+        "#   Ollama:          AI_BACKEND=ollama AI_API_BASE=http://127.0.0.1:11434/v1 AI_MODEL=llama3.1",
         "",
         "# Static web (serves repo root; Explorer loads ../output/ or web/sample-data/)",
         "python scripts/serve_web.py",

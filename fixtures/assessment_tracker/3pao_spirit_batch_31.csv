@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CM-8, RA-2","CM-8 reconcile declared boundary workbook against live discovery export with discrepancies tab flagging stale cmdb rows missing serial correlation to agent inventory.",2019-11-26,2020-02-26,Open,Asset Mgmt,"Comment from Assessor: Workbook must freeze discovery pull timestamp within 12 hours of compare run not stale weekly extract.","CSP: CM8-recon-201911.xlsx."
+
+"IR-4, SI-4","IR-4 threat hunt program quarterly report with documented response action summary for suspicious cloud API sequences including hunt hypothesis IDs and analyst disposition codes.",2019-10-12,2020-01-12,Open,SOC,"Comment from Assessor: Report must cite SIEM saved search revision hashes not analyst notebook PDF only.","CSP: IR4-hunt-201910.pdf."
+
+"SC-13, SC-12","SC-13 cryptographic key management policy excerpt listing KMS key rotation cadence owner roles and FIPS 140 validated module references for HSM-backed customer master keys.",2019-09-30,2019-12-30,Open,Crypto Eng,"Comment from Assessor: Excerpt must map to live KMS key policy version IDs not policy draft link only.","CSP: SC13-kms-201909.pdf."
+
+"AC-7, IA-5","AC-7 password policy export for production realm showing failed logon threshold lockout policy linkage to IdP risk engine and minimum password length enforcement evidence.",2019-12-08,2020-03-08,Open,IdP Admin,"Comment from Assessor: Export must be JSON from live tenant policy API not screenshot of admin console.","CSP: AC7-pwpol-201912.json."
+
+"AC-17, SC-7","AC-17 remote access connection matrix mapping VPN gateway tenancy to ingress rule baseline per transit gateway attachment with split-tunnel prohibition callouts.",2020-01-20,2020-04-20,Open,Net Sec,"Comment from Assessor: Matrix must cite live listener config export IDs not Visio-only narrative.","CSP: AC17-vpn-202001.csv."

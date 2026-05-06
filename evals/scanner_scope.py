@@ -160,6 +160,19 @@ def eval_ra5_scanner_scope_coverage(bundle: AssessmentBundle, graph: EvidenceGra
             recommended_actions=[],
         )
 
+    scan_relevant_assets = [
+        a for a in assets if a.asset_type in ("compute", "database") and not _scanner_excluded(a)
+    ]
+    if scan_relevant_assets and not targets and not findings:
+        partial = True
+        msg = (
+            "No scanner target export or scanner finding export was provided for discovered compute/database assets; "
+            "RA-5 scanner scope cannot be proven from live evidence."
+        )
+        gaps.append(msg)
+        evidence.append(msg)
+        affected.extend(a.asset_id for a in scan_relevant_assets)
+
     # --- 1. Declared scanner_required + in_boundary ---
     for inv in bundle.declared_inventory:
         if not (inv.scanner_required and inv.in_boundary):

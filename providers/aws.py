@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import csv
 import json
 import os
 import re
@@ -14,6 +13,7 @@ import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 from pydantic import ValidationError
 
+from core.csv_utils import load_csv_rows
 from core.models import (
     AlertRule,
     AssessmentBundle,
@@ -529,12 +529,7 @@ def _declared_from_row(row: dict[str, Any], path: Path) -> DeclaredInventoryReco
 
 
 def _load_csv(path: Path) -> list[dict[str, Any]]:
-    text = path.read_text(encoding="utf-8")
-    lines = text.strip().splitlines()
-    if not lines:
-        return []
-    reader = csv.DictReader(lines)
-    return [dict(r) for r in reader]
+    return load_csv_rows(path)
 
 
 class AwsEvidenceProvider:

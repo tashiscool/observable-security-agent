@@ -108,7 +108,7 @@ def test_fixture_assess_eval_results_passes_contract(tmp_path: Path) -> None:
 
 
 def test_eval_results_document_has_remediation_on_records(tmp_path: Path) -> None:
-    """Regression: eval_result_records include remediation_disposition after assess."""
+    """Regression: eval_result_records include closure/workpaper fields after assess."""
     import subprocess
     import sys
 
@@ -141,3 +141,8 @@ def test_eval_results_document_has_remediation_on_records(tmp_path: Path) -> Non
             "poam_or_risk_acceptance",
             "none",
         ), r.get("eval_id")
+        findings = r.get("assessor_findings")
+        assert isinstance(findings, list) and findings, r.get("eval_id")
+        assert findings[0].get("current_state")
+        assert findings[0].get("target_state")
+        assert findings[0].get("remediation_steps")

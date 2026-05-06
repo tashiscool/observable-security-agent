@@ -1,0 +1,650 @@
+schema_version: '1.0'
+description: Sanitized 3PAO assessment-tracker spirit batch expectations. Keep row order aligned to each CSV; tests discover
+  this manifest rather than embedding expected classifications in Python.
+batches:
+- file: 3pao_spirit_batch_01.csv
+  expected_gap_types:
+  - inventory_mismatch
+  - vulnerability_scan_evidence_missing
+  - approval_missing
+  - exploitation_review_missing
+  - traffic_flow_policy_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 2
+  - 1
+- file: 3pao_spirit_batch_02.csv
+  expected_gap_types:
+  - scanner_scope_missing
+  - deviation_request_missing
+  - approval_missing
+  min_ksi_counts:
+  - 2
+  - 1
+  - 1
+- file: 3pao_spirit_batch_03.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - traffic_flow_policy_missing
+  - identity_listing_missing
+  - alert_rule_missing
+  - sia_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 2
+  - 1
+- file: 3pao_spirit_batch_04.csv
+  expected_gap_types:
+  - local_to_central_log_correlation_missing
+  - poam_update_missing
+  - backup_evidence_missing
+  - password_policy_evidence_missing
+  - crypto_fips_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_05.csv
+  expected_gap_types:
+  - restore_test_missing
+  - change_ticket_missing
+  - deployment_evidence_missing
+  - verification_evidence_missing
+  - approval_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_06.csv
+  expected_gap_types:
+  - response_action_missing
+  - alert_rule_missing
+  - centralized_log_missing
+  - identity_listing_missing
+  - alert_sample_missing
+  min_ksi_counts:
+  - 1
+  - 2
+  - 1
+  - 1
+  - 2
+- file: 3pao_spirit_batch_07.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - identity_listing_missing
+  - approval_missing
+  - credentialed_scan_evidence_missing
+  - testing_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_08.csv
+  expected_gap_types:
+  - deviation_request_missing
+  - identity_listing_missing
+  - inventory_mismatch
+  - deployment_evidence_missing
+  - alert_rule_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 2
+- file: 3pao_spirit_batch_09.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - deviation_request_missing
+  - poam_update_missing
+  - backup_evidence_missing
+  - approval_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_10.csv
+  expected_gap_types:
+  - identity_listing_missing
+  - crypto_fips_evidence_missing
+  - testing_evidence_missing
+  - traffic_flow_policy_missing
+  - alert_rule_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 2
+- file: 3pao_spirit_batch_11.csv
+  expected_gap_types:
+  - identity_listing_missing
+  - response_action_missing
+  - testing_evidence_missing
+  - traffic_flow_policy_missing
+  - testing_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_12.csv
+  expected_gap_types:
+  - identity_listing_missing
+  - testing_evidence_missing
+  - testing_evidence_missing
+  - identity_listing_missing
+  - centralized_log_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_13.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - traffic_flow_policy_missing
+  - centralized_log_missing
+  - backup_evidence_missing
+  - crypto_fips_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_14.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - traffic_flow_policy_missing
+  - testing_evidence_missing
+  - testing_evidence_missing
+  - testing_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_15.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - identity_listing_missing
+  - testing_evidence_missing
+  - alert_rule_missing
+  - centralized_log_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 2
+  - 1
+- file: 3pao_spirit_batch_16.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - crypto_fips_evidence_missing
+  - centralized_log_missing
+  - identity_listing_missing
+  - testing_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_17.csv
+  expected_gap_types:
+  - change_ticket_missing
+  - traffic_flow_policy_missing
+  - vulnerability_scan_evidence_missing
+  - testing_evidence_missing
+  - traffic_flow_policy_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_18.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - alert_rule_missing
+  - identity_listing_missing
+  - testing_evidence_missing
+  - centralized_log_missing
+  min_ksi_counts:
+  - 1
+  - 2
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_19.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - traffic_flow_policy_missing
+  - testing_evidence_missing
+  - password_policy_evidence_missing
+  - centralized_log_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_20.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - identity_listing_missing
+  - testing_evidence_missing
+  - centralized_log_missing
+  - traffic_flow_policy_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_21.csv
+  expected_gap_types:
+  - approval_missing
+  - alert_rule_missing
+  - identity_listing_missing
+  - testing_evidence_missing
+  - response_action_missing
+  min_ksi_counts:
+  - 1
+  - 2
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_22.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - alert_rule_missing
+  - credentialed_scan_evidence_missing
+  - testing_evidence_missing
+  - deviation_request_missing
+  min_ksi_counts:
+  - 1
+  - 2
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_23.csv
+  expected_gap_types:
+  - crypto_fips_evidence_missing
+  - alert_rule_missing
+  - password_policy_evidence_missing
+  - testing_evidence_missing
+  - testing_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 2
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_24.csv
+  expected_gap_types:
+  - traffic_flow_policy_missing
+  - scanner_scope_missing
+  - exploitation_review_missing
+  - centralized_log_missing
+  - poam_update_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 2
+  - 1
+  - 1
+- file: 3pao_spirit_batch_25.csv
+  expected_gap_types:
+  - sia_missing
+  - deployment_evidence_missing
+  - vulnerability_scan_evidence_missing
+  - response_action_missing
+  - local_to_central_log_correlation_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_26.csv
+  expected_gap_types:
+  - approval_missing
+  - verification_evidence_missing
+  - change_ticket_missing
+  - backup_evidence_missing
+  - identity_listing_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_27.csv
+  expected_gap_types:
+  - deviation_request_missing
+  - restore_test_missing
+  - alert_sample_missing
+  - credentialed_scan_evidence_missing
+  - inventory_mismatch
+  min_ksi_counts:
+  - 1
+  - 1
+  - 2
+  - 1
+  - 1
+- file: 3pao_spirit_batch_28.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - traffic_flow_policy_missing
+  - scanner_scope_missing
+  - exploitation_review_missing
+  - alert_rule_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 2
+  - 2
+- file: 3pao_spirit_batch_29.csv
+  expected_gap_types:
+  - poam_update_missing
+  - approval_missing
+  - testing_evidence_missing
+  - vulnerability_scan_evidence_missing
+  - centralized_log_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_30.csv
+  expected_gap_types:
+  - sia_missing
+  - deployment_evidence_missing
+  - verification_evidence_missing
+  - change_ticket_missing
+  - backup_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_31.csv
+  expected_gap_types:
+  - inventory_mismatch
+  - response_action_missing
+  - crypto_fips_evidence_missing
+  - password_policy_evidence_missing
+  - traffic_flow_policy_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_32.csv
+  expected_gap_types:
+  - local_to_central_log_correlation_missing
+  - centralized_log_missing
+  - exploitation_review_missing
+  - scanner_scope_missing
+  - credentialed_scan_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 2
+  - 1
+  - 1
+- file: 3pao_spirit_batch_33.csv
+  expected_gap_types:
+  - deviation_request_missing
+  - restore_test_missing
+  - alert_sample_missing
+  - identity_listing_missing
+  - alert_rule_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 2
+  - 1
+  - 2
+- file: 3pao_spirit_batch_34.csv
+  expected_gap_types:
+  - poam_update_missing
+  - approval_missing
+  - testing_evidence_missing
+  - vulnerability_scan_evidence_missing
+  - traffic_flow_policy_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_35.csv
+  expected_gap_types:
+  - inventory_mismatch
+  - exploitation_review_missing
+  - scanner_scope_missing
+  - credentialed_scan_evidence_missing
+  - sia_missing
+  min_ksi_counts:
+  - 1
+  - 2
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_36.csv
+  expected_gap_types:
+  - local_to_central_log_correlation_missing
+  - centralized_log_missing
+  - response_action_missing
+  - alert_rule_missing
+  - identity_listing_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 2
+  - 1
+- file: 3pao_spirit_batch_37.csv
+  expected_gap_types:
+  - poam_update_missing
+  - approval_missing
+  - inventory_mismatch
+  - exploitation_review_missing
+  - scanner_scope_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 2
+  - 1
+- file: 3pao_spirit_batch_38.csv
+  expected_gap_types:
+  - credentialed_scan_evidence_missing
+  - vulnerability_scan_evidence_missing
+  - sia_missing
+  - deployment_evidence_missing
+  - verification_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_39.csv
+  expected_gap_types:
+  - deviation_request_missing
+  - restore_test_missing
+  - alert_sample_missing
+  - traffic_flow_policy_missing
+  - crypto_fips_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 2
+  - 1
+  - 1
+- file: 3pao_spirit_batch_40.csv
+  expected_gap_types:
+  - change_ticket_missing
+  - backup_evidence_missing
+  - password_policy_evidence_missing
+  - alert_rule_missing
+  - response_action_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 2
+  - 1
+- file: 3pao_spirit_batch_41.csv
+  expected_gap_types:
+  - local_to_central_log_correlation_missing
+  - centralized_log_missing
+  - identity_listing_missing
+  - testing_evidence_missing
+  - approval_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_42.csv
+  expected_gap_types:
+  - poam_update_missing
+  - inventory_mismatch
+  - scanner_scope_missing
+  - credentialed_scan_evidence_missing
+  - vulnerability_scan_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_43.csv
+  expected_gap_types:
+  - restore_test_missing
+  - backup_evidence_missing
+  - change_ticket_missing
+  - password_policy_evidence_missing
+  - testing_evidence_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_44.csv
+  expected_gap_types:
+  - exploitation_review_missing
+  - vulnerability_scan_evidence_missing
+  - credentialed_scan_evidence_missing
+  - crypto_fips_evidence_missing
+  - traffic_flow_policy_missing
+  min_ksi_counts:
+  - 2
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_45.csv
+  expected_gap_types:
+  - approval_missing
+  - inventory_mismatch
+  - scanner_scope_missing
+  - alert_rule_missing
+  - alert_sample_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 2
+  - 2
+- file: 3pao_spirit_batch_46.csv
+  expected_gap_types:
+  - deviation_request_missing
+  - restore_test_missing
+  - local_to_central_log_correlation_missing
+  - centralized_log_missing
+  - response_action_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_47.csv
+  expected_gap_types:
+  - sia_missing
+  - deployment_evidence_missing
+  - verification_evidence_missing
+  - poam_update_missing
+  - traffic_flow_policy_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_48.csv
+  expected_gap_types:
+  - change_ticket_missing
+  - backup_evidence_missing
+  - centralized_log_missing
+  - deviation_request_missing
+  - identity_listing_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+- file: 3pao_spirit_batch_49.csv
+  expected_gap_types:
+  - testing_evidence_missing
+  - vulnerability_scan_evidence_missing
+  - approval_missing
+  - exploitation_review_missing
+  - alert_rule_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 2
+  - 2
+- file: 3pao_spirit_batch_50.csv
+  expected_gap_types:
+  - approval_missing
+  - vulnerability_scan_evidence_missing
+  - identity_listing_missing
+  - alert_sample_missing
+  - sia_missing
+  min_ksi_counts:
+  - 1
+  - 1
+  - 1
+  - 2
+  - 1

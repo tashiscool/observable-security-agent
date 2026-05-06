@@ -16,9 +16,14 @@ Invariants:
 
 from __future__ import annotations
 
+from functools import lru_cache
+from pathlib import Path
 from typing import Any, get_args
 
+import yaml
+
 from ai.models import (
+    ArtifactSufficiencyFinding,
     AuditorResponseDraft,
     EvidenceCitation,
     ExplanationResponse,
@@ -34,16 +39,19 @@ __all__ = [
     "fallback_classify_row",
     "fallback_explain_for_assessor",
     "fallback_explain_for_executive",
+    "fallback_explain_conmon_reasonableness",
     "fallback_explain_residual_risk",
     "fallback_explain_derivation_trace",
     "fallback_draft_remediation_ticket",
     "fallback_draft_auditor_response",
+    "fallback_evaluate_3pao_remediation",
 ]
 
 
 _ALLOWED_GAP_TYPES = set(get_args(GapType))
 _ALLOWED_SEVERITIES = set(get_args(GapSeverity))
 _ALLOWED_TICKET_SEVERITIES = set(get_args(TicketSeverity))
+_RULES_PATH = Path(__file__).resolve().parents[1] / "config" / "3pao-sufficiency-rules.yaml"
 
 
 # ---------------------------------------------------------------------------
@@ -223,6 +231,71 @@ def fallback_explain_for_executive(
         citations=citations,
         missing_evidence=missing,
         warnings=["AI_API_KEY not set or LLM unavailable; using deterministic fallback."],
+    )
+
+
+def fallback_explain_conmon_reasonableness(
+    *,
+    conmon_result: dict[str, Any],
+) -> ExplanationResponse:
+    summary = conmon_result.get("summary") or {}
+    obligations = list(conmon_result.get("obligation_assessments") or [])
+    ecosystems = conmon_result.get("evidence_ecosystems") or {}
+    reasonable = summary.get("reasonable", 0)
+    partial = summary.get("partial", 0)
+    missing = summary.get("missing", 0)
+    headline = (
+        "ConMon reasonableness: "
+        f"{reasonable} reasonable, {partial} partial, {missing} missing obligations."
+    )
+    worst = [
+        o
+        for o in obligations
+        if str(o.get("coverage")) in {"missing", "partial"}
+    ][:6]
+    lines = [
+        f"**Catalog:** {conmon_result.get('catalog_name') or 'ConMon reasonableness catalog'}.",
+        f"**Obligations:** `{summary.get('obligations', 0)}`; tracker rows loaded: `{summary.get('tracker_rows', 0)}`.",
+        f"**Coverage:** reasonable `{reasonable}`, partial `{partial}`, missing `{missing}`.",
+        "",
+        "**Reasonableness standard:** ticket rows from Smartsheet/Jira/ServiceNow are workflow evidence, not proof by themselves. A 3PAO still needs authoritative source artifacts.",
+        "",
+        "**Ecosystem evidence expected:**",
+    ]
+    for key in ("aws", "siem", "os_and_endpoint", "vulnerability", "ticketing", "grc_docs", "training"):
+        meta = ecosystems.get(key) or {}
+        systems = ", ".join(str(x) for x in (meta.get("systems") or []))
+        if systems:
+            lines.append(f"- `{key}`: {systems}")
+    if worst:
+        lines += ["", "**Top open/partial obligations:**"]
+        for ob in worst:
+            gaps = "; ".join(str(x) for x in (ob.get("reasonableness_gaps") or [])) or "No detail supplied."
+            lines.append(
+                f"- `{ob.get('obligation_id')}` ({ob.get('cadence')}): {ob.get('coverage')} — {gaps}"
+            )
+    lines += [
+        "",
+        "_LLM/fallback reasoning may summarize and prioritize, but it does not convert missing evidence into a pass._",
+    ]
+    missing_evidence: list[str] = []
+    if not obligations:
+        missing_evidence.append("conmon_reasonableness.json:obligation_assessments")
+    if not ecosystems:
+        missing_evidence.append("conmon_reasonableness.json:evidence_ecosystems")
+    return ExplanationResponse(
+        source=ReasoningSource.DETERMINISTIC_FALLBACK,
+        audience="assessor",
+        headline=headline,
+        body="\n".join(lines),
+        citations=[
+            EvidenceCitation(artifact="conmon_reasonableness.json", field="summary"),
+            EvidenceCitation(artifact="conmon_reasonableness.json", field="obligation_assessments"),
+            EvidenceCitation(artifact="conmon_reasonableness.json", field="evidence_ecosystems"),
+        ],
+        missing_evidence=missing_evidence,
+        warnings=["AI_API_KEY not set or LLM unavailable; using deterministic fallback."],
+        referenced_eval_id="CONMON_REASONABLENESS",
     )
 
 
@@ -488,3 +561,246 @@ def fallback_draft_auditor_response(
         warnings=["AI_API_KEY not set or LLM unavailable; using deterministic fallback."],
         confidence="low" if (not evidence_gap and not eval_record) else "moderate",
     )
+
+
+# ---------------------------------------------------------------------------
+# 8. 3PAO Remediation Evaluation
+# ---------------------------------------------------------------------------
+
+
+def fallback_evaluate_3pao_remediation(
+    *,
+    evidence_gap: dict[str, Any],
+    ksi_context: str | None = None,
+    related_artifacts: dict[str, Any] | None = None,
+) -> Any:
+    from ai.models import ThreePaoRemediationEvaluation
+
+    gap_id = str(evidence_gap.get("gap_id") or "unknown_gap")
+    title = str(evidence_gap.get("title") or "Unnamed Evidence Gap")
+    rec_artifact = str(evidence_gap.get("recommended_artifact") or "TBD Artifact")
+    gap_type = str(evidence_gap.get("gap_type") or "unknown")
+    desc = str(evidence_gap.get("description") or "").strip()
+    controls = evidence_gap.get("controls") or []
+    ctrl_line = ", ".join(str(c) for c in controls[:14])
+    if len(controls) > 14:
+        ctrl_line += ", …"
+    poam_req = evidence_gap.get("poam_required")
+
+    ksi_note = ""
+    if ksi_context and str(ksi_context).strip():
+        ksi_note = "\n\n" + str(ksi_context).strip() + "\n"
+
+    sufficiency = _artifact_sufficiency_for_gap(
+        evidence_gap=evidence_gap,
+        related_artifacts=related_artifacts or {},
+    )
+    sufficiency_lines: list[str] = []
+    for finding in sufficiency:
+        mark = "PASS" if finding.status == "pass" else "FAIL" if finding.status == "fail" else "UNKNOWN"
+        sufficiency_lines.append(
+            f"- **{mark}:** {finding.requirement} — {finding.evidence}"
+            + (f" Remediation: {finding.remediation}" if finding.remediation else "")
+        )
+
+    remediation_plan = (
+        "### Context (deterministic fallback)\n"
+        f"- **Gap type:** `{gap_type}`\n"
+        f"- **Title:** {title}\n"
+        + (f"- **Controls:** {ctrl_line}\n" if ctrl_line else "")
+        + (f"- **POA&M likely:** `{poam_req}`\n" if poam_req is not None else "")
+        + "\n### Reasonable-person checklist\n"
+        "1. **Assessor thread:** From `assessor_comment`, list each still-unanswered question "
+        "(multi-turn rows often end with an assessor prompt).\n"
+        "2. **CSP thread:** From `csp_comment`, state the latest CSP position — does it cite "
+        "primary or system-generated artifacts, or only narrative?\n"
+        "3. **Row archetype:** SAP/pen-test logistics vs ConMon sample vs SSP attachment vs "
+        "operational control — expectations differ (e.g., pen-test rows need scope/POC/logistics; "
+        "RA-5 rows need scan exports + trending + scope).\n"
+        "4. **Closure:** Attach or reference each missing element explicitly; avoid generic language.\n"
+        + ksi_note
+        + (
+            "\n### Artifact sufficiency check\n"
+            + "\n".join(sufficiency_lines)
+            + "\n"
+            if sufficiency_lines
+            else ""
+        )
+        + "\n### Minimal next steps\n"
+        f"1. Re-read gap `{gap_id}` against the request text"
+        + (f": _{desc[:280]}{'…' if len(desc) > 280 else ''}_" if desc else ".")
+        + "\n"
+        f"2. Produce the structured / recommended artifact: `{rec_artifact}`.\n"
+        "3. Upload to the tracker row and **quote** filenames or ticket IDs in the CSP reply so "
+        "the assessor can trace evidence.\n"
+        "4. Re-open the thread only after each numbered sub-requirement (i)(ii)… is addressed.\n"
+    )
+
+    citations = [
+        EvidenceCitation(artifact="evidence_gaps.json", field=f"evidence_gaps[gap_id=={gap_id}]")
+    ]
+    missing: list[str] = []
+    if not evidence_gap.get("recommended_artifact"):
+        missing.append("recommended_artifact")
+    for finding in sufficiency:
+        if finding.status != "pass":
+            missing.append(f"artifact_sufficiency:{finding.requirement}")
+
+    passed = bool(sufficiency) and all(f.status == "pass" for f in sufficiency)
+
+    rec_line = f"Produce `{rec_artifact}`" if rec_artifact != "TBD Artifact" else "Clarify artifact class with ISSO"
+    if passed:
+        rec_line = "Current related artifacts appear sufficient for reviewer follow-up"
+
+    return ThreePaoRemediationEvaluation(
+        source=ReasoningSource.DETERMINISTIC_FALLBACK,
+        gap_id=gap_id,
+        recommendation=f"{rec_line}; map replies to each open assessor bullet.",
+        remediation_plan_md=remediation_plan,
+        reasonable_test_passed=passed,
+        citations=citations,
+        artifact_sufficiency=sufficiency,
+        missing_evidence=sorted({m for m in missing if m}),
+        warnings=["AI_API_KEY not set or LLM unavailable; using deterministic fallback."],
+    )
+
+
+def _flatten_artifact_text(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value.lower()
+    if isinstance(value, (int, float, bool)):
+        return str(value).lower()
+    if isinstance(value, dict):
+        parts: list[str] = []
+        for k, v in value.items():
+            parts.append(str(k))
+            parts.append(_flatten_artifact_text(v))
+        return " ".join(parts).lower()
+    if isinstance(value, list):
+        return " ".join(_flatten_artifact_text(v) for v in value).lower()
+    return str(value).lower()
+
+
+def _artifact_has(text: str, phrases: tuple[str, ...]) -> bool:
+    return any(p in text for p in phrases)
+
+
+@lru_cache(maxsize=1)
+def _load_3pao_sufficiency_rules() -> dict[str, Any]:
+    data = yaml.safe_load(_RULES_PATH.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError(f"3PAO sufficiency rules must be a mapping: {_RULES_PATH}")
+    checks = data.get("checks")
+    if not isinstance(checks, dict) or not checks:
+        raise ValueError(f"3PAO sufficiency rules missing checks: {_RULES_PATH}")
+    return data
+
+
+def _rule_checks_for_gap(gap_type: str, recommended_artifact: str) -> list[tuple[str, tuple[str, ...], str]]:
+    rules = _load_3pao_sufficiency_rules()
+    raw_checks = (rules.get("checks") or {}).get(gap_type)
+    if not raw_checks:
+        default = rules.get("default_check") or {}
+        phrases = tuple(
+            p for p in recommended_artifact.lower().replace("+", " ").split() if len(p) > 4
+        )
+        remediation_template = str(default.get("remediation_template") or "Attach the recommended artifact: {recommended_artifact}.")
+        return [
+            (
+                str(default.get("requirement") or "recommended artifact present"),
+                phrases,
+                remediation_template.format(recommended_artifact=recommended_artifact or "artifact class TBD"),
+            )
+        ]
+    out: list[tuple[str, tuple[str, ...], str]] = []
+    for item in raw_checks:
+        if not isinstance(item, dict):
+            continue
+        phrases = tuple(str(p).lower() for p in (item.get("phrases") or []) if str(p).strip())
+        out.append(
+            (
+                str(item.get("requirement") or "configured sufficiency check"),
+                phrases,
+                str(item.get("remediation") or "Attach authoritative proof for this requirement."),
+            )
+        )
+    return out
+
+
+def _proof_artifact_text(related_artifacts: dict[str, Any]) -> tuple[str, list[str]]:
+    """Return text from artifacts that can be proof, excluding tracker request wrappers.
+
+    Assessment tracker rows, evidence_gaps.json, and reasonableness summaries are workflow
+    context. They are useful citations, but a 3PAO should not treat the request text itself
+    as evidence that the requested system-generated artifact exists.
+    """
+    rules = _load_3pao_sufficiency_rules()
+    excluded_markers = tuple(str(x) for x in (rules.get("context_artifact_exclusions") or []))
+    proof_chunks: list[str] = []
+    ignored: list[str] = []
+    for name, payload in related_artifacts.items():
+        low_name = str(name).lower()
+        if any(marker in low_name for marker in excluded_markers):
+            ignored.append(str(name))
+            continue
+        proof_chunks.append(_flatten_artifact_text(payload))
+    return " ".join(proof_chunks).lower(), ignored
+
+
+def _finding(
+    requirement: str,
+    ok: bool,
+    evidence: str,
+    remediation: str,
+) -> ArtifactSufficiencyFinding:
+    return ArtifactSufficiencyFinding(
+        requirement=requirement,
+        status="pass" if ok else "fail",
+        evidence=evidence if ok else "No supplied related artifact satisfied this check.",
+        remediation=None if ok else remediation,
+    )
+
+
+def _artifact_sufficiency_for_gap(
+    *,
+    evidence_gap: dict[str, Any],
+    related_artifacts: dict[str, Any],
+) -> list[ArtifactSufficiencyFinding]:
+    gap_type = str(evidence_gap.get("gap_type") or "")
+    rec_artifact = str(evidence_gap.get("recommended_artifact") or "")
+    haystack, ignored_context = _proof_artifact_text(related_artifacts)
+    if not related_artifacts:
+        miss = _load_3pao_sufficiency_rules().get("no_related_artifacts") or {}
+        return [
+            ArtifactSufficiencyFinding(
+                requirement=str(miss.get("requirement") or "related_artifacts supplied"),
+                status="fail",
+                evidence=str(miss.get("evidence") or "No related artifacts were provided to evaluate the current CSP stance."),
+                remediation=str(miss.get("remediation") or "Pass authoritative artifacts into `related_artifacts`."),
+            )
+        ]
+    if not haystack.strip():
+        ignored = ", ".join(ignored_context) if ignored_context else "none"
+        ctx = _load_3pao_sufficiency_rules().get("only_context_artifacts") or {}
+        evidence_template = str(
+            ctx.get("evidence_template")
+            or "Only tracker/request-context artifacts were supplied; ignored as proof: {ignored}."
+        )
+        return [
+            ArtifactSufficiencyFinding(
+                requirement=str(ctx.get("requirement") or "authoritative proof artifact supplied"),
+                status="fail",
+                evidence=evidence_template.format(ignored=ignored),
+                remediation=str(ctx.get("remediation") or "Supply primary/system-generated artifacts."),
+            )
+        ]
+
+    checks = _rule_checks_for_gap(gap_type, rec_artifact)
+    findings: list[ArtifactSufficiencyFinding] = []
+    for requirement, phrases, remediation in checks:
+        ok = _artifact_has(haystack, phrases)
+        evidence = f"Related artifacts contain one of: {', '.join(phrases[:6])}."
+        findings.append(_finding(requirement, ok, evidence, remediation))
+    return findings

@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -24,6 +25,13 @@ from core.agent_security_outputs import write_agent_security_bundle  # noqa: E40
 from core.control_mapper import EVAL_IDS_IN_RUN_ORDER, get_controls_for_eval  # noqa: E402
 from core.evaluator import run_evaluations  # noqa: E402
 from core.evidence_graph import evidence_graph_from_assessment_bundle  # noqa: E402
+from core.human_review import (  # noqa: E402
+    filter_review_history,
+    list_pending_recommendations,
+    load_recommendations,
+    load_review_history,
+    record_review_decision,
+)
 from core.models import AssessmentBundle, EvalResult as CanonicalEval  # noqa: E402
 from core.normalizer import load_normalized_primary_event  # noqa: E402
 from core.output_validation import validate_output_directory  # noqa: E402
@@ -74,6 +82,38 @@ def _artifact_rel_str(out_dir: Path, name: str) -> str:
         return str(full.relative_to(Path.cwd()))
     except ValueError:
         return str(full)
+
+
+def _load_aws_permission_coverage(raw_evidence: Path | None) -> dict[str, object] | None:
+    if raw_evidence is None:
+        return None
+    for path in (raw_evidence / "manifest.json", raw_evidence / "collection_manifest.json"):
+        if not path.is_file():
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if isinstance(data, dict) and isinstance(data.get("permission_coverage"), dict):
+            return data["permission_coverage"]
+    return None
+
+
+def _merge_live_permission_summary(out_dir: Path, raw_evidence: Path | None) -> None:
+    coverage = _load_aws_permission_coverage(raw_evidence)
+    if not coverage:
+        return
+    summary_path = out_dir / "assessment_summary.json"
+    if not summary_path.is_file():
+        return
+    try:
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return
+    if not isinstance(summary, dict):
+        return
+    summary["permission_coverage"] = coverage
+    summary_path.write_text(json.dumps(summary, indent=2, default=str), encoding="utf-8")
 
 
 def _apply_bundle_overrides(bundle: EvidenceBundle, args: argparse.Namespace) -> None:
@@ -262,7 +302,10 @@ def cmd_assess(args: argparse.Namespace) -> int:
         assessment=assessment,
         evidence_graph=graph,
         correlations_data=correlations_data,
+        assessment_mode=getattr(args, "mode", "demo"),
     )
+    if args.provider == "aws":
+        _merge_live_permission_summary(out_dir, raw_evidence)
 
     extra_agent_artifacts: list[str] | None = None
     if getattr(args, "include_agent_security", False):
@@ -433,6 +476,7 @@ def cmd_report(args: argparse.Namespace) -> int:
         assessment=None,
         evidence_graph=None,
         correlations_data=correlations_data,
+        assessment_mode="demo",
     )
     print(f"Regenerated reports under {out_dir}")
     return 0
@@ -452,6 +496,101 @@ def cmd_list_evals(_args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_run_evals(args: argparse.Namespace) -> int:
+    """Run the offline platform evaluation harness."""
+
+    from core.eval_harness import DEFAULT_EVAL_FIXTURE, run_eval_harness
+
+    output_dir = Path(args.output_dir).resolve()
+    fixture_path = Path(args.input).resolve() if getattr(args, "input", None) else DEFAULT_EVAL_FIXTURE
+    doc = run_eval_harness(fixture_path=fixture_path, output_dir=output_dir)
+    summary = doc["summary"]
+    print("Observable Security Agent eval harness")
+    print("")
+    print(f"Fixture: {fixture_path}")
+    print(f"Output:  {output_dir}")
+    print(f"Passed:  {summary['passed']}/{summary['total']}")
+    print(f"Failed:  {summary['failed']}/{summary['total']}")
+    print("")
+    print(output_dir / "eval_results.json")
+    print(output_dir / "eval_summary.md")
+    return 0 if int(summary["failed"]) == 0 else 1
+
+
+def cmd_golden_path_demo(args: argparse.Namespace) -> int:
+    """Run the offline end-to-end assurance package golden path."""
+
+    from core.golden_path import DEFAULT_FIXTURE_DIR, DEFAULT_OUTPUT_DIR, run_golden_path_demo
+
+    fixture_dir = Path(args.fixture_dir).resolve() if getattr(args, "fixture_dir", None) else DEFAULT_FIXTURE_DIR
+    output_dir = Path(args.output_dir).resolve() if getattr(args, "output_dir", None) else DEFAULT_OUTPUT_DIR
+    result = run_golden_path_demo(fixture_dir=fixture_dir, output_dir=output_dir)
+    print("Observable Security Agent golden path demo")
+    print("")
+    print(f"Fixture: {fixture_dir}")
+    print(f"Output:  {output_dir}")
+    print(f"Schema:  {'PASS' if result['schemaValid'] else 'FAIL'}")
+    print(f"Evals:   {'PASS' if result['evalsPassed'] else 'FAIL'}")
+    print("")
+    print(output_dir / "assurance-package.json")
+    print(output_dir / "metrics.json")
+    print(output_dir / "eval_results.json")
+    print(output_dir / "agent-run-log.json")
+    return 0 if result["schemaValid"] and result["evalsPassed"] else 1
+
+
+def _parse_cli_datetime(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+
+def cmd_debug_context(args: argparse.Namespace) -> int:
+    """Build a deterministic RAG context debug document from offline fixture data."""
+
+    from core.eval_harness import DEFAULT_EVAL_FIXTURE, _control, _evidence, _finding, load_eval_cases
+    from core.rag_context_debug import rag_context_debug_document, write_rag_context_debug_document
+    from core.rag_context_builder import build_rag_context
+
+    fixture_path = Path(args.input).resolve() if getattr(args, "input", None) else DEFAULT_EVAL_FIXTURE
+    cases = load_eval_cases(fixture_path)
+    controls = []
+    evidence = []
+    findings = []
+    for case in cases:
+        inputs = case.get("inputs") or {}
+        controls.extend(_control(row) for row in inputs.get("controls") or [])
+        start_evidence_index = len(evidence)
+        evidence.extend(_evidence(row, start_evidence_index + i + 1) for i, row in enumerate(inputs.get("evidence") or []))
+        start_finding_index = len(findings)
+        findings.extend(_finding(row, start_finding_index + i + 1) for i, row in enumerate(inputs.get("findings") or []))
+
+    # De-dupe controls by controlId while preserving first definition.
+    by_control: dict[str, Any] = {}
+    for control in controls:
+        by_control.setdefault(control.control_id, control)
+
+    request = f"Debug RAG context for {args.control}."
+    bundle = build_rag_context(
+        user_request=request,
+        control_ids=[args.control],
+        asset_ids=[args.asset] if args.asset else [],
+        account_ids=[args.account] if args.account else [],
+        time_window_start=_parse_cli_datetime(getattr(args, "from_date", None)),
+        time_window_end=_parse_cli_datetime(getattr(args, "to_date", None)),
+        evidence_artifacts=evidence,
+        findings=findings,
+        controls=list(by_control.values()),
+    )
+    document = rag_context_debug_document(bundle)
+    if args.output:
+        path = write_rag_context_debug_document(Path(args.output).resolve(), document)
+        print(path)
+    else:
+        print(json.dumps(document, indent=2, sort_keys=True, ensure_ascii=False))
+    return 0
+
+
 def cmd_import_findings(args: argparse.Namespace) -> int:
     """Convert scanner exports into ``scanner_findings.json`` under a scenario dir (or legacy .json path).
 
@@ -464,7 +603,12 @@ def cmd_import_findings(args: argparse.Namespace) -> int:
         return 2
     fmt = str(args.format).strip().lower()
     emit_events = not getattr(args, "no_security_events", False)
-    if fmt == "prowler":
+    if fmt in ("auto", "universal", "nessus", "electriceye"):
+        from providers.scanner_router import import_scanner_to_file
+
+        router_fmt = "auto" if fmt in ("auto", "universal") else fmt
+        dest = import_scanner_to_file(inp, outp, source_format=router_fmt, emit_security_events=emit_events)
+    elif fmt == "prowler":
         from providers.prowler import import_prowler_to_file
 
         dest = import_prowler_to_file(inp, outp, emit_security_events=emit_events)
@@ -479,8 +623,37 @@ def cmd_import_findings(args: argparse.Namespace) -> int:
         dest = resolve_scanner_findings_output_path(outp)
         import_ocsf_to_file(inp, dest, emit_security_events=emit_events)
     else:
-        print(f"Unknown --format {args.format!r} (use prowler, cloudsploit, or ocsf)", file=sys.stderr)
+        print(
+            f"Unknown --format {args.format!r} (use auto, prowler, cloudsploit, ocsf, electriceye, or nessus)",
+            file=sys.stderr,
+        )
         return 2
+    print(f"Wrote {dest}")
+    return 0
+
+
+def cmd_import_tickets(args: argparse.Namespace) -> int:
+    inp = Path(args.input).resolve()
+    outp = Path(args.output).resolve()
+    if not inp.is_file():
+        print(f"Input not found: {inp}", file=sys.stderr)
+        return 2
+    from providers.ticket_export import import_tickets_to_file
+
+    dest = import_tickets_to_file(inp, outp, default_system=args.system)
+    print(f"Wrote {dest}")
+    return 0
+
+
+def cmd_import_inventory_graph(args: argparse.Namespace) -> int:
+    inp = Path(args.input).resolve()
+    outp = Path(args.output).resolve()
+    if not inp.is_file():
+        print(f"Input not found: {inp}", file=sys.stderr)
+        return 2
+    from providers.inventory_graph import import_graph_assets_to_file
+
+    dest = import_graph_assets_to_file(inp, outp)
     print(f"Wrote {dest}")
     return 0
 
@@ -585,7 +758,7 @@ def _tracker_eval_to_evaluation_record(eval_result: Any) -> dict[str, Any]:
     """Coerce the canonical EvalResult from the tracker eval into the legacy
     ``evaluations[]`` schema used by ``eval_results.json`` (so build_20x_package
     sees it and rolls it into KSIs / findings)."""
-    return {
+    record = {
         "eval_id": eval_result.eval_id,
         "name": eval_result.name,
         "control_refs": list(eval_result.controls or []),
@@ -600,6 +773,45 @@ def _tracker_eval_to_evaluation_record(eval_result: Any) -> dict[str, Any]:
         "affected_assets": list(eval_result.affected_assets or []),
         "remediation_disposition": "poam_or_risk_acceptance",
     }
+    record["assessor_findings"] = _assessor_findings_for_tracker_eval_record(record)
+    return record
+
+
+def _assessor_findings_for_tracker_eval_record(record: dict[str, Any]) -> list[dict[str, Any]]:
+    if str(record.get("result") or "").upper() == "PASS":
+        return []
+    gaps = [str(x).strip() for x in (record.get("gaps") or []) if str(x).strip()]
+    actions = [str(x).strip() for x in (record.get("recommended_actions") or []) if str(x).strip()]
+    if not actions and str(record.get("recommended_action") or "").strip():
+        actions = [x.strip() for x in str(record["recommended_action"]).split(";") if x.strip()]
+    if not actions:
+        actions = [
+            "Collect the requested tracker evidence artifact.",
+            "Link the artifact to the affected tracker row and control/KSI.",
+            "Re-run tracker-to-20x and retain the validation outputs.",
+        ]
+    controls = [str(x).strip() for x in (record.get("control_refs") or []) if str(x).strip()]
+    affected = [str(x).strip() for x in (record.get("affected_assets") or []) if str(x).strip()]
+    out: list[dict[str, Any]] = []
+    for i, gap in enumerate(gaps or [str(record.get("gap") or record.get("summary") or "Tracker evidence gap")], start=1):
+        out.append(
+            {
+                "finding_id": f"{record.get('eval_id')}-GAP-{i:03d}",
+                "control_refs": controls,
+                "current_state": gap,
+                "target_state": (
+                    "Each open tracker row has objective evidence attached, mapped to the cited "
+                    "control/KSI, and retestable from the generated tracker-to-20x package."
+                ),
+                "remediation_steps": actions,
+                "estimated_effort": "0.5-2 days",
+                "priority": "critical"
+                if str(record.get("severity") or "").lower() == "critical"
+                else ("high" if str(record.get("result") or "").upper() == "FAIL" else "moderate"),
+                "affected_subjects": affected,
+            }
+        )
+    return out
 
 
 def cmd_tracker_to_20x(args: argparse.Namespace) -> int:
@@ -718,6 +930,7 @@ def cmd_tracker_to_20x(args: argparse.Namespace) -> int:
     canonical_record = tracker_eval.eval_result.model_dump()
     canonical_record.setdefault("remediation_disposition", "poam_or_risk_acceptance")
     canonical_record.setdefault("linked_ksi_ids", [])
+    canonical_record.setdefault("assessor_findings", legacy_record.get("assessor_findings") or [])
     if not any(str(r.get("eval_id")) == canonical_record["eval_id"] for r in record_records):
         record_records.append(canonical_record)
     eval_doc["eval_result_records"] = record_records
@@ -835,6 +1048,37 @@ def cmd_tracker_to_20x(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_conmon_reasonableness(args: argparse.Namespace) -> int:
+    """Evaluate ConMon tracker/system evidence against the 3PAO reasonableness catalog."""
+    from core.conmon_reasonableness import (
+        assess_conmon_reasonableness,
+        load_conmon_catalog,
+        load_tracker_rows,
+        write_reasonableness_outputs,
+    )
+
+    catalog_path = Path(args.catalog).resolve()
+    tracker_path = Path(args.tracker).resolve() if args.tracker else None
+    out_dir = Path(args.output_dir).resolve()
+
+    catalog = load_conmon_catalog(catalog_path)
+    rows = load_tracker_rows(tracker_path)
+    result = assess_conmon_reasonableness(catalog=catalog, tracker_rows=rows)
+    json_path, md_path = write_reasonableness_outputs(result, out_dir)
+
+    summary = result.get("summary") or {}
+    print("CONMON REASONABLENESS")
+    print(f"  Catalog:       {catalog_path}")
+    print(f"  Tracker rows:  {summary.get('tracker_rows', 0)}")
+    print(f"  Obligations:   {summary.get('obligations', 0)}")
+    print(f"  Reasonable:    {summary.get('reasonable', 0)}")
+    print(f"  Partial:       {summary.get('partial', 0)}")
+    print(f"  Missing:       {summary.get('missing', 0)}")
+    print(f"  JSON:          {json_path}")
+    print(f"  Markdown:      {md_path}")
+    return 0
+
+
 def cmd_build_20x_package(args: argparse.Namespace) -> int:
     assessment_out = Path(args.assessment_output).resolve()
     cfg = Path(args.config).resolve()
@@ -853,7 +1097,7 @@ def cmd_build_20x_package(args: argparse.Namespace) -> int:
 
 def cmd_validate(args: argparse.Namespace) -> int:
     od = Path(args.output_dir).resolve()
-    errors, _warnings = validate_output_directory(od)
+    errors, _warnings = validate_output_directory(od, mode=getattr(args, "mode", "demo"))
     if errors:
         for line in errors:
             print(line, file=sys.stderr)
@@ -887,6 +1131,59 @@ def cmd_validate_20x_package(args: argparse.Namespace) -> int:
     for line in rep.errors:
         print(line, file=sys.stderr)
     return 1
+
+
+def cmd_list_pending_recommendations(args: argparse.Namespace) -> int:
+    recommendations = load_recommendations(Path(args.recommendations).resolve())
+    history = load_review_history(Path(args.history).resolve())
+    pending = list_pending_recommendations(recommendations, history)
+    print(
+        json.dumps(
+            {
+                "pendingRecommendations": [rec.model_dump(mode="json", by_alias=True) for rec in pending],
+                "count": len(pending),
+            },
+            indent=2,
+        )
+    )
+    return 0
+
+
+def cmd_record_review_decision(args: argparse.Namespace) -> int:
+    recommendations = load_recommendations(Path(args.recommendations).resolve())
+    decision = record_review_decision(
+        history_path=Path(args.history).resolve(),
+        recommendations=recommendations,
+        recommendation_id=args.recommendation_id,
+        reviewer=args.reviewer,
+        decision=args.decision,
+        justification=args.justification,
+        evidence_ids=args.evidence_id or None,
+        finding_ids=args.finding_id or None,
+        control_id=args.control_id,
+    )
+    print(decision.model_dump_json(indent=2, by_alias=True))
+    return 0
+
+
+def cmd_show_review_history(args: argparse.Namespace) -> int:
+    history = load_review_history(Path(args.history).resolve())
+    filtered = filter_review_history(
+        history,
+        control_id=args.control_id,
+        finding_id=args.finding_id,
+        recommendation_id=args.recommendation_id,
+    )
+    print(
+        json.dumps(
+            {
+                "reviewHistory": [decision.model_dump(mode="json", by_alias=True) for decision in filtered],
+                "count": len(filtered),
+            },
+            indent=2,
+        )
+    )
+    return 0
 
 
 def cmd_generate_20x_reports(args: argparse.Namespace) -> int:
@@ -1036,6 +1333,12 @@ def main() -> int:
         action="store_true",
         help="When agent telemetry is present, also write agent_eval_results.json, agent_risk_report.md, "
         "agent_threat_hunt_findings.json, and agent_poam.csv under --output-dir.",
+    )
+    assess.add_argument(
+        "--mode",
+        choices=["demo", "live"],
+        default="demo",
+        help="Assessment profile recorded in assessment_summary.json. Use live for arbitrary cloud environments.",
     )
     assess.set_defaults(func=cmd_assess)
 
@@ -1191,12 +1494,77 @@ def main() -> int:
     list_e = sub.add_parser("list-evals", help="Print eval ids and control mappings")
     list_e.set_defaults(func=cmd_list_evals)
 
+    run_e = sub.add_parser(
+        "run-evals",
+        help="Run offline platform eval fixtures for retrieval, validation, mapping, recommendations, packaging, and guardrails",
+    )
+    run_e.add_argument(
+        "--input",
+        type=Path,
+        default=None,
+        help="Eval fixture JSON file. Default: fixtures/eval_harness/builtins.json",
+    )
+    run_e.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("output") / "eval_harness",
+        help="Directory for eval_results.json and eval_summary.md.",
+    )
+    run_e.set_defaults(func=cmd_run_evals)
+
+    golden = sub.add_parser(
+        "golden-path-demo",
+        help="Run the full offline assurance package pipeline on fixture data.",
+    )
+    golden.add_argument(
+        "--fixture-dir",
+        type=Path,
+        default=None,
+        help="Fixture directory. Default: fixtures/golden_path.",
+    )
+    golden.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("build") / "assurance-package-demo",
+        help="Output directory for demo artifacts.",
+    )
+    golden.set_defaults(func=cmd_golden_path_demo)
+
+    debug_ctx = sub.add_parser(
+        "debug-context",
+        help="Explain why RAG context evidence was selected or rejected for a control/asset/account scope.",
+    )
+    debug_ctx.add_argument("--control", required=True, help="Control ID to retrieve, such as RA-5")
+    debug_ctx.add_argument("--asset", default=None, help="Optional asset/resource ID scope")
+    debug_ctx.add_argument("--account", default=None, help="Optional account ID scope")
+    debug_ctx.add_argument("--from", dest="from_date", default=None, help="Optional ISO start timestamp/date")
+    debug_ctx.add_argument("--to", dest="to_date", default=None, help="Optional ISO end timestamp/date")
+    debug_ctx.add_argument(
+        "--input",
+        type=Path,
+        default=None,
+        help="Eval fixture JSON to use as offline source data. Default: fixtures/eval_harness/builtins.json",
+    )
+    debug_ctx.add_argument(
+        "--output",
+        type=Path,
+        default=None,
+        help="Optional JSON output path. If omitted, debug JSON is printed to stdout.",
+    )
+    debug_ctx.set_defaults(func=cmd_debug_context)
+
     validate_p = sub.add_parser("validate", help="Validate generated artifacts under output-dir")
     validate_p.add_argument(
         "--output-dir",
         type=Path,
         default=Path("output"),
         help="Directory containing eval_results.json and related artifacts",
+    )
+    validate_p.add_argument(
+        "--mode",
+        choices=["demo", "live"],
+        default="demo",
+        help="Validation profile: demo preserves fixture expectations; live allows clean environments.",
     )
     validate_p.set_defaults(func=cmd_validate)
 
@@ -1217,6 +1585,59 @@ def main() -> int:
         help="Directory containing *.schema.json (e.g. schemas/)",
     )
     v20.set_defaults(func=cmd_validate_20x_package)
+
+    pending = sub.add_parser(
+        "list-pending-recommendations",
+        help="List AgentRecommendation records that do not yet have a human review decision.",
+    )
+    pending.add_argument("--recommendations", type=Path, required=True, help="JSON file containing AgentRecommendation[]")
+    pending.add_argument(
+        "--history",
+        type=Path,
+        required=True,
+        help="Append-only review history JSONL file.",
+    )
+    pending.set_defaults(func=cmd_list_pending_recommendations)
+
+    review = sub.add_parser(
+        "record-review-decision",
+        help="Append a human review decision for an AgentRecommendation.",
+    )
+    review.add_argument("--recommendations", type=Path, required=True, help="JSON file containing AgentRecommendation[]")
+    review.add_argument("--history", type=Path, required=True, help="Append-only review history JSONL file.")
+    review.add_argument("--recommendation-id", required=True, help="AgentRecommendation.recommendationId to decide")
+    review.add_argument("--reviewer", required=True, help="Reviewer identity")
+    review.add_argument(
+        "--decision",
+        required=True,
+        choices=[
+            "ACCEPTED",
+            "ACCEPTED_WITH_EDITS",
+            "REJECTED",
+            "NEEDS_MORE_EVIDENCE",
+            "FALSE_POSITIVE",
+            "RISK_ACCEPTED",
+            "COMPENSATING_CONTROL_ACCEPTED",
+            "ESCALATED_TO_AO",
+            "ESCALATED_TO_3PAO",
+        ],
+        help="Human review decision.",
+    )
+    review.add_argument("--justification", required=True, help="Reviewer justification")
+    review.add_argument("--control-id", default=None, help="Optional control ID override")
+    review.add_argument("--finding-id", action="append", default=None, help="Optional finding ID reference; repeatable")
+    review.add_argument("--evidence-id", action="append", default=None, help="Optional evidence ID reference; repeatable")
+    review.set_defaults(func=cmd_record_review_decision)
+
+    show_review = sub.add_parser(
+        "show-review-history",
+        help="Show human review history, optionally filtered by control/finding/recommendation.",
+    )
+    show_review.add_argument("--history", type=Path, required=True, help="Append-only review history JSONL file.")
+    show_review.add_argument("--control-id", default=None, help="Filter by control ID")
+    show_review.add_argument("--finding-id", default=None, help="Filter by finding ID")
+    show_review.add_argument("--recommendation-id", default=None, help="Filter by recommendation ID")
+    show_review.set_defaults(func=cmd_show_review_history)
 
     gen20 = sub.add_parser(
         "generate-20x-reports",
@@ -1310,13 +1731,13 @@ def main() -> int:
 
     impf = sub.add_parser(
         "import-findings",
-        help="Convert Prowler, CloudSploit, or OCSF exports to scanner_findings.json "
+        help="Convert scanner exports to scanner_findings.json "
         "(input adapters; evals still drive KSI/log/alert/CM outcomes)",
     )
     impf.add_argument(
         "--format",
         required=True,
-        choices=["prowler", "cloudsploit", "ocsf"],
+        choices=["auto", "universal", "prowler", "cloudsploit", "ocsf", "electriceye", "nessus"],
         help="Source export format",
     )
     impf.add_argument(
@@ -1337,6 +1758,28 @@ def main() -> int:
         help="Do not emit derived SecurityEvent rows (ScannerFinding list only)",
     )
     impf.set_defaults(func=cmd_import_findings)
+
+    impt = sub.add_parser(
+        "import-tickets",
+        help="Normalize generic/Jira-like/ServiceNow-like/Smartsheet-like ticket exports to tickets.json",
+    )
+    impt.add_argument("--input", type=Path, required=True, help="Ticket export JSON or CSV")
+    impt.add_argument("--output", type=Path, required=True, help="Scenario directory or explicit tickets.json path")
+    impt.add_argument(
+        "--system",
+        choices=["jira", "servicenow", "github", "manual", "unknown"],
+        default="unknown",
+        help="Default ticket system when the export row does not identify one",
+    )
+    impt.set_defaults(func=cmd_import_tickets)
+
+    impg = sub.add_parser(
+        "import-inventory-graph",
+        help="Normalize graph/inventory JSON exports to discovered_assets.json",
+    )
+    impg.add_argument("--input", type=Path, required=True, help="Graph/inventory JSON export")
+    impg.add_argument("--output", type=Path, required=True, help="Scenario directory or explicit discovered_assets.json path")
+    impg.set_defaults(func=cmd_import_inventory_graph)
 
     exo = sub.add_parser(
         "export-ocsf",
@@ -1453,6 +1896,30 @@ def main() -> int:
         help="Override the JSON Schema directory used for package + config validation.",
     )
     t20.set_defaults(func=cmd_tracker_to_20x)
+
+    cr = sub.add_parser(
+        "conmon-reasonableness",
+        help="Evaluate ConMon/annual-assessment tracker evidence against a 3PAO reasonableness catalog.",
+    )
+    cr.add_argument(
+        "--tracker",
+        type=Path,
+        default=None,
+        help="Optional Smartsheet/Jira/ServiceNow-style CSV/TSV export to map against ConMon obligations.",
+    )
+    cr.add_argument(
+        "--catalog",
+        type=Path,
+        default=ROOT / "config" / "conmon-catalog.yaml",
+        help="ConMon reasonableness catalog YAML.",
+    )
+    cr.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("output") / "conmon_reasonableness",
+        help="Directory for conmon_reasonableness.json and conmon_reasonableness.md.",
+    )
+    cr.set_defaults(func=cmd_conmon_reasonableness)
 
     args = p.parse_args()
     try:

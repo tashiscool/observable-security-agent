@@ -8,7 +8,7 @@ Primary semantic type: `network.public_admin_port_opened` on asset `prod-api-01`
 
 ## What was assessed
 
-- **Semantic event:** `network.public_admin_port_opened` (ref `/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0`).
+- **Semantic event:** `network.public_admin_port_opened` (ref `<repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0`).
 - **Asset evidence:** declared_inventory=True, discovered_cloud_asset=True, scanner_scope=False, central_log_seen_last_24h=False, criticality=high.
 - **AssessmentBundle:** 5 assets, 7 events, 3 findings, 4 alert rules, 3 tickets.
 
@@ -48,14 +48,14 @@ Primary semantic type: `network.public_admin_port_opened` on asset `prod-api-01`
 - **CROSS_DOMAIN_EVENT_CORRELATION** (FAIL): Event fixture:untracked-instance-001 compute.untracked_asset_created affected rogue-prod-worker-99; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false.
 - **CROSS_DOMAIN_EVENT_CORRELATION** (FAIL): Event fixture:logging-audit-denied-001 logging.audit_disabled affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.
 - **CROSS_DOMAIN_EVENT_CORRELATION** (FAIL): Event fixture:identity-admin-role-001 identity.admin_role_granted affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.
-- **CROSS_DOMAIN_EVENT_CORRELATION** (FAIL): Event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened affected prod-api-01; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false.
+- **CROSS_DOMAIN_EVENT_CORRELATION** (FAIL): Event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened affected prod-api-01; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false.
 - **RA5_EXPLOITATION_REVIEW** (FAIL): High finding nessus-2026-0501-prod-api-01-87839 affects prod-api-01 but central audit ingestion is not active for that asset.
 - **RA5_EXPLOITATION_REVIEW** (FAIL): High finding nessus-2026-0501-prod-api-01-87839 affects prod-api-01 but no linked exploitation-review ticket or artifact was found.
 - **RA5_EXPLOITATION_REVIEW** (FAIL): Generated exploitation review queries for CVE-2026-00001 and prod-api-01.
 - **CM3_CHANGE_EVIDENCE_LINKAGE** (FAIL): No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.
 - **CM3_CHANGE_EVIDENCE_LINKAGE** (FAIL): No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.
 - **CM3_CHANGE_EVIDENCE_LINKAGE** (FAIL): No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.
-- **CM3_CHANGE_EVIDENCE_LINKAGE** (FAIL): No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.
+- **CM3_CHANGE_EVIDENCE_LINKAGE** (FAIL): No ticket linked to event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.
 - **CM3_CHANGE_EVIDENCE_LINKAGE** (FAIL): Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence.
 
 ## Partial evaluations
@@ -69,7 +69,7 @@ A **correlated risky event** is a semantically typed signal listed in the scenar
 - Event `fixture:untracked-instance-001` **compute.untracked_asset_created** on `rogue-prod-worker-99` (from correlations.json).
 - Event `fixture:logging-audit-denied-001` **logging.audit_disabled** on `None` (from correlations.json).
 - Event `fixture:identity-admin-role-001` **identity.admin_role_granted** on `None` (from correlations.json).
-- Event `/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0` **network.public_admin_port_opened** on `prod-api-01` (from correlations.json).
+- Event `<repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0` **network.public_admin_port_opened** on `prod-api-01` (from correlations.json).
 
 ## Control impact
 
@@ -201,8 +201,8 @@ Per-evaluation evidence and gaps exactly as emitted by the evaluation engine.
 - Event fixture:untracked-instance-001 compute.untracked_asset_created affected rogue-prod-worker-99; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false.
 - Event fixture:logging-audit-denied-001 logging.audit_disabled affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.
 - Event fixture:identity-admin-role-001 identity.admin_role_granted affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.
-- Event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened affected prod-api-01; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false.
-- **Gap:** fixture:untracked-instance-001: missing required observability (alert_rule, central_logging).; fixture:logging-audit-denied-001: missing required observability (central_logging).; fixture:identity-admin-role-001: missing required observability (central_logging).; /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging).
+- Event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened affected prod-api-01; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false.
+- **Gap:** fixture:untracked-instance-001: missing required observability (alert_rule, central_logging).; fixture:logging-audit-denied-001: missing required observability (central_logging).; fixture:identity-admin-role-001: missing required observability (central_logging).; <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging).
 
 #### RA5_EXPLOITATION_REVIEW — **FAIL**
 
@@ -216,9 +216,9 @@ Per-evaluation evidence and gaps exactly as emitted by the evaluation engine.
 - No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.
 - No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.
 - No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.
-- No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.
+- No ticket linked to event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.
 - Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence.
-- **Gap:** No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.; No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.; No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.; No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.; Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence.
+- **Gap:** No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.; No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.; No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.; No ticket linked to event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.; Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence.
 
 #### CA5_POAM_STATUS — **OPEN**
 

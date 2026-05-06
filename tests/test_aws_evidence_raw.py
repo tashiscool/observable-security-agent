@@ -291,3 +291,6 @@ def test_manifest_to_dict_errors_list() -> None:
     )
     d = m.to_dict()
     assert d["errors"] == ["x: [AccessDenied] no"]
+    assert d["permission_coverage"]["access_denied_call_count"] == 1
+    assert d["permission_coverage"]["assessment_confidence"] == "partial"
+    assert d["permission_coverage"]["impact"][0]["assessment_impact"]

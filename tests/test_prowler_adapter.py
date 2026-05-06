@@ -51,6 +51,22 @@ def test_prowler_csv_matches_json_row_count():
     assert len(iter_prowler_records(SAMPLE_CSV)) == len(iter_prowler_records(SAMPLE_JSON))
 
 
+def test_iter_prowler_records_handles_semicolon_csv(tmp_path: Path):
+    p = tmp_path / "prowler_semicolon.csv"
+    p.write_text(
+        "CheckID;Status;Severity;ResourceId;Region;AccountId\n"
+        "ec2_public_admin;FAIL;high;arn:aws:ec2:us-east-1:111122223333:security-group/sg-1;us-east-1;111122223333\n",
+        encoding="utf-8",
+    )
+
+    rows = iter_prowler_records(p)
+    finding = prowler_row_to_scanner_finding(rows[0])
+
+    assert rows[0]["CheckID"] == "ec2_public_admin"
+    assert finding.status == "open"
+    assert finding.severity == "high"
+
+
 def test_import_prowler_emits_public_exposure_event_for_failed_ssh_check():
     findings, events = import_prowler(SAMPLE_JSON, emit_security_events=True)
     assert len(findings) == 2

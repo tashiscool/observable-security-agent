@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"AU-6, AU-9","AU-6 local audit log sample from authentication service host paired with matches centralized SIEM copy for same privilege elevation event IDs within skew tolerance window.",2019-11-19,2020-02-19,Open,Observability,"Comment from Assessor: Sample must redact subject distinguished names per privacy policy while keeping correlation keys.","CSP: AU6-localpair-201911.tgz."
+
+"AU-2, AU-3","AU-2 auditable events baseline spreadsheet with central log aggregation architecture diagram and log forwarding agent health export for management plane hosts.",2019-10-08,2020-01-08,Open,Logging,"Comment from Assessor: Export must cite forwarder build IDs matching production fleet not canary subset only.","CSP: AU2-baseline-201910.xlsx."
+
+"RA-5, SI-2","RA-5 exploitation review workbook for plugin families tied to high-severity findings with compromise assessment checklist and analyst queue references per open item.",2019-09-17,2019-12-17,Open,IR Liaison,"Comment from Assessor: Workbook must map to scanner export finding keys not severity label text only.","CSP: RA5-exploit-201909.xlsx."
+
+"RA-5(1), CM-8","RA-5(1) evidence that scanner_targets.csv hostnames reflect in-boundary assets in scope for scanning after quarterly scope workshop sign-in roster reconciliation.",2019-12-28,2020-03-28,Open,Vuln Mgmt,"Comment from Assessor: Evidence must show roster timestamp within 48 hours of scanner_targets export not stale week.","CSP: RA51-scope-201912.pdf."
+
+"RA-5(5), RA-5","RA-5(5) credentialed scan evidence pack with authenticated vulnerability scan reports for database tier hosts listing credentialed administrator session scope per target class.",2020-01-15,2020-04-15,Open,Vuln Mgmt,"Comment from Assessor: Pack must cite Nessus policy name hash not default unauthenticated profile only.","CSP: RA55-cred-202001.zip."

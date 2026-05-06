@@ -2,26 +2,17 @@
 
 from __future__ import annotations
 
-import csv
 import json
 from pathlib import Path
 from typing import Any
 
+from core.csv_utils import load_csv_rows
 from core.pipeline_models import PipelineAssetEvidence as AssetEvidence
 from core.pipeline_models import PipelineEvidenceBundle as EvidenceBundle
 
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
-
-
-def load_csv_rows(path: Path) -> list[dict[str, Any]]:
-    text = path.read_text(encoding="utf-8")
-    lines = text.strip().splitlines()
-    if not lines:
-        return []
-    reader = csv.DictReader(lines)
-    return [dict(row) for row in reader]
 
 
 def inventory_ids(bundle: EvidenceBundle) -> set[str]:
@@ -125,10 +116,21 @@ def load_evidence_bundle_from_directory(source_root: Path) -> EvidenceBundle:
 
 
 def validate_evidence_bundle_minimum(bundle: EvidenceBundle) -> None:
-    """Raise ValueError if cloud_events missing or empty (cannot normalize primary event)."""
+    """Raise ValueError only when the bundle has no assessment-worthy evidence.
+
+    Live cloud accounts can be genuinely clean: no recent CloudTrail lookup
+    events, no discovered regional compute/database/load-balancer resources,
+    and no operator-supplied inventory yet. If a collector manifest exists, the
+    assessment should continue and surface that as a confidence gap instead of
+    crashing before report generation.
+    """
     ev = bundle.cloud_events
     events = ev if isinstance(ev, list) else (ev.get("events", []) if isinstance(ev, dict) else [])
-    if not events:
+    if not events and not discovered_ids(bundle) and not bundle.declared_inventory_rows:
+        root = bundle.source_root
+        if (root / "manifest.json").is_file() or (root / "collection_manifest.json").is_file():
+            return
         raise ValueError(
-            "Evidence bundle has no cloud events. Add cloud_events.json or use a complete fixture."
+            "Evidence bundle has no cloud events or asset evidence. Add cloud_events.json, "
+            "discovered_assets.json, or declared_inventory.csv."
         )

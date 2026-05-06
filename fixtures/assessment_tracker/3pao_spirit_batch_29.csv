@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CA-5, RA-5","CA-5 SAR appendix POA&M CSV export with milestone percent complete refreshed after latest vulnerability findings import and official POA&M row keys aligned to SAR tables.",2019-11-30,2020-02-29,Open,ISSM,"Comment from Assessor: Export must show milestone dates in ISO-8601 not locale-formatted cells only.","CSP: CA5-poam-201911.csv."
+
+"AC-3(4), IA-5","AC-3(4) dual authorization evidence for emergency breakglass credential issuance showing two-person rule maker-checker request IDs in the PAM vault session export.",2019-10-18,2020-01-18,Open,IAM,"Comment from Assessor: Evidence must cite vault session replay artifact IDs not email approval only.","CSP: AC34-dual-201910.pdf."
+
+"IR-8, PM-11","IR-8 policy excerpt with tabletop drill lessons learned and continuous monitoring strategy cross-walk table linking coordination roles to escalation roster version hash.",2019-09-08,2019-12-08,Open,Continuity,"Comment from Assessor: Excerpt must cite signed policy repository object ID not wiki permalink only.","CSP: IR8-pm11-201909.pdf."
+
+"RA-5, SI-2","RA-5 Burp Suite recurring vulnerability scan evidence pack listing scan tool version feed date and recurring vulnerability scan schedule reference for internet-exposed APIs.",2019-12-22,2020-03-22,Open,AppSec,"Comment from Assessor: Pack must include authenticated crawl scope JSON not default unauthenticated profile only.","CSP: RA5-burp-201912.zip."
+
+"AU-11, AU-9","AU-11 audit retention policy attestation with log retention months per log class and worm-style immutable archive bucket policy ARN references for compliance holds.",2019-08-08,2019-11-08,Open,Records,"Comment from Assessor: Attestation must map to bucket policy version IDs not console screenshot only.","CSP: AU11-retain-201908.pdf."

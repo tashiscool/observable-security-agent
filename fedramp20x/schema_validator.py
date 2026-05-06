@@ -70,6 +70,68 @@ def _is_top_level_package(doc: dict[str, Any]) -> bool:
     )
 
 
+def _has_text(row: dict[str, Any], key: str) -> bool:
+    return bool(str(row.get(key) or "").strip())
+
+
+def _has_nonempty_list(row: dict[str, Any], key: str) -> bool:
+    value = row.get(key)
+    return isinstance(value, list) and any(str(x).strip() for x in value)
+
+
+def _generated_finding_requires_workpaper(row: dict[str, Any]) -> bool:
+    if str(row.get("source") or "") == "eval_result":
+        return True
+    refs = row.get("source_artifact_refs")
+    if isinstance(refs, list) and any("eval_results.json" in str(x) for x in refs):
+        return True
+    return False
+
+
+def _assessor_contract_errors(document: dict[str, Any]) -> list[str]:
+    """Business-rule checks for generated nested packages.
+
+    JSON Schema stays broad for compatibility with imported/top-level artifacts. Generated
+    nested packages, however, must preserve the assessor workpaper chain from eval finding
+    through POA&M closure tracking.
+    """
+    if _is_top_level_package(document):
+        return []
+    errors: list[str] = []
+    findings = document.get("findings") or []
+    if isinstance(findings, list):
+        for i, row in enumerate(findings):
+            if not isinstance(row, dict) or not _generated_finding_requires_workpaper(row):
+                continue
+            wp = row.get("assessor_workpaper")
+            if not isinstance(wp, dict):
+                errors.append(f"findings[{i}]: generated eval finding missing assessor_workpaper")
+            for key in ("current_state", "target_state", "estimated_effort", "priority"):
+                if not _has_text(row, key):
+                    errors.append(f"findings[{i}]: missing {key}")
+                if isinstance(wp, dict) and not _has_text(wp, key):
+                    errors.append(f"findings[{i}].assessor_workpaper: missing {key}")
+            if not _has_nonempty_list(row, "remediation_steps"):
+                errors.append(f"findings[{i}]: missing remediation_steps")
+            if isinstance(wp, dict) and not _has_nonempty_list(wp, "remediation_steps"):
+                errors.append(f"findings[{i}].assessor_workpaper: missing remediation_steps")
+
+    poam_items = document.get("poam_items") or []
+    if isinstance(poam_items, list):
+        for i, row in enumerate(poam_items):
+            if not isinstance(row, dict) or not str(row.get("finding_id") or "").strip():
+                continue
+            for key in ("current_state", "target_state", "estimated_effort", "priority"):
+                if not _has_text(row, key):
+                    errors.append(f"poam_items[{i}]: generated finding-linked POA&M missing {key}")
+            plan = row.get("remediation_plan")
+            if not isinstance(plan, list) or not plan:
+                errors.append(f"poam_items[{i}]: generated finding-linked POA&M missing remediation_plan")
+            elif not any(isinstance(step, dict) and str(step.get("description") or "").strip() for step in plan):
+                errors.append(f"poam_items[{i}]: remediation_plan has no described milestones")
+    return errors
+
+
 def _validate_item_rows(
     *,
     label: str,
@@ -143,6 +205,8 @@ def validate_json_file(schema_path: Path, json_path: Path) -> ValidationReport:
     instance = _load_json(json_path)
     validator = Draft202012Validator(schema, registry=registry)
     errors = _format_errors(validator, instance)
+    if not errors and isinstance(instance, dict):
+        errors.extend(_assessor_contract_errors(instance))
     return ValidationReport(valid=len(errors) == 0, errors=errors, schema_path=schema_path, json_path=json_path)
 
 
@@ -164,6 +228,8 @@ def validate_package(package_path: Path, schemas_dir: Path) -> ValidationReport:
     errors = list(_format_errors(validator, instance))
     if errors:
         return ValidationReport(valid=False, errors=errors, schema_path=root_schema_path, json_path=package_path)
+    if isinstance(instance, dict):
+        errors.extend(_assessor_contract_errors(instance))
     if isinstance(instance, dict) and _is_top_level_package(instance):
         errors.extend(_validate_top_level_artifacts(package_path, instance, schemas_dir, registry))
     return ValidationReport(valid=len(errors) == 0, errors=errors, schema_path=root_schema_path, json_path=package_path)
@@ -181,11 +247,11 @@ def validate_fedramp20x_document(document: dict[str, Any], schemas_dir: Path) ->
     root_schema = json.loads(root_schema_path.read_text(encoding="utf-8"))
     validator = Draft202012Validator(root_schema, registry=registry)
     errors = _format_errors(validator, document)
+    if not errors:
+        errors.extend(_assessor_contract_errors(document))
     return ValidationReport(
         valid=len(errors) == 0,
         errors=errors,
         schema_path=root_schema_path,
         json_path=Path("<document>"),
     )
-
-

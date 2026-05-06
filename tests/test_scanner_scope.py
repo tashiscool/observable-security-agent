@@ -97,6 +97,17 @@ def test_ra5_partial_stale_scanner_target() -> None:
     assert any("old-api-99" in g and "no matching" in g for g in r.gaps)
 
 
+def test_ra5_live_assets_without_scanner_export_are_partial() -> None:
+    ast = _asset(asset_id="i-live", name="i-live", environment="unknown")
+    bundle = AssessmentBundle(assets=[ast], scanner_targets=[], scanner_findings=[])
+    graph = evidence_graph_from_assessment_bundle(bundle)
+
+    r = eval_ra5_scanner_scope_coverage(bundle, graph)
+
+    assert r.result == "PARTIAL"
+    assert any("scanner target export" in g for g in r.gaps)
+
+
 def test_scanner_scope_fail_when_asset_not_in_targets(tmp_path: Path) -> None:
     _bundle(tmp_path)
     b = load_evidence_bundle_from_directory(tmp_path)

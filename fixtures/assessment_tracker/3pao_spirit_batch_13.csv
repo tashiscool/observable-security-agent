@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CM-6, CM-2","Configuration baseline export for hardened Linux images listing approved security profile version drift detection coverage and open exceptions backlog per CM-6.",2019-10-01,2019-12-15,Open,Config Mgmt,"Comment from Assessor: Export must be CMDB or config-aggregator output not sample spreadsheet only.","CSP: CM6-baseline-201910.json."
+
+"AC-17, IA-3","Remote access reference diagram and VPN gateway hardening evidence pack showing split-tunnel policy denial for administrator profiles per AC-17.",2019-11-08,2020-02-01,Open,Net Sec,"Comment from Assessor: Evidence must include live gateway config extract plus diagram revision date.","CSP: RA-VPN-pack-201911.zip."
+
+"AU-9, AC-6","Audit subsystem authorization matrix documenting who can alter retention delete indexes or suppress forwarding for each log source class per AU-9.",2019-09-25,2019-12-20,Open,Logging,"Comment from Assessor: Matrix must be IAM or SIEM RBAC export with named groups not prose table in memo.","CSP: AU9-RBAC-matrix-v3.csv."
+
+"CP-6, CP-9","Alternate storage site evidence pack listing media vault location distance band connectivity path and last successful replication validation per CP-6.",2019-12-01,2020-03-01,Open,Backup Ops,"Comment from Assessor: Pack must tie to tested network path logs not travel estimate only.","CSP: CP6-alt-site-201912.pdf."
+
+"SC-28, SC-12","Encryption at rest coverage workbook for object storage and database volumes mapping CMK ARNs to data classes per SC-28 organizational parameters.",2020-01-10,2020-04-10,Open,Crypto Eng,"Comment from Assessor: Workbook must join KMS key policy export to bucket and volume inventory keys.","CSP: SC28-cover-202001.xlsx."

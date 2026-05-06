@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"RA-5, SI-2","RA-5 exploitation review workbook for open critical plugin families with compromise assessment checklist and indicator of compromise correlation keyed to scanner export finding IDs.",2019-11-23,2020-02-23,Open,IR Liaison,"Comment from Assessor: Workbook must cite analyst queue ticket references not severity label narrative only.","CSP: RA5-exploit-201911.xlsx."
+
+"RA-5, SI-4","RA-5 Nessus vulnerability scan report binder with scan tool version stamp and recurring vulnerability scan cadence policy hyperlink to documented frequency for partner-facing APIs.",2019-10-21,2020-01-21,Open,Vuln Mgmt,"Comment from Assessor: Binder must include plugin feed revision hash not host agent inventory substitute.","CSP: RA5-nessus-201910.zip."
+
+"RA-5(5), RA-5","RA-5(5) credentialed scan evidence binder with authenticated vulnerability scan reports for cache tier hosts listing credentialed administrator session scope metadata per target class.",2019-09-19,2019-12-19,Open,Vuln Mgmt,"Comment from Assessor: Binder must cite Nessus policy object IDs not default unauthenticated profile only.","CSP: RA55-cred-201909.pdf."
+
+"SC-13, SC-12","SC-13 FIPS 140 validated module inventory excerpt with KMS key rotation cadence table and encryption at rest policy mapping for object storage classes and CMK ARN list.",2019-12-24,2020-03-24,Open,Crypto Eng,"Comment from Assessor: Excerpt must map to live KMS key policy version IDs not policy draft link only.","CSP: SC13-fips-201912.csv."
+
+"SC-7, PL-8","SC-7 network segmentation diagram bundle tying security group inventory to ports and protocols matrix for east-west micro-segment enclaves with diagram revision hash in repository.",2020-01-29,2020-04-29,Open,Net Sec,"Comment from Assessor: Bundle must cite Terraform state revision hash not slide deck only.","CSP: SC7-seg-202001.pdf."

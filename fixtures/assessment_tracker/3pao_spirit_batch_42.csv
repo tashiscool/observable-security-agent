@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CA-5, RA-5","CA-5 official POA&M CSV with SAR appendix POA&M keys aligned after latest scanner findings import project gate refresh showing milestone percent complete deltas by SAR table section.",2019-11-18,2020-02-18,Open,ISSM,"Comment from Assessor: CSV must show POA&M item keys matching SAR appendix tables not ad hoc spreadsheet tabs.","CSP: CA5-poam-201911.csv."
+
+"CM-8, RA-2","CM-8 reconcile declared workload list versus discovery export with discrepancies tab and duplicate entries column keyed by orchestration cluster plus stale cmdb flag for unresolved rows.",2019-10-27,2020-01-27,Open,Asset Mgmt,"Comment from Assessor: Compare must freeze discovery pull timestamp within 24 hours of workbook generation not week-old extract.","CSP: CM8-recon-201910.xlsx."
+
+"RA-5(1), CM-8","RA-5(1) scanner_targets worksheet proving in-boundary assets in scope for scanning after quarterly workshop roster hash tied to export generation clock and sign-in roster attachment IDs.",2019-09-23,2019-12-23,Open,Vuln Mgmt,"Comment from Assessor: Worksheet must show roster timestamp within 48 hours of scanner_targets export not stale week.","CSP: RA51-ws-201909.csv."
+
+"RA-5(5), RA-5","RA-5(5) credentialed administrator session evidence binder with authenticated vulnerability scan reports for storage tier hosts listing credentialed scan policy digest per asset class.",2019-12-13,2020-03-13,Open,Vuln Mgmt,"Comment from Assessor: Binder must cite Nessus policy object IDs not default unauthenticated profile only.","CSP: RA55-cred-201912.pdf."
+
+"RA-5, SI-2","RA-5 Burp Suite recurring vulnerability scan schedule binder with scan tool version sticker and scan frequency policy hyperlink to documented quarterly cadence for customer-facing APIs.",2020-01-21,2020-04-21,Open,AppSec,"Comment from Assessor: Binder must include authenticated crawl scope JSON not default unauthenticated profile only.","CSP: RA5-burp-202001.zip."

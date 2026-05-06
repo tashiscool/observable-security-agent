@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "provider": "aws",
+  "mode": "live-safe-summary",
+  "regions": [
+    {
+      "region": "us-gov-west-1",
+      "successful_calls": ["sts:GetCallerIdentity", "ec2:DescribeInstances", "cloudtrail:DescribeTrails", "cloudwatch:DescribeAlarms"],
+      "denied_calls": ["config:DescribeConfigRules"],
+      "skipped_services": ["guardduty"],
+      "confidence_impacts": [
+        {"eval_id": "SI4_ALERT_INSTRUMENTATION", "impact": "moderate", "reason": "CloudWatch alarms collected; GuardDuty skipped so managed threat detector coverage is unknown."},
+        {"eval_id": "AU6_CENTRALIZED_LOG_COVERAGE", "impact": "low", "reason": "CloudTrail trail status collected; Config rule inventory denied."}
+      ]
+    }
+  ]
+}

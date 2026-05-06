@@ -13,11 +13,12 @@ Public reasoners:
   returns ``unknown``, ask the LLM to pick a typed gap from the canonical list.
 * :func:`explain_for_assessor` — assessor-ready explanation of an eval row.
 * :func:`explain_for_executive` — executive-ready summary of a 20x package.
+* :func:`explain_conmon_reasonableness` — 3PAO reasonableness explanation for ConMon evidence.
 * :func:`explain_residual_risk_for_ao` — AO residual-risk framing of a finding.
 * :func:`explain_derivation_trace` — natural-language walk of the agent_loop trace.
 * :func:`draft_remediation_ticket` — local draft text for a remediation ticket
   (NEVER submitted externally).
-* :func:`draft_auditor_response` — local draft text answering an auditor question.
+* :func:`evaluate_3pao_remediation_for_gap` — virtual 3PAO remediation evaluation for tracker gaps.
 
 Strict invariants:
 
@@ -30,37 +31,65 @@ Strict invariants:
 """
 
 from ai.models import (
+    ArtifactSufficiencyFinding,
     AuditorResponseDraft,
     EvidenceCitation,
     ExplanationResponse,
     ReasoningSource,
     RemediationTicketDraft,
     RowClassificationReasoning,
+    ThreePaoRemediationEvaluation,
+)
+from ai.compliance_reasoner import (
+    ComplianceReasoner,
+    FakeComplianceReasoner,
+    InjectedLLMComplianceReasoner,
+    StructuredClaim,
+    StructuredExecutiveSummary,
+    StructuredNarrative,
+    StructuredPoamDraft,
+    validate_reasoner_output,
 )
 from ai.reasoning import (
     classify_ambiguous_row,
     draft_auditor_response,
     draft_remediation_ticket,
+    evaluate_3pao_remediation_for_gap,
+    explain_conmon_reasonableness,
     explain_derivation_trace,
     explain_for_assessor,
     explain_for_executive,
     explain_residual_risk_for_ao,
     is_llm_configured,
+    llm_backend_status,
 )
 
 __all__ = [
     "AuditorResponseDraft",
+    "ArtifactSufficiencyFinding",
     "EvidenceCitation",
     "ExplanationResponse",
     "ReasoningSource",
     "RemediationTicketDraft",
     "RowClassificationReasoning",
+    "ThreePaoRemediationEvaluation",
+    "ComplianceReasoner",
+    "FakeComplianceReasoner",
+    "InjectedLLMComplianceReasoner",
+    "StructuredClaim",
+    "StructuredExecutiveSummary",
+    "StructuredNarrative",
+    "StructuredPoamDraft",
     "classify_ambiguous_row",
     "draft_auditor_response",
     "draft_remediation_ticket",
+    "evaluate_3pao_remediation_for_gap",
+    "explain_conmon_reasonableness",
     "explain_derivation_trace",
     "explain_for_assessor",
     "explain_for_executive",
     "explain_residual_risk_for_ao",
     "is_llm_configured",
+    "llm_backend_status",
+    "validate_reasoner_output",
 ]

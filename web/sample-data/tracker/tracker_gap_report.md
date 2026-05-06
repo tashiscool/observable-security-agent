@@ -133,14 +133,14 @@
 - POA&M required: **yes**
 - Controls impacted: `CA-5`
 - Linked KSI IDs: `KSI-VULN-01`
-- Gap types observed: `deviation_request_missing`
+- Gap types observed: `poam_update_missing`
 - Tracker rows: `10`
 - Recommended closure artifacts:
-  - poam.csv row with deviation_request_ref + approval evidence
+  - poam.csv with current status, dates, and milestones
 
 | Gap ID | Source row | Severity | Gap type | Controls | Title |
 |---|---|---|---|---|---|
-| `gap-0010-deviation-request-missing` | `10` | moderate | deviation_request_missing | CA-5 | Deviation request missing: POA&M updates: Provide the current POA&M with deviation requests, vendor dependencies, and operational requirements clea |
+| `gap-0010-poam-update-missing` | `10` | moderate | poam_update_missing | CA-5 | Poam update missing: POA&M updates: Provide the current POA&M with deviation requests, vendor dependencies, and operational requirements clea |
 
 ### Backup execution and restore-test evidence (CP-9 / CP-10)
 
@@ -218,7 +218,7 @@
 - alerting (AU-6, SI-4, SI-4(1), SI-4(4), IR-4, IR-6): produce sample_alert_ref pointing at an executed alert export; tickets.json entry citing the alert with documented response; close 3 gap(s); linked KSIs: KSI-LOG-01, KSI-IR-01.
 - change_management (CM-3, SI-2): produce tickets.json field security_impact_analysis=true with SIA attachment; close 1 gap(s); linked KSIs: KSI-CM-01.
 - incident_response (SI-4(1), SI-4(4), IR-4, IR-6): produce tickets.json entry citing the alert with documented response; close 2 gap(s); linked KSIs: KSI-IR-01.
-- poam (CA-5): produce poam.csv row with deviation_request_ref + approval evidence; close 1 gap(s); linked KSIs: KSI-VULN-01.
+- poam (CA-5): produce poam.csv with current status, dates, and milestones; close 1 gap(s); linked KSIs: KSI-VULN-01.
 - recovery (CP-9, CP-10): produce restore_tests.json with measured RTO/RPO; close 1 gap(s); linked KSIs: KSI-REC-01.
 - identity_access (AC-2, AC-2(7), AC-6): produce identity_users.json + privileged-account flag + MFA report; close 1 gap(s); linked KSIs: KSI-IAM-01.
 - crypto (SC-13, SC-28, SC-12): produce FIPS 140-2/3 module list + KMS rotation export + cipher policy; close 1 gap(s); linked KSIs: KSI-LOG-01.
@@ -235,7 +235,7 @@
 - gap-0007-alert-sample-missing [high/alert_sample_missing] row=7 controls=AU-6,SI-4 poam_required=yes :: Alert sample missing: Provide the alert rules / saved searches with recipient li
 - gap-0008-response-action-missing [high/response_action_missing] row=8 controls=SI-4(1),SI-4(4) poam_required=yes :: Response action missing: List CloudWatch alarms and GuardDuty findings considere
 - gap-0009-sia-missing [high/sia_missing] row=9 controls=CM-3,SI-2 poam_required=yes :: Sia missing: Sample change tickets in JIRA with full evidence chain: Security Im
-- gap-0010-deviation-request-missing [moderate/deviation_request_missing] row=10 controls=CA-5 poam_required=yes :: Deviation request missing: POA&M updates: Provide the current POA&M with deviati
+- gap-0010-poam-update-missing [moderate/poam_update_missing] row=10 controls=CA-5 poam_required=yes :: Poam update missing: POA&M updates: Provide the current POA&M with deviation req
 - gap-0011-response-action-missing [high/response_action_missing] row=11 controls=IR-4,IR-6 poam_required=yes :: Response action missing: Incident response evidence: any suspected or confirmed
 - gap-0012-crypto-fips-evidence-missing [high/crypto_fips_evidence_missing] row=12 controls=SC-13,SC-28,SC-12 poam_required=no :: Crypto fips evidence missing: FIPS 140-2/3 evidence: list crypto modules in use
 - gap-0013-restore-test-missing [high/restore_test_missing] row=13 controls=CP-9,CP-10 poam_required=yes :: Restore test missing: Backup and recovery evidence: most recent restore test (RT

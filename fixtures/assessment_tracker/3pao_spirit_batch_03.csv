@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CP-4, CP-10, IR-3(2)","ISCP functional test results report with lessons learned and corrective actions; include evidence contingency test planning was coordinated with IR exercise objectives.",2019-11-07,2020-03-27,Open,Contingency,"Comment from Assessor: Test plan accepted; still need dated results attachment and whether IR objectives were exercised jointly.","CSP: Combined tabletop 2020-02-18; drafting formal results PDF."
+
+"CA-3, SA-9, SC-7","Contractual package for leveraged IaaS and interconnections: reference FedRAMP authorization customer responsibility matrix excerpt functions ports and services in use and locations where federal customer metadata is stored or processed.",2019-11-07,2020-04-17,Open,Vendor Mgmt,"Comment from Assessor: CRM column mapping must match SSP TableCA-3 narrative; redact tenant secrets only not control text.","CSP: Pulled CRM tab from Artifact portal; legal review in progress."
+
+"AT-2, AT-4, PS-6","Exports of completed security awareness and phishing-resistance training for the reporting year for every account with boundary access including contractors and executives.",2019-11-07,2020-02-20,Open,HR Sec Liaison,"Comment from Assessor: Completion roster does not cover several contractor cohort accounts named in IAM export Q4.","CSP: Re-ran LMS export; attaching v3."
+
+"SI-4, SI-4(1), AU-6","System-generated listing of GuardDuty coverage per region enabled CloudWatch alarm catalog for security-relevant events and Splunk saved searches with SOC notify recipient lists.",2020-03-02,2020-03-09,Open,SOC,"Comment from Assessor: Export must show To/CC per rule not only rule titles screenshot.","CSP: CSV export from alerting repo pending."
+
+"CM-3, SI-2","Sample change CHG-5501 for hotfix deployment lacks a Security Impact Analysis paragraph linking code change to threat and affected components before approval.",2020-03-10,2020-04-14,Open,Change Mgmt,"Comment from Assessor: Close loop on SIA before marking change evidence chain complete for this sample.","CSP: ISSO drafting SIA addendum this week."

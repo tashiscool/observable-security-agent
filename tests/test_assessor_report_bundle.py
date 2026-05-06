@@ -136,11 +136,20 @@ def test_failed_ksi_includes_finding_and_poam_ref(tmp_path: Path) -> None:
         {
             "finding_id": "FIND-1",
             "severity": "high",
+            "priority": "critical",
+            "estimated_effort": "1-3 days",
             "title": "Gap",
             "description": "Evidence gap described.",
             "linked_ksi_ids": ["KSI-FAIL"],
             "poam_id": "POAM-99",
             "nist_control_refs": ["AC-1"],
+            "assessor_workpaper": {
+                "current_state": "Current evidence is incomplete.",
+                "target_state": "Evidence is complete and retestable.",
+                "remediation_steps": ["Collect evidence", "Re-run validation"],
+                "estimated_effort": "1-3 days",
+                "priority": "critical",
+            },
         }
     ]
     poam = [
@@ -167,6 +176,11 @@ def test_failed_ksi_includes_finding_and_poam_ref(tmp_path: Path) -> None:
     assert "FAIL" in ksi_md
     assert "FIND-1" in ksi_md
     assert "POAM-99" in ksi_md
+    assert "Assessor workpaper" in ksi_md
+    assert "Current evidence is incomplete" in ksi_md
+    summary = (primary.parent / ASSESSOR_SUMMARY).read_text(encoding="utf-8")
+    assert "Priority" in summary
+    assert "critical" in summary
 
 
 def test_evidence_paths_in_index(tmp_path: Path) -> None:

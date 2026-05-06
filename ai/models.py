@@ -21,9 +21,12 @@ __all__ = [
     "EvidenceCitation",
     "ExplanationAudience",
     "ExplanationResponse",
+    "LlmBackendStatus",
     "ReasoningSource",
     "RemediationTicketDraft",
     "RowClassificationReasoning",
+    "ArtifactSufficiencyFinding",
+    "ThreePaoRemediationEvaluation",
     "TicketSeverity",
 ]
 
@@ -130,6 +133,25 @@ class ExplanationResponse(BaseModel):
     referenced_finding_id: str | None = None
 
 
+class LlmBackendStatus(BaseModel):
+    """Runtime posture for the OpenAI-compatible LLM transport.
+
+    ``backend`` is informational; all non-deterministic calls use the same
+    bounded JSON contract and transport. Bedrock is normally reached through
+    LiteLLM or another OpenAI-compatible proxy, while Ollama can be reached via
+    its local OpenAI-compatible endpoint.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    configured: bool
+    backend: str
+    endpoint: str
+    model: str
+    requires_api_key: bool
+    reasoners: list[str] = Field(default_factory=list)
+
+
 # ---------------------------------------------------------------------------
 # Use case 6: remediation-ticket draft
 # ---------------------------------------------------------------------------
@@ -194,3 +216,48 @@ class AuditorResponseDraft(BaseModel):
     note: str = Field(
         default="Draft only — for human review before any communication is sent.",
     )
+
+
+# ---------------------------------------------------------------------------
+# Use case 8: 3PAO Remediation Evaluation
+# ---------------------------------------------------------------------------
+
+
+class ArtifactSufficiencyFinding(BaseModel):
+    """One 3PAO reasonableness check against supplied artifacts."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    requirement: str = Field(..., min_length=1)
+    status: Literal["pass", "fail", "unknown"]
+    evidence: str = Field(..., min_length=1)
+    remediation: str | None = None
+
+
+class ThreePaoRemediationEvaluation(BaseModel):
+    """Virtual 3PAO recommendation and remediation plan for an evidence gap."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    source: ReasoningSource
+    gap_id: str = Field(..., min_length=1)
+
+    recommendation: str = Field(
+        ...,
+        min_length=1,
+        description="The 3PAO-style recommendation on how the CSP should satisfy the assessor.",
+    )
+    remediation_plan_md: str = Field(
+        ...,
+        min_length=1,
+        description="Markdown formatted step-by-step remediation plan.",
+    )
+    reasonable_test_passed: bool = Field(
+        ...,
+        description="Whether the CSP's current stance meets the 'reasonable test' for compliance.",
+    )
+
+    citations: list[EvidenceCitation] = Field(default_factory=list)
+    artifact_sufficiency: list[ArtifactSufficiencyFinding] = Field(default_factory=list)
+    missing_evidence: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)

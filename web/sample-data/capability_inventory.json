@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "summary": {
+    "implemented": 29,
+    "partial": 3,
+    "planned": 0,
+    "total": 32
+  },
+  "capabilities": [
+    {"capability": "Live and fixture AWS evidence ingestion", "status": "implemented", "proof": "providers/aws.py, providers/aws_raw.py, tests/test_aws_evidence_raw.py"},
+    {"capability": "CSV and assessment tracker import", "status": "implemented", "proof": "core/csv_utils.py, tests/test_assessment_tracker_import.py"},
+    {"capability": "3PAO reasonable-test artifact sufficiency", "status": "implemented", "proof": "config/3pao-sufficiency-rules.yaml, tests/test_ai_reasoning.py"},
+    {"capability": "ConMon reasonableness catalog", "status": "implemented", "proof": "config/conmon-catalog.yaml, tests/test_conmon_reasonableness.py"},
+    {"capability": "OCSF normalization breadth", "status": "implemented", "proof": "providers/ocsf.py, tests/test_ocsf_adapter.py"},
+    {"capability": "Scanner adapter breadth", "status": "implemented", "proof": "providers/scanner_router.py, tests/test_scanner_router_and_importers.py"},
+    {"capability": "Inventory graph import adapters", "status": "implemented", "proof": "providers/inventory_graph.py, tests/test_scanner_router_and_importers.py"},
+    {"capability": "Ticket export field mapping", "status": "implemented", "proof": "providers/ticket_export.py, tests/test_scanner_router_and_importers.py"},
+    {"capability": "FedRAMP 20x package generation", "status": "implemented", "proof": "fedramp20x/package_builder.py, tests/test_fedramp20x_package.py"},
+    {"capability": "Bounded autonomous workflow", "status": "implemented", "proof": "agent_loop/, tests/test_agent_loop.py"},
+    {"capability": "Secret and live artifact guards", "status": "implemented", "proof": "scripts/scan_generated_outputs.py, scripts/guard_live_artifacts.py"},
+    {"capability": "Feature-rich Explorer UI", "status": "implemented", "proof": "web/index.html, web/app.js, tests/test_web_sample_data_contract.py"}
+  ]
+}

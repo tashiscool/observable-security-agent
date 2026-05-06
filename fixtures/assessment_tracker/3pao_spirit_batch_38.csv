@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"RA-5(5), RA-5","RA-5(5) credentialed administrator session evidence pack with authenticated vulnerability scan reports for data tier hosts listing credentialed scan policy name hash per asset class.",2019-11-09,2020-02-09,Open,Vuln Mgmt,"Comment from Assessor: Pack must cite Nessus policy object IDs not default unauthenticated profile only.","CSP: RA55-cred-201911.zip."
+
+"RA-5, SI-2","RA-5 Burp Suite scan evidence folder with scan tool version stamp and recurring vulnerability scan cadence policy hyperlink to documented frequency for internet-exposed APIs.",2019-10-03,2020-01-03,Open,AppSec,"Comment from Assessor: Folder must include authenticated crawl scope JSON not default unauthenticated profile only.","CSP: RA5-burp-201910.zip."
+
+"CM-3, SA-11","CM-3 security impact analysis narrative for API gateway throttling change citing blast radius estimation rollback cutover steps and dependency owners before staging promotion.",2019-09-24,2019-12-24,Open,Platform,"Comment from Assessor: Narrative must cite signed architecture decision record IDs not chat transcript exports only.","CSP: CM3-sia-api-201909.pdf."
+
+"CM-3, CP-10","CM-3 production deployment log excerpt for gateway release showing artifact digest pinned to signed release manifest hash prior to production deployment with CI provenance object IDs.",2019-12-06,2020-03-06,Open,Release Eng,"Comment from Assessor: Log must show digest matching signed manifest not floating latest tag pointer.","CSP: CM3-deploy-gw-201912.jsonl."
+
+"CM-3, SA-10","CM-3 post-deploy verification checklist for gateway canary rollout with verification evidence URLs to smoke test job consoles and explicit pass or fail outcome fields per check.",2020-01-10,2020-04-10,Open,SRE,"Comment from Assessor: Checklist must cite job console permalinks with UTC timestamps not local timezone captures only.","CSP: CM3-verify-gw-202001.xlsx."

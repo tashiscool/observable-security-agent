@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -94,6 +95,43 @@ def test_validate_after_assess(tmp_path: Path) -> None:
     assert "VALIDATION PASSED" in v.stdout
 
 
+def test_assess_eval_results_include_assessor_style_findings(tmp_path: Path) -> None:
+    r = _run_agent(
+        [
+            "assess",
+            "--provider",
+            "fixture",
+            "--scenario",
+            "scenario_public_admin_vuln_event",
+            "--output-dir",
+            str(tmp_path),
+        ],
+        cwd=ROOT,
+    )
+    assert r.returncode == 0, r.stderr + r.stdout
+    doc = json.loads((tmp_path / "eval_results.json").read_text(encoding="utf-8"))
+    records = doc.get("evaluations") or []
+    finding_sets = [
+        rec.get("assessor_findings")
+        for rec in records
+        if rec.get("result") in ("FAIL", "PARTIAL")
+    ]
+    findings = [item for block in finding_sets if isinstance(block, list) for item in block]
+    assert findings
+    assert {"control_refs", "current_state", "target_state", "remediation_steps", "estimated_effort"} <= set(findings[0])
+    normalized_records = doc.get("eval_result_records") or []
+    normalized_sets = [
+        rec.get("assessor_findings")
+        for rec in normalized_records
+        if rec.get("result") in ("FAIL", "PARTIAL")
+    ]
+    normalized_findings = [item for block in normalized_sets if isinstance(block, list) for item in block]
+    assert normalized_findings
+    assert {"control_refs", "current_state", "target_state", "remediation_steps", "estimated_effort"} <= set(
+        normalized_findings[0]
+    )
+
+
 def test_list_evals_cli() -> None:
     r = _run_agent(["list-evals"], cwd=ROOT)
     assert r.returncode == 0, r.stderr + r.stdout
@@ -173,3 +211,77 @@ def test_assess_aws_deprecated_evidence_dir_alias(tmp_path: Path) -> None:
         cwd=ROOT,
     )
     assert r.returncode == 0, r.stderr + r.stdout
+
+
+def test_assess_aws_live_with_asset_but_zero_cloud_events(tmp_path: Path) -> None:
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    (raw / "manifest.json").write_text(
+        json.dumps(
+            {
+                "collected_at": "2026-05-01T00:00:00Z",
+                "region": "us-gov-west-1",
+                "permission_coverage": {
+                    "successful_call_count": 3,
+                    "failed_call_count": 1,
+                    "access_denied_call_count": 1,
+                    "assessment_confidence": "partial",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (raw / "discovered_assets.json").write_text(
+        json.dumps(
+            {
+                "assets": [
+                    {
+                        "asset_id": "i-clean",
+                        "provider": "aws",
+                        "resource_type": "EC2",
+                        "resource_id": "i-clean",
+                        "region": "us-gov-west-1",
+                        "criticality": "moderate",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    (raw / "cloud_events.json").write_text("[]", encoding="utf-8")
+    (raw / "scanner_findings.json").write_text('{"findings":[]}', encoding="utf-8")
+    (raw / "scanner_targets.csv").write_text("asset_id,scanner,target_type,hostname,ip\n", encoding="utf-8")
+    (raw / "central_log_sources.json").write_text('{"sources":[]}', encoding="utf-8")
+    (raw / "alert_rules.json").write_text('{"rules":[]}', encoding="utf-8")
+    (raw / "tickets.json").write_text('{"tickets":[]}', encoding="utf-8")
+    (raw / "declared_inventory.csv").write_text(
+        "inventory_id,asset_id,name,asset_type,in_boundary,scanner_required,log_required\n",
+        encoding="utf-8",
+    )
+    (raw / "poam.csv").write_text(
+        "poam_id,weakness_name,controls,raw_severity,status,asset_identifier,notes\n",
+        encoding="utf-8",
+    )
+
+    out = tmp_path / "out"
+    r = _run_agent(
+        [
+            "assess",
+            "--provider",
+            "aws",
+            "--raw-evidence-dir",
+            str(raw),
+            "--output-dir",
+            str(out),
+            "--mode",
+            "live",
+        ],
+        cwd=ROOT,
+    )
+
+    assert r.returncode == 0, r.stderr + r.stdout
+    eval_doc = json.loads((out / "eval_results.json").read_text(encoding="utf-8"))
+    assert eval_doc["semantic_event"]["event_type"] == "assessment.no_cloud_event_evidence"
+    summary = json.loads((out / "assessment_summary.json").read_text(encoding="utf-8"))
+    assert summary["assessment_mode"] == "live"
+    assert summary["permission_coverage"]["assessment_confidence"] == "partial"

@@ -38,6 +38,21 @@ def test_every_catalog_ksi_appears_in_rev5_crosswalk() -> None:
     assert not missing, f"KSI ids in catalog but not in rev5 crosswalk: {sorted(missing)}"
 
 
+def test_secondary_rev5_crosswalk_blank_trace_note_normalized() -> None:
+    rows = normalize_rev5_ksi_table(
+        [
+            {
+                "rev5_control": "CM-8",
+                "ksi_id": "KSI-CM-01",
+                "mapping_type": "secondary",
+                "trace_note": "",
+            }
+        ]
+    )
+
+    assert rows[0]["trace_note"] == "Secondary mapping; source row did not provide trace_note."
+
+
 def test_evidence_sources_in_ksi_map_exist_in_registry() -> None:
     reg = load_evidence_source_registry(CONFIG / "evidence-source-registry.yaml")
     reg_ids = {s.id for s in reg.sources}

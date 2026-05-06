@@ -30,6 +30,7 @@ import os
 import re
 import urllib.error
 import urllib.request
+from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel, ValidationError
@@ -41,15 +42,24 @@ from ai.models import (
     ReasoningSource,
     RemediationTicketDraft,
     RowClassificationReasoning,
+    ThreePaoRemediationEvaluation,
 )
 from ai.prompts import (
     build_assessor_explanation_messages,
     build_auditor_response_messages,
     build_classify_row_messages,
+    build_conmon_reasonableness_messages,
     build_derivation_trace_messages,
     build_executive_summary_messages,
     build_remediation_ticket_messages,
     build_residual_risk_messages,
+    build_3pao_remediation_messages,
+)
+from core.guardrails import (
+    detect_prompt_injection,
+    enforce_guardrails,
+    evaluate_certification_language,
+    evaluate_destructive_action,
 )
 
 
@@ -61,8 +71,11 @@ __all__ = [
     "explain_derivation_trace",
     "explain_for_assessor",
     "explain_for_executive",
+    "explain_conmon_reasonableness",
     "explain_residual_risk_for_ao",
+    "evaluate_3pao_remediation_for_gap",
     "is_llm_configured",
+    "llm_backend_status",
     "sanitize_no_invented_evidence",
 ]
 
@@ -80,8 +93,17 @@ MISSING_EVIDENCE_MARK = "**missing evidence**"
 
 
 def is_llm_configured() -> bool:
-    """True iff ``AI_API_KEY`` is set in the environment."""
-    return bool((os.environ.get("AI_API_KEY") or "").strip())
+    """True iff a live LLM transport is configured.
+
+    OpenAI/LiteLLM/Bedrock-proxy paths normally use ``AI_API_KEY``. Ollama's
+    OpenAI-compatible local endpoint can be used without a key by setting
+    ``AI_BACKEND=ollama`` or using an endpoint containing ``:11434``.
+    """
+    if (os.environ.get("AI_API_KEY") or "").strip():
+        return True
+    backend = (os.environ.get("AI_BACKEND") or "").strip().lower()
+    base = (os.environ.get("AI_API_BASE") or "").strip().lower()
+    return backend == "ollama" or ":11434" in base or "localhost:11434" in base
 
 
 def _llm_endpoint() -> tuple[str, str, str]:
@@ -90,6 +112,36 @@ def _llm_endpoint() -> tuple[str, str, str]:
     model = (os.environ.get("AI_MODEL") or "gpt-4o-mini").strip()
     key = (os.environ.get("AI_API_KEY") or "").strip()
     return base, model, key
+
+
+def _infer_backend(base: str, model: str) -> str:
+    explicit = (os.environ.get("AI_BACKEND") or "").strip()
+    if explicit:
+        return explicit
+    low = f"{base} {model}".lower()
+    if "bedrock/" in low:
+        return "bedrock-via-openai-compatible-proxy"
+    if "ollama" in low or ":11434" in low:
+        return "ollama-openai-compatible"
+    if "litellm" in low or ":4000" in low:
+        return "litellm-openai-compatible"
+    if "openai.com" in low:
+        return "openai-compatible"
+    return "openai-compatible"
+
+
+def llm_backend_status(reasoners: list[str] | None = None) -> dict[str, Any]:
+    base, model, key = _llm_endpoint()
+    backend = _infer_backend(base, model)
+    requires_key = not (backend.startswith("ollama") or backend == "ollama")
+    return {
+        "configured": is_llm_configured(),
+        "backend": backend,
+        "endpoint": base,
+        "model": model,
+        "requires_api_key": requires_key,
+        "reasoners": reasoners or [],
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -111,7 +163,7 @@ def _call_openai_compatible(
     monkey-patch to simulate LLM responses.
     """
     base, model, key = _llm_endpoint()
-    if not key:
+    if not is_llm_configured():
         return None
     payload = {
         "model": model,
@@ -127,10 +179,14 @@ def _call_openai_compatible(
         url=f"{base}/chat/completions",
         data=body,
         method="POST",
-        headers={
-            "Authorization": f"Bearer {key}",
-            "Content-Type": "application/json",
-        },
+        headers=(
+            {
+                "Authorization": f"Bearer {key}",
+                "Content-Type": "application/json",
+            }
+            if key
+            else {"Content-Type": "application/json"}
+        ),
     )
     try:
         with urllib.request.urlopen(req, timeout=timeout_s) as resp:
@@ -318,23 +374,42 @@ def _llm_or_fallback(
 ) -> BaseModel:
     if not is_llm_configured():
         return fallback_value
+
+    def configured_backend_warnings() -> list[str]:
+        return [
+            w
+            for w in (list(getattr(fallback_value, "warnings", []) or []))
+            if "AI_API_KEY not set" not in str(w)
+        ]
+
     raw = _call_openai_compatible(
         system_message=system_message, user_message=user_message
     )
     if not raw:
-        warnings = list(getattr(fallback_value, "warnings", []) or [])
+        warnings = configured_backend_warnings()
         warnings.append("LLM unavailable or empty response; used deterministic fallback.")
         return fallback_value.model_copy(update={"warnings": warnings})
     parsed = _try_parse_json(raw)
     if parsed is None:
-        warnings = list(getattr(fallback_value, "warnings", []) or [])
+        warnings = configured_backend_warnings()
         warnings.append("LLM response was not valid JSON; used deterministic fallback.")
         return fallback_value.model_copy(update={"warnings": warnings})
     parsed["source"] = ReasoningSource.LLM.value
     obj = _coerce_into_model(model_cls, parsed)
     if obj is None:
-        warnings = list(getattr(fallback_value, "warnings", []) or [])
+        warnings = configured_backend_warnings()
         warnings.append("LLM response failed schema validation; used deterministic fallback.")
+        return fallback_value.model_copy(update={"warnings": warnings})
+    guardrail_results = [
+        evaluate_certification_language(text=obj.model_dump_json()),
+        evaluate_destructive_action(action_text=obj.model_dump_json()),
+        *detect_prompt_injection([obj.model_dump_json()]),
+    ]
+    try:
+        enforce_guardrails(guardrail_results)
+    except ValueError as ex:
+        warnings = configured_backend_warnings()
+        warnings.append(f"LLM response failed guardrail validation; used deterministic fallback: {ex}")
         return fallback_value.model_copy(update={"warnings": warnings})
     return obj
 
@@ -410,6 +485,22 @@ def explain_for_executive(
         fail_partial_findings=fail_partial_findings,
         open_poam=open_poam,
     )
+    out = _llm_or_fallback(
+        model_cls=ExplanationResponse,
+        system_message=sysm,
+        user_message=userm,
+        fallback_value=fb,
+    )
+    assert isinstance(out, ExplanationResponse)
+    return _sanitize_explanation(out)
+
+
+def explain_conmon_reasonableness(
+    *,
+    conmon_result: dict[str, Any],
+) -> ExplanationResponse:
+    sysm, userm = build_conmon_reasonableness_messages(conmon_result=conmon_result)
+    fb = fallbacks.fallback_explain_conmon_reasonableness(conmon_result=conmon_result)
     out = _llm_or_fallback(
         model_cls=ExplanationResponse,
         system_message=sysm,
@@ -503,3 +594,77 @@ def draft_auditor_response(
     )
     assert isinstance(out, AuditorResponseDraft)
     return _sanitize_auditor(out)
+
+
+def _default_ksi_catalog_path() -> Path:
+    return Path(__file__).resolve().parent.parent / "config" / "ksi-catalog.yaml"
+
+
+def _ksi_context_block_for_gap(evidence_gap: dict[str, Any]) -> str | None:
+    """Compact KSI objective + criterion hints for 20x-aligned 3PAO framing."""
+    raw = evidence_gap.get("linked_ksi_ids")
+    if not raw:
+        return None
+    ids = [str(x).strip() for x in raw if str(x).strip()]
+    if not ids:
+        return None
+    try:
+        from fedramp20x.ksi_catalog import load_ksi_catalog
+
+        cat = load_ksi_catalog(_default_ksi_catalog_path())
+    except Exception as e:  # prompt enrichment is best-effort; catalog may be absent in tests
+        _LOG.debug("KSI catalog unavailable for 3PAO prompt (%s)", e)
+        return None
+    by_id = {k.ksi_id: k for k in cat.catalog}
+    lines: list[str] = [
+        "### FedRAMP 20x KSI context (control text and SAR still govern)",
+    ]
+    for kid in ids:
+        k = by_id.get(kid)
+        if k is None:
+            lines.append(f"- `{kid}` — not found in bundled `ksi-catalog.yaml`.")
+            continue
+        ev = ", ".join(k.evidence_sources[:4]) if k.evidence_sources else "(see KSI definition)"
+        crit0 = k.pass_fail_criteria[0]
+        sample = f"{crit0.criteria_id}: {crit0.description}"
+        obj = k.objective if len(k.objective) <= 500 else k.objective[:500] + "…"
+        lines.append(
+            f"- **`{k.ksi_id}` — {k.title}**  \n"
+            f"  Objective: {obj}  \n"
+            f"  Typical evidence sources: {ev}  \n"
+            f"  Example criterion: {sample}"
+        )
+    return "\n".join(lines)
+
+
+def evaluate_3pao_remediation_for_gap(
+    *,
+    evidence_gap: dict[str, Any],
+    related_artifacts: dict[str, Any] | None = None,
+) -> ThreePaoRemediationEvaluation:
+    ksi_ctx = _ksi_context_block_for_gap(evidence_gap)
+    sysm, userm = build_3pao_remediation_messages(
+        evidence_gap=evidence_gap,
+        ksi_context=ksi_ctx,
+        related_artifacts=related_artifacts,
+    )
+    fb = fallbacks.fallback_evaluate_3pao_remediation(
+        evidence_gap=evidence_gap,
+        ksi_context=ksi_ctx,
+        related_artifacts=related_artifacts,
+    )
+    out = _llm_or_fallback(
+        model_cls=ThreePaoRemediationEvaluation,
+        system_message=sysm,
+        user_message=userm,
+        fallback_value=fb,
+    )
+    assert isinstance(out, ThreePaoRemediationEvaluation)
+    # We could sanitize invented evidence here if needed, but for 3PAO remediation, 
+    # the LLM is expected to provide a generic plan. Still, we can apply sanitization.
+    body, w = sanitize_no_invented_evidence(
+        out.remediation_plan_md, missing_evidence=out.missing_evidence
+    )
+    if w:
+        out = out.model_copy(update={"remediation_plan_md": body, "warnings": [*out.warnings, *w]})
+    return out

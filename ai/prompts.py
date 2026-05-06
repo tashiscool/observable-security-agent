@@ -35,8 +35,10 @@ __all__ = [
     "build_classify_row_messages",
     "build_derivation_trace_messages",
     "build_executive_summary_messages",
+    "build_conmon_reasonableness_messages",
     "build_remediation_ticket_messages",
     "build_residual_risk_messages",
+    "build_3pao_remediation_messages",
     "redact_secrets_for_prompt",
 ]
 
@@ -260,6 +262,41 @@ def build_executive_summary_messages(
     return _EXEC_SYSTEM, user
 
 
+_CONMON_REASONABLENESS_SYSTEM = _system_preamble(
+    "You are a 3PAO senior assessor reviewing a FedRAMP ConMon reasonableness report."
+)
+
+
+def build_conmon_reasonableness_messages(
+    *,
+    conmon_result: dict[str, Any],
+) -> tuple[str, str]:
+    user = (
+        "Task: Explain whether the ConMon evidence posture is reasonable for 3PAO review. "
+        "Use the supplied `conmon_reasonableness.json` only. You may prioritize obligations and "
+        "explain what AWS/CloudTrail, CloudWatch/Splunk/Wazuh, scanner exports, and "
+        "Smartsheet/Jira/ServiceNow evidence must prove, but you must not mark missing evidence as passing.\n"
+        "\n"
+        + _payload_block("ConMon reasonableness result", conmon_result)
+        + "\n"
+        "Required JSON output schema (ExplanationResponse):\n"
+        "{\n"
+        '  "source": "llm",\n'
+        '  "audience": "assessor",\n'
+        '  "headline": "<short 3PAO reasonableness conclusion>",\n'
+        '  "body": "<markdown body grounded only in conmon_reasonableness.json>",\n'
+        '  "citations": [{"artifact": "conmon_reasonableness.json", "field": "summary", "note": ""}],\n'
+        '  "missing_evidence": [],\n'
+        '  "warnings": [],\n'
+        '  "referenced_eval_id": "CONMON_REASONABLENESS",\n'
+        '  "referenced_ksi_id": null,\n'
+        '  "referenced_finding_id": null\n'
+        "}\n\n"
+        + JSON_OUTPUT_DIRECTIVE
+    )
+    return _CONMON_REASONABLENESS_SYSTEM, user
+
+
 # ---------------------------------------------------------------------------
 # 4. AO residual risk
 # ---------------------------------------------------------------------------
@@ -430,3 +467,80 @@ def build_auditor_response_messages(
         + JSON_OUTPUT_DIRECTIVE
     )
     return _AUDITOR_SYSTEM, user
+
+
+# ---------------------------------------------------------------------------
+# 8. 3PAO Remediation Evaluation
+# ---------------------------------------------------------------------------
+
+
+_THREE_PAO_SYSTEM = _system_preamble(
+    "You are a senior FedRAMP Third-Party Assessment Organization (3PAO) assessor working a Security "
+    "Assessment Plan (SAP) / evidence-tracker row (often mirrored in ConMon). You align expectations with "
+    "NIST SP 800-53 controls as cited on the row, FedRAMP authorization practice (including reasonable "
+    "evidence and SAR-ready documentation), and—when provided—a FedRAMP 20x Key Security Indicator (KSI) "
+    "context block. Classify each row mentally as one or more of: package/policy documentation; "
+    "system-generated operational evidence; vulnerability / pen-test logistics; contingency / IR test "
+    "artifacts; IAM / personnel; boundary / crypto; or continuous monitoring sampling. Do not invent "
+    "artifacts that are not described in the gap payload; use `missing_evidence` for items the CSP must "
+    "still produce."
+)
+
+
+def build_3pao_remediation_messages(
+    *,
+    evidence_gap: dict[str, Any],
+    ksi_context: str | None = None,
+    related_artifacts: dict[str, Any] | None = None,
+) -> tuple[str, str]:
+    ksi_block = (
+        ("\n" + ksi_context.strip() + "\n")
+        if (ksi_context and str(ksi_context).strip())
+        else ""
+    )
+    user = (
+        "Task: Evaluate this assessment-tracker evidence gap as a 3PAO would before SAR / 20x package "
+        "review — using the **reasonable-person** standard (would a prudent assessor accept the CSP's "
+        "latest position without reopening the control?).\n"
+        "\n"
+        "Workflow (follow in order; reflect it in `remediation_plan_md` when the row is not yet closed):\n"
+        "A. **Row archetype** — SAP kickoff vs core control evidence vs pen-test engagement logistics vs "
+        "ConMon sample vs policy/SSP attachment vs other.\n"
+        "B. **Decompose the ask** — extract every explicit sub-bullet (i)(ii)(iii)… from the request text "
+        "and from the latest unresolved assessor questions in the comment thread.\n"
+        "C. **Control + KSI linkage** — interpret listed controls; use the KSI context block (if present) "
+        "as additional framing for *types* of evidence maturity — not as a substitute for the control text.\n"
+        "D. **Thread resolution** — read assessor↔CSP comments chronologically; state what remains open "
+        "after the CSP's last reply.\n"
+        "E. **Reasonable test** — decide if remaining gaps are clerical, evidentiary (missing primary/system-"
+        "generated proof), or scope disputes; set `reasonable_test_passed` true only if the assessor's "
+        "stated requirements appear fully met by the latest CSP stance **or** defensibly N/A with documented "
+        "rationale.\n"
+        "F. **Closure path** — if not passed, give concrete remediation: exact artifact classes, who should "
+        "sign/approve, what system export to attach, and how a reviewer would verify (no generic 'provide "
+        "evidence' only).\n"
+        "\n"
+        "If `poam_required` is true in the gap, note when a POA&M milestone or FedRAMP deviation request "
+        "(FP/RA/OR/vendor dependency) may be required instead of verbal closure.\n"
+        "If `related_artifacts` are provided, evaluate whether they are sufficient, authoritative, current, "
+        "and mapped to each sub-requirement; do not pass the reasonable test merely because a ticket or "
+        "filename exists.\n"
+        + ksi_block
+        + _payload_block("Evidence Gap", evidence_gap)
+        + (_payload_block("Related artifacts", related_artifacts) if related_artifacts else "")
+        + "\n"
+        "Required JSON output schema (ThreePaoRemediationEvaluation):\n"
+        "{\n"
+        '  "source": "llm",\n'
+        '  "gap_id": "<echo gap_id>",\n'
+        '  "recommendation": "<1-2 sentence recommendation>",\n'
+        '  "remediation_plan_md": "<markdown step-by-step plan based on NIST/FedRAMP requirements>",\n'
+        '  "reasonable_test_passed": true|false,\n'
+        '  "citations": [{"artifact": "evidence_gaps.json", "field": "gap_id"}],\n'
+        '  "artifact_sufficiency": [{"requirement": "<sub-requirement>", "status": "pass|fail|unknown", "evidence": "<provided artifact basis or missing evidence>", "remediation": "<closure step or null>"}],\n'
+        '  "missing_evidence": [],\n'
+        '  "warnings": []\n'
+        "}\n\n"
+        + JSON_OUTPUT_DIRECTIVE
+    )
+    return _THREE_PAO_SYSTEM, user

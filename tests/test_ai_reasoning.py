@@ -14,9 +14,11 @@ Covers:
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any
 
 import pytest
+import yaml
 
 from ai import (
     AuditorResponseDraft,
@@ -28,11 +30,14 @@ from ai import (
     classify_ambiguous_row,
     draft_auditor_response,
     draft_remediation_ticket,
+    explain_conmon_reasonableness,
     explain_derivation_trace,
     explain_for_assessor,
     explain_for_executive,
     explain_residual_risk_for_ao,
+    evaluate_3pao_remediation_for_gap,
     is_llm_configured,
+    llm_backend_status,
 )
 from ai import reasoning as ai_reasoning
 from ai.prompts import (
@@ -41,6 +46,7 @@ from ai.prompts import (
     build_assessor_explanation_messages,
     build_auditor_response_messages,
     build_classify_row_messages,
+    build_conmon_reasonableness_messages,
     build_derivation_trace_messages,
     build_executive_summary_messages,
     build_remediation_ticket_messages,
@@ -51,6 +57,8 @@ from ai.reasoning import (
     MISSING_EVIDENCE_MARK,
     sanitize_no_invented_evidence,
 )
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 # Ensure the LLM path is OFF for the entire test session unless a test opts in.
@@ -74,6 +82,24 @@ class TestEnvironment:
         monkeypatch.setenv("AI_API_KEY", "test-key")
         assert is_llm_configured() is True
 
+    def test_ollama_backend_can_be_configured_without_key(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("AI_BACKEND", "ollama")
+        monkeypatch.setenv("AI_API_BASE", "http://127.0.0.1:11434/v1")
+        monkeypatch.setenv("AI_MODEL", "llama3.1")
+        assert is_llm_configured() is True
+        status = llm_backend_status(reasoners=["explain_conmon_reasonableness"])
+        assert status["backend"] == "ollama"
+        assert status["requires_api_key"] is False
+        assert "explain_conmon_reasonableness" in status["reasoners"]
+
+    def test_bedrock_litellm_model_is_reported(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("AI_API_KEY", "test-key")
+        monkeypatch.setenv("AI_API_BASE", "http://127.0.0.1:4000/v1")
+        monkeypatch.setenv("AI_MODEL", "bedrock/anthropic.claude-3-sonnet-20240229-v1:0")
+        status = llm_backend_status()
+        assert status["configured"] is True
+        assert "bedrock" in status["backend"]
+
 
 # ---------------------------------------------------------------------------
 # Prompts: every prompt embeds the evidence contract
@@ -90,6 +116,9 @@ _ALL_PROMPT_BUILDERS = [
     ),
     lambda: build_executive_summary_messages(
         package_summary={"overall_status": "FAIL"}
+    ),
+    lambda: build_conmon_reasonableness_messages(
+        conmon_result={"summary": {"obligations": 1}, "obligation_assessments": []}
     ),
     lambda: build_residual_risk_messages(finding={"finding_id": "F-1"}),
     lambda: build_derivation_trace_messages(trace={"workflow": "x", "tasks": []}),
@@ -199,6 +228,135 @@ class TestNoKeyPath:
         # Each absent KSI field must surface in missing_evidence; nothing invented.
         assert any(
             "ksi_total" in m or "summary" in m for m in out.missing_evidence
+        )
+
+    def test_conmon_reasonableness_fallback(self) -> None:
+        out = explain_conmon_reasonableness(
+            conmon_result={
+                "catalog_name": "FedRAMP ConMon",
+                "summary": {
+                    "obligations": 17,
+                    "reasonable": 0,
+                    "partial": 3,
+                    "missing": 14,
+                    "tracker_rows": 19,
+                },
+                "evidence_ecosystems": {
+                    "aws": {"systems": ["AWS CloudTrail"]},
+                    "siem": {"systems": ["Splunk"]},
+                    "os_and_endpoint": {"systems": ["Wazuh"]},
+                    "ticketing": {"systems": ["Smartsheet", "Jira", "ServiceNow"]},
+                },
+                "obligation_assessments": [
+                    {
+                        "obligation_id": "CONMON-CONT-001",
+                        "cadence": "continuous",
+                        "coverage": "missing",
+                        "reasonableness_gaps": ["No tracker row maps to this obligation."],
+                    }
+                ],
+            }
+        )
+        assert out.source == ReasoningSource.DETERMINISTIC_FALLBACK
+        assert out.referenced_eval_id == "CONMON_REASONABLENESS"
+        assert "Smartsheet/Jira/ServiceNow" in out.body
+
+    def test_3pao_reasonable_test_fails_when_related_artifacts_are_only_ticket_shells(self) -> None:
+        out = evaluate_3pao_remediation_for_gap(
+            evidence_gap={
+                "gap_id": "gap-cm3",
+                "gap_type": "sia_missing",
+                "controls": ["CM-3", "CM-4"],
+                "title": "SIA missing for sampled change",
+                "description": (
+                    "For a sample of system changes, provide security impact analysis, "
+                    "testing evidence, approval, and implementation documentation."
+                ),
+                "recommended_artifact": "tickets.json field security_impact_analysis=true with SIA attachment",
+            },
+            related_artifacts={
+                "tickets.json": {
+                    "tickets": [
+                        {
+                            "id": "CHG-1001",
+                            "summary": "Patch deployment ticket",
+                            "status": "closed",
+                        }
+                    ]
+                }
+            },
+        )
+        assert out.source == ReasoningSource.DETERMINISTIC_FALLBACK
+        assert out.reasonable_test_passed is False
+        assert any(f.status == "fail" for f in out.artifact_sufficiency)
+        assert any("security impact" in f.requirement for f in out.artifact_sufficiency)
+        assert any("artifact_sufficiency" in m for m in out.missing_evidence)
+
+    def test_3pao_reasonable_test_does_not_treat_tracker_text_as_proof(self) -> None:
+        out = evaluate_3pao_remediation_for_gap(
+            evidence_gap={
+                "gap_id": "gap-inv",
+                "gap_type": "inventory_mismatch",
+                "controls": ["CM-8"],
+                "title": "Inventory reconciliation missing",
+                "description": "Provide reconciled inventory and discovered asset export.",
+                "recommended_artifact": "declared_inventory.csv reconciled against discovered_assets.json",
+            },
+            related_artifacts={
+                "tracker_items.json": {
+                    "rows": [
+                        {
+                            "request_text": (
+                                "Provide inventory reconciliation for assets with discrepancies."
+                            )
+                        }
+                    ]
+                }
+            },
+        )
+        assert out.reasonable_test_passed is False
+        assert out.artifact_sufficiency[0].requirement == "authoritative proof artifact supplied"
+        assert "not proof" in out.artifact_sufficiency[0].evidence
+
+    def test_3pao_reasonable_test_passes_when_sub_requirements_are_present(self) -> None:
+        out = evaluate_3pao_remediation_for_gap(
+            evidence_gap={
+                "gap_id": "gap-cm3-pass",
+                "gap_type": "sia_missing",
+                "controls": ["CM-3", "CM-4"],
+                "title": "SIA missing for sampled change",
+                "description": (
+                    "For a sample of system changes, provide security impact analysis, "
+                    "testing evidence, approval, and implementation documentation."
+                ),
+                "recommended_artifact": "tickets.json field security_impact_analysis=true with SIA attachment",
+            },
+            related_artifacts={
+                "tickets.json": {
+                    "tickets": [
+                        {
+                            "id": "CHG-1002",
+                            "security_impact_analysis": "SIA completed with security impact determination.",
+                            "approval": "CAB approved; AO routing complete.",
+                            "testing": "Smoke test and verification passed after deployment.",
+                        }
+                    ]
+                }
+            },
+        )
+        assert out.reasonable_test_passed is True
+        assert out.artifact_sufficiency
+        assert all(f.status == "pass" for f in out.artifact_sufficiency)
+        assert not any("artifact_sufficiency" in m for m in out.missing_evidence)
+
+    def test_3pao_sufficiency_rules_are_config_driven(self) -> None:
+        cfg = yaml.safe_load((ROOT / "config" / "3pao-sufficiency-rules.yaml").read_text(encoding="utf-8"))
+        assert "checks" in cfg
+        assert "sia_missing" in cfg["checks"]
+        assert cfg["context_artifact_exclusions"]
+        assert any(
+            "security impact" in item["requirement"]
+            for item in cfg["checks"]["sia_missing"]
         )
 
     def test_residual_risk_fallback(self) -> None:
@@ -568,6 +726,37 @@ class TestMonkeyPatchedLlmPath:
         out = explain_for_executive(package_summary={"overall_status": "PASS"})
         assert out.source == ReasoningSource.DETERMINISTIC_FALLBACK
         assert any("LLM unavailable" in w for w in out.warnings)
+
+    def test_conmon_reasonableness_llm_path_supports_openai_compatible_backends(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setenv("AI_BACKEND", "ollama")
+        monkeypatch.setenv("AI_API_BASE", "http://127.0.0.1:11434/v1")
+        monkeypatch.setenv("AI_MODEL", "llama3.1")
+
+        def fake_call(**kwargs: Any) -> str:
+            assert "conmon_reasonableness" in kwargs["user_message"]
+            return json.dumps(
+                {
+                    "source": "llm",
+                    "audience": "assessor",
+                    "headline": "ConMon evidence is partial, not reasonable yet.",
+                    "body": "Cites conmon_reasonableness.json:summary and does not invent tickets.",
+                    "citations": [{"artifact": "conmon_reasonableness.json", "field": "summary"}],
+                    "missing_evidence": [],
+                    "warnings": [],
+                    "referenced_eval_id": "CONMON_REASONABLENESS",
+                    "referenced_ksi_id": None,
+                    "referenced_finding_id": None,
+                }
+            )
+
+        monkeypatch.setattr(ai_reasoning, "_call_openai_compatible", fake_call)
+        out = explain_conmon_reasonableness(
+            conmon_result={"summary": {"obligations": 17}, "obligation_assessments": []}
+        )
+        assert out.source == ReasoningSource.LLM
+        assert out.referenced_eval_id == "CONMON_REASONABLENESS"
 
 
 # ---------------------------------------------------------------------------

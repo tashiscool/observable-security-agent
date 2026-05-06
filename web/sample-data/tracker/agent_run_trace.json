@@ -1,11 +1,11 @@
 {
   "schema_version": "2.0",
   "workflow": "tracker-to-20x",
-  "started_at": "2026-05-03T02:01:19.935801+00:00",
-  "input_path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/assessment_tracker/sample_tracker.csv",
-  "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker",
-  "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker",
-  "config_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/config",
+  "started_at": "2026-05-06T03:08:14.358297+00:00",
+  "input_path": "<repo>/fixtures/assessment_tracker/sample_tracker.csv",
+  "output_dir": "<tmp>/validation_run/agent_run_tracker",
+  "package_output": "<tmp>/validation_run/agent_run_tracker/package_tracker",
+  "config_dir": "<repo>/config",
   "autonomous_categories_reference": [
     {
       "id": "parse",
@@ -239,16 +239,16 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:19.935973+00:00",
-      "completed_at": "2026-05-03T02:01:19.940820+00:00",
+      "started_at": "2026-05-06T03:08:14.358486+00:00",
+      "completed_at": "2026-05-06T03:08:14.365259+00:00",
       "inputs": {
-        "input_path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/assessment_tracker/sample_tracker.csv",
-        "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker"
+        "input_path": "<repo>/fixtures/assessment_tracker/sample_tracker.csv",
+        "scenario_dir": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker"
       },
       "outputs": {
         "row_count": 16,
         "evidence_gap_count": 15,
-        "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker",
+        "scenario_dir": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker",
         "counts_by_category": {
           "inventory": 2,
           "scanner": 2,
@@ -267,51 +267,51 @@
       "artifacts": [
         {
           "name": "declared_inventory.csv",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/declared_inventory.csv"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/declared_inventory.csv"
         },
         {
           "name": "scanner_targets.csv",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/scanner_targets.csv"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/scanner_targets.csv"
         },
         {
           "name": "scanner_findings.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/scanner_findings.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/scanner_findings.json"
         },
         {
           "name": "central_log_sources.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/central_log_sources.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/central_log_sources.json"
         },
         {
           "name": "alert_rules.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/alert_rules.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/alert_rules.json"
         },
         {
           "name": "tickets.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tickets.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tickets.json"
         },
         {
           "name": "poam.csv",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/poam.csv"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/poam.csv"
         },
         {
           "name": "discovered_assets.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/discovered_assets.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/discovered_assets.json"
         },
         {
           "name": "cloud_events.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/cloud_events.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/cloud_events.json"
         },
         {
           "name": "tracker_items.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json"
         },
         {
           "name": "evidence_gaps.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/evidence_gaps.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/evidence_gaps.json"
         },
         {
           "name": "auditor_questions.md",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/auditor_questions.md"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/auditor_questions.md"
         }
       ],
       "errors": [],
@@ -332,10 +332,10 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:19.940828+00:00",
-      "completed_at": "2026-05-03T02:01:19.940916+00:00",
+      "started_at": "2026-05-06T03:08:14.365268+00:00",
+      "completed_at": "2026-05-06T03:08:14.365357+00:00",
       "inputs": {
-        "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker"
+        "scenario_dir": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker"
       },
       "outputs": {
         "evidence_gap_count": 15,
@@ -344,11 +344,11 @@
           "alert_sample_missing": 1,
           "credentialed_scan_evidence_missing": 1,
           "crypto_fips_evidence_missing": 1,
-          "deviation_request_missing": 1,
           "exploitation_review_missing": 1,
           "identity_listing_missing": 1,
           "inventory_mismatch": 2,
           "local_to_central_log_correlation_missing": 1,
+          "poam_update_missing": 1,
           "response_action_missing": 2,
           "restore_test_missing": 1,
           "sia_missing": 1,
@@ -360,7 +360,7 @@
       "artifacts": [
         {
           "name": "evidence_gaps.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/evidence_gaps.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/evidence_gaps.json"
         }
       ],
       "errors": [],
@@ -381,61 +381,61 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:19.940921+00:00",
-      "completed_at": "2026-05-03T02:01:19.941001+00:00",
+      "started_at": "2026-05-06T03:08:14.365363+00:00",
+      "completed_at": "2026-05-06T03:08:14.365399+00:00",
       "inputs": {
-        "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker"
+        "scenario_dir": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker"
       },
       "outputs": {
         "normalized_files": [
-          "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/declared_inventory.csv",
-          "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/scanner_targets.csv",
-          "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/scanner_findings.json",
-          "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/central_log_sources.json",
-          "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/alert_rules.json",
-          "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tickets.json",
-          "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/poam.csv",
-          "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/discovered_assets.json",
-          "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/cloud_events.json"
+          "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/declared_inventory.csv",
+          "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/scanner_targets.csv",
+          "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/scanner_findings.json",
+          "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/central_log_sources.json",
+          "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/alert_rules.json",
+          "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tickets.json",
+          "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/poam.csv",
+          "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/discovered_assets.json",
+          "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/cloud_events.json"
         ],
         "missing": []
       },
       "artifacts": [
         {
           "name": "declared_inventory.csv",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/declared_inventory.csv"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/declared_inventory.csv"
         },
         {
           "name": "scanner_targets.csv",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/scanner_targets.csv"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/scanner_targets.csv"
         },
         {
           "name": "scanner_findings.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/scanner_findings.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/scanner_findings.json"
         },
         {
           "name": "central_log_sources.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/central_log_sources.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/central_log_sources.json"
         },
         {
           "name": "alert_rules.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/alert_rules.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/alert_rules.json"
         },
         {
           "name": "tickets.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tickets.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tickets.json"
         },
         {
           "name": "poam.csv",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/poam.csv"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/poam.csv"
         },
         {
           "name": "discovered_assets.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/discovered_assets.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/discovered_assets.json"
         },
         {
           "name": "cloud_events.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/cloud_events.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/cloud_events.json"
         }
       ],
       "errors": [],
@@ -456,10 +456,10 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:19.941006+00:00",
-      "completed_at": "2026-05-03T02:01:19.941404+00:00",
+      "started_at": "2026-05-06T03:08:14.365404+00:00",
+      "completed_at": "2026-05-06T03:08:14.366044+00:00",
       "inputs": {
-        "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker"
+        "scenario_dir": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker"
       },
       "outputs": {
         "asset_id": "assessment_tracker",
@@ -488,30 +488,30 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:19.941409+00:00",
-      "completed_at": "2026-05-03T02:01:20.139965+00:00",
+      "started_at": "2026-05-06T03:08:14.366050+00:00",
+      "completed_at": "2026-05-06T03:08:14.628874+00:00",
       "inputs": {
-        "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker",
-        "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker",
+        "scenario_dir": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker",
+        "output_dir": "<tmp>/validation_run/agent_run_tracker",
         "include_agent_security": false
       },
       "outputs": {
-        "eval_results_path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/eval_results.json",
+        "eval_results_path": "<tmp>/validation_run/agent_run_tracker/eval_results.json",
         "eval_count": 14,
         "fail_count": 1
       },
       "artifacts": [
         {
           "name": "eval_results.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/eval_results.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/eval_results.json"
         },
         {
           "name": "evidence_graph.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/evidence_graph.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/evidence_graph.json"
         }
       ],
       "errors": [],
-      "detail": "Multi-Cloud Security Evidence Agent\n\nProvider: fixture\nScenario: scenario_from_tracker\n\nAssets: 0\nEvents: 1\nScanner findings: 0\nAlert rules: 0\nTickets: 0\n\nEvaluations:\n[PASS] CM-8 Inventory Reconciliation\n[PASS] RA-5 Scanner Scope Coverage\n[PASS] AU-6/AU-12 Centralized Log Coverage\n[FAIL] SI-4 Alert Instrumentation Coverage\n[PASS] Cross-Domain Security Event Correlation\n[PASS] RA-5(8) High/Critical Vulnerability Exploitation Review\n[PASS] CM-3/SI-2 Change Evidence Linkage\n[PASS] Agent tool governance\n[PASS] Agent permission scope\n[PASS] Agent memory context safety\n[PASS] Agent approval gates\n[PASS] Agent policy violations\n[PASS] Agent auditability\n[OPEN] CA-5 POA&M rows generated\n\nArtifacts:\nvalidation_run/agent_run_tracker/evidence_graph.json\nvalidation_run/agent_run_tracker/eval_results.json\nvalidation_run/agent_run_tracker/correlation_report.md\nvalidation_run/agent_run_tracker/auditor_questions.md\nvalidation_run/agent_run_tracker/instrumentation_plan.md\nvalidation_run/agent_run_tracker/agent_instrumentation_plan.md\nvalidation_run/agent_run_tracker/poam.csv\nvalidation_run/agent_run_tracker/evidence_gap_matrix.csv\nvalidation_run/agent_run_tracker/assessment_summary.json\n"
+      "detail": "Multi-Cloud Security Evidence Agent\n\nProvider: fixture\nScenario: scenario_from_tracker\n\nAssets: 0\nEvents: 1\nScanner findings: 0\nAlert rules: 0\nTickets: 0\n\nEvaluations:\n[PASS] CM-8 Inventory Reconciliation\n[PASS] RA-5 Scanner Scope Coverage\n[PASS] AU-6/AU-12 Centralized Log Coverage\n[FAIL] SI-4 Alert Instrumentation Coverage\n[PASS] Cross-Domain Security Event Correlation\n[PASS] RA-5(8) High/Critical Vulnerability Exploitation Review\n[PASS] CM-3/SI-2 Change Evidence Linkage\n[PASS] Agent tool governance\n[PASS] Agent permission scope\n[PASS] Agent memory context safety\n[PASS] Agent approval gates\n[PASS] Agent policy violations\n[PASS] Agent auditability\n[OPEN] CA-5 POA&M rows generated\n\nArtifacts:\n<tmp>/validation_run/agent_run_tracker/assessment_summary.json\n"
     },
     {
       "task_id": "run_tracker_gap_evals",
@@ -528,11 +528,11 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:20.139993+00:00",
-      "completed_at": "2026-05-03T02:01:20.142960+00:00",
+      "started_at": "2026-05-06T03:08:14.628937+00:00",
+      "completed_at": "2026-05-06T03:08:14.632828+00:00",
       "inputs": {
-        "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker",
-        "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker"
+        "scenario_dir": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker",
+        "output_dir": "<tmp>/validation_run/agent_run_tracker"
       },
       "outputs": {
         "result": "FAIL",
@@ -601,7 +601,7 @@
             "gap-0007-alert-sample-missing [high/alert_sample_missing] row=7 controls=AU-6,SI-4 poam_required=yes :: Alert sample missing: Provide the alert rules / saved searches with recipient li",
             "gap-0008-response-action-missing [high/response_action_missing] row=8 controls=SI-4(1),SI-4(4) poam_required=yes :: Response action missing: List CloudWatch alarms and GuardDuty findings considere",
             "gap-0009-sia-missing [high/sia_missing] row=9 controls=CM-3,SI-2 poam_required=yes :: Sia missing: Sample change tickets in JIRA with full evidence chain: Security Im",
-            "gap-0010-deviation-request-missing [moderate/deviation_request_missing] row=10 controls=CA-5 poam_required=yes :: Deviation request missing: POA&M updates: Provide the current POA&M with deviati",
+            "gap-0010-poam-update-missing [moderate/poam_update_missing] row=10 controls=CA-5 poam_required=yes :: Poam update missing: POA&M updates: Provide the current POA&M with deviation req",
             "gap-0011-response-action-missing [high/response_action_missing] row=11 controls=IR-4,IR-6 poam_required=yes :: Response action missing: Incident response evidence: any suspected or confirmed",
             "gap-0012-crypto-fips-evidence-missing [high/crypto_fips_evidence_missing] row=12 controls=SC-13,SC-28,SC-12 poam_required=no :: Crypto fips evidence missing: FIPS 140-2/3 evidence: list crypto modules in use",
             "gap-0013-restore-test-missing [high/restore_test_missing] row=13 controls=CP-9,CP-10 poam_required=yes :: Restore test missing: Backup and recovery evidence: most recent restore test (RT",
@@ -632,7 +632,7 @@
             "alerting (AU-6, SI-4, SI-4(1), SI-4(4), IR-4, IR-6): produce sample_alert_ref pointing at an executed alert export; tickets.json entry citing the alert with documented response; close 3 gap(s); linked KSIs: KSI-LOG-01, KSI-IR-01.",
             "change_management (CM-3, SI-2): produce tickets.json field security_impact_analysis=true with SIA attachment; close 1 gap(s); linked KSIs: KSI-CM-01.",
             "incident_response (SI-4(1), SI-4(4), IR-4, IR-6): produce tickets.json entry citing the alert with documented response; close 2 gap(s); linked KSIs: KSI-IR-01.",
-            "poam (CA-5): produce poam.csv row with deviation_request_ref + approval evidence; close 1 gap(s); linked KSIs: KSI-VULN-01.",
+            "poam (CA-5): produce poam.csv with current status, dates, and milestones; close 1 gap(s); linked KSIs: KSI-VULN-01.",
             "recovery (CP-9, CP-10): produce restore_tests.json with measured RTO/RPO; close 1 gap(s); linked KSIs: KSI-REC-01.",
             "identity_access (AC-2, AC-2(7), AC-6): produce identity_users.json + privileged-account flag + MFA report; close 1 gap(s); linked KSIs: KSI-IAM-01.",
             "crypto (SC-13, SC-28, SC-12): produce FIPS 140-2/3 module list + KMS rotation export + cipher policy; close 1 gap(s); linked KSIs: KSI-LOG-01.",
@@ -648,23 +648,23 @@
       "artifacts": [
         {
           "name": "tracker_gap_report.md",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/tracker_gap_report.md"
+          "path": "<tmp>/validation_run/agent_run_tracker/tracker_gap_report.md"
         },
         {
           "name": "tracker_gap_matrix.csv",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/tracker_gap_matrix.csv"
+          "path": "<tmp>/validation_run/agent_run_tracker/tracker_gap_matrix.csv"
         },
         {
           "name": "tracker_gap_eval_results.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/tracker_gap_eval_results.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/tracker_gap_eval_results.json"
         },
         {
           "name": "tracker_instrumentation_plan.md",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/tracker_instrumentation_plan.md"
+          "path": "<tmp>/validation_run/agent_run_tracker/tracker_instrumentation_plan.md"
         },
         {
           "name": "tracker_poam.csv",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/tracker_poam.csv"
+          "path": "<tmp>/validation_run/agent_run_tracker/tracker_poam.csv"
         }
       ],
       "errors": [],
@@ -685,11 +685,11 @@
         "category": "autonomous"
       },
       "status": "skipped",
-      "started_at": "2026-05-03T02:01:20.142970+00:00",
-      "completed_at": "2026-05-03T02:01:20.143008+00:00",
+      "started_at": "2026-05-06T03:08:14.632841+00:00",
+      "completed_at": "2026-05-06T03:08:14.632892+00:00",
       "inputs": {
-        "scenario_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker",
-        "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker",
+        "scenario_dir": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker",
+        "output_dir": "<tmp>/validation_run/agent_run_tracker",
         "agent_telemetry_present": false
       },
       "outputs": {
@@ -715,10 +715,10 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:20.143013+00:00",
-      "completed_at": "2026-05-03T02:01:20.143474+00:00",
+      "started_at": "2026-05-06T03:08:14.632899+00:00",
+      "completed_at": "2026-05-06T03:08:14.633697+00:00",
       "inputs": {
-        "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker"
+        "output_dir": "<tmp>/validation_run/agent_run_tracker"
       },
       "outputs": {
         "evaluations_total": 15,
@@ -728,7 +728,7 @@
       "artifacts": [
         {
           "name": "eval_results.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/eval_results.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/eval_results.json"
         }
       ],
       "errors": [],
@@ -749,10 +749,10 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:20.143479+00:00",
-      "completed_at": "2026-05-03T02:01:20.143682+00:00",
+      "started_at": "2026-05-06T03:08:14.633709+00:00",
+      "completed_at": "2026-05-06T03:08:14.634098+00:00",
       "inputs": {
-        "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker"
+        "output_dir": "<tmp>/validation_run/agent_run_tracker"
       },
       "outputs": {
         "candidate_finding_count": 3,
@@ -765,7 +765,7 @@
       "artifacts": [
         {
           "name": "preview_findings.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/preview_findings.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/preview_findings.json"
         }
       ],
       "errors": [],
@@ -786,10 +786,10 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:20.143688+00:00",
-      "completed_at": "2026-05-03T02:01:20.143785+00:00",
+      "started_at": "2026-05-06T03:08:14.634105+00:00",
+      "completed_at": "2026-05-06T03:08:14.634219+00:00",
       "inputs": {
-        "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker"
+        "output_dir": "<tmp>/validation_run/agent_run_tracker"
       },
       "outputs": {
         "main_poam_present": true,
@@ -798,15 +798,15 @@
       "artifacts": [
         {
           "name": "poam.csv",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/poam.csv"
+          "path": "<tmp>/validation_run/agent_run_tracker/poam.csv"
         },
         {
           "name": "tracker_poam.csv",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/tracker_poam.csv"
+          "path": "<tmp>/validation_run/agent_run_tracker/tracker_poam.csv"
         },
         {
           "name": "preview_poam_summary.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/preview_poam_summary.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/preview_poam_summary.json"
         }
       ],
       "errors": [],
@@ -827,15 +827,15 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:20.143790+00:00",
-      "completed_at": "2026-05-03T02:01:20.243650+00:00",
+      "started_at": "2026-05-06T03:08:14.634225+00:00",
+      "completed_at": "2026-05-06T03:08:14.776256+00:00",
       "inputs": {
-        "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker",
-        "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker",
-        "config_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/config"
+        "output_dir": "<tmp>/validation_run/agent_run_tracker",
+        "package_output": "<tmp>/validation_run/agent_run_tracker/package_tracker",
+        "config_dir": "<repo>/config"
       },
       "outputs": {
-        "package_path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/fedramp20x-package.json",
+        "package_path": "<tmp>/validation_run/agent_run_tracker/package_tracker/fedramp20x-package.json",
         "subprocess_rc": 0,
         "ksi_validation_results_count": 12,
         "findings_count": 18,
@@ -844,7 +844,7 @@
       "artifacts": [
         {
           "name": "fedramp20x-package.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/fedramp20x-package.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/package_tracker/fedramp20x-package.json"
         }
       ],
       "errors": [],
@@ -865,38 +865,38 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:20.243660+00:00",
-      "completed_at": "2026-05-03T02:01:20.247726+00:00",
+      "started_at": "2026-05-06T03:08:14.776277+00:00",
+      "completed_at": "2026-05-06T03:08:14.783280+00:00",
       "inputs": {
-        "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker",
-        "config_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/config"
+        "package_output": "<tmp>/validation_run/agent_run_tracker/package_tracker",
+        "config_dir": "<repo>/config"
       },
       "outputs": {
-        "assessor_report": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/reports/assessor/assessor-summary.md",
-        "executive_report": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/reports/executive/executive-summary.md",
-        "ao_risk_brief": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/reports/agency-ao/ao-risk-brief.md",
-        "reconciliation_report": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/reports/reconciliation_report.md"
+        "assessor_report": "<tmp>/validation_run/agent_run_tracker/package_tracker/reports/assessor/assessor-summary.md",
+        "executive_report": "<tmp>/validation_run/agent_run_tracker/package_tracker/reports/executive/executive-summary.md",
+        "ao_risk_brief": "<tmp>/validation_run/agent_run_tracker/package_tracker/reports/agency-ao/ao-risk-brief.md",
+        "reconciliation_report": "<tmp>/validation_run/agent_run_tracker/package_tracker/reports/reconciliation_report.md"
       },
       "artifacts": [
         {
           "name": "assessor-summary.md",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/reports/assessor/assessor-summary.md"
+          "path": "<tmp>/validation_run/agent_run_tracker/package_tracker/reports/assessor/assessor-summary.md"
         },
         {
           "name": "executive-summary.md",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/reports/executive/executive-summary.md"
+          "path": "<tmp>/validation_run/agent_run_tracker/package_tracker/reports/executive/executive-summary.md"
         },
         {
           "name": "ao-risk-brief.md",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/reports/agency-ao/ao-risk-brief.md"
+          "path": "<tmp>/validation_run/agent_run_tracker/package_tracker/reports/agency-ao/ao-risk-brief.md"
         },
         {
           "name": "reconciliation_report.md",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/reports/reconciliation_report.md"
+          "path": "<tmp>/validation_run/agent_run_tracker/package_tracker/reports/reconciliation_report.md"
         }
       ],
       "errors": [],
-      "detail": "wrote 4 reports under /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/reports"
+      "detail": "wrote 4 reports under <tmp>/validation_run/agent_run_tracker/package_tracker/reports"
     },
     {
       "task_id": "reconcile",
@@ -913,10 +913,10 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:20.247734+00:00",
-      "completed_at": "2026-05-03T02:01:20.249898+00:00",
+      "started_at": "2026-05-06T03:08:14.783303+00:00",
+      "completed_at": "2026-05-06T03:08:14.787838+00:00",
       "inputs": {
-        "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker"
+        "package_output": "<tmp>/validation_run/agent_run_tracker/package_tracker"
       },
       "outputs": {
         "overall_status": "pass",
@@ -926,7 +926,7 @@
       "artifacts": [
         {
           "name": "reconciliation.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/evidence/validation-results/reconciliation.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/package_tracker/evidence/validation-results/reconciliation.json"
         }
       ],
       "errors": [],
@@ -947,12 +947,12 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:20.249907+00:00",
-      "completed_at": "2026-05-03T02:01:20.265472+00:00",
+      "started_at": "2026-05-06T03:08:14.787854+00:00",
+      "completed_at": "2026-05-06T03:08:14.805010+00:00",
       "inputs": {
-        "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker",
-        "package_output": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker",
-        "schemas_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/schemas"
+        "output_dir": "<tmp>/validation_run/agent_run_tracker",
+        "package_output": "<tmp>/validation_run/agent_run_tracker/package_tracker",
+        "schemas_dir": "<repo>/schemas"
       },
       "outputs": {
         "schema_valid": true,
@@ -961,11 +961,11 @@
       "artifacts": [
         {
           "name": "fedramp20x-package.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/package_tracker/fedramp20x-package.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/package_tracker/fedramp20x-package.json"
         },
         {
           "name": "eval_results.json",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/eval_results.json"
+          "path": "<tmp>/validation_run/agent_run_tracker/eval_results.json"
         }
       ],
       "errors": [],
@@ -986,25 +986,25 @@
         "category": "autonomous"
       },
       "status": "success",
-      "started_at": "2026-05-03T02:01:20.265479+00:00",
-      "completed_at": "2026-05-03T02:01:20.265590+00:00",
+      "started_at": "2026-05-06T03:08:14.805024+00:00",
+      "completed_at": "2026-05-06T03:08:14.805383+00:00",
       "inputs": {
-        "output_dir": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker"
+        "output_dir": "<tmp>/validation_run/agent_run_tracker"
       },
       "outputs": {
-        "summary_path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/agent_run_summary.md"
+        "summary_path": "<tmp>/validation_run/agent_run_tracker/agent_run_summary.md"
       },
       "artifacts": [
         {
           "name": "agent_run_summary.md",
-          "path": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/agent_run_summary.md"
+          "path": "<tmp>/validation_run/agent_run_tracker/agent_run_summary.md"
         }
       ],
       "errors": [],
-      "detail": "wrote /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/agent_run_summary.md"
+      "detail": "wrote <tmp>/validation_run/agent_run_tracker/agent_run_summary.md"
     }
   ],
   "overall_status": "success",
-  "completed_at": "2026-05-03T02:01:20.265594+00:00",
+  "completed_at": "2026-05-06T03:08:14.805390+00:00",
   "halted_by": null
 }

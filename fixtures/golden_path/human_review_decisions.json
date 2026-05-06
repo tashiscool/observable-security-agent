@@ -1,0 +1,49 @@
+{
+  "reviewer": "Demo ISSO",
+  "templates": {
+    "CREATE_POAM": {
+      "decision": "ACCEPTED",
+      "justification": "Reviewer agrees the cited open high vulnerability evidence should be tracked for remediation planning."
+    },
+    "UPDATE_POAM": {
+      "decision": "ACCEPTED",
+      "justification": "Reviewer agrees the cited evidence should update existing remediation tracking."
+    },
+    "REQUEST_EVIDENCE": {
+      "decision": "NEEDS_MORE_EVIDENCE",
+      "justification": "Reviewer confirms the scoped control lacks sufficient selected evidence and needs additional collection."
+    },
+    "MARK_INSUFFICIENT_EVIDENCE": {
+      "decision": "NEEDS_MORE_EVIDENCE",
+      "justification": "Reviewer confirms missing evidence must remain insufficient evidence until new artifacts are provided."
+    },
+    "DRAFT_ASSESSMENT_NARRATIVE": {
+      "decision": "ACCEPTED_WITH_EDITS",
+      "justification": "Reviewer accepts the draft narrative as source-linked working text, subject to final edits."
+    },
+    "NO_ACTION_REQUIRED": {
+      "decision": "ACCEPTED_WITH_EDITS",
+      "justification": "Reviewer accepts that deterministic checks found no remediation action, while retaining human review for any conclusion."
+    },
+    "ESCALATE_TO_REVIEWER": {
+      "decision": "ACCEPTED",
+      "justification": "Reviewer accepts escalation for uncertain mapping or judgment-based evidence."
+    },
+    "ACCEPT_COMPENSATING_CONTROL_REVIEW": {
+      "decision": "RISK_ACCEPTED",
+      "justification": "Reviewer accepts the documented vendor dependency risk for the demo fixture because cited evidence records compensating monitoring and the acceptance rationale."
+    },
+    "human_review": {
+      "decision": "FALSE_POSITIVE",
+      "justification": "Reviewer confirms the cited scanner item is a false positive because the package path is not present in the running image layer."
+    },
+    "accept_risk": {
+      "decision": "RISK_ACCEPTED",
+      "justification": "Reviewer accepts the cited medium-risk vendor dependency for the fixture period and requires continued monitoring evidence."
+    },
+    "REQUEST_RESCAN": {
+      "decision": "ACCEPTED",
+      "justification": "Reviewer accepts that stale or excluded scan evidence should be refreshed before reliance."
+    }
+  }
+}

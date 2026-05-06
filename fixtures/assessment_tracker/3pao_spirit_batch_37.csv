@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CA-5, SI-2","CA-5 official POA&M CSV milestone refresh workbook showing SAR appendix POA&M row keys after scanner plugin feed upgrade project gate with milestone percent complete deltas.",2019-11-21,2020-02-21,Open,ISSM,"Comment from Assessor: Workbook must show POA&M item keys matching SAR appendix tables not ad hoc spreadsheet tabs.","CSP: CA5-poam-201911.xlsx."
+
+"CM-3, CP-2","CM-3 evidence of review and approval export for codified release calendar freeze with change advisory board minutes attachment IDs and cab approval timestamp in change repository.",2019-10-11,2020-01-11,Open,Release Eng,"Comment from Assessor: Export must cite RFC numeric identifiers from change tool not forwarded email only.","CSP: CM3-cab-201910.pdf."
+
+"CM-8, RA-2","CM-8 reconcile declared workload inventory against discovery export with unique identifier collisions tab and duplicate entries flagged by orchestration cluster name.",2019-09-11,2019-12-11,Open,Asset Mgmt,"Comment from Assessor: Compare must freeze discovery pull timestamp within 24 hours of workbook generation not week-old extract.","CSP: CM8-dup-201909.xlsx."
+
+"RA-5, SI-4","RA-5 exploitation review addendum for open critical families with indicator of compromise correlation notes keyed to scanner export finding IDs and analyst disposition codes.",2019-12-19,2020-03-19,Open,IR Liaison,"Comment from Assessor: Addendum must cite queue ticket references not severity label narrative only.","CSP: RA5-ioc-201912.xlsx."
+
+"RA-5(1), SI-4","RA-5(1) scanner_targets reconciliation memo proving in-boundary assets in scope for scanning after quarterly workshop roster hash tied to export generation clock.",2020-01-18,2020-04-18,Open,Vuln Mgmt,"Comment from Assessor: Memo must show roster timestamp within 48 hours of scanner_targets export not stale week.","CSP: RA51-memo-202001.pdf."

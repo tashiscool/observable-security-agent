@@ -6,9 +6,7 @@ place machine-readable mirrors next to assessor reports; implementation is origi
 
 from __future__ import annotations
 
-import csv
 import hashlib
-import io
 import json
 import shlex
 import sys
@@ -19,6 +17,7 @@ from typing import Any
 
 import yaml
 
+from core.csv_utils import load_csv_rows
 from fedramp20x.eval_ksi_mapping import eval_to_ksi_ids
 from fedramp20x.evidence_maturity import (
     compute_ksi_evidence_posture,
@@ -160,9 +159,7 @@ def _read_json(path: Path) -> dict[str, Any]:
 def _load_csv(path: Path) -> list[dict[str, str]]:
     if not path.is_file():
         return []
-    text = path.read_text(encoding="utf-8")
-    reader = csv.DictReader(io.StringIO(text))
-    return [dict(r) for r in reader]
+    return [dict(r) for r in load_csv_rows(path)]
 
 
 def _status_precedence(policy: dict[str, Any]) -> list[str]:
@@ -249,7 +246,20 @@ def build_20x_package(
     _validate_config_schema("reporting-policy", reporting, schemas_dir)
 
     rev4_rev5 = normalize_rev4_rev5_table(_load_csv(mappings_dir / "rev4-to-rev5-crosswalk.csv"))
-    rev5_ksi = normalize_rev5_ksi_table(_load_csv(mappings_dir / "rev5-to-20x-ksi-crosswalk.csv"))
+    rev5_raw_rows = _load_csv(mappings_dir / "rev5-to-20x-ksi-crosswalk.csv")
+    crosswalk_warnings: list[dict[str, str]] = []
+    for i, row in enumerate(rev5_raw_rows, start=2):
+        if (row.get("rev5_control") or row.get("rev5_control_id")) and row.get("ksi_id") and not str(row.get("trace_note") or "").strip():
+            crosswalk_warnings.append(
+                {
+                    "file": "rev5-to-20x-ksi-crosswalk.csv",
+                    "row": str(i),
+                    "rev5_control": str(row.get("rev5_control") or row.get("rev5_control_id") or ""),
+                    "ksi_id": str(row.get("ksi_id") or ""),
+                    "warning": "missing trace_note",
+                }
+            )
+    rev5_ksi = normalize_rev5_ksi_table(rev5_raw_rows)
     eval_default_map = {
         str(k): str(v) for k, v in (control_cross_cfg.get("eval_id_default_ksi") or {}).items()
     }
@@ -350,6 +360,7 @@ def build_20x_package(
         "program_display_name": program_display,
         "config_bundle_uri": str(config_dir),
         "mappings_bundle_uri": str(mappings_dir),
+        "crosswalk_warnings": crosswalk_warnings,
         "ksi_catalog_version": ksi_catalog_doc.catalog_version,
         "fedramp20x_style_package_schema": {
             "label": "FedRAMP 20x–style evidence package schema",

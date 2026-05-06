@@ -4,6 +4,8 @@
 # Documented variables (override on the command line: make assess-aws RAW_EVIDENCE_DIR=raw/aws):
 #
 #   REGION            AWS region for collect-aws (default: us-east-1). Also honored via AWS_REGION.
+#   REGIONS           Optional multi-region list for live-aws-verify (space/comma separated).
+#   LIVE_REGION       Default region for live-aws-verify (default: us-gov-west-1).
 #   RAW_EVIDENCE_DIR  Output base directory for collect-aws (default: raw).
 #   PROFILE           Optional AWS CLI / boto3 profile name for collect-aws (empty = default credentials).
 #
@@ -16,6 +18,7 @@
 
 PYTHON       ?= python3
 REGION       ?= us-east-1
+LIVE_REGION  ?= us-gov-west-1
 RAW_EVIDENCE_DIR ?= raw
 PROFILE      ?=
 OUTPUT_DIR   ?= output
@@ -25,7 +28,7 @@ SCHEMAS_DIR  ?= schemas
 PACKAGE_JSON ?= evidence/package/fedramp20x-package.json
 REPORTS_ROOT ?= evidence/package
 
-.PHONY: help install test demo verify-demo verify-all-features aws-bootstrap-verify assess-fixture assess-fixture-agentic collect-aws assess-aws validate-output validate-output-agentic validate-agentic-loop build-20x validate-20x reports reconcile web scan-outputs package-demo audit-reference-reuse all
+.PHONY: help install test demo demo-live-ai demo-3pao-remediation verify-demo verify-all-features aws-bootstrap-verify live-aws-verify assess-fixture assess-fixture-agentic collect-aws assess-aws validate-output validate-output-agentic validate-agentic-loop build-20x validate-20x reports reconcile web scan-outputs package-demo audit-reference-reuse all
 
 help:
 	@echo "Observable Security Agent — make targets"
@@ -35,7 +38,10 @@ help:
 	@echo "  make verify-demo      bash scripts/verify_demo.sh (pytest + make all + BuildLab + bundle + AWS paths)"
 	@echo "  make verify-all-features  bash scripts/verify_all_features.sh (every CLI subcommand, every script, API, web, optional live AWS via OS_AGENT_CSV)"
 	@echo "  make aws-bootstrap-verify  CSV→/tmp session + STS + verify-demo (set CSV_FILE=/path/to/accessKeys.csv)"
+	@echo "  make live-aws-verify  CSV→temp STS + read-only AWS collect + live assess/validate/20x/threat-hunt"
 	@echo "  make demo             write output/demo_walkthrough.md (BuildLab script; use demo_script.py without --write-only to print)"
+	@echo "  make demo-live-ai     scripts/demo_live_ai_reasonableness.sh (Live AI reasonableness test via LiteLLM + Bedrock)"
+	@echo "  make demo-3pao-remediation  Run the AI virtual 3PAO to evaluate tracker gaps and generate remediation plans"
 	@echo "  make assess-fixture   cloud-style fixture → $(OUTPUT_DIR)/"
 	@echo "  make assess-fixture-agentic  agentic-risk fixture → $(OUTPUT_AGENTIC)/"
 	@echo "  make collect-aws      raw AWS evidence → $(RAW_EVIDENCE_DIR)/"
@@ -53,7 +59,7 @@ help:
 	@echo "  make validate-agentic-loop bounded run-agent (agentic scenario → trace + 20x under $(OUTPUT_AGENTIC)/)"
 	@echo "  make all              cloud fixture + 20x + bounded run-agent (agentic) + demo walkthrough (output/)"
 	@echo ""
-	@echo "Variables: REGION RAW_EVIDENCE_DIR PROFILE OUTPUT_DIR OUTPUT_AGENTIC CONFIG_DIR SCHEMAS_DIR PACKAGE_JSON REPORTS_ROOT"
+	@echo "Variables: REGION REGIONS LIVE_REGION RAW_EVIDENCE_DIR PROFILE OUTPUT_DIR OUTPUT_AGENTIC CONFIG_DIR SCHEMAS_DIR PACKAGE_JSON REPORTS_ROOT"
 
 install:
 	$(PYTHON) -m pip install -r requirements.txt
@@ -78,8 +84,21 @@ aws-bootstrap-verify:
 	@test -n "$(CSV_FILE)" || (echo "Set CSV_FILE=/path/to/accessKeys.csv (and optional REGION=...)" >&2; exit 2)
 	bash scripts/aws_bootstrap_verify.sh --csv-file "$(CSV_FILE)" $(if $(strip $(REGION)),--region $(REGION),)
 
+live-aws-verify:
+	$(PYTHON) scripts/live_aws_verify_from_csv.py --csv-file "$(or $(CSV_FILE),$(HOME)/Downloads/tash_accessKeys.csv)" --region "$(LIVE_REGION)" $(if $(strip $(REGIONS)),--regions $(REGIONS),)
+
 demo:
 	$(PYTHON) scripts/demo_script.py --write-only
+
+demo-live-ai:
+	@test -n "$(CSV_FILE)" || (echo "Set CSV_FILE=/path/to/accessKeys.csv" >&2; exit 2)
+	bash scripts/demo_live_ai_reasonableness.sh "$(CSV_FILE)"
+
+demo-3pao-remediation:
+	@echo "Generating evidence gaps from ConMon tracker..."
+	$(PYTHON) agent.py import-assessment-tracker --input fixtures/assessment_tracker/conmon_19_tracker.csv --output output_3pao_demo/
+	@echo "Running virtual 3PAO remediation..."
+	$(PYTHON) scripts/evaluate_3pao_remediation.py --input output_3pao_demo/evidence_gaps.json --output output_3pao_demo/3pao_remediation_report.md
 
 assess-fixture:
 	$(PYTHON) agent.py assess --provider fixture --scenario scenario_public_admin_vuln_event --output-dir $(OUTPUT_DIR)

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import csv
 import subprocess
 import sys
 from pathlib import Path
@@ -14,9 +15,9 @@ AGENT = ROOT / "agent.py"
 VALIDATE = ROOT / "scripts" / "validate_outputs.py"
 
 
-def _run_validate(output_dir: Path) -> subprocess.CompletedProcess[str]:
+def _run_validate(output_dir: Path, *, mode: str = "demo") -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, str(VALIDATE), "--output-dir", str(output_dir)],
+        [sys.executable, str(VALIDATE), "--output-dir", str(output_dir), "--mode", mode],
         cwd=str(ROOT),
         capture_output=True,
         text=True,
@@ -111,3 +112,72 @@ def test_validate_outputs_fails_when_no_fail_evaluation(tmp_path: Path) -> None:
     v = _run_validate(tmp_path)
     assert v.returncode == 1
     assert "at least one evaluation with result FAIL" in v.stderr
+
+
+def test_validate_outputs_live_allows_all_pass_and_no_generated_poam(tmp_path: Path) -> None:
+    assert _run_assess(tmp_path).returncode == 0
+    data = json.loads((tmp_path / "eval_results.json").read_text(encoding="utf-8"))
+    for e in data["evaluations"]:
+        e["result"] = "PASS"
+    (tmp_path / "eval_results.json").write_text(json.dumps(data, indent=2), encoding="utf-8")
+    (tmp_path / "poam.csv").write_text(
+        "poam_id,weakness_name,controls,raw_severity,status,asset_identifier,notes\n",
+        encoding="utf-8",
+    )
+
+    demo = _run_validate(tmp_path, mode="demo")
+    live = _run_validate(tmp_path, mode="live")
+
+    assert demo.returncode == 1
+    assert "POAM-AUTO" in demo.stderr
+    assert live.returncode == 0, live.stderr + live.stdout
+    assert "VALIDATION PASSED" in live.stdout
+
+
+def test_validate_outputs_fails_when_assessor_findings_removed(tmp_path: Path) -> None:
+    assert _run_assess(tmp_path).returncode == 0
+    data = json.loads((tmp_path / "eval_results.json").read_text(encoding="utf-8"))
+    for e in data["evaluations"]:
+        if e.get("result") in ("FAIL", "PARTIAL"):
+            e.pop("assessor_findings", None)
+            break
+    (tmp_path / "eval_results.json").write_text(json.dumps(data, indent=2), encoding="utf-8")
+
+    v = _run_validate(tmp_path)
+
+    assert v.returncode == 1
+    assert "missing assessor_findings" in v.stderr
+
+
+def test_validate_outputs_fails_when_record_assessor_findings_removed(tmp_path: Path) -> None:
+    assert _run_assess(tmp_path).returncode == 0
+    data = json.loads((tmp_path / "eval_results.json").read_text(encoding="utf-8"))
+    for e in data.get("eval_result_records") or []:
+        if e.get("result") in ("FAIL", "PARTIAL"):
+            e.pop("assessor_findings", None)
+            break
+    (tmp_path / "eval_results.json").write_text(json.dumps(data, indent=2), encoding="utf-8")
+
+    v = _run_validate(tmp_path)
+
+    assert v.returncode == 1
+    assert "eval_result_records" in v.stderr
+    assert "missing assessor_findings" in v.stderr
+
+
+def test_validate_outputs_fails_when_gap_matrix_loses_assessor_columns(tmp_path: Path) -> None:
+    assert _run_assess(tmp_path).returncode == 0
+    matrix = tmp_path / "evidence_gap_matrix.csv"
+    rows = list(csv.DictReader(matrix.read_text(encoding="utf-8").splitlines()))
+    assert rows
+    keep = [h for h in (rows[0].keys()) if h not in {"current_state", "target_state", "priority", "estimated_effort", "remediation_steps"}]
+    with matrix.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=keep)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({k: row.get(k, "") for k in keep})
+
+    v = _run_validate(tmp_path)
+
+    assert v.returncode == 1
+    assert "evidence_gap_matrix.csv: missing assessor column" in v.stderr

@@ -75,6 +75,19 @@ def test_build_20x_package_validates(tmp_path: Path) -> None:
     data = json.loads(primary.read_text(encoding="utf-8"))
     assert data["schema_version"] == "1.0"
     assert data["reconciliation_summary"]["parity_status"] == "aligned"
+    assert data["findings"]
+    assert all(isinstance(f.get("assessor_workpaper"), dict) for f in data["findings"])
+    assert all(f.get("current_state") and f.get("target_state") for f in data["findings"])
+    assert all(isinstance(f.get("remediation_steps"), list) and f["remediation_steps"] for f in data["findings"])
+    assert data["poam_items"]
+    assert all(p.get("current_state") and p.get("target_state") for p in data["poam_items"])
+    assert all(p.get("priority") and p.get("estimated_effort") for p in data["poam_items"])
+    generated_poam = [p for p in data["poam_items"] if p.get("finding_id")]
+    assert generated_poam
+    assert all(
+        any(step.get("source") == "assessor_workpaper" for step in (p.get("remediation_plan") or []))
+        for p in generated_poam
+    )
     pm = data.get("package_metadata") or {}
     assert pm.get("package_manifest", {}).get("validation_artifacts_relative")
     assert pm.get("validation_run", {}).get("schema_validation_outcome") == "passed"
@@ -84,6 +97,12 @@ def test_build_20x_package_validates(tmp_path: Path) -> None:
     assessor_summary = (pkg / "reports" / "assessor" / "assessor-summary.md").read_text(encoding="utf-8")
     assert "Evidence index" in assessor_summary
     assert "evidence-index.md" in assessor_summary
+    assert "Priority" in assessor_summary
+    ksi_report = (pkg / "reports" / "assessor" / "ksi-by-ksi-assessment.md").read_text(encoding="utf-8")
+    assert "Assessor workpaper" in ksi_report
+    poam_md = (pkg / "reports" / "assessor" / "poam.md").read_text(encoding="utf-8")
+    assert "Current state" in poam_md
+    assert "Target state" in poam_md
     exec_sum = (pkg / "reports" / "executive" / "executive-summary.md").read_text(encoding="utf-8")
     assert "## Readiness decision" in exec_sum
     ao_brief = (pkg / "reports" / "agency-ao" / "ao-risk-brief.md").read_text(encoding="utf-8")
@@ -98,3 +117,64 @@ def test_build_20x_package_validates(tmp_path: Path) -> None:
     assert rep.valid, "\n".join(rep.errors)
 
     shutil.rmtree(pkg, ignore_errors=True)
+
+
+def test_validate_20x_package_rejects_missing_assessor_contract(tmp_path: Path) -> None:
+    out = tmp_path / "output"
+    pkg = tmp_path / "evidence" / "package"
+    out.mkdir(parents=True)
+    a = subprocess.run(
+        [
+            sys.executable,
+            str(AGENT),
+            "assess",
+            "--provider",
+            "fixture",
+            "--scenario",
+            "scenario_public_admin_vuln_event",
+            "--output-dir",
+            str(out),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert a.returncode == 0, a.stderr + a.stdout
+    b = subprocess.run(
+        [
+            sys.executable,
+            str(AGENT),
+            "build-20x-package",
+            "--assessment-output",
+            str(out),
+            "--config",
+            str(ROOT / "config"),
+            "--package-output",
+            str(pkg),
+            "--validation-artifact-root",
+            str(tmp_path),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert b.returncode == 0, b.stderr + b.stdout
+
+    primary = pkg / "fedramp20x-package.json"
+    data = json.loads(primary.read_text(encoding="utf-8"))
+    assert data["findings"]
+    data["findings"][0].pop("assessor_workpaper", None)
+    data["findings"][0].pop("current_state", None)
+    data["poam_items"][0].pop("target_state", None)
+    primary.write_text(json.dumps(data), encoding="utf-8")
+
+    from fedramp20x.schema_validator import validate_package
+
+    rep = validate_package(primary, ROOT / "schemas")
+    assert not rep.valid
+    joined = "\n".join(rep.errors)
+    assert "assessor_workpaper" in joined
+    assert "current_state" in joined
+    assert "target_state" in joined

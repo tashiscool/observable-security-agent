@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CA-2, CA-7","CA-2 security control assessment results package for annual authorization boundary refresh including control assessment scoring sheet and assessor independence attestation.",2019-11-08,2020-02-08,Open,ISSO,"Comment from Assessor: Package must cite assessment team credentials file version not self-attestation memo only.","CSP: CA2-sca-201911.pdf."
+
+"SC-7, PL-8","SC-7 security architecture excerpt mapping boundary enclaves to live security group inventory with ingress rule IDs and egress rule IDs for each VPC attachment.",2019-10-25,2020-01-25,Open,Net Sec,"Comment from Assessor: Excerpt must reference Terraform state revision hash not slide deck only.","CSP: SC7-sg-201910.pdf."
+
+"RA-5(1), SI-4","RA-5(1) evidence that in-boundary assets in scope for scanning match scanner_targets.csv hostnames after quarterly scope reconciliation workshop.",2019-09-28,2019-12-28,Open,Vuln Mgmt,"Comment from Assessor: Evidence must show workshop sign-in roster not distribution list screenshot.","CSP: RA51-scope-201909.pdf."
+
+"RA-5, SI-2","RA-5 exploitation review summary for high-severity plugin families with compromise assessment checklist and analyst queue ticket references per open item.",2019-12-14,2020-03-14,Open,IR Liaison,"Comment from Assessor: Summary must map to scanner export finding keys not severity text only.","CSP: RA5-exploit-sum-201912.xlsx."
+
+"SI-4, AU-6","SI-4 CloudWatch alarms configuration export for unauthorized API call patterns including recipient list for on-call rotation and alarm name to control mapping table.",2020-01-08,2020-04-08,Open,Observability,"Comment from Assessor: Export must redact personal phone numbers per privacy policy while keeping alarm ARNs.","CSP: SI4-cw-202001.json."

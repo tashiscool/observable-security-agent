@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SI-12, SA-8","SI-12 secure development lifecycle gate checklist with peer code review exports for critical merges executed during the assessment window.",2019-11-01,2020-02-01,Open,AppSec,"Comment from Assessor: Exports must reference merge request IDs in the org VCS not email approval only.","CSP: SDLC-gates-201911-export.zip."
+
+"AC-21, AC-18","AC-21 collaborative computing device inventory for conference room systems listing firmware revision patch schedule and network segmentation diagram attachment.",2019-08-14,2019-11-14,Open,Collab IT,"Comment from Assessor: Inventory must map devices to VLANs and firewall zones in live config exports.","CSP: ROOMSYS-inventory-201908.csv."
+
+"SA-4, SR-5","SA-4 acquisition security requirements traceability matrix for in-scope COTS purchases linking solicitation clauses to control objectives.",2019-10-20,2020-01-20,Open,Procurement,"Comment from Assessor: Matrix must cite contract line or PO number not procurement slide deck only.","CSP: SA4-trace-201910.xlsx."
+
+"SI-7(1), SI-7(7)","SI-7 application integrity monitoring configuration listing protected binary paths scan cadence and alert routing for tamper detection.",2019-12-08,2020-03-08,Open,SOC,"Comment from Assessor: Listing must be agent or host policy export not policy PDF narrative only.","CSP: SI7-integmon-201912.json."
+
+"AU-11, AU-9","AU-11 audit log retention specification export mapping source types to retention duration and legal hold suspension workflow tied to each log class.",2019-09-30,2019-12-30,Open,Records,"Comment from Assessor: Export must align to Records Management schedule version cited in the SSP.","CSP: RET-policy-map-201909.csv."

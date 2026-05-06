@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"AU-3, AU-6, AU-12","For one production Linux host provide an identical audit event line from local auth facility and the same event in the centralized SIEM index with matching timestamp source and outcome fields.",2019-11-07,2020-03-31,Open,Logging,"Comment from Assessor: Filename suffix local vs centralized as in prior cycle; redactor may hash account names only.","CSP: Forwarder health green; attaching pair for host snv-prod-ldap-01."
+
+"CA-5, CA-7","Sample of two months showing Plan of Action and Milestones was updated with vendor dependency milestones and dates reflecting last vendor outreach.",2019-11-07,2019-12-26,Open,GRC,"Comment from Assessor: Export must be system-generated extract not a static PDF snapshot.","CSP: CSV from GRC tool for Nov and Dec cycles."
+
+"CP-9, SC-28","System-generated evidence nightly database snapshots and AMI creation jobs are encrypted with customer-managed KMS keys; include key ARNs and retention labels.",2020-02-05,2020-04-11,Open,Ops,"Comment from Assessor: Confirm SPEL or build-only snapshots if called out in SSP are excluded or justified.","CSP: Lambda schedule screenshot plus KMS grant list."
+
+"IA-5, AC-7","Password policy and lockout settings export for IdP LDAP and a representative app tier showing complexity history max age lockout threshold match SSP.",2019-11-07,2020-04-01,Open,IAM,"Comment from Assessor: Break-glass local accounts must be listed with their override rationale.","CSP: OpenLDAP ppolicy dump plus Ansible-managed login.defs pack."
+
+"SC-13, IA-5(1)","Inventory of FIPS 140 validated modules in use for TLS at rest and privileged authenticators including certificate numbers and deployed software versions.",2019-11-07,2020-04-15,Open,Crypto,"Comment from Assessor: Map each module to the communication path in SSP attachment diagram.","CSP: Crypto supplement table v4 draft."

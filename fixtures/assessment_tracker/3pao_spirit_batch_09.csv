@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CP-2, CP-4, CP-3","Contingency plan excerpt covering alternate processing site delegation of authority and annual contingency training completion roster for continuity-of-operations personnel.",2019-10-12,2020-01-30,Open,Continuity,"Comment from Assessor: Excerpt must cite version ID matching approved plan repository tag not draft PDF.","CSP: ConPlan v2020.1 excerpt attaching this week."
+
+"SR-2, SA-9","Annual supply chain risk reassessment worksheet listing each primary supplier FedRAMP authorization ID or SR control inheritance memo where leveraged PaaS is inherited.",2019-11-20,2020-02-15,Open,Vendor Risk,"Comment from Assessor: Distinct from subcontractor flow-down packet — this row is authorization pedigree not SSDF artifacts.","CSP: SCRA-2020-02 worksheet with Marketplace links."
+
+"CA-5, SAP","SAR appendix POA&M export must mirror sort order used in the official POA&M CSV attachment — provide the exact file version embedded in the FedRAMP package.",2020-01-08,2020-03-01,Open,ISSM,"Comment from Assessor: Assessor-only QA: row flags cross-foot between SAR table and POA&M machine-readable file.","CSP: poam_sort_proof_v3.csv."
+
+"CP-9(1), CP-2","Offline encrypted backup inventory showing contingency plan volumes and emergency roster snapshots are within backup scope and retention policy.",2019-12-01,2020-02-01,Open,Backup Ops,"Comment from Assessor: Inventory must be system-generated list with bucket ARN not policy narrative only.","CSP: backup_scope_export_201912.json."
+
+"AU-6, AU-12","Quarterly privileged activity log review sign-off with reviewer name date and scope statement tied to audit workbench export UID.",2019-09-15,2019-12-15,Open,SOC Lead,"Comment from Assessor: Sign-off must cover privileged administrator actions not only standard user VPN sessions.","CSP: Q3-2019 priv_log_review.pdf."

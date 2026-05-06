@@ -1,7 +1,7 @@
 # Local Repo Test Plan — `observable-security-agent`
 
 > Snapshot taken from a read-only inspection of the repo at
-> `/Users/tkhan/IdeaProjects/security-infra/observable-security-agent`
+> `<repo>`
 > on 2026-05-02. Behavior was not modified during inspection.
 
 This document is the canonical "what's in the box and how to verify it locally" guide.
@@ -181,7 +181,7 @@ Inspection of `Makefile`, `agent.py`, and `scripts/` did not surface any missing
 
 Items that *intentionally* exit non-zero in some configurations and are not bugs:
 
-- `python3 scripts/validate_outputs.py --output-dir <dir>` will FAIL on the green `scenario_20x_readiness` output because that scenario has no FAIL evals to drive POAM-AUTO rows. `scripts/buildlab_readiness.py` and `scripts/verify_all_features.sh` already special-case this.
+- `scenario_20x_readiness` is the green/live-style path. Validate it with `--mode live` (`python3 scripts/validate_outputs.py --output-dir <dir> --mode live` or `python3 agent.py validate --output-dir <dir> --mode live`) because that scenario intentionally may have no FAIL evals and no `POAM-AUTO-*` rows.
 - `python3 -m uvicorn api.server:app` requires the optional `[api]` extra (`fastapi`, `uvicorn`, `httpx`). Without it, `from api.server import app` fails with `ModuleNotFoundError: fastapi`. The CLI core (`assess`, `threat-hunt`, `run-agent`, `build-20x-package`, …) does not depend on the API extra.
 - `make collect-aws` / `make assess-aws` / `make aws-bootstrap-verify` / live-AWS sections of `verify_all_features.sh` require valid AWS credentials and are skipped automatically when `OS_AGENT_CSV` is not set.
 
@@ -222,7 +222,7 @@ A search for `TODO`, `FIXME`, `pass  # stub`, `NotImplementedError` in `core/`, 
 ### A. Quick gate (≈15 s)
 
 ```bash
-cd /Users/tkhan/IdeaProjects/security-infra/observable-security-agent
+cd <repo>
 python3 -m pip install -r requirements.txt   # one-time
 make test                                    # 332 tests
 make all                                     # assess-fixture → validate-output → build-20x → validate-20x → reports → reconcile → validate-agentic-loop → demo

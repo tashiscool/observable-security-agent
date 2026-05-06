@@ -313,6 +313,7 @@ def build_evidence_gaps(
                 else (assessor_comment or "Evidence gap inferred from tracker row.")
             ),
             assessor_comment=assessor_comment,
+            csp_comment=csp_comment,
             owner=owner,
             status=status,
             due_date=due_date,

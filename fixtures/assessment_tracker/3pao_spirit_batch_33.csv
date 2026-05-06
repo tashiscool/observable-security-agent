@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SA-15, SR-3","SA-15 subprocessor oversight memo with flow-down clauses citing fedramp deviation routing for non-FedRAMP telemetry agent library tied to vendor dependency risk acceptance request.",2019-11-11,2020-02-11,Open,Supply Chain,"Comment from Assessor: Memo must cite vendor FedRAMP package ID not reseller marketing PDF only.","CSP: SA15-subproc-201911.pdf."
+
+"CP-4, CP-9","CP-4 recovery test worksheet from dr exercise listing measured rto and measured rpo with cold site handoff timestamps and rto/rpo variance notes against continuity targets.",2019-10-05,2020-01-05,Open,Continuity,"Comment from Assessor: Worksheet must cite storage replication lag metrics not agenda-only meeting minutes.","CSP: CP4-rto-201910.xlsx."
+
+"SI-4, AU-6","SI-4 sample alert export bundle with example alert email redacted headers and SOC email notification routing rule identifiers tied to privileged group modification saved search export.",2019-09-20,2019-12-20,Open,SOC,"Comment from Assessor: Bundle must include search head job ID not inbox screenshot only.","CSP: SI4-sample-201909.zip."
+
+"AC-2, IA-5","AC-2 access review export for privileged account population with MFA report attachment and employee roster hash for quarterly certification cycle completion timestamps.",2019-12-16,2020-03-16,Open,IAM,"Comment from Assessor: Export must come from governance tool API pull not hand-maintained spreadsheet.","CSP: AC2-review-201912.csv."
+
+"SI-7, SI-4","SI-7 FIM policy export listing monitored paths per host class with file integrity monitoring baseline version IDs and malware protection agent channel update receipt records.",2020-01-12,2020-04-12,Open,Endpoint,"Comment from Assessor: Export must map to live agent policy revision hashes not default template only.","CSP: SI7-fim-202001.json."

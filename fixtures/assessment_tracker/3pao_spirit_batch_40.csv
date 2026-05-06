@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SI-2, CM-3","SI-2 security patch bundle rollout change request export with Jira issue keys tied to kernel errata advisories and ccb meeting date reference IDs stored in change repository.",2019-11-07,2020-02-07,Open,Linux SRE,"Comment from Assessor: Export must include RFC numeric identifiers from change tool not forwarded email only.","CSP: SI2-patch-201911.csv."
+
+"CP-9, SC-28","CP-9 RDS snapshot retention workbook with snapshot evidence export IDs for production database clusters and backup scope filter clause explicitly excluding non-production clone volumes.",2019-10-16,2020-01-16,Open,Data Protection,"Comment from Assessor: Workbook must list snapshot completion timestamps within 24 hours of policy window not month-old pulls.","CSP: CP9-rds-201910.xlsx."
+
+"AC-7, IA-5","AC-7 password policy JSON export for production realm showing failed logon threshold lockout policy linkage to IdP risk engine and minimum password length enforcement evidence fields.",2019-09-13,2019-12-13,Open,IdP Admin,"Comment from Assessor: Export must be JSON from live tenant policy API not screenshot of admin console.","CSP: AC7-pwpol-201909.json."
+
+"SI-4, AU-6","SI-4 CloudWatch alarms routing table with recipient list for IAM admin password change rule names mapped to control IDs and paging rotation roster version hash.",2020-01-14,2020-04-14,Open,SOC,"Comment from Assessor: Table must cite alarm ARNs matching production account not sandbox project only.","CSP: SI4-cw-202001.csv."
+
+"IR-4, IR-8","IR-4 incident response evidence pack for suspected incident case linking threat hunt findings to documented response action timeline with incident ticket closure reference IDs in case system.",2019-12-27,2020-03-27,Open,IR Lead,"Comment from Assessor: Pack must cite SIEM search head job IDs not analyst chat transcript only.","CSP: IR4-pack-201912.pdf."

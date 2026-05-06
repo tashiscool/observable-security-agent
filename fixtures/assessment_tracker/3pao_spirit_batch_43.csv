@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CP-4, CP-9","CP-4 recovery test runbook excerpt summarizing measured rto and measured rpo from dr exercise cold site drill with recovery test console job IDs and variance notes against continuity targets.",2019-11-01,2020-02-01,Open,Continuity,"Comment from Assessor: Excerpt must cite storage replication lag metrics not agenda-only meeting minutes.","CSP: CP4-rtest-201911.pdf."
+
+"CP-9, CP-6","CP-9 RDS snapshot execution log excerpt with snapshot evidence export IDs and alternate storage site mapping for backup scope filter clause per region replica class.",2019-10-13,2020-01-13,Open,Data Protection,"Comment from Assessor: Log must list snapshot completion timestamps within 24 hours of policy window not month-old pulls.","CSP: CP9-snap-201910.csv."
+
+"SI-2, CM-3","SI-2 security patch bundle rollout change request export with Jira issue keys tied to kernel errata advisories and change control board meeting minutes attachment IDs in repository.",2019-09-30,2019-12-30,Open,Linux SRE,"Comment from Assessor: Export must include RFC numeric identifiers from change tool not forwarded email only.","CSP: SI2-chg-201909.csv."
+
+"AC-7, IA-5","AC-7 password policy JSON export for production realm showing failed logon threshold lockout policy linkage to IdP risk engine and minimum password length enforcement fields with realm identifier.",2019-12-20,2020-03-20,Open,IdP Admin,"Comment from Assessor: Export must be JSON from live tenant policy API not screenshot of admin console.","CSP: AC7-pw-201912.json."
+
+"CM-7, CM-6","CM-7 least functionality export listing disabled listening ports per tier with disabled services matrix keyed by listening profile hash and baseline configuration cross-reference IDs.",2020-01-16,2020-04-16,Open,Hardening,"Comment from Assessor: Export must map to live configuration management database revision not draft workbook only.","CSP: CM7-lf-202001.csv."

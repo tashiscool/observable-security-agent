@@ -5,7 +5,6 @@ Prowler is an **input adapter** only; evaluations still run against the normaliz
 
 from __future__ import annotations
 
-import csv
 import hashlib
 import json
 import re
@@ -13,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from core.csv_utils import load_csv_rows
 from core.models import FindingSeverity, FindingStatus, ScannerFinding, SecurityEvent, SemanticType
 
 from providers.exposure_policy import semantic_type_from_public_exposure_policy
@@ -80,8 +80,7 @@ def iter_prowler_records(path: Path) -> list[dict[str, Any]]:
     """Load Prowler rows from ``.json`` (array or wrapped list) or ``.csv``."""
     suf = path.suffix.lower()
     if suf == ".csv":
-        with path.open(newline="", encoding="utf-8") as f:
-            return list(csv.DictReader(f))
+        return load_csv_rows(path)
     if suf not in (".json", ".ndjson"):
         raise ValueError(f"Unsupported Prowler input extension: {path.suffix}")
     text = path.read_text(encoding="utf-8")

@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"AU-6, AU-9","AU-6 local log sample paired with matches centralized SIEM row for same session identifiers with forwarder healthchecks CSV showing agent reachability and correlation key parity.",2019-11-04,2020-02-04,Open,Observability,"Comment from Assessor: Sample must redact subject distinguished names per privacy policy while keeping event IDs.","CSP: AU6-pair-201911.tgz."
+
+"AU-3, AU-2","AU-3 audit record content mapping export with vpc flow logs onboarding manifest and central log aggregation topology revision hash for management plane ingestion paths.",2019-10-09,2020-01-09,Open,Logging,"Comment from Assessor: Export must cite forwarder build IDs matching production fleet not canary subset only.","CSP: AU3-map-201910.xlsx."
+
+"AC-2, IA-5","AC-2 quarterly access review export with MFA report for elevated-role population and service account inventory spreadsheet keyed by application ID and last recertification clock.",2019-09-21,2019-12-21,Open,IAM,"Comment from Assessor: Export must come from governance tool API pull not hand-maintained spreadsheet.","CSP: AC2-inv-201909.csv."
+
+"CA-7, CA-2","CA-7 continuous monitoring strategy excerpt tying ongoing assessment cadence to CA-2 security control assessment schedule and security risk assessment refresh dates with assessor independence note.",2019-12-11,2020-03-11,Open,ISSO,"Comment from Assessor: Excerpt must cite assessment team credentials file version not self-attestation memo only.","CSP: CA7-cm-201912.pdf."
+
+"AC-3, AT-2","AC-3 publicly accessible security bulletin page evidence bundle with web content review approvals and reviewed before posting checklist including reviewer distribution list hash.",2020-01-07,2020-04-07,Open,Comms,"Comment from Assessor: Bundle must cite CMS object IDs in records repository not wiki permalink only.","CSP: AC3-web-202001.pdf."

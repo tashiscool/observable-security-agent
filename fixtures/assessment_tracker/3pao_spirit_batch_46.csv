@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SA-9, RA-3","SA-9 risk adjustment memo for telemetry ingestion library gap citing fedramp deviation routing sheet vendor dependency justification and AO concurrence date on operational requirement.",2019-11-17,2020-02-17,Open,Supply Chain,"Comment from Assessor: Memo must cite vendor FedRAMP package ID not reseller marketing PDF only.","CSP: SA9-riskadj-201911.pdf."
+
+"CP-4, CP-9","CP-4 recovery test summary from dr exercise listing measured rto and measured rpo versus cold site handoff targets with rto/rpo variance notes and facilitator roster hash.",2019-10-26,2020-01-26,Open,Continuity,"Comment from Assessor: Summary must cite storage replication lag metrics not agenda-only meeting minutes.","CSP: CP4-rsum-201910.pdf."
+
+"AU-6, AU-9","AU-6 local audit log slice paired with matches centralized SIEM row for same privilege elevation event IDs with forwarder healthchecks CSV showing agent reachability and correlation key parity.",2019-09-16,2019-12-16,Open,Observability,"Comment from Assessor: Slice must redact subject distinguished names per privacy policy while keeping event IDs.","CSP: AU6-pair-201909.tgz."
+
+"AU-2, AU-3","AU-2 auditable events baseline spreadsheet with vpc flow logs onboarding manifest and central log aggregation topology revision hash for management plane ingestion paths.",2020-01-19,2020-04-19,Open,Logging,"Comment from Assessor: Spreadsheet must cite forwarder build IDs matching production fleet not canary subset only.","CSP: AU2-base-202001.xlsx."
+
+"IR-4, SI-4","IR-4 threat hunt program quarterly summary with documented response action for suspicious cloud API sequences including hunt hypothesis IDs analyst disposition codes and customer notification log excerpts.",2019-12-14,2020-03-14,Open,SOC,"Comment from Assessor: Summary must cite SIEM saved search revision hashes not analyst notebook PDF only.","CSP: IR4-huntq-201912.pdf."

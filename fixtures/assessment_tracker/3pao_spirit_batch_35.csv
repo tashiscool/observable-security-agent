@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CM-8, RA-2","CM-8 reconcile inventory workbook showing orphan VPC ENI records against CMDB with duplicate entries list keyed by network interface attachment identifier.",2019-11-16,2020-02-16,Open,Asset Mgmt,"Comment from Assessor: Workbook must freeze CMDB export timestamp within 12 hours of compare run not stale weekly extract.","CSP: CM8-eni-201911.xlsx."
+
+"RA-5, SI-2","RA-5 exploitation review addendum for medium-severity plugin families with compromise assessment notes and IOC correlation spreadsheet keyed to scanner export finding IDs.",2019-10-07,2020-01-07,Open,IR Liaison,"Comment from Assessor: Addendum must cite analyst queue ticket references not narrative-only severity text.","CSP: RA5-exadd-201910.xlsx."
+
+"RA-5(1), CM-8","RA-5(1) scanner_targets export proving in-boundary assets in scope for scanning after quarterly scope workshop sign-in roster attachment with export timestamp.",2019-09-29,2019-12-29,Open,Vuln Mgmt,"Comment from Assessor: Export must show roster timestamp within 48 hours of scanner_targets pull not stale week.","CSP: RA51-targets-201909.csv."
+
+"RA-5(5), RA-5","RA-5(5) credentialed scan runbook with authenticated vulnerability scan reports for privileged-role hosts listing credentialed administrator session metadata per target class.",2019-12-10,2020-03-10,Open,Vuln Mgmt,"Comment from Assessor: Runbook must cite Nessus policy name hash not default unauthenticated profile only.","CSP: RA55-runbook-201912.pdf."
+
+"CM-3, SA-10","CM-3 security impact analysis checklist for service mesh sidecar upgrade citing dependency blast radius and rollback feasibility before promotion to staging mesh namespace.",2020-01-03,2020-04-03,Open,Platform,"Comment from Assessor: Checklist must cite signed architecture decision record IDs not chat transcript exports only.","CSP: CM3-sia-mesh-202001.pdf."

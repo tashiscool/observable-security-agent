@@ -52,12 +52,11 @@ for scen in scenario_public_admin_vuln_event scenario_20x_readiness scenario_age
   python3 agent.py assess --provider fixture --scenario "$scen" --output-dir "$od" >"$od.stdout" 2>&1
   test -f "$od/eval_results.json"
   test -f "$od/evidence_graph.json"
-  # scenario_20x_readiness is the all-PASS green path; validate_outputs/`agent.py validate` enforce POAM-AUTO rows
-  # which intentionally do not exist there. Other scenarios must pass both gates.
   if [[ "$scen" == "scenario_20x_readiness" ]]; then
-    set +e
-    python3 scripts/validate_outputs.py --output-dir "$od" >>"$od.stdout" 2>&1
-    set -e
+    # scenario_20x_readiness is the all-PASS green/live-style path; validate it
+    # with live semantics so no demo-specific FAIL or POA&M rows are required.
+    python3 scripts/validate_outputs.py --output-dir "$od" --mode live >>"$od.stdout" 2>&1
+    python3 agent.py validate --output-dir "$od" --mode live >>"$od.stdout" 2>&1
   else
     python3 scripts/validate_outputs.py --output-dir "$od" >>"$od.stdout" 2>&1
     python3 agent.py validate --output-dir "$od" >>"$od.stdout" 2>&1
@@ -493,12 +492,14 @@ if [[ -n "${OS_AGENT_CSV:-}" && -f "${OS_AGENT_CSV}" ]]; then
   eval "$(python3 "$ROOT/scripts/export_aws_session_env.py" "$CREDS")"
   export AWS_REGION="$REGION" AWS_DEFAULT_REGION="$REGION"
 
-  python3 -c "import boto3; i=boto3.client('sts').get_caller_identity(); print('  STS:', i.get('Account'), i.get('Arn'))"
+  python3 -c "import boto3; i=boto3.client('sts').get_caller_identity(); a=str(i.get('Account','')); m=('*'*(len(a)-4)+a[-4:]) if len(a)>4 else '****'; print('  STS:', m, str(i.get('Arn','')).replace(a, m))"
   record_pass "STS get-caller-identity"
 
-  RAW="$TMP/raw"
+  LIVE_OUT="$(mktemp -d "${TMPDIR:-/tmp}/os_agent_verify_live_out_XXXXXX")"
+  trap 'rm -rf "$TMP" "$LIVE_OUT"' EXIT
+  RAW="$LIVE_OUT/raw"
   mkdir -p "$RAW"
-  python3 scripts/collect_aws_evidence.py --region "$REGION" --output-dir "$RAW" --fixture-compatible >>"$OUT/live_collect.stdout" 2>&1
+  python3 scripts/collect_aws_evidence.py --region "$REGION" --output-dir "$RAW" --fixture-compatible >"$LIVE_OUT/live_collect.stdout" 2>&1
   EVD=$(RAW="$RAW" python3 -c "
 from pathlib import Path
 import os
@@ -509,13 +510,13 @@ for p in Path(os.environ['RAW']).rglob('manifest.json'):
   test -f "$EVD/cloud_events.json"
   record_pass "collect_aws_evidence (region=$REGION)"
 
-  AWSL="$OUT/assess_aws_live"
-  python3 agent.py assess --provider aws --raw-evidence-dir "$EVD" --output-dir "$AWSL" >"$AWSL.stdout" 2>&1
-  python3 scripts/validate_outputs.py --output-dir "$AWSL"
+  AWSL="$LIVE_OUT/assess_aws_live"
+  python3 agent.py assess --provider aws --raw-evidence-dir "$EVD" --output-dir "$AWSL" --mode live >"$LIVE_OUT/assess_aws_live.stdout" 2>&1
+  python3 scripts/validate_outputs.py --output-dir "$AWSL" --mode live
   record_pass "assess-aws on live raw + validate_outputs"
 
-  python3 agent.py threat-hunt --provider aws --raw-evidence-dir "$EVD" --output-dir "$OUT/threat_hunt_aws" >>"$OUT/live_collect.stdout" 2>&1
-  test -f "$OUT/threat_hunt_aws/threat_hunt_findings.json"
+  python3 agent.py threat-hunt --provider aws --raw-evidence-dir "$EVD" --output-dir "$LIVE_OUT/threat_hunt_aws" >>"$LIVE_OUT/live_collect.stdout" 2>&1
+  test -f "$LIVE_OUT/threat_hunt_aws/threat_hunt_findings.json"
   record_pass "threat-hunt --provider aws (live raw)"
 else
   record_skip "live AWS" "set OS_AGENT_CSV=/path/to/accessKeys.csv (and optional REGION) to exercise CSV→creds→collect→assess"

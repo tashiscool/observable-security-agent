@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SI-18, SC-18","SI-18 mobile code policy export for web consoles listing allowed script origins Content-Security-Policy baseline revision and documented exception approvals.",2019-10-15,2020-01-15,Open,AppSec,"Comment from Assessor: Export must be WAF or app gateway config extract not policy PDF only.","CSP: SI18-CSP-201910.json."
+
+"SC-36, CP-7","SC-36 distributed processing site security packet for secondary region listing physical controls network segmentation to primary links and encrypted control-plane channels.",2019-11-30,2020-02-28,Open,BC/DR,"Comment from Assessor: Packet must cite facility authorization letters matching diagram revision.","CSP: SC36-site-pack-201911.pdf."
+
+"SI-17, SC-24","SI-17 fail-safe mode test memorandum for controller tier services showing deterministic shutdown versus degraded read-only posture under injected controller faults.",2019-09-22,2019-12-22,Open,Platform Eng,"Comment from Assessor: Memo must name test harness release and observer third party if witness required.","CSP: SI17-failsafe-memo-201909.docx."
+
+"AC-7, IA-5","AC-7 identity provider policy export documenting account lockout threshold lockout duration and helpdesk unlock workflow for interactive user accounts.",2019-12-05,2020-03-05,Open,IdP Admin,"Comment from Assessor: Export must show effective policy for production realm not sandbox defaults.","CSP: AC7-lockout-201912.xml."
+
+"AU-13, AU-6","AU-13 monitoring procedure for unauthorized disclosure of audit information including quarterly reviewer sign-off records and sample SOC review tickets.",2019-08-11,2019-11-11,Open,SOC,"Comment from Assessor: Procedure must map to SIEM saved review definitions and ticket queue IDs.","CSP: AU13-mon-proc-201908.pdf."

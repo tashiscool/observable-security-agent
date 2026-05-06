@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"AC-4, SC-7","AC-4 approved information flows matrix enumerating permitted information flow enforcement points between application tiers with RFC identifiers for each new path.",2019-11-01,2020-02-01,Open,Net Sec,"Comment from Assessor: Matrix must cite live security group rule IDs not whiteboard photo only.","CSP: AC4-flows-201911.xlsx."
+
+"RA-5(1), CM-8","RA-5(1) weekly evidence that all system components that are scanned appear on the reconciled scanner_targets.csv export tied to the authoritative asset register.",2019-10-15,2020-01-15,Open,Vuln Mgmt,"Comment from Assessor: Export must include last successful scan timestamp per hostname not template placeholders.","CSP: RA51-scope-201910.csv."
+
+"RA-5, SI-2","RA-5 exploitation review workbook for critical plugin families with compromise assessment notes and analyst queue IDs for each high or critical severity open item.",2019-09-30,2019-12-30,Open,IR Liaison,"Comment from Assessor: Workbook must join to scanner export finding IDs not narrative-only severity labels.","CSP: RA5-exploit-201909.xlsx."
+
+"AU-12, AU-3","AU-12 centralized audit log aggregation topology showing VPC flow logs and CloudWatch logs ingesting to SIEM with immutable bucket object lock retention class.",2019-12-01,2020-03-01,Open,Observability,"Comment from Assessor: Topology must cite forwarder version strings matching production agents not lab defaults.","CSP: AU12-topo-201912.pdf."
+
+"CA-5, RA-5","CA-5 official POA&M CSV export dated this quarter showing milestone percent complete fields refreshed after latest vulnerability scan import cycle.",2019-08-10,2019-11-10,Open,ISSM,"Comment from Assessor: Export must include POA&M item keys matching SAR appendix tables not ad hoc spreadsheet tabs.","CSP: CA5-poam-201908.csv."

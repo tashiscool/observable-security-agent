@@ -2,7 +2,7 @@
 
 **Correlation:** CORR-001
 **Semantic type:** `network.public_admin_port_opened`
-**Asset:** `prod-api-01` (provider **aws**, ref `/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0`)
+**Asset:** `prod-api-01` (provider **aws**, ref `<repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0`)
 **Controls (from eval bundle):** AC-17, AC-2, AC-2(1), AC-2(3), AC-2(4), AC-2(7), AC-3, AC-4, AC-5, AC-6, AU-12, AU-2, AU-3, AU-3(1), AU-5, AU-6, AU-6(1), AU-6(3), AU-7, AU-8, AU-9(2), CA-5, CA-7, CM-10, CM-11, CM-3, CM-4, CM-5, CM-6, CM-7, CM-8, CM-8(1), CM-8(3), IA-2, IA-4, IA-5, IR-4, MA-2, MA-3, MA-4, MA-5, RA-5, RA-5(3), RA-5(5), RA-5(6), RA-5(8), SA-10, SC-7, SC-7(3), SC-7(4), SC-7(5), SI-2, SI-3, SI-4, SI-4(1), SI-4(16), SI-4(4)
 
 ---

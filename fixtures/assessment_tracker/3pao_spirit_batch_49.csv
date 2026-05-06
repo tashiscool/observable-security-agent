@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SA-11","SA-11 dynamic application security testing evidence including functional test reports and SAST outputs.",2019-10-17,2020-01-17,Open,AppSec,"Comment from Assessor: Need to see SAST output.","CSP: SA11-sast-export.pdf."
+
+"RA-5","RA-5 recurring vulnerability scan reports for the previous quarter showing clean posture.",2019-09-18,2019-12-18,Open,SecOps,"Comment from Assessor: Provide latest Nessus reports.","CSP: RA5-scan-Q3.jsonl."
+
+"AC-3","AC-3 dual authorization implementation details with two-person rule enforcement logging.",2019-12-22,2020-03-22,Open,IAM,"Comment from Assessor: Evidence of two-person control is required.","CSP: AC3-maker-checker.xlsx."
+
+"RA-5","RA-5 list of critical vulnerabilities open past 30 days and evidence of exploitation review.",2020-01-30,2020-04-30,Open,SecOps,"Comment from Assessor: Need formal exploitation review.","CSP: RA5-exploit-review.pdf."
+
+"SI-7","SI-7 file integrity monitoring configuration verifying monitored paths across production boundaries.",2019-11-24,2020-02-24,Open,Platform,"Comment from Assessor: Need FIM policy.","CSP: SI7-fim-config.json."

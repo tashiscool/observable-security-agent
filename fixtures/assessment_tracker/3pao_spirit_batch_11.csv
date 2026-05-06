@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"PL-4, PS-6","Signed rules of behavior and acceptable use acknowledgements for all privileged-role holders with onboarding completion timestamps for the assessment window.",2019-09-01,2019-12-01,Open,HR Sec,"Comment from Assessor: Export must join IAM privileged roster not only general workforce LMS completions.","CSP: PL4-AUP-signed-2019Q4.csv."
+
+"IR-4, SI-4","Quarterly threat hunt report documenting hypotheses executed query sources and disposition of suspicious findings with follow-on incident or IR ticket references.",2019-11-15,2020-02-01,Open,SOC,"Comment from Assessor: Report must name data sources queried not narrative hunt goals only.","CSP: TH-2019-Q4-export.pdf."
+
+"CA-2, CA-5","Security control assessment results summary for the annual CA-2 review cycle listing independent assessor team assessment dates and scope.",2019-10-01,2020-01-15,Open,ISSM,"Comment from Assessor: Summary must map to control baseline version in the authorization package not prior year.","CSP: CA2-annual-2019-summary.xlsx."
+
+"PL-8","Information security architecture roadmap excerpt per PL-8 listing major boundary changes since last authorization and planned demotion milestones.",2019-08-20,2019-11-30,Open,Arch,"Comment from Assessor: Diagram must align to live network segmentation export not strategy-only slide deck.","CSP: PL8-roadmap-201908.vsdx plus seg proof."
+
+"CA-7, SI-4","Continuous monitoring strategy excerpt describing ongoing assessment frequencies and escalation when vulnerability scanner coverage drops below approved threshold.",2019-12-10,2020-03-01,Open,ConMon,"Comment from Assessor: Excerpt must cite ConMon roles frequencies and exception handling not generic policy.","CSP: CM-strategy-excerpt-2020.pdf."

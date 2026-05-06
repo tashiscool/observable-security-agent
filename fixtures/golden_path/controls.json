@@ -1,0 +1,90 @@
+[
+  {
+    "controlId": "AC-2",
+    "family": "AC",
+    "title": "Account Management",
+    "requirementText": "Manage information system accounts and review account activity.",
+    "parameters": {},
+    "framework": "NIST SP 800-53",
+    "baseline": "moderate",
+    "responsibility": "shared",
+    "sourceRef": "fixtures/golden_path/controls.json#AC-2"
+  },
+  {
+    "controlId": "AU-6",
+    "family": "AU",
+    "title": "Audit Record Review, Analysis, and Reporting",
+    "requirementText": "Review and analyze audit records for indications of inappropriate or unusual activity.",
+    "parameters": {},
+    "framework": "NIST SP 800-53",
+    "baseline": "moderate",
+    "responsibility": "shared",
+    "sourceRef": "fixtures/golden_path/controls.json#AU-6"
+  },
+  {
+    "controlId": "CM-6",
+    "family": "CM",
+    "title": "Configuration Settings",
+    "requirementText": "Establish and monitor configuration settings for system components.",
+    "parameters": {},
+    "framework": "NIST SP 800-53",
+    "baseline": "moderate",
+    "responsibility": "shared",
+    "sourceRef": "fixtures/golden_path/controls.json#CM-6"
+  },
+  {
+    "controlId": "CP-4",
+    "family": "CP",
+    "title": "Contingency Plan Testing",
+    "requirementText": "Test the contingency plan and document test results and lessons learned.",
+    "parameters": {},
+    "framework": "NIST SP 800-53",
+    "baseline": "moderate",
+    "responsibility": "shared",
+    "sourceRef": "fixtures/golden_path/controls.json#CP-4"
+  },
+  {
+    "controlId": "IA-2",
+    "family": "IA",
+    "title": "Identification and Authentication",
+    "requirementText": "Uniquely identify and authenticate organizational users and privileged accounts.",
+    "parameters": {},
+    "framework": "NIST SP 800-53",
+    "baseline": "moderate",
+    "responsibility": "shared",
+    "sourceRef": "fixtures/golden_path/controls.json#IA-2"
+  },
+  {
+    "controlId": "RA-5",
+    "family": "RA",
+    "title": "Vulnerability Monitoring and Scanning",
+    "requirementText": "Monitor and scan for vulnerabilities and remediate findings according to risk.",
+    "parameters": {},
+    "framework": "NIST SP 800-53",
+    "baseline": "moderate",
+    "responsibility": "shared",
+    "sourceRef": "fixtures/golden_path/controls.json#RA-5"
+  },
+  {
+    "controlId": "SC-13",
+    "family": "SC",
+    "title": "Cryptographic Protection",
+    "requirementText": "Determine and implement cryptographic protections for information at rest and in transit.",
+    "parameters": {},
+    "framework": "NIST SP 800-53",
+    "baseline": "moderate",
+    "responsibility": "shared",
+    "sourceRef": "fixtures/golden_path/controls.json#SC-13"
+  },
+  {
+    "controlId": "SI-2",
+    "family": "SI",
+    "title": "Flaw Remediation",
+    "requirementText": "Identify, report, and correct system flaws.",
+    "parameters": {},
+    "framework": "NIST SP 800-53",
+    "baseline": "moderate",
+    "responsibility": "shared",
+    "sourceRef": "fixtures/golden_path/controls.json#SI-2"
+  }
+]

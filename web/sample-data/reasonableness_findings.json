@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "engine": "deterministic-fallback-compatible",
+  "evidence_contract": "Use only cited artifacts. Tracker text, gap text, and assessment notes are context, not proof. Missing primary/system-generated evidence remains a gap.",
+  "findings": [
+    {
+      "gap_id": "GAP-RA5-EXPLOIT-001",
+      "gap_type": "exploitation_review_missing",
+      "control_refs": ["RA-5(8)", "SI-4"],
+      "required_proof": ["Historic log query or SIEM job ID", "IoC review notes", "Analyst/date evidence", "Linked remediation or incident ticket"],
+      "supplied_artifacts": ["scanner_findings.json", "tracker row narrative"],
+      "sufficiency": "fail",
+      "reason": "Scanner findings prove vulnerability existence but do not prove exploitation review was performed.",
+      "recommended_remediation": "Attach the SIEM saved search export, reviewer attestation, and linked ticket closure evidence."
+    },
+    {
+      "gap_id": "GAP-CM3-CHAIN-002",
+      "gap_type": "change_ticket_incomplete",
+      "control_refs": ["CM-3", "SI-2", "SA-10"],
+      "required_proof": ["Security impact analysis", "Testing evidence", "Approval", "Deployment evidence", "Post-deploy verification"],
+      "supplied_artifacts": ["ticket export with approval", "deployment log"],
+      "sufficiency": "partial",
+      "reason": "Approval and deployment evidence are present, but SIA, test evidence, and post-deploy verification are missing.",
+      "recommended_remediation": "Backfill or attach SIA, test report, and verification scan evidence for the sampled change."
+    }
+  ]
+}

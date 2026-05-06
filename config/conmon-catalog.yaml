@@ -1,0 +1,209 @@
+schema_version: "1.0"
+name: "FedRAMP ConMon and Annual Assessment Reasonableness Catalog"
+description: >
+  Machine-readable catalog for evaluating whether continuous monitoring,
+  annual-assessment, and ticketing evidence is reasonable for a 3PAO review.
+  Evidence can come from live cloud APIs, SIEM/EDR/OS logging platforms, scanner
+  exports, GRC repositories, and workflow systems such as Smartsheet, Jira, and
+  ServiceNow. The agent must not invent evidence; missing sources become gaps.
+
+reasonableness_tests:
+  source_authority:
+    question: "Is the artifact from the authoritative system of record rather than a screenshot or narrative substitute?"
+    examples: ["AWS API export", "CloudTrail event", "Splunk saved search export", "Wazuh agent inventory", "Jira issue with immutable history"]
+  population_completeness:
+    question: "Does the evidence cover the full authorization boundary and the full subject population?"
+    examples: ["CMDB vs AWS discovery reconciliation", "scanner targets vs discovered assets", "LMS roster vs IAM users"]
+  freshness_and_cadence:
+    question: "Is the artifact fresh enough for the required cadence and assessment period?"
+    examples: ["monthly POA&M", "weekly AU-6 review", "60-day authenticator refresh", "annual policy approval"]
+  traceability:
+    question: "Can a reviewer trace request -> artifact -> control -> finding/POA&M -> closure evidence?"
+    examples: ["tracker row to attachment id", "ticket id to CloudTrail event id", "finding id to POA&M milestone"]
+  independent_observability:
+    question: "Where independence is required, did the assessor observe, verify, or receive raw export evidence?"
+    examples: ["3PAO-witnessed scan", "raw scan file", "SAR/RET/SRTM references"]
+  exception_governance:
+    question: "Are deviations, residual risks, false positives, and traffic exceptions approved and time-bounded?"
+    examples: ["FedRAMP deviation request", "AO risk acceptance", "firewall exception ticket"]
+
+evidence_ecosystems:
+  aws:
+    systems: ["AWS CloudTrail", "AWS Config", "AWS IAM", "AWS EC2", "AWS S3", "AWS RDS", "AWS ELB", "AWS GuardDuty", "AWS CloudWatch"]
+    evidence_examples: ["cloud_events.json", "discovered_assets.json", "central_log_sources.json", "alert_rules.json", "collection_manifest.json"]
+  os_and_endpoint:
+    systems: ["Wazuh", "auditd", "Windows Event Forwarding", "SSM Inventory", "EDR inventory"]
+    evidence_examples: ["OS auth logs", "agent health", "file integrity monitoring", "package/software inventory"]
+  siem:
+    systems: ["Splunk", "CloudWatch Logs", "Microsoft Sentinel", "Elastic"]
+    evidence_examples: ["saved searches", "centralized log samples", "alert exports", "SOC response tickets"]
+  vulnerability:
+    systems: ["Nessus/Tenable", "Qualys", "Burp Suite", "Prowler", "Cloudsploit", "Container registry scanner"]
+    evidence_examples: ["raw scan files", "scanner_targets.csv", "scanner_findings.json", "plugin/signature version"]
+  ticketing:
+    systems: ["Smartsheet", "Jira", "ServiceNow"]
+    evidence_examples: ["workflow row", "issue/change ticket", "approval history", "status transitions", "linked attachments"]
+  grc_docs:
+    systems: ["SSP repository", "policy repository", "FedRAMP package repository", "document management system"]
+    evidence_examples: ["signed policy/procedure", "SSP appendix", "ISA", "SAP/SAR/RET/SRTM", "PTA"]
+  training:
+    systems: ["LMS", "HR roster", "contractor onboarding system"]
+    evidence_examples: ["completion roster", "role assignment", "training material version", "archived record"]
+
+obligations:
+  - id: CONMON-CONT-001
+    title: "SI-4 monitoring, AU-2 auditable events, and CloudTrail/log forwarding operate continuously"
+    cadence: continuous
+    controls: ["SI-4", "AU-2", "AU-6", "AU-12", "IR-6"]
+    ecosystems: ["aws", "siem", "os_and_endpoint", "ticketing"]
+    evidence_required:
+      - "CloudTrail/CloudWatch or equivalent control-plane events"
+      - "OS or endpoint logs from Wazuh/auditd/EDR where hosts are in scope"
+      - "SIEM saved searches/alerts with recipients and sample firing evidence"
+      - "incident/reporting workflow tickets for response actions"
+    automation_checks: ["collect_aws_evidence", "AU6_CENTRALIZED_LOG_COVERAGE", "SI4_ALERT_INSTRUMENTATION", "CROSS_DOMAIN_EVENT_CORRELATION"]
+    reasonableness_focus: ["source_authority", "population_completeness", "freshness_and_cadence", "traceability"]
+
+  - id: CONMON-10D-001
+    title: "CP-3 contingency evidence check captured and posted"
+    cadence: every_10_days
+    controls: ["CP-3"]
+    ecosystems: ["grc_docs", "ticketing", "training"]
+    evidence_required: ["posted checkpoint record", "owner/status", "evidence attachment or exception"]
+    automation_checks: ["TRACKER_EVIDENCE_GAP_ANALYSIS"]
+    reasonableness_focus: ["freshness_and_cadence", "traceability"]
+
+  - id: CONMON-WEEKLY-001
+    title: "AU-6 audit records reviewed, anomalies documented, and actions linked"
+    cadence: weekly
+    controls: ["AU-6", "AU-6(1)", "AU-6(3)", "IR-4", "SI-4"]
+    ecosystems: ["siem", "ticketing", "aws", "os_and_endpoint"]
+    evidence_required: ["CloudTrail/control-plane event sample where applicable", "SIEM review ticket", "query/export id", "anomaly disposition", "linked response action"]
+    automation_checks: ["AU6_CENTRALIZED_LOG_COVERAGE", "CROSS_DOMAIN_EVENT_CORRELATION", "TRACKER_EVIDENCE_GAP_ANALYSIS"]
+    reasonableness_focus: ["source_authority", "freshness_and_cadence", "traceability"]
+
+  - id: CONMON-MONTHLY-001
+    title: "Monthly POA&M, inventory, security-state reporting, and raw scan package"
+    cadence: monthly
+    controls: ["CA-5", "CA-7", "CM-8", "RA-5", "SI-2"]
+    ecosystems: ["vulnerability", "ticketing", "grc_docs", "aws"]
+    evidence_required: ["current POA&M", "inventory reconciliation", "raw scan files", "agency/AO notification evidence"]
+    automation_checks: ["CM8_INVENTORY_RECONCILIATION", "RA5_SCANNER_SCOPE_COVERAGE", "CA5_POAM_STATUS"]
+    reasonableness_focus: ["population_completeness", "freshness_and_cadence", "traceability", "exception_governance"]
+
+  - id: CONMON-MONTHLY-002
+    title: "Vulnerability scanning and remediation clocks for OS, web, database, and containers"
+    cadence: monthly
+    controls: ["RA-5", "RA-5(2)", "RA-5(3)", "RA-5(5)", "RA-5(8)", "SI-2", "SI-7"]
+    ecosystems: ["vulnerability", "aws", "ticketing", "siem"]
+    evidence_required: ["authenticated scanner export", "scanner scope", "plugin/signature freshness", "high/moderate remediation evidence", "CloudTrail/control-plane and SIEM log review for high/critical exploitation review"]
+    automation_checks: ["RA5_SCANNER_SCOPE_COVERAGE", "RA5_EXPLOITATION_REVIEW", "CM3_CHANGE_EVIDENCE_LINKAGE"]
+    reasonableness_focus: ["source_authority", "population_completeness", "freshness_and_cadence", "independent_observability"]
+
+  - id: CONMON-MONTHLY-003
+    title: "Access/configuration/physical recurring reviews"
+    cadence: monthly
+    controls: ["AC-2(2)", "CM-7(1)", "PE-6", "PE-8", "SC-7"]
+    ecosystems: ["ticketing", "grc_docs", "aws", "os_and_endpoint"]
+    evidence_required: ["temporary/emergency account termination proof", "least-functionality review", "visitor/physical access logs", "security group or firewall exception review"]
+    automation_checks: ["TRACKER_EVIDENCE_GAP_ANALYSIS", "AGENT_PERMISSION_SCOPE"]
+    reasonableness_focus: ["population_completeness", "freshness_and_cadence", "exception_governance"]
+
+  - id: CONMON-60D-001
+    title: "Authenticator and service-account password/key rotation"
+    cadence: every_60_days
+    controls: ["IA-5", "AC-2", "AC-6"]
+    ecosystems: ["aws", "ticketing", "grc_docs"]
+    evidence_required: ["IAM/IdP rotation export", "service account inventory", "owner approval", "exception tracking"]
+    automation_checks: ["AGENT_PERMISSION_SCOPE", "TRACKER_EVIDENCE_GAP_ANALYSIS"]
+    reasonableness_focus: ["source_authority", "population_completeness", "freshness_and_cadence"]
+
+  - id: CONMON-QUARTERLY-001
+    title: "Quarterly account inactivity, public content, and privileged developer access reviews"
+    cadence: quarterly
+    controls: ["AC-2(3)", "IA-4", "AC-22", "CM-5(5)", "AC-6"]
+    ecosystems: ["aws", "ticketing", "grc_docs"]
+    evidence_required: ["inactive account disablement export", "public content review record", "developer privileged access recertification"]
+    automation_checks: ["AGENT_PERMISSION_SCOPE", "TRACKER_EVIDENCE_GAP_ANALYSIS"]
+    reasonableness_focus: ["population_completeness", "freshness_and_cadence", "traceability"]
+
+  - id: CONMON-ANNUAL-001
+    title: "All -1 policy/procedure controls and system plans reviewed, updated, approved"
+    cadence: annual
+    controls: ["AC-1", "AU-1", "CA-1", "CM-1", "CP-1", "CP-2", "IA-1", "IR-1", "MA-1", "MP-1", "PE-1", "PL-1", "PL-2", "RA-1", "SA-1", "SC-1", "SI-1", "PM-1", "PT-1"]
+    ecosystems: ["grc_docs", "ticketing"]
+    evidence_required: ["policy/procedure version", "review date", "approver/system owner", "change summary", "linked ticket/Smartsheet/Jira/ServiceNow row"]
+    automation_checks: ["TRACKER_EVIDENCE_GAP_ANALYSIS"]
+    reasonableness_focus: ["source_authority", "freshness_and_cadence", "traceability"]
+
+  - id: CONMON-ANNUAL-002
+    title: "Annual account recertification, physical access authorization, and access-device inventory"
+    cadence: annual
+    controls: ["AC-2", "AC-2(j)", "PE-2", "PE-3", "IA-4"]
+    ecosystems: ["aws", "ticketing", "grc_docs"]
+    evidence_required: ["user/service account review", "physical credential review", "key/combination change record", "SSP date update"]
+    automation_checks: ["AGENT_PERMISSION_SCOPE", "TRACKER_EVIDENCE_GAP_ANALYSIS"]
+    reasonableness_focus: ["population_completeness", "freshness_and_cadence", "traceability"]
+
+  - id: CONMON-ANNUAL-003
+    title: "Security, role-based, incident-response, and contingency training"
+    cadence: annual
+    controls: ["AT-2", "AT-3", "AT-4", "IR-2", "CP-3"]
+    ecosystems: ["training", "ticketing", "grc_docs"]
+    evidence_required: ["LMS roster", "role mapping", "manager/executive/contractor coverage", "materials version", "archived records"]
+    automation_checks: ["TRACKER_EVIDENCE_GAP_ANALYSIS"]
+    reasonableness_focus: ["source_authority", "population_completeness", "freshness_and_cadence"]
+
+  - id: CONMON-ANNUAL-004
+    title: "Plan reviews, CP/IR tests, backup integrity, auditable events, baseline configuration, CM plan"
+    cadence: annual
+    controls: ["PL-2", "CP-2", "CP-4", "CP-9", "IR-3", "IR-8", "AU-2", "CM-2", "CM-9"]
+    ecosystems: ["grc_docs", "ticketing", "aws", "siem"]
+    evidence_required: ["SSP/ISCP/IRP review", "exercise/test results", "backup restore validation", "CloudTrail/control-plane and SIEM evidence for auditable event update", "baseline config review"]
+    automation_checks: ["TRACKER_EVIDENCE_GAP_ANALYSIS", "CM3_CHANGE_EVIDENCE_LINKAGE", "AU6_CENTRALIZED_LOG_COVERAGE"]
+    reasonableness_focus: ["source_authority", "freshness_and_cadence", "traceability"]
+
+  - id: CONMON-ANNUAL-005
+    title: "Software lifecycle, EOL/support status, security notice subscriptions, and monitoring guide update"
+    cadence: annual
+    controls: ["CM-8", "CM-10", "CM-11", "RA-5", "SI-2"]
+    ecosystems: ["aws", "os_and_endpoint", "vulnerability", "grc_docs"]
+    evidence_required: ["authorized software list", "SBOM/software inventory", "EOL/support status", "security notice subscription proof", "monitoring guide update"]
+    automation_checks: ["CM8_INVENTORY_RECONCILIATION", "RA5_SCANNER_SCOPE_COVERAGE", "TRACKER_EVIDENCE_GAP_ANALYSIS"]
+    reasonableness_focus: ["source_authority", "population_completeness", "freshness_and_cadence"]
+
+  - id: CONMON-ANNUAL-006
+    title: "ISA, security architecture, RoB, SOP, traffic exceptions, CIS benchmark, and PTA"
+    cadence: annual
+    controls: ["CA-3", "PL-4", "PL-8", "SC-7", "CM-6", "PT-1"]
+    ecosystems: ["grc_docs", "ticketing", "vulnerability", "aws"]
+    evidence_required: ["ISA review", "architecture update", "Rules of Behavior", "SOP approval", "traffic-flow exception review", "CIS benchmark scan", "Privacy Threshold Analysis"]
+    automation_checks: ["TRACKER_EVIDENCE_GAP_ANALYSIS", "SI4_ALERT_INSTRUMENTATION"]
+    reasonableness_focus: ["source_authority", "freshness_and_cadence", "exception_governance"]
+
+  - id: CONMON-AA-001
+    title: "FedRAMP Annual Assessment package lifecycle"
+    cadence: annual_assessment
+    controls: ["CA-2", "CA-5", "CA-6", "CA-7", "RA-5"]
+    ecosystems: ["grc_docs", "ticketing", "vulnerability"]
+    evidence_required: ["AA schedule", "current templates", "control selection worksheet", "SAP", "SAR", "RET/SRTM", "POA&M residual-risk updates", "ATO anniversary upload proof"]
+    automation_checks: ["tracker-to-20x", "validate-20x-package", "reconcile-20x"]
+    reasonableness_focus: ["independent_observability", "traceability", "exception_governance", "freshness_and_cadence"]
+
+  - id: CONMON-CHANGE-001
+    title: "Significant-change governance and post-change testing"
+    cadence: event_driven
+    controls: ["CM-3", "CM-4", "CA-7", "SA-10"]
+    ecosystems: ["ticketing", "grc_docs", "aws", "siem"]
+    evidence_required: ["security impact analysis", "change category", "SCR where applicable", "AO approval", "post-change testing", "CloudTrail/control-plane and SIEM evidence for post-change verification", "SAR/attestation", "POA&M/doc updates"]
+    automation_checks: ["CM3_CHANGE_EVIDENCE_LINKAGE", "TRACKER_EVIDENCE_GAP_ANALYSIS"]
+    reasonableness_focus: ["traceability", "source_authority", "exception_governance"]
+
+  - id: CONMON-INCIDENT-001
+    title: "Incident communication one-hour clock and follow-up reporting"
+    cadence: event_driven
+    controls: ["IR-4", "IR-6", "IR-8", "SI-4"]
+    ecosystems: ["siem", "ticketing", "aws", "grc_docs"]
+    evidence_required: ["SOC/CSIRT identification timestamp", "CloudTrail/control-plane and SIEM evidence anchoring incident timeline", "customer/FedRAMP/agency notification timestamp", "CISA tracking number where required", "daily updates", "final report"]
+    automation_checks: ["SI4_ALERT_INSTRUMENTATION", "CROSS_DOMAIN_EVENT_CORRELATION", "TRACKER_EVIDENCE_GAP_ANALYSIS"]
+    reasonableness_focus: ["source_authority", "freshness_and_cadence", "traceability"]

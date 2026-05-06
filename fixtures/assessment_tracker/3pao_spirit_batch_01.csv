@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CM-8, CM-2, SAP","System inventory (Integrated Inventory Workbook) reconciled with authoritative discovery exports.",2019-11-07,2020-01-27,Open,CSP Eng,"Comment from Assessor: Compared Trend export to IIW — items in discovery not in IIW (flag red); duplicates with same asset name in IIW. IIW must match SAP scan scope.","CSP: Updated workbook row A1; will reconcile naming."
+
+"RA-5, SAP","Listing of vulnerability scanning tools and installed versions for OS infrastructure DB and web application scanners.",2019-11-07,2020-01-17,Open,Vuln Lead,"Comment from Assessor: Attachment lists two Burp Suite versions — confirm which is in use and whether builds are supported.","CSP: Inventory row shows 2.1.05; will attach build screenshot."
+
+"CP-2, PL-2","Information System Contingency Plan (ISCP) evidence including organizational review and approval.",2019-11-07,2020-04-07,Open,Contingency,"Comment from Assessor: Provide evidence ISCP was reviewed and approved by defined roles per CP-2 — not IR contact list substitute.","CSP: Stored in wiki; locating approval trail."
+
+"RA-5(8), CA-7","For Critical/High findings: historic audit log review to determine whether exploitation occurred prior to remediation; document queries and timeframe.",2020-02-03,2020-04-03,Open,SOC Lead,"Comment from Assessor: Need ticketed IoC-style review for the named plugin IDs not only patch proof.","CSP: Ran ad-hoc Splunk searches; will formalize."
+
+"SC-7, Pen Test","Listing of publicly facing IP ranges URLs VPN endpoints for pen test scope; map to authorized ingress in ports/protocols matrix and security group inventory.",2019-11-07,2020-01-22,Open,Net Eng,"Comment from Assessor: Confirm list matches IIW and WAF allow paths before test window.","CSP: Attaching redacted scope sheet."

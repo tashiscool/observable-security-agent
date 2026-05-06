@@ -8,14 +8,14 @@
     "actor": "assessment_tracker_importer",
     "asset_id": "assessment_tracker",
     "resource_id": null,
-    "timestamp": "2026-05-03T02:01:19Z",
-    "raw_event_ref": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/cloud_events.json#0",
+    "timestamp": "2026-05-06T03:08:14Z",
+    "raw_event_ref": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/cloud_events.json#0",
     "port": null,
     "source_cidr": null,
     "metadata": {
       "provider": "assessment_tracker",
       "actor": "assessment_tracker_importer",
-      "timestamp": "2026-05-03T02:01:19Z",
+      "timestamp": "2026-05-06T03:08:14Z",
       "raw_event_ref": "assessment_tracker.meta_event:tracker-meta-0001",
       "synthesized_from": "assessment_tracker",
       "narrative": "Synthesized meta-event so the FixtureProvider minimum-bundle gate can load this scenario for pipeline demonstration. NOT an observed cloud event."
@@ -34,14 +34,14 @@
     "actor": "assessment_tracker_importer",
     "asset_id": "assessment_tracker",
     "resource_id": null,
-    "timestamp": "2026-05-03T02:01:19Z",
-    "raw_event_ref": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/cloud_events.json#0",
+    "timestamp": "2026-05-06T03:08:14Z",
+    "raw_event_ref": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/cloud_events.json#0",
     "port": null,
     "source_cidr": null,
     "metadata": {
       "provider": "assessment_tracker",
       "actor": "assessment_tracker_importer",
-      "timestamp": "2026-05-03T02:01:19Z",
+      "timestamp": "2026-05-06T03:08:14Z",
       "raw_event_ref": "assessment_tracker.meta_event:tracker-meta-0001",
       "synthesized_from": "assessment_tracker",
       "narrative": "Synthesized meta-event so the FixtureProvider minimum-bundle gate can load this scenario for pipeline demonstration. NOT an observed cloud event."
@@ -82,6 +82,7 @@
       "name": "CM-8 Inventory Reconciliation",
       "gaps": [],
       "affected_assets": [],
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -105,6 +106,7 @@
       "name": "RA-5 Scanner Scope Coverage",
       "gaps": [],
       "affected_assets": [],
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -133,6 +135,7 @@
       "name": "AU-6/AU-12 Centralized Log Coverage",
       "gaps": [],
       "affected_assets": [],
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -171,6 +174,104 @@
         "logging.audit_disabled",
         "network.public_admin_port_opened"
       ],
+      "assessor_findings": [
+        {
+          "finding_id": "SI4_ALERT_INSTRUMENTATION-GAP-001",
+          "control_refs": [
+            "SI-4",
+            "SI-4(1)",
+            "SI-4(4)",
+            "SI-4(16)",
+            "AU-5",
+            "AU-6",
+            "AC-2(4)",
+            "AC-2(7)",
+            "CM-8(3)",
+            "CM-10",
+            "CM-11",
+            "SI-3"
+          ],
+          "current_state": "No alert rules are defined while security-relevant semantic events require instrumentation.",
+          "target_state": "Evidence for SI-4, SI-4(1), SI-4(4), SI-4(16) is complete, system-generated where possible, linked to the affected asset/event/finding population, and retestable by an assessor sample.",
+          "remediation_steps": [
+            "Generate SPL/KQL/GCP/AWS query.",
+            "Add enabled alert.",
+            "Add recipient list.",
+            "Produce sample alert evidence.",
+            "Link alert to incident/change response workflow."
+          ],
+          "estimated_effort": "1-3 days",
+          "priority": "critical",
+          "affected_subjects": [
+            "logging.audit_disabled",
+            "network.public_admin_port_opened"
+          ]
+        },
+        {
+          "finding_id": "SI4_ALERT_INSTRUMENTATION-GAP-002",
+          "control_refs": [
+            "SI-4",
+            "SI-4(1)",
+            "SI-4(4)",
+            "SI-4(16)",
+            "AU-5",
+            "AU-6",
+            "AC-2(4)",
+            "AC-2(7)",
+            "CM-8(3)",
+            "CM-10",
+            "CM-11",
+            "SI-3"
+          ],
+          "current_state": "No enabled alert rule covers logging.audit_disabled.",
+          "target_state": "Evidence for SI-4, SI-4(1), SI-4(4), SI-4(16) is complete, system-generated where possible, linked to the affected asset/event/finding population, and retestable by an assessor sample.",
+          "remediation_steps": [
+            "Generate SPL/KQL/GCP/AWS query.",
+            "Add enabled alert.",
+            "Add recipient list.",
+            "Produce sample alert evidence.",
+            "Link alert to incident/change response workflow."
+          ],
+          "estimated_effort": "1-3 days",
+          "priority": "critical",
+          "affected_subjects": [
+            "logging.audit_disabled",
+            "network.public_admin_port_opened"
+          ]
+        },
+        {
+          "finding_id": "SI4_ALERT_INSTRUMENTATION-GAP-003",
+          "control_refs": [
+            "SI-4",
+            "SI-4(1)",
+            "SI-4(4)",
+            "SI-4(16)",
+            "AU-5",
+            "AU-6",
+            "AC-2(4)",
+            "AC-2(7)",
+            "CM-8(3)",
+            "CM-10",
+            "CM-11",
+            "SI-3"
+          ],
+          "current_state": "No enabled alert rule covers network.public_admin_port_opened.",
+          "target_state": "Evidence for SI-4, SI-4(1), SI-4(4), SI-4(16) is complete, system-generated where possible, linked to the affected asset/event/finding population, and retestable by an assessor sample.",
+          "remediation_steps": [
+            "Generate SPL/KQL/GCP/AWS query.",
+            "Add enabled alert.",
+            "Add recipient list.",
+            "Produce sample alert evidence.",
+            "Link alert to incident/change response workflow."
+          ],
+          "estimated_effort": "1-3 days",
+          "priority": "critical",
+          "affected_subjects": [
+            "logging.audit_disabled",
+            "network.public_admin_port_opened"
+          ]
+        }
+      ],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -204,6 +305,7 @@
       "generated_artifacts": [
         "output/correlations.json"
       ],
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -225,6 +327,7 @@
       "generated_artifacts": [
         "output/exploitation_review_queries.md"
       ],
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -252,6 +355,7 @@
       "name": "CM-3/SI-2 Change Evidence Linkage",
       "gaps": [],
       "affected_assets": [],
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -272,6 +376,7 @@
       "summary": "No agent_security/agent_assessment.json next to this scenario; agent telemetry eval skipped.",
       "name": "Agent tool governance",
       "skipped": true,
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -292,6 +397,7 @@
       "summary": "No agent_security/agent_assessment.json next to this scenario; agent telemetry eval skipped.",
       "name": "Agent permission scope",
       "skipped": true,
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -312,6 +418,7 @@
       "summary": "No agent_security/agent_assessment.json next to this scenario; agent telemetry eval skipped.",
       "name": "Agent memory context safety",
       "skipped": true,
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -332,6 +439,7 @@
       "summary": "No agent_security/agent_assessment.json next to this scenario; agent telemetry eval skipped.",
       "name": "Agent approval gates",
       "skipped": true,
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -352,6 +460,7 @@
       "summary": "No agent_security/agent_assessment.json next to this scenario; agent telemetry eval skipped.",
       "name": "Agent policy violations",
       "skipped": true,
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -372,6 +481,7 @@
       "summary": "No agent_security/agent_assessment.json next to this scenario; agent telemetry eval skipped.",
       "name": "Agent auditability",
       "skipped": true,
+      "assessor_findings": [],
       "remediation_disposition": "poam_or_risk_acceptance"
     },
     {
@@ -396,6 +506,26 @@
       "skipped_duplicate": 0,
       "generated_artifacts": [
         "output/poam.csv"
+      ],
+      "assessor_findings": [
+        {
+          "finding_id": "CA5_POAM_STATUS-GAP-001",
+          "control_refs": [
+            "CA-5",
+            "CA-7",
+            "RA-5",
+            "CP-9",
+            "CP-10"
+          ],
+          "current_state": "Continuous monitoring evidence incomplete; new POA&M rows written to poam.csv.",
+          "target_state": "Evidence for CA-5, CA-7, RA-5, CP-9 is complete, system-generated where possible, linked to the affected asset/event/finding population, and retestable by an assessor sample.",
+          "remediation_steps": [
+            "Enter responsible roles, funding, and milestone owners in the official POA&M system."
+          ],
+          "estimated_effort": "0.5 day",
+          "priority": "low",
+          "affected_subjects": []
+        }
       ],
       "remediation_disposition": "poam"
     },
@@ -459,14 +589,14 @@
         "gap-0007-alert-sample-missing [high/alert_sample_missing] row=7 controls=AU-6,SI-4 poam_required=yes :: Alert sample missing: Provide the alert rules / saved searches with recipient li",
         "gap-0008-response-action-missing [high/response_action_missing] row=8 controls=SI-4(1),SI-4(4) poam_required=yes :: Response action missing: List CloudWatch alarms and GuardDuty findings considere",
         "gap-0009-sia-missing [high/sia_missing] row=9 controls=CM-3,SI-2 poam_required=yes :: Sia missing: Sample change tickets in JIRA with full evidence chain: Security Im",
-        "gap-0010-deviation-request-missing [moderate/deviation_request_missing] row=10 controls=CA-5 poam_required=yes :: Deviation request missing: POA&M updates: Provide the current POA&M with deviati",
+        "gap-0010-poam-update-missing [moderate/poam_update_missing] row=10 controls=CA-5 poam_required=yes :: Poam update missing: POA&M updates: Provide the current POA&M with deviation req",
         "gap-0011-response-action-missing [high/response_action_missing] row=11 controls=IR-4,IR-6 poam_required=yes :: Response action missing: Incident response evidence: any suspected or confirmed",
         "gap-0012-crypto-fips-evidence-missing [high/crypto_fips_evidence_missing] row=12 controls=SC-13,SC-28,SC-12 poam_required=no :: Crypto fips evidence missing: FIPS 140-2/3 evidence: list crypto modules in use",
         "gap-0013-restore-test-missing [high/restore_test_missing] row=13 controls=CP-9,CP-10 poam_required=yes :: Restore test missing: Backup and recovery evidence: most recent restore test (RT",
         "gap-0014-identity-listing-missing [high/identity_listing_missing] row=14 controls=AC-2,AC-2(7),AC-6 poam_required=no :: Identity listing missing: Account listings: full IAM user list with privileged-a",
         "gap-0015-traffic-flow-policy-missing [high/traffic_flow_policy_missing] row=15 controls=SC-7,SC-7(11) poam_required=no :: Traffic flow policy missing: Traffic flow / boundary evidence: data flow diagram"
       ],
-      "recommended_action": "inventory (CM-8, CM-8(1), CM-8(3), CA-7): produce declared_inventory.csv reconciled against discovered_assets.json; close 2 gap(s); linked KSIs: KSI-INV-01.; scanner_vulnerability (RA-5, RA-5(3), RA-5(5), SI-2, RA-5(8)): produce scanner_targets.csv with credentialed=true + plugin/profile evidence; scanner_findings.json export from latest credentialed scan; scanner_findings.json finding with exploitation_review.queries[] + log_review_performed=true; close 3 gap(s); linked KSIs: KSI-VULN-01, KSI-IR-01.; logging (AU-2, AU-3, AU-6, AU-12): produce central_log_sources.json plus a local audit log sample correlated with the central index; close 1 gap(s); linked KSIs: KSI-LOG-01.; alerting (AU-6, SI-4, SI-4(1), SI-4(4), IR-4, IR-6): produce sample_alert_ref pointing at an executed alert export; tickets.json entry citing the alert with documented response; close 3 gap(s); linked KSIs: KSI-LOG-01, KSI-IR-01.; change_management (CM-3, SI-2): produce tickets.json field security_impact_analysis=true with SIA attachment; close 1 gap(s); linked KSIs: KSI-CM-01.; incident_response (SI-4(1), SI-4(4), IR-4, IR-6): produce tickets.json entry citing the alert with documented response; close 2 gap(s); linked KSIs: KSI-IR-01.; poam (CA-5): produce poam.csv row with deviation_request_ref + approval evidence; close 1 gap(s); linked KSIs: KSI-VULN-01.; recovery (CP-9, CP-10): produce restore_tests.json with measured RTO/RPO; close 1 gap(s); linked KSIs: KSI-REC-01.; identity_access (AC-2, AC-2(7), AC-6): produce identity_users.json + privileged-account flag + MFA report; close 1 gap(s); linked KSIs: KSI-IAM-01.; crypto (SC-13, SC-28, SC-12): produce FIPS 140-2/3 module list + KMS rotation export + cipher policy; close 1 gap(s); linked KSIs: KSI-LOG-01.; network_boundary (SC-7, SC-7(11)): produce data-flow diagram + security_group inventory + ports/protocols matrix; close 1 gap(s); linked KSIs: KSI-INV-01.",
+      "recommended_action": "inventory (CM-8, CM-8(1), CM-8(3), CA-7): produce declared_inventory.csv reconciled against discovered_assets.json; close 2 gap(s); linked KSIs: KSI-INV-01.; scanner_vulnerability (RA-5, RA-5(3), RA-5(5), SI-2, RA-5(8)): produce scanner_targets.csv with credentialed=true + plugin/profile evidence; scanner_findings.json export from latest credentialed scan; scanner_findings.json finding with exploitation_review.queries[] + log_review_performed=true; close 3 gap(s); linked KSIs: KSI-VULN-01, KSI-IR-01.; logging (AU-2, AU-3, AU-6, AU-12): produce central_log_sources.json plus a local audit log sample correlated with the central index; close 1 gap(s); linked KSIs: KSI-LOG-01.; alerting (AU-6, SI-4, SI-4(1), SI-4(4), IR-4, IR-6): produce sample_alert_ref pointing at an executed alert export; tickets.json entry citing the alert with documented response; close 3 gap(s); linked KSIs: KSI-LOG-01, KSI-IR-01.; change_management (CM-3, SI-2): produce tickets.json field security_impact_analysis=true with SIA attachment; close 1 gap(s); linked KSIs: KSI-CM-01.; incident_response (SI-4(1), SI-4(4), IR-4, IR-6): produce tickets.json entry citing the alert with documented response; close 2 gap(s); linked KSIs: KSI-IR-01.; poam (CA-5): produce poam.csv with current status, dates, and milestones; close 1 gap(s); linked KSIs: KSI-VULN-01.; recovery (CP-9, CP-10): produce restore_tests.json with measured RTO/RPO; close 1 gap(s); linked KSIs: KSI-REC-01.; identity_access (AC-2, AC-2(7), AC-6): produce identity_users.json + privileged-account flag + MFA report; close 1 gap(s); linked KSIs: KSI-IAM-01.; crypto (SC-13, SC-28, SC-12): produce FIPS 140-2/3 module list + KMS rotation export + cipher policy; close 1 gap(s); linked KSIs: KSI-LOG-01.; network_boundary (SC-7, SC-7(11)): produce data-flow diagram + security_group inventory + ports/protocols matrix; close 1 gap(s); linked KSIs: KSI-INV-01.",
       "recommended_actions": [
         "inventory (CM-8, CM-8(1), CM-8(3), CA-7): produce declared_inventory.csv reconciled against discovered_assets.json; close 2 gap(s); linked KSIs: KSI-INV-01.",
         "scanner_vulnerability (RA-5, RA-5(3), RA-5(5), SI-2, RA-5(8)): produce scanner_targets.csv with credentialed=true + plugin/profile evidence; scanner_findings.json export from latest credentialed scan; scanner_findings.json finding with exploitation_review.queries[] + log_review_performed=true; close 3 gap(s); linked KSIs: KSI-VULN-01, KSI-IR-01.",
@@ -474,7 +604,7 @@
         "alerting (AU-6, SI-4, SI-4(1), SI-4(4), IR-4, IR-6): produce sample_alert_ref pointing at an executed alert export; tickets.json entry citing the alert with documented response; close 3 gap(s); linked KSIs: KSI-LOG-01, KSI-IR-01.",
         "change_management (CM-3, SI-2): produce tickets.json field security_impact_analysis=true with SIA attachment; close 1 gap(s); linked KSIs: KSI-CM-01.",
         "incident_response (SI-4(1), SI-4(4), IR-4, IR-6): produce tickets.json entry citing the alert with documented response; close 2 gap(s); linked KSIs: KSI-IR-01.",
-        "poam (CA-5): produce poam.csv row with deviation_request_ref + approval evidence; close 1 gap(s); linked KSIs: KSI-VULN-01.",
+        "poam (CA-5): produce poam.csv with current status, dates, and milestones; close 1 gap(s); linked KSIs: KSI-VULN-01.",
         "recovery (CP-9, CP-10): produce restore_tests.json with measured RTO/RPO; close 1 gap(s); linked KSIs: KSI-REC-01.",
         "identity_access (AC-2, AC-2(7), AC-6): produce identity_users.json + privileged-account flag + MFA report; close 1 gap(s); linked KSIs: KSI-IAM-01.",
         "crypto (SC-13, SC-28, SC-12): produce FIPS 140-2/3 module list + KMS rotation export + cipher policy; close 1 gap(s); linked KSIs: KSI-LOG-01.",
@@ -522,7 +652,8 @@
       "recommended_actions": [],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "RA5_SCANNER_SCOPE_COVERAGE",
@@ -546,7 +677,8 @@
       "recommended_actions": [],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "AU6_CENTRALIZED_LOG_COVERAGE",
@@ -575,7 +707,8 @@
       "recommended_actions": [],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "SI4_ALERT_INSTRUMENTATION",
@@ -620,7 +753,105 @@
       ],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": [
+        {
+          "finding_id": "SI4_ALERT_INSTRUMENTATION-GAP-001",
+          "control_refs": [
+            "SI-4",
+            "SI-4(1)",
+            "SI-4(4)",
+            "SI-4(16)",
+            "AU-5",
+            "AU-6",
+            "AC-2(4)",
+            "AC-2(7)",
+            "CM-8(3)",
+            "CM-10",
+            "CM-11",
+            "SI-3"
+          ],
+          "current_state": "No alert rules are defined while security-relevant semantic events require instrumentation.",
+          "target_state": "Evidence for SI-4, SI-4(1), SI-4(4), SI-4(16) is complete, system-generated where possible, linked to the affected asset/event/finding population, and retestable by an assessor sample.",
+          "remediation_steps": [
+            "Generate SPL/KQL/GCP/AWS query.",
+            "Add enabled alert.",
+            "Add recipient list.",
+            "Produce sample alert evidence.",
+            "Link alert to incident/change response workflow."
+          ],
+          "estimated_effort": "1-3 days",
+          "priority": "critical",
+          "affected_subjects": [
+            "logging.audit_disabled",
+            "network.public_admin_port_opened"
+          ]
+        },
+        {
+          "finding_id": "SI4_ALERT_INSTRUMENTATION-GAP-002",
+          "control_refs": [
+            "SI-4",
+            "SI-4(1)",
+            "SI-4(4)",
+            "SI-4(16)",
+            "AU-5",
+            "AU-6",
+            "AC-2(4)",
+            "AC-2(7)",
+            "CM-8(3)",
+            "CM-10",
+            "CM-11",
+            "SI-3"
+          ],
+          "current_state": "No enabled alert rule covers logging.audit_disabled.",
+          "target_state": "Evidence for SI-4, SI-4(1), SI-4(4), SI-4(16) is complete, system-generated where possible, linked to the affected asset/event/finding population, and retestable by an assessor sample.",
+          "remediation_steps": [
+            "Generate SPL/KQL/GCP/AWS query.",
+            "Add enabled alert.",
+            "Add recipient list.",
+            "Produce sample alert evidence.",
+            "Link alert to incident/change response workflow."
+          ],
+          "estimated_effort": "1-3 days",
+          "priority": "critical",
+          "affected_subjects": [
+            "logging.audit_disabled",
+            "network.public_admin_port_opened"
+          ]
+        },
+        {
+          "finding_id": "SI4_ALERT_INSTRUMENTATION-GAP-003",
+          "control_refs": [
+            "SI-4",
+            "SI-4(1)",
+            "SI-4(4)",
+            "SI-4(16)",
+            "AU-5",
+            "AU-6",
+            "AC-2(4)",
+            "AC-2(7)",
+            "CM-8(3)",
+            "CM-10",
+            "CM-11",
+            "SI-3"
+          ],
+          "current_state": "No enabled alert rule covers network.public_admin_port_opened.",
+          "target_state": "Evidence for SI-4, SI-4(1), SI-4(4), SI-4(16) is complete, system-generated where possible, linked to the affected asset/event/finding population, and retestable by an assessor sample.",
+          "remediation_steps": [
+            "Generate SPL/KQL/GCP/AWS query.",
+            "Add enabled alert.",
+            "Add recipient list.",
+            "Produce sample alert evidence.",
+            "Link alert to incident/change response workflow."
+          ],
+          "estimated_effort": "1-3 days",
+          "priority": "critical",
+          "affected_subjects": [
+            "logging.audit_disabled",
+            "network.public_admin_port_opened"
+          ]
+        }
+      ]
     },
     {
       "eval_id": "CROSS_DOMAIN_EVENT_CORRELATION",
@@ -653,7 +884,8 @@
         "output/correlations.json"
       ],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "RA5_EXPLOITATION_REVIEW",
@@ -674,7 +906,8 @@
         "output/exploitation_review_queries.md"
       ],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "CM3_CHANGE_EVIDENCE_LINKAGE",
@@ -702,7 +935,8 @@
       "recommended_actions": [],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "AGENT_TOOL_GOVERNANCE",
@@ -724,7 +958,8 @@
       "recommended_actions": [],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "AGENT_PERMISSION_SCOPE",
@@ -746,7 +981,8 @@
       "recommended_actions": [],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "AGENT_MEMORY_CONTEXT_SAFETY",
@@ -768,7 +1004,8 @@
       "recommended_actions": [],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "AGENT_APPROVAL_GATES",
@@ -790,7 +1027,8 @@
       "recommended_actions": [],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "AGENT_POLICY_VIOLATIONS",
@@ -812,7 +1050,8 @@
       "recommended_actions": [],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "AGENT_AUDITABILITY",
@@ -834,7 +1073,8 @@
       "recommended_actions": [],
       "generated_artifacts": [],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam_or_risk_acceptance"
+      "remediation_disposition": "poam_or_risk_acceptance",
+      "assessor_findings": []
     },
     {
       "eval_id": "CA5_POAM_STATUS",
@@ -864,7 +1104,27 @@
         "output/poam.csv"
       ],
       "linked_ksi_ids": [],
-      "remediation_disposition": "poam"
+      "remediation_disposition": "poam",
+      "assessor_findings": [
+        {
+          "finding_id": "CA5_POAM_STATUS-GAP-001",
+          "control_refs": [
+            "CA-5",
+            "CA-7",
+            "RA-5",
+            "CP-9",
+            "CP-10"
+          ],
+          "current_state": "Continuous monitoring evidence incomplete; new POA&M rows written to poam.csv.",
+          "target_state": "Evidence for CA-5, CA-7, RA-5, CP-9 is complete, system-generated where possible, linked to the affected asset/event/finding population, and retestable by an assessor sample.",
+          "remediation_steps": [
+            "Enter responsible roles, funding, and milestone owners in the official POA&M system."
+          ],
+          "estimated_effort": "0.5 day",
+          "priority": "low",
+          "affected_subjects": []
+        }
+      ]
     },
     {
       "eval_id": "TRACKER_EVIDENCE_GAP_ANALYSIS",
@@ -927,7 +1187,7 @@
         "gap-0007-alert-sample-missing [high/alert_sample_missing] row=7 controls=AU-6,SI-4 poam_required=yes :: Alert sample missing: Provide the alert rules / saved searches with recipient li",
         "gap-0008-response-action-missing [high/response_action_missing] row=8 controls=SI-4(1),SI-4(4) poam_required=yes :: Response action missing: List CloudWatch alarms and GuardDuty findings considere",
         "gap-0009-sia-missing [high/sia_missing] row=9 controls=CM-3,SI-2 poam_required=yes :: Sia missing: Sample change tickets in JIRA with full evidence chain: Security Im",
-        "gap-0010-deviation-request-missing [moderate/deviation_request_missing] row=10 controls=CA-5 poam_required=yes :: Deviation request missing: POA&M updates: Provide the current POA&M with deviati",
+        "gap-0010-poam-update-missing [moderate/poam_update_missing] row=10 controls=CA-5 poam_required=yes :: Poam update missing: POA&M updates: Provide the current POA&M with deviation req",
         "gap-0011-response-action-missing [high/response_action_missing] row=11 controls=IR-4,IR-6 poam_required=yes :: Response action missing: Incident response evidence: any suspected or confirmed",
         "gap-0012-crypto-fips-evidence-missing [high/crypto_fips_evidence_missing] row=12 controls=SC-13,SC-28,SC-12 poam_required=no :: Crypto fips evidence missing: FIPS 140-2/3 evidence: list crypto modules in use",
         "gap-0013-restore-test-missing [high/restore_test_missing] row=13 controls=CP-9,CP-10 poam_required=yes :: Restore test missing: Backup and recovery evidence: most recent restore test (RT",
@@ -958,7 +1218,7 @@
         "alerting (AU-6, SI-4, SI-4(1), SI-4(4), IR-4, IR-6): produce sample_alert_ref pointing at an executed alert export; tickets.json entry citing the alert with documented response; close 3 gap(s); linked KSIs: KSI-LOG-01, KSI-IR-01.",
         "change_management (CM-3, SI-2): produce tickets.json field security_impact_analysis=true with SIA attachment; close 1 gap(s); linked KSIs: KSI-CM-01.",
         "incident_response (SI-4(1), SI-4(4), IR-4, IR-6): produce tickets.json entry citing the alert with documented response; close 2 gap(s); linked KSIs: KSI-IR-01.",
-        "poam (CA-5): produce poam.csv row with deviation_request_ref + approval evidence; close 1 gap(s); linked KSIs: KSI-VULN-01.",
+        "poam (CA-5): produce poam.csv with current status, dates, and milestones; close 1 gap(s); linked KSIs: KSI-VULN-01.",
         "recovery (CP-9, CP-10): produce restore_tests.json with measured RTO/RPO; close 1 gap(s); linked KSIs: KSI-REC-01.",
         "identity_access (AC-2, AC-2(7), AC-6): produce identity_users.json + privileged-account flag + MFA report; close 1 gap(s); linked KSIs: KSI-IAM-01.",
         "crypto (SC-13, SC-28, SC-12): produce FIPS 140-2/3 module list + KMS rotation export + cipher policy; close 1 gap(s); linked KSIs: KSI-LOG-01.",
@@ -977,5 +1237,37 @@
     "source": "correlations.json",
     "embedded": false
   },
-  "assessment_bundle_present": true
+  "assessment_bundle_present": true,
+  "assessment_population_summary": {
+    "assets_total": 0,
+    "events_total": 1,
+    "scanner_findings_total": 0,
+    "scanner_targets_total": 0,
+    "log_sources_total": 0,
+    "alert_rules_total": 0,
+    "tickets_total": 0,
+    "assets_with_scanner_target": 0,
+    "assets_with_active_log_source": 0,
+    "assets_with_linked_ticket": 0,
+    "open_high_critical_findings": 0,
+    "sample_readiness": {
+      "asset_population_available": false,
+      "event_population_available": true,
+      "scanner_population_available": false,
+      "ticket_population_available": false
+    }
+  },
+  "subject_inventory": {
+    "assets": [],
+    "events": [
+      {
+        "event_id": "assessment_tracker.meta_event:tracker-meta-0001",
+        "semantic_type": "unknown",
+        "asset_id": "assessment_tracker",
+        "provider": "assessment_tracker",
+        "raw_ref": "assessment_tracker.meta_event:tracker-meta-0001"
+      }
+    ],
+    "findings": []
+  }
 }

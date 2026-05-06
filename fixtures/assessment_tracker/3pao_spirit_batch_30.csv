@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CM-3, SA-11","CM-3 security impact analysis narrative for container base image parent swap citing blast radius estimation and rollback feasibility deltas for impacted workloads before promotion.",2019-11-14,2020-02-14,Open,Platform,"Comment from Assessor: Narrative must cite signed architecture decision record IDs not chat transcript exports only.","CSP: CM3-sia-img-201911.pdf."
+
+"CM-3, CP-10","CM-3 production deployment log excerpt for image promotion showing artifact digest pinned to signed release manifest hash and prior to production deployment release gate evidence.",2019-10-30,2020-01-30,Open,Release Eng,"Comment from Assessor: Log must show digest matching CI provenance object not floating latest tag pointer.","CSP: CM3-deploy-img-201910.jsonl."
+
+"CM-3, SA-10","CM-3 post-deploy verification checklist for secrets manager rotation linkage with verification evidence URLs pointing at smoke test job consoles and pass or fail outcomes.",2019-09-25,2019-12-25,Open,AppSec,"Comment from Assessor: Checklist must cite job console permalinks with UTC timestamps not local timezone screenshots.","CSP: CM3-verify-secrets-201909.xlsx."
+
+"SI-2, CM-3","SI-2 security patch bundle rollout change request export with Jira issue keys tied to kernel errata advisories and change control board meeting date for emergency window.",2019-12-01,2020-03-01,Open,Linux SRE,"Comment from Assessor: Export must include RFC numeric identifiers from change tool not forwarded email only.","CSP: SI2-patch-201912.csv."
+
+"CP-6, CP-9","CP-9 RDS snapshot chain evidence with snapshot evidence export IDs showing customer-managed KMS CMKs for each region replica and backup scope filter clause excluding non-prod clones.",2019-08-19,2019-11-19,Open,Data Protection,"Comment from Assessor: Evidence must list snapshot completion timestamps within 24 hours of policy window not month-old pulls.","CSP: CP9-rds-chain-201908.csv."

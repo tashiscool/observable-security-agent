@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observable-security-agent.local/schemas/assurance-package.schema.json",
+  "title": "Observable Security Agent Assurance Package",
+  "description": "OSCAL-inspired machine-readable assurance package for normalized evidence, findings, mappings, deterministic validation, recommendations, and human review.",
+  "type": "object",
+  "required": [
+    "manifest",
+    "controls",
+    "evidence",
+    "findings",
+    "controlMappings",
+    "validationResults",
+    "agentRecommendations",
+    "humanReviewDecisions",
+    "assessmentResults",
+    "audit"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "manifest": {
+      "type": "object",
+      "required": [
+        "packageId",
+        "system",
+        "assessmentPeriod",
+        "framework",
+        "baseline",
+        "controlsAssessed",
+        "evidenceCount",
+        "findingCount",
+        "aiGeneratedRecommendations",
+        "humanReviewedRecommendations",
+        "controlsWithInsufficientEvidence",
+        "schemaValidation",
+        "packageStatus",
+        "unsupportedClaimsBlockedCount",
+        "generatedAt"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "packageId": { "type": "string", "minLength": 1 },
+        "system": { "type": "string", "minLength": 1 },
+        "assessmentPeriod": {
+          "type": "object",
+          "required": ["start", "end"],
+          "additionalProperties": false,
+          "properties": {
+            "start": { "type": "string", "minLength": 1 },
+            "end": { "type": "string", "minLength": 1 }
+          }
+        },
+        "framework": { "type": "string", "minLength": 1 },
+        "baseline": { "type": "string", "minLength": 1 },
+        "controlsAssessed": { "type": "array", "items": { "type": "string" } },
+        "evidenceCount": { "type": "integer", "minimum": 0 },
+        "findingCount": { "type": "integer", "minimum": 0 },
+        "aiGeneratedRecommendations": { "type": "integer", "minimum": 0 },
+        "humanReviewedRecommendations": { "type": "integer", "minimum": 0 },
+        "controlsWithInsufficientEvidence": { "type": "array", "items": { "type": "string" } },
+        "schemaValidation": { "type": "string", "enum": ["PASS", "FAIL"] },
+        "packageStatus": { "type": "string", "enum": ["DRAFT", "READY_FOR_REVIEW", "RETURNED", "APPROVED"] },
+        "unsupportedClaimsBlockedCount": { "type": "integer", "minimum": 0 },
+        "generatedAt": { "type": "string", "minLength": 1 }
+      }
+    },
+    "controls": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/control" }
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence" }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "controlMappings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/controlMapping" }
+    },
+    "validationResults": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/validationResult" }
+    },
+    "agentRecommendations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/agentRecommendation" }
+    },
+    "humanReviewDecisions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/humanReviewDecision" }
+    },
+    "assessmentResults": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/assessmentResult" }
+    },
+    "audit": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true }
+    }
+  },
+  "$defs": {
+    "control": {
+      "type": "object",
+      "required": ["controlId", "family", "title", "requirementText", "parameters", "framework", "responsibility", "sourceRef", "evidenceIds", "findingIds"],
+      "additionalProperties": true,
+      "properties": {
+        "controlId": { "type": "string", "minLength": 1 },
+        "family": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "requirementText": { "type": "string", "minLength": 1 },
+        "parameters": { "type": "object" },
+        "framework": { "type": "string", "minLength": 1 },
+        "baseline": { "type": ["string", "null"] },
+        "responsibility": { "type": "string" },
+        "sourceRef": { "type": "string", "minLength": 1 },
+        "evidenceIds": { "type": "array", "items": { "type": "string" } },
+        "findingIds": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["evidenceId", "sourceSystem", "sourceType", "collectedAt", "observedAt", "controlIds", "rawRef", "normalizedSummary", "trustLevel", "freshnessStatus"],
+      "additionalProperties": true,
+      "properties": {
+        "evidenceId": { "type": "string", "minLength": 1 },
+        "controlIds": { "type": "array", "items": { "type": "string" } },
+        "rawRef": { "type": "string", "minLength": 1 },
+        "freshnessStatus": { "type": "string" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "required": ["findingId", "sourceSystem", "title", "description", "severity", "status", "evidenceIds", "controlIds"],
+      "additionalProperties": true,
+      "properties": {
+        "findingId": { "type": "string", "minLength": 1 },
+        "evidenceIds": { "type": "array", "items": { "type": "string" } },
+        "controlIds": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "controlMapping": {
+      "type": "object",
+      "required": ["mappingId", "sourceControlId", "targetControlId", "relationship", "rationale", "evidenceIds", "findingIds", "mappingConfidence", "sourceRef"],
+      "additionalProperties": true,
+      "properties": {
+        "mappingId": { "type": "string", "minLength": 1 },
+        "targetControlId": { "type": "string", "minLength": 1 },
+        "evidenceIds": { "type": "array", "items": { "type": "string" } },
+        "findingIds": { "type": "array", "items": { "type": "string" } },
+        "mappingConfidence": { "type": "string", "enum": ["EXACT_SOURCE_CONTROL", "STATIC_RULE", "HEURISTIC", "NEEDS_REVIEW"] }
+      }
+    },
+    "validationResult": {
+      "type": "object",
+      "required": ["validatorId", "status", "evidenceIds", "findingIds", "message", "remediationHint", "timestamp"],
+      "additionalProperties": true,
+      "properties": {
+        "validatorId": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "enum": ["PASS", "FAIL", "WARN", "UNKNOWN"] },
+        "evidenceIds": { "type": "array", "items": { "type": "string" } },
+        "findingIds": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "agentRecommendation": {
+      "type": "object",
+      "required": ["recommendationId", "controlId", "findingIds", "evidenceIds", "recommendationType", "summary", "rationale", "confidence", "blockedUnsupportedClaims", "humanReviewRequired"],
+      "additionalProperties": true,
+      "properties": {
+        "recommendationId": { "type": "string", "minLength": 1 },
+        "controlId": { "type": "string", "minLength": 1 },
+        "findingIds": { "type": "array", "items": { "type": "string" } },
+        "evidenceIds": { "type": "array", "items": { "type": "string" } },
+        "blockedUnsupportedClaims": { "type": "boolean" }
+      }
+    },
+    "humanReviewDecision": {
+      "type": "object",
+      "required": ["reviewDecisionId", "recommendationId", "reviewer", "decision", "justification", "timestamp", "evidenceIds", "findingIds"],
+      "additionalProperties": true,
+      "properties": {
+        "reviewDecisionId": { "type": "string", "minLength": 1 },
+        "recommendationId": { "type": "string", "minLength": 1 },
+        "evidenceIds": { "type": "array", "items": { "type": "string" } },
+        "findingIds": { "type": "array", "items": { "type": "string" } },
+        "justification": { "type": "string", "minLength": 1 }
+      }
+    },
+    "assessmentResult": {
+      "type": "object",
+      "required": ["assessmentId", "controlId", "status", "summary", "evidenceIds", "findingIds", "gaps", "recommendations", "reviewDecisionIds", "confidence", "humanReviewRequired", "createdAt"],
+      "additionalProperties": true,
+      "properties": {
+        "assessmentId": { "type": "string", "minLength": 1 },
+        "controlId": { "type": "string", "minLength": 1 },
+        "status": { "type": "string" },
+        "evidenceIds": { "type": "array", "items": { "type": "string" } },
+        "findingIds": { "type": "array", "items": { "type": "string" } },
+        "reviewDecisionIds": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

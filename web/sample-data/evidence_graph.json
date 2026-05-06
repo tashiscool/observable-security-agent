@@ -7,7 +7,7 @@
     "asset_id": "prod-api-01",
     "resource_id": "sg-0123456789prodapi",
     "timestamp": "2026-05-01T10:42:00Z",
-    "raw_event_ref": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0",
+    "raw_event_ref": "<repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0",
     "port": 22,
     "source_cidr": "0.0.0.0/0",
     "metadata": {
@@ -349,7 +349,7 @@
     {
       "source": {
         "type": "event",
-        "id": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0"
+        "id": "<repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0"
       },
       "relationship": "targets_asset",
       "target": {

@@ -8,6 +8,7 @@ from fedramp20x.poam_builder import (
     build_poam_items_from_findings,
     load_poam_policy,
     merge_poam_items_for_package,
+    poam_items_from_csv,
 )
 
 CONFIG = Path(__file__).resolve().parents[1] / "config"
@@ -108,6 +109,36 @@ def test_remediation_plan_specific_to_scanner() -> None:
     assert "scanner" in blob
 
 
+def test_poam_preserves_assessor_workpaper_remediation() -> None:
+    f = {
+        "finding_id": "F-WP",
+        "status": "open",
+        "severity": "medium",
+        "priority": "moderate",
+        "estimated_effort": "0.5 day",
+        "created_at": "2026-01-15T00:00:00+00:00",
+        "title": "RA-5",
+        "description": "scanner",
+        "linked_eval_ids": ["RA5_SCANNER_SCOPE_COVERAGE"],
+        "linked_ksi_ids": ["KSI-VULN-01"],
+        "nist_control_refs": ["RA-5"],
+        "affected_assets": ["p1"],
+        "current_state": "scanner target export missing for p1",
+        "target_state": "scanner target export includes p1",
+        "remediation_steps": ["Export scanner target inventory", "Re-run assessment"],
+    }
+    item = build_poam_items_from_findings([f], _policy())[0]
+    assert item["current_state"] == "scanner target export missing for p1"
+    assert item["target_state"] == "scanner target export includes p1"
+    assert item["priority"] == "moderate"
+    assert item["estimated_effort"] == "0.5 day"
+    plan = item["remediation_plan"]
+    assert plan[0]["description"] == "Export scanner target inventory"
+    assert plan[0]["source"] == "assessor_workpaper"
+    assert plan[1]["description"] == "Re-run assessment"
+    assert "closure evidence" in plan[-1]["description"]
+
+
 def test_remediation_logging_alert_change_exploitation_keywords() -> None:
     pol = _policy()
     cases = [
@@ -153,6 +184,21 @@ def test_merge_skips_csv_when_eval_covered_by_generated() -> None:
     merged = merge_poam_items_for_package(csv_rows, gen)
     assert len(merged) == 1
     assert merged[0]["poam_id"] == "POAM-G1"
+
+
+def test_poam_csv_import_uses_shared_dialect_loader(tmp_path: Path) -> None:
+    p = tmp_path / "poam_semicolon.csv"
+    p.write_text(
+        "\ufeffPOA&M ID;Weakness Name;Weakness Description;Status;Source Eval ID\n"
+        'P-1;Logging gap;"Line one\nLine two";Open;AU6_CENTRALIZED_LOG_COVERAGE\n',
+        encoding="utf-8",
+    )
+    items = poam_items_from_csv(p)
+    assert len(items) == 1
+    assert items[0]["poam_id"] == "P-1"
+    assert items[0]["weakness_description"] == "Line one\nLine two"
+    assert items[0]["current_state"] == "Line one\nLine two"
+    assert items[0]["target_state"]
 
 
 def test_risk_acceptance_accepted_by_skips() -> None:

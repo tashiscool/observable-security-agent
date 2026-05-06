@@ -1,0 +1,6 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"RA-5, CM-8, CA-2","Schedule assessor witness of vulnerability scan execution and export of results for OS infra DB and web tiers; verify targets plugins and credentialed access.",2020-02-24,2020-03-29,Open,Vuln Lead,"Comment from Assessor: Propose week-of slots for team to observe scan and export. Late scheduling impacts SAR timeline.","CSP: Offering Tue 09:00–15:00 window."
+
+"CA-5, RA-5","Current FedRAMP Deviation Request documentation for false positive scanner findings including detailed justification mitigations and AO-style approval trail.",2019-11-07,2020-04-24,Open,GRC,"Comment from Assessor: Use FedRAMP DR template; validate mitigations match POA&M narrative.","CSP: Draft DR-14 attached for Oracle plugin bundle."
+
+"SC-1, PL-1","Evidence for organizational policies repo: (i) storage location (ii) who can read (iii) who can modify (iv) manner personnel notified of updates — sample notification email.",2019-11-07,2020-02-28,Open,Policy Admin,"Comment from Assessor: Item (iv) needs sample or auto-notify screenshot from repo tool.","CSP: Wiki subscription email sample pending."

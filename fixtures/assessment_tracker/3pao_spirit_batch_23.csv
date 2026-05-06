@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SC-8, SC-13","SC-8 transmission confidentiality matrix for east-west and north-south paths listing enforced TLS versions and cipher suites per service class.",2019-11-12,2020-02-12,Open,Net Sec,"Comment from Assessor: Matrix must cite live listener config export IDs not Visio-only narrative.","CSP: SC8-tls-matrix-201911.csv."
+
+"SI-5, AC-8","SI-5 security warning banner deployment log with SSO-attested user view counts per release channel and banner text version identifier.",2019-10-02,2020-01-02,Open,IdP Admin,"Comment from Assessor: Log must join to SSO application client IDs not web server access log only.","CSP: SI5-banner-201910.jsonl."
+
+"AC-10, IA-5","AC-10 concurrent session limit policy export for privileged profiles documenting lockout-on-excess behavior and helpdesk override audit requirements.",2019-12-08,2020-03-08,Open,IAM,"Comment from Assessor: Export must be production realm policy JSON not sandbox defaults.","CSP: AC10-sesslim-201912.xml."
+
+"RA-9, RA-3","RA-9 criticality analysis workbook mapping system components to impact categories with scoring rubric tied to most recent risk assessment refresh.",2019-09-18,2019-12-18,Open,Risk Team,"Comment from Assessor: Workbook must reference component IDs from the authoritative system register not marketing names only.","CSP: RA9-crit-201909.xlsx."
+
+"CP-8, CP-2","CP-8 alternate telecommunications service provider inventory with failover activation test dates and contract renewal milestones for crisis voice bridge.",2019-08-25,2019-11-25,Open,Continuity,"Comment from Assessor: Inventory must include carrier account numbers redacted per privacy policy.","CSP: CP8-telco-201908.pdf."

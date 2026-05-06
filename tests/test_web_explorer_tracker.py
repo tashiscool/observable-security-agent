@@ -113,16 +113,18 @@ def test_tracker_js_renders_every_required_section() -> None:
     assert '"poam_required"' in js
 
 
-def test_tracker_js_lists_all_seven_reasoners_for_llm_tab() -> None:
+def test_tracker_js_lists_all_reasoners_for_llm_tab() -> None:
     js = (WEB / "tracker.js").read_text(encoding="utf-8")
     for reasoner in (
         "classify_ambiguous_row",
         "explain_for_assessor",
         "explain_for_executive",
+        "explain_conmon_reasonableness",
         "explain_residual_risk_for_ao",
         "explain_derivation_trace",
         "draft_remediation_ticket",
         "draft_auditor_response",
+        "evaluate_3pao_remediation_for_gap",
     ):
         assert reasoner in js, f"LLM Reasoning tab missing button for {reasoner}"
     # Endpoints the tab calls.
@@ -276,12 +278,14 @@ def test_api_ai_status_lists_all_reasoners() -> None:
     assert "endpoint" in body
     assert set(body.get("reasoners", [])) == {
         "classify_ambiguous_row",
+        "draft_auditor_response",
+        "draft_remediation_ticket",
+        "evaluate_3pao_remediation_for_gap",
+        "explain_conmon_reasonableness",
+        "explain_derivation_trace",
         "explain_for_assessor",
         "explain_for_executive",
         "explain_residual_risk_for_ao",
-        "explain_derivation_trace",
-        "draft_remediation_ticket",
-        "draft_auditor_response",
     }
 
 

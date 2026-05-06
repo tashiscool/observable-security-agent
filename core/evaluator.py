@@ -29,6 +29,76 @@ from evals.scanner_scope import eval_scanner_scope
 from evals.vulnerability_exploitation_review import eval_vulnerability_exploitation_review
 
 
+def _priority_for_result(result: EvalResult) -> str:
+    if result.result == EvalStatus.FAIL:
+        sev = str(result.machine.get("severity") or "").lower()
+        if sev in ("critical", "high"):
+            return "critical"
+        return "high"
+    if result.result == EvalStatus.PARTIAL:
+        return "moderate"
+    return "low"
+
+
+def _effort_for_gap(text: str, result: EvalResult) -> str:
+    s = text.lower()
+    if any(k in s for k in ("no scanner", "central log", "alert rule", "cloud control plane", "ticket")):
+        return "1-3 days"
+    if any(k in s for k in ("duplicate", "ip drift", "trace", "sample", "credentialed")):
+        return "0.5-1 day"
+    if result.result == EvalStatus.FAIL:
+        return "1-2 days"
+    return "0.5 day"
+
+
+def _target_state(result: EvalResult) -> str:
+    controls = ", ".join(result.control_refs[:4]) or result.eval_id
+    return (
+        f"Evidence for {controls} is complete, system-generated where possible, "
+        "linked to the affected asset/event/finding population, and retestable by an assessor sample."
+    )
+
+
+def _assessor_findings_from_result(result: EvalResult) -> list[dict[str, object]]:
+    gaps = list(result.machine.get("gaps") or [])
+    if not gaps and result.gap:
+        gaps = [result.gap]
+    if not gaps or result.result == EvalStatus.PASS:
+        return []
+    affected = list(result.machine.get("affected_assets") or [])
+    actions = [a for a in str(result.recommended_action or "").split("; ") if a]
+    findings: list[dict[str, object]] = []
+    for i, gap in enumerate(gaps, start=1):
+        text = str(gap)
+        findings.append(
+            {
+                "finding_id": f"{result.eval_id}-GAP-{i:03d}",
+                "control_refs": list(result.control_refs),
+                "current_state": text,
+                "target_state": _target_state(result),
+                "remediation_steps": actions
+                or [
+                    "Collect the missing system evidence.",
+                    "Link evidence to the affected control population.",
+                    "Re-run the assessment and retain the validation artifact.",
+                ],
+                "estimated_effort": _effort_for_gap(text, result),
+                "priority": _priority_for_result(result),
+                "affected_subjects": affected,
+            }
+        )
+    return findings
+
+
+def _attach_assessor_findings(results: list[EvalResult]) -> None:
+    for result in results:
+        findings = _assessor_findings_from_result(result)
+        if not findings:
+            result.machine.setdefault("assessor_findings", [])
+            continue
+        result.machine["assessor_findings"] = findings
+
+
 def overall_status(results: list[EvalResult]) -> str:
     if any(r.result == EvalStatus.FAIL for r in results):
         return "FAIL"
@@ -90,6 +160,7 @@ def run_evaluations(
     results.append(
         eval_poam_status(bundle, semantic_event, asset_evidence, results, output_dir=output_dir)
     )
+    _attach_assessor_findings(results)
 
     chain = evidence_chain_dict(results)
     return CorrelationBundle(

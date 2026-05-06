@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"AC-3(4), IA-2","AC-3(4) dual authorization evidence export for destructive cloud API operations listing distinct approver and executor principal identifiers tied to change records.",2019-11-01,2020-02-01,Open,IAM,"Comment from Assessor: Export must be IdP and cloud audit joint extract not narrative memo only.","CSP: DUALAUTH-201911.jsonl."
+
+"SI-3, SI-8","SI-3 malicious code protection subscription export covering endpoint groups with alert rule linkage for infection detections routed to SOC primary queue.",2019-10-20,2020-01-20,Open,SOC,"Comment from Assessor: Export must show engine build channel and not marketing overview deck.","CSP: SI3-subscription-201910.csv."
+
+"AT-2, AT-3","AT-2 organization-wide phishing simulation metrics export by department with follow-on awareness training completion crosswalk for the assessment window.",2019-09-05,2019-12-05,Open,HR Sec,"Comment from Assessor: Metrics must join LMS UID to workforce cost-center codes in HRIS extract.","CSP: AT2-phish-201909.xlsx."
+
+"CP-10, CP-2","CP-10 alternate communications channel drill memorandum for crisis bridge dial-in failover order and timed activation checklist with observer notes.",2019-12-12,2020-03-12,Open,Continuity,"Comment from Assessor: Memo must cite bridge vendor invoices or call detail records redacted for privacy.","CSP: CP10-bridge-drill-201912.docx."
+
+"IR-9, IR-6","IR-9 information spillage handling record listing containment steps sanitizer job identifiers communications hold confirmations and records disposition references.",2019-08-19,2019-11-19,Open,IR,"Comment from Assessor: Record must map to tickets with named reviewers not chat thread printout only.","CSP: IR9-spill-201908.pdf."

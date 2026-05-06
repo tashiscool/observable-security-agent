@@ -38,6 +38,7 @@
     trace: null,         // agent_run_trace.json
     summaryMd: "",       // agent_run_summary.md
     trackerEval: null,   // tracker_gap_eval_results.json
+    conmonReasonableness: null,
     package: null,       // fedramp20x-package.json
     poamCsvRows: [],
     trackerPoamCsvRows: [],
@@ -141,6 +142,7 @@
       ["agent_run_trace.json", "json", "trace"],
       ["agent_run_summary.md", "text", "summaryMd"],
       ["tracker_gap_eval_results.json", "json", "trackerEval"],
+      ["conmon_reasonableness.json", "json", "conmonReasonableness"],
       ["poam.csv", "text-csv", "poamCsvRows"],
       ["tracker_poam.csv", "text-csv", "trackerPoamCsvRows"],
     ];
@@ -181,6 +183,16 @@
     if (tracker.gapsBundle) {
       tracker.gaps = tracker.gapsBundle.evidence_gaps || tracker.gapsBundle.gaps || [];
       tracker.informationals = tracker.gapsBundle.informational_tracker_items || [];
+    }
+    if (!tracker.conmonReasonableness) {
+      const conmonHit = await fetchFirstOk("conmon_reasonableness/conmon_reasonableness.json", ["../output/"]);
+      if (conmonHit) {
+        try {
+          tracker.conmonReasonableness = await conmonHit.response.json();
+        } catch (e) {
+          tracker.loadErrors.push("conmon_reasonableness.json: " + e.message);
+        }
+      }
     }
   }
 
@@ -550,11 +562,13 @@
   const REASONERS = [
     { id: "explain_for_assessor", label: "Explain selected eval (assessor)" },
     { id: "explain_for_executive", label: "Executive summary" },
+    { id: "explain_conmon_reasonableness", label: "ConMon reasonableness" },
     { id: "explain_residual_risk_for_ao", label: "AO residual risk" },
     { id: "explain_derivation_trace", label: "Explain derivation trace" },
     { id: "draft_remediation_ticket", label: "Draft remediation ticket" },
     { id: "draft_auditor_response", label: "Draft auditor response" },
     { id: "classify_ambiguous_row", label: "Classify ambiguous row" },
+    { id: "evaluate_3pao_remediation_for_gap", label: "Evaluate 3PAO remediation" },
   ];
 
   function simpleMd(md) {
@@ -609,6 +623,18 @@
       const summary = pkg.summary || pkg.assessment_summary || {};
       return { reasoner: name, payload: { package_summary: summary } };
     }
+    if (name === "explain_conmon_reasonableness") {
+      return {
+        reasoner: name,
+        payload: {
+          conmon_result: tracker.conmonReasonableness || {
+            summary: { obligations: 0, reasonable: 0, partial: 0, missing: 0, tracker_rows: tracker.rows.length },
+            evidence_ecosystems: {},
+            obligation_assessments: [],
+          },
+        },
+      };
+    }
     if (name === "explain_residual_risk_for_ao") {
       const f = selectedFindingForLlm();
       const pi = (tracker.package && tracker.package.poam_items) || [];
@@ -639,11 +665,18 @@
       const f = selectedFindingForLlm();
       return { reasoner: name, payload: { finding: f || {}, eval_record: someEval || null } };
     }
+    
+    // For gap-related reasoners, use the currently selected gap (or the first one)
+    const selectedGap = (tracker.gaps || []).find(g => g.gap_id === tracker.selectedGapId) || tracker.gaps[0] || {};
+    
     if (name === "draft_auditor_response") {
-      const g = tracker.gaps[0] || {};
-      const q = "Show evidence of " + (g.gap_type || "the cited control") + " for the cited assets.";
-      return { reasoner: name, payload: { question: q, evidence_gap: g } };
+      const q = "Show evidence of " + (selectedGap.gap_type || "the cited control") + " for the cited assets.";
+      return { reasoner: name, payload: { question: q, evidence_gap: selectedGap } };
     }
+    if (name === "evaluate_3pao_remediation_for_gap") {
+      return { reasoner: name, payload: { evidence_gap: selectedGap } };
+    }
+    
     if (name === "classify_ambiguous_row") {
       const r = tracker.rows[0] || {};
       return {
@@ -720,8 +753,10 @@
       ["confidence", body.confidence],
       ["draft_ticket_id", body.draft_ticket_id],
       ["audience", body.audience],
+      ["reasonable_test_passed", body.reasonable_test_passed],
+      ["recommendation", body.recommendation],
     ].filter(p => p[1] != null).map(p => "<li><strong>" + esc(p[0]) + ":</strong> " + esc(String(p[1])) + "</li>").join("");
-    const longBody = body.body || body.description_md || body.response_md || body.rationale || "";
+    const longBody = body.body || body.description_md || body.response_md || body.rationale || body.remediation_plan_md || "";
     out.innerHTML =
       "<p><strong>Reasoner:</strong> <code>" + esc(name) + "</code> " +
       "<span class='llm-pill " + pillCls + "'>" + esc(src) + "</span></p>" +

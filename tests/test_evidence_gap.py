@@ -392,7 +392,7 @@ def test_real_sample_includes_critical_gap_types() -> None:
         "alert_sample_missing",
         "response_action_missing",
         "sia_missing",
-        "deviation_request_missing",
+        "poam_update_missing",
         "crypto_fips_evidence_missing",
         "restore_test_missing",
         "identity_listing_missing",

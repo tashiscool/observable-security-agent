@@ -168,6 +168,80 @@ def _iter_gap_lines(ev: dict[str, Any]) -> list[str]:
     return parts or [gap]
 
 
+def _assessor_workpapers(ev: dict[str, Any]) -> list[dict[str, Any]]:
+    raw = ev.get("assessor_findings")
+    if not isinstance(raw, list):
+        return []
+    out: list[dict[str, Any]] = []
+    for item in raw:
+        if isinstance(item, dict):
+            out.append(dict(item))
+    return out
+
+
+def _workpaper_for_gap(
+    workpapers: list[dict[str, Any]],
+    *,
+    index: int,
+    gap_line: str,
+) -> dict[str, Any] | None:
+    """Match generated assessor workpapers back to formal findings.
+
+    The assessment engine emits one assessor finding per gap in order; matching by current_state
+    keeps the link stable if duplicate gap rows are deduped later.
+    """
+    if not workpapers:
+        return None
+    norm_gap = _normalize_core_gap(gap_line)
+    for wp in workpapers:
+        current = str(wp.get("current_state") or "")
+        if norm_gap and _normalize_core_gap(current) == norm_gap:
+            return wp
+    if 0 <= index < len(workpapers):
+        return workpapers[index]
+    return None
+
+
+def _normalized_workpaper(
+    *,
+    ev: dict[str, Any],
+    gap_line: str,
+    workpaper: dict[str, Any] | None,
+    rec: str,
+    aff: list[str],
+    control_refs: list[str],
+) -> dict[str, Any]:
+    steps = []
+    if workpaper and isinstance(workpaper.get("remediation_steps"), list):
+        steps = [str(x).strip() for x in workpaper.get("remediation_steps") or [] if str(x).strip()]
+    if not steps and rec:
+        steps = [x.strip() for x in rec.split(";") if x.strip()]
+    if not steps:
+        steps = [
+            "Collect the missing system evidence.",
+            "Link evidence to the affected control population.",
+            "Re-run the assessment and retain the validation artifact.",
+        ]
+    return {
+        "source_assessor_finding_id": str((workpaper or {}).get("finding_id") or ""),
+        "control_refs": [str(x) for x in ((workpaper or {}).get("control_refs") or control_refs)],
+        "current_state": str((workpaper or {}).get("current_state") or gap_line),
+        "target_state": str(
+            (workpaper or {}).get("target_state")
+            or "Evidence is complete, linked to the assessed population, and retestable by an assessor sample."
+        ),
+        "remediation_steps": steps,
+        "estimated_effort": str((workpaper or {}).get("estimated_effort") or "1-3 days"),
+        "priority": str((workpaper or {}).get("priority") or "moderate"),
+        "affected_subjects": [
+            str(x).strip()
+            for x in ((workpaper or {}).get("affected_subjects") or aff)
+            if str(x).strip()
+        ],
+        "source_eval_result": str(ev.get("eval_id") or ""),
+    }
+
+
 def _emit_eval_findings(
     ev: dict[str, Any],
     *,
@@ -203,10 +277,11 @@ def _emit_eval_findings(
     gap_lines = _iter_gap_lines(ev)
     if not gap_lines:
         gap_lines = [str(ev.get("summary") or "Assessment gap recorded without a detailed gap line.")]
+    workpapers = _assessor_workpapers(ev)
 
     seen: set[tuple[str, str | None, str]] = set()
     out: list[dict[str, Any]] = []
-    for gap_line in gap_lines:
+    for gap_index, gap_line in enumerate(gap_lines):
         asset = _extract_asset_from_gap(gap_line, aff)
         gn = _normalize_core_gap(gap_line)
         key = (eid, asset, gn)
@@ -216,6 +291,14 @@ def _emit_eval_findings(
         fid = _finding_id_stub(eid, asset, gn)
         desc = _deficiency_description(eid, gap_line, asset)
         poam_id = _poam_for_eval(poam_items, eid)
+        wp = _normalized_workpaper(
+            ev=ev,
+            gap_line=gap_line,
+            workpaper=_workpaper_for_gap(workpapers, index=gap_index, gap_line=gap_line),
+            rec=rec,
+            aff=aff if aff else ([asset] if asset else []),
+            control_refs=control_refs,
+        )
         row: dict[str, Any] = {
             "finding_id": fid,
             "created_at": created_at,
@@ -231,6 +314,12 @@ def _emit_eval_findings(
             "risk_statement": _risk_statement(severity, lc.get("rev5") or []),
             "compensating_controls": [],
             "recommended_remediation": rec,
+            "assessor_workpaper": wp,
+            "current_state": wp["current_state"],
+            "target_state": wp["target_state"],
+            "remediation_steps": wp["remediation_steps"],
+            "estimated_effort": wp["estimated_effort"],
+            "priority": wp["priority"],
             "risk_acceptance": {
                 "required": False,
                 "accepted_by": None,

@@ -9,7 +9,7 @@
     "asset_id": "prod-api-01",
     "resource_id": "sg-0123456789prodapi",
     "timestamp": "2026-05-01T10:42:00Z",
-    "raw_event_ref": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0",
+    "raw_event_ref": "<repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0",
     "port": 22,
     "source_cidr": "0.0.0.0/0",
     "metadata": {
@@ -31,7 +31,7 @@
     "asset_id": "prod-api-01",
     "resource_id": "sg-0123456789prodapi",
     "timestamp": "2026-05-01T10:42:00Z",
-    "raw_event_ref": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0",
+    "raw_event_ref": "<repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0",
     "port": 22,
     "source_cidr": "0.0.0.0/0",
     "metadata": {
@@ -265,9 +265,9 @@
         "Event fixture:untracked-instance-001 compute.untracked_asset_created affected rogue-prod-worker-99; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false.",
         "Event fixture:logging-audit-denied-001 logging.audit_disabled affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.",
         "Event fixture:identity-admin-role-001 identity.admin_role_granted affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.",
-        "Event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened affected prod-api-01; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false."
+        "Event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened affected prod-api-01; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false."
       ],
-      "gap": "fixture:untracked-instance-001: missing required observability (alert_rule, central_logging).; fixture:logging-audit-denied-001: missing required observability (central_logging).; fixture:identity-admin-role-001: missing required observability (central_logging).; /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging).",
+      "gap": "fixture:untracked-instance-001: missing required observability (alert_rule, central_logging).; fixture:logging-audit-denied-001: missing required observability (central_logging).; fixture:identity-admin-role-001: missing required observability (central_logging).; <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging).",
       "recommended_action": "Map detections to CMDB/inventory identifiers.; Ensure scanner scope covers in-boundary assets.; Enable central audit ingestion for the affected asset.; Enable alert rules with recipients for the semantic type.; Open and link an incident or change ticket to the event or asset.",
       "severity": "high",
       "summary": "Cross-domain correlation failed: one or more risky events lack alert, central logging, or required ticket linkage.",
@@ -276,7 +276,7 @@
         "fixture:untracked-instance-001: missing required observability (alert_rule, central_logging).",
         "fixture:logging-audit-denied-001: missing required observability (central_logging).",
         "fixture:identity-admin-role-001: missing required observability (central_logging).",
-        "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging)."
+        "<repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging)."
       ],
       "affected_assets": [
         "fixture:identity-admin-role-001",
@@ -336,10 +336,10 @@
         "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.",
         "No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.",
         "No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.",
-        "No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
+        "No ticket linked to event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
         "Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence."
       ],
-      "gap": "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.; No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.; No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.; No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.; Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence.",
+      "gap": "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.; No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.; No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.; No ticket linked to event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.; Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence.",
       "recommended_action": "Create/link change ticket.; Add SIA.; Add test evidence.; Add approval.; Add deployment evidence.; Add verification scan evidence.",
       "severity": "high",
       "summary": "CM-3/SI-2 failed: high-risk change or High/Critical finding has no linked change ticket.",
@@ -348,7 +348,7 @@
         "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.",
         "No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.",
         "No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.",
-        "No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
+        "No ticket linked to event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
         "Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence."
       ],
       "affected_assets": [
@@ -755,13 +755,13 @@
         "Event fixture:untracked-instance-001 compute.untracked_asset_created affected rogue-prod-worker-99; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false.",
         "Event fixture:logging-audit-denied-001 logging.audit_disabled affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.",
         "Event fixture:identity-admin-role-001 identity.admin_role_granted affected unknown-asset; scanner_covered=False; alert_rule_enabled=True; linked_ticket=false.",
-        "Event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened affected prod-api-01; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false."
+        "Event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened affected prod-api-01; scanner_covered=False; alert_rule_enabled=False; linked_ticket=false."
       ],
       "gaps": [
         "fixture:untracked-instance-001: missing required observability (alert_rule, central_logging).",
         "fixture:logging-audit-denied-001: missing required observability (central_logging).",
         "fixture:identity-admin-role-001: missing required observability (central_logging).",
-        "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging)."
+        "<repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0: missing required observability (alert_rule, central_logging)."
       ],
       "affected_assets": [
         "fixture:identity-admin-role-001",
@@ -837,14 +837,14 @@
         "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.",
         "No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.",
         "No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.",
-        "No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
+        "No ticket linked to event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
         "Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence."
       ],
       "gaps": [
         "No ticket linked to event fixture:untracked-instance-001 compute.untracked_asset_created.",
         "No ticket linked to event fixture:logging-audit-denied-001 logging.audit_disabled.",
         "No ticket linked to event fixture:identity-admin-role-001 identity.admin_role_granted.",
-        "No ticket linked to event /Users/tkhan/IdeaProjects/security-infra/observable-security-agent/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
+        "No ticket linked to event <repo>/fixtures/scenario_public_admin_vuln_event/cloud_events.json#0 network.public_admin_port_opened.",
         "Ticket VULN-9912 exists for prod-api-01 vulnerability but lacks SIA, testing evidence, deployment evidence, and verification evidence."
       ],
       "affected_assets": [

@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "sample_count": 72,
+  "project_count": 12,
+  "runtime_dependency_policy": "Reference samples are design inputs and adapter contracts only; runtime packages do not import reference_samples.",
+  "projects": [
+    {"project": "prowler", "samples": 11, "status": "implemented", "fuels": "CSPM finding import, compliance mapping style, exposure normalization"},
+    {"project": "cloudsploit", "samples": 6, "status": "implemented", "fuels": "CloudSploit CSV/JSON result parsing and public exposure patterns"},
+    {"project": "electriceye", "samples": 6, "status": "implemented", "fuels": "AWS check vocabulary and failed-check normalization"},
+    {"project": "aurelian", "samples": 4, "status": "partial", "fuels": "External exposure reasoning without rebuilding reconnaissance"},
+    {"project": "cloudgraph-cli", "samples": 4, "status": "planned", "fuels": "Asset graph concepts and relationship vocabulary"},
+    {"project": "fixinventory", "samples": 5, "status": "planned", "fuels": "Inventory snapshot and boundary reconciliation shapes"},
+    {"project": "cartography", "samples": 5, "status": "planned", "fuels": "Relationship graph semantics and detector expectation examples"},
+    {"project": "ocsf-schema", "samples": 7, "status": "partial", "fuels": "Event and finding normalization vocabulary"},
+    {"project": "nisify", "samples": 7, "status": "implemented", "fuels": "NIST-shaped maturity scoring and report organization"},
+    {"project": "FedRAMP20xMCP", "samples": 5, "status": "implemented", "fuels": "FedRAMP 20x KSI lookup and pattern schema ideas"},
+    {"project": "knox-fedramp-20x-pilot", "samples": 5, "status": "implemented", "fuels": "20x package and machine-readable assessment examples"},
+    {"project": "auditkit", "samples": 7, "status": "implemented", "fuels": "Audit package layout, read-only posture, multi-framework narrative"}
+  ]
+}

@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CM-3, SA-10","CM-3 security impact analysis worksheet for database engine major version upgrades citing dependency blast radius and rollback feasibility summary.",2019-11-18,2020-02-18,Open,DB Reliability,"Comment from Assessor: Worksheet must reference approved architecture decision record IDs not email consensus only.","CSP: CM3-sia-db-201911.pdf."
+
+"CM-3, SA-10","CM-3 production deployment event log including artifact digest pinned to CI run IDs prior to production deployment for the payment API release train.",2019-10-28,2020-01-28,Open,Release Eng,"Comment from Assessor: Log must show digest matching signed build manifest hash not floating latest tag.","CSP: CM3-deploy-201910.jsonl."
+
+"RA-5, RA-5(2)","RA-5 Nessus vulnerability scan report export for internet-facing subnets showing scan tool version strings and scan frequency policy reference for quarterly cadence.",2019-09-22,2019-12-22,Open,Vuln Mgmt,"Comment from Assessor: Export must include plugin feed version stamp not host agent inventory substitute.","CSP: RA5-nessus-201909.zip."
+
+"IR-4, IR-8","IR-4 incident response evidence pack for case SR-INC-2019-0442 linking containment actions to documented response action timeline with customer notifications.",2019-12-12,2020-03-12,Open,IR Lead,"Comment from Assessor: Pack must cite SIEM search head job IDs not screenshots of analyst chat only.","CSP: IR4-pack-201912.pdf."
+
+"AU-6, AU-9","AU-6 local audit log sample from authentication service host paired with matches centralized SIEM copy for same interactive login event IDs within five-minute window.",2019-08-30,2019-11-30,Open,Observability,"Comment from Assessor: Sample must redact subject distinguished names per privacy policy while keeping event IDs.","CSP: AU6-local-201908.tgz."

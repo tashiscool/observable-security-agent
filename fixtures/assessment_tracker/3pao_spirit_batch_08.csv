@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SR-3, SA-9, SR-5","Software supply chain risk packet for critical outsourced engineering partner including subprocessor list flow-down clauses and annual reassessment date.",2020-02-20,2020-04-15,Open,Vendor Risk,"Comment from Assessor: Template must cite NIST SSDF-style controls mapped in appendix not narrative only.","CSP: VRM-2020-09 packet uploading this week."
+
+"AT-3, AT-4","Completed role-based security training exports for personnel holding privileged infrastructure roles including completion timestamps for the assessment window.",2019-11-07,2020-02-28,Open,HR Sec,"Comment from Assessor: LMS UID must join to IAM privileged roster CSV provided in row 78.","CSP: Joined export v4 attached."
+
+"CM-8, SA-22","Machine-readable SBOM CycloneDX or SPDX for production container image tag rel-2026.03 matching Integrated Inventory Workbook line keys.",2020-03-01,2020-04-05,Open,AppSec,"Comment from Assessor: SPDX identifiers must align to IIW component naming not marketing names.","CSP: SBOM sbom-rel-2026-03.json."
+
+"SA-10, SI-7, CM-5","CI attestations showing promoted artifact digest matches verified signature bundle or in-toto attestation prior to production deployment.",2020-03-12,2020-04-12,Open,Release Eng,"Comment from Assessor: Public key trust path for signature must be referenced.","CSP: Sigstore bundle 2020-03-14 attached."
+
+"SI-7(1), SI-4","File integrity monitoring configuration listing monitored paths directories scan schedule and alert rule linkage for policy FIM-LINUX-PROD.",2019-11-07,2020-03-03,Open,SOC,"Comment from Assessor: Export must be system-generated not policy PDF prose only.","CSP: Chef Inspec compliance export."

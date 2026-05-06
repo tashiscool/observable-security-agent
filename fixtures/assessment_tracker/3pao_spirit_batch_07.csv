@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"MP-6(2), MP-2","Annual operational test records for media sanitization equipment showing measured erasure or destruction outcomes against org baseline.",2019-11-07,2019-12-18,Open,Facilities,"Comment from Assessor: Third-party attestation alone does not replace primary test logs.","CSP: Lab calibration sheet plus wipe verification printouts."
+
+"PE-3, PE-8","Visitor access logs or physical access reports for data center entries in the period including escort name and badge correlation.",2019-11-07,2020-01-02,Open,Physical Sec,"Comment from Assessor: Badge system export must join to visitor pre-registration list.","CSP: On-prem DC exports weekly CSV."
+
+"AC-22, SI-12","Evidence content proposed for publicly accessible web properties was reviewed before posting with approver identity and timestamp recorded.",2019-11-07,2019-12-24,Open,Web Team,"Comment from Assessor: Workflow screenshot must show decision not only draft URL.","CSP: CMS approval trail PDF attached."
+
+"RA-5(5), CA-7","System export proving credentialed administrator accounts are used for database vulnerability scans including policy screen with authentication method.",2019-11-07,2020-03-25,Open,Vuln Lead,"Comment from Assessor: Redact secrets in screenshots per handbook.","CSP: Nessus policy DB-PROD-01 export."
+
+"SA-11(1), SA-15","Static application security testing summary for release branch 2.8 showing high-severity findings disposition before merge to main.",2020-03-10,2020-04-11,Open,AppSec,"Comment from Assessor: Need tool name version and gate policy excerpt.","CSP: GitLab SAST job 4412 artifact."

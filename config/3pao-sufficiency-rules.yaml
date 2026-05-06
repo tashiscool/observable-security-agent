@@ -1,0 +1,133 @@
+schema_version: "1.0"
+description: >
+  Configurable 3PAO reasonable-test artifact sufficiency checks. These rules
+  are intentionally evidence-oriented: tracker rows and gap reports describe
+  the ask, but do not prove implementation.
+
+context_artifact_exclusions:
+  - tracker_items
+  - evidence_gaps
+  - gap_matrix
+  - gap_report
+  - conmon_reasonableness
+  - auditor_questions
+
+no_related_artifacts:
+  requirement: related_artifacts supplied
+  evidence: No related artifacts were provided to evaluate the current CSP stance.
+  remediation: Pass system exports, ticket exports, tracker attachments, or package slices into `related_artifacts` before claiming the reasonable test is met.
+
+only_context_artifacts:
+  requirement: authoritative proof artifact supplied
+  evidence_template: "Only tracker/request-context artifacts were supplied; these help explain the ask but are not proof of implementation. Ignored as proof: {ignored}."
+  remediation: Supply primary/system-generated artifacts such as AWS exports, SIEM logs, scanner exports, ticket records with required fields, policy approval records, or GRC package slices.
+
+default_check:
+  requirement: recommended artifact present
+  remediation_template: "Attach the recommended artifact: {recommended_artifact}."
+
+checks:
+  sia_missing:
+    - requirement: security impact analysis / determination
+      phrases: [security impact analysis, sia, security impact determination, scr]
+      remediation: Attach the SIA/SCR or change-impact determination for the sampled change.
+    - requirement: approval / AO or change authority routing
+      phrases: [approved, approval, ao routing, change advisory board, cab]
+      remediation: Attach approval history or AO/CAB routing evidence.
+    - requirement: testing reference
+      phrases: [test, testing, validation, verification, smoke]
+      remediation: Attach pre/post implementation testing evidence tied to the change.
+  change_ticket_missing:
+    - requirement: ticket system export
+      phrases: [ticket, jira, servicenow, smartsheet, change request, chg]
+      remediation: Attach the authoritative Jira/ServiceNow/Smartsheet export.
+    - requirement: approval and implementation timeline
+      phrases: [approval, approved, implemented, deployment, closed]
+      remediation: Show approval, implementation, and closeout timestamps in the ticket export.
+  vulnerability_scan_evidence_missing:
+    - requirement: scanner export
+      phrases: [nessus, burp, qualys, prowler, scanner, scan report, finding]
+      remediation: Attach system-generated scanner output for the sampled period.
+    - requirement: version / plugin / signature currency
+      phrases: [version, plugin, signature, updated, feed, definition]
+      remediation: Attach scanner version and plugin/signature update evidence.
+  credentialed_scan_evidence_missing:
+    - requirement: credentialed/authenticated setting
+      phrases: [credentialed, authenticated, privileged, ssh, database credentials]
+      remediation: Attach scanner profile evidence showing authenticated or privileged scanning.
+  scanner_scope_missing:
+    - requirement: target scope covers in-boundary inventory
+      phrases: [target, scope, inventory, asset, scanner_targets, ip range]
+      remediation: Attach scanner target list reconciled to inventory and boundary.
+  inventory_mismatch:
+    - requirement: inventory reconciliation
+      phrases: [reconcile, discrepancy, inventory, asset, duplicate, cmdb]
+      remediation: Attach reconciled inventory with source-of-truth IDs and duplicate resolution.
+  centralized_log_missing:
+    - requirement: central log ingestion
+      phrases: [splunk, wazuh, cloudwatch, siem, central, forwarder, index]
+      remediation: Attach central log source mapping and recent ingestion proof.
+  local_to_central_log_correlation_missing:
+    - requirement: same local event in central SIEM
+      phrases: [local, central, same event, splunk, siem, timestamp]
+      remediation: Attach local log sample and matching central SIEM event with timestamp correlation.
+  alert_rule_missing:
+    - requirement: alert rule configuration
+      phrases: [alert rule, cloudwatch alarm, guardduty, saved search, recipient]
+      remediation: Attach enabled alert rule/configuration with recipients and covered events.
+  alert_sample_missing:
+    - requirement: executed alert or event sample
+      phrases: [sample alert, alert fired, mail gateway, spam filter, phishing, event time]
+      remediation: Attach executed alert/event sample showing detection time and disposition.
+  response_action_missing:
+    - requirement: documented response and closure
+      phrases: [incident, response, closure, ticket, actions taken, root cause]
+      remediation: Attach incident/ticket record with events, actions, notifications, and closure.
+  approval_missing:
+    - requirement: review and approval evidence
+      phrases: [approved, approval, reviewed, sign-off, locked, notification]
+      remediation: Attach approval/sign-off or notification evidence for the requested artifact.
+  deployment_evidence_missing:
+    - requirement: deployment proof
+      phrases: [deploy, deployment, release, artifact digest, pipeline, implemented]
+      remediation: Attach deployment logs with artifact IDs and timestamps.
+  verification_evidence_missing:
+    - requirement: post-deploy verification
+      phrases: [verification, validated, smoke test, health check, pass]
+      remediation: Attach post-deploy validation evidence with explicit pass/fail outcomes.
+  exploitation_review_missing:
+    - requirement: IOC/exploitation log review
+      phrases: [ioc, indicator, exploitation, splunk, query, log review, compromise]
+      remediation: Attach log-review queries/results showing exploitation review for the vulnerability window.
+  poam_update_missing:
+    - requirement: current POA&M row and milestone
+      phrases: [poa&m, poam, milestone, scheduled completion, status]
+      remediation: Attach current POA&M export with status, milestones, and SAR/finding linkage.
+  deviation_request_missing:
+    - requirement: deviation or vendor dependency justification
+      phrases: [deviation, false positive, risk adjustment, operational requirement, vendor dependency]
+      remediation: Attach FedRAMP deviation/FP/RA/OR/vendor dependency package and approvals.
+  backup_evidence_missing:
+    - requirement: backup execution and scope
+      phrases: [backup, snapshot, retention, success, encrypted]
+      remediation: Attach backup execution logs and scope/retention/encryption evidence.
+  restore_test_missing:
+    - requirement: restore test with measured RTO/RPO
+      phrases: [restore, rto, rpo, recovery, test result]
+      remediation: Attach restore test results with measured RTO/RPO and lessons learned.
+  identity_listing_missing:
+    - requirement: authoritative account/access listing
+      phrases: [account, user, role, privilege, mfa, rules of behavior]
+      remediation: Attach authoritative account/access export with roles, MFA, status, and approvals.
+  password_policy_evidence_missing:
+    - requirement: password/lockout policy export
+      phrases: [password, lockout, minimum, history, expiration, unsuccessful]
+      remediation: Attach IdP/component password policy and lockout configuration export.
+  crypto_fips_evidence_missing:
+    - requirement: FIPS/crypto module proof
+      phrases: [fips, kms, cipher, certificate, encryption, tls]
+      remediation: Attach FIPS certificate/module mapping and live cipher/encryption configuration.
+  traffic_flow_policy_missing:
+    - requirement: traffic flow / boundary proof
+      phrases: [security group, nacl, route, port, protocol, data flow, boundary]
+      remediation: Attach data-flow diagram and live security group/NACL/route/ports matrix.

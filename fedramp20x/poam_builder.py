@@ -5,8 +5,6 @@ Remediation text fields remain assessor-facing prose (not copied from upstream s
 
 from __future__ import annotations
 
-import csv
-import io
 import json
 import re
 from datetime import datetime, timedelta, timezone
@@ -14,6 +12,8 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+
+from core.csv_utils import load_csv_rows
 
 _DEFAULT_POLICY: dict[str, Any] = {
     "schema_version": "1.0",
@@ -197,6 +197,50 @@ def _remediation_plan(kind: str, policy: dict[str, Any], *, risk_owner: str, bas
     ]
 
 
+def _assessor_remediation_plan(
+    finding: dict[str, Any],
+    *,
+    risk_owner: str,
+    base: datetime,
+    due_days: int,
+) -> list[dict[str, Any]]:
+    steps = finding.get("remediation_steps")
+    if not isinstance(steps, list):
+        wp = finding.get("assessor_workpaper")
+        if isinstance(wp, dict):
+            steps = wp.get("remediation_steps")
+    if not isinstance(steps, list):
+        return []
+    clean = [str(x).strip() for x in steps if str(x).strip()]
+    if not clean:
+        return []
+    span = max(due_days - 1, 7)
+    total = len(clean)
+    out: list[dict[str, Any]] = []
+    for i, desc in enumerate(clean, start=1):
+        frac = 0.0 if total == 1 else (i - 1) / total
+        off = int(span * frac)
+        out.append(
+            {
+                "step": i,
+                "description": desc,
+                "owner": risk_owner,
+                "due_date": (base + timedelta(days=min(off, due_days - 1))).date().isoformat(),
+                "source": "assessor_workpaper",
+            }
+        )
+    out.append(
+        {
+            "step": len(out) + 1,
+            "description": "Re-run assessment validation and attach closure evidence for assessor re-test.",
+            "owner": risk_owner,
+            "due_date": (base + timedelta(days=due_days)).date().isoformat(),
+            "source": "assessor_workpaper",
+        }
+    )
+    return out
+
+
 def _customer_impact(severity: str, policy: dict[str, Any]) -> str:
     tpl = policy.get("customer_impact_templates") or {}
     sev = _norm_severity(severity)
@@ -250,7 +294,9 @@ def build_poam_items_from_findings(
         days = _due_days(sev, pol)
         target = (created + timedelta(days=days)).date().isoformat()
         kind = _classify_finding(f)
-        plan = _remediation_plan(kind, pol, risk_owner=risk_owner, base=created, due_days=days)
+        plan = _assessor_remediation_plan(f, risk_owner=risk_owner, base=created, due_days=days)
+        if not plan:
+            plan = _remediation_plan(kind, pol, risk_owner=risk_owner, base=created, due_days=days)
         ra_block = _risk_acceptance_block(f)
         controls = list(f.get("nist_control_refs") or (f.get("legacy_controls") or {}).get("rev5") or [])
         ksi_ids = list(f.get("linked_ksi_ids") or f.get("ksi_ids") or [])
@@ -259,17 +305,26 @@ def build_poam_items_from_findings(
         title = str(f.get("title") or "Control weakness")
         desc = str(f.get("description") or f.get("risk_statement") or "")
         assets = [str(x) for x in (f.get("affected_assets") or []) if str(x).strip()]
+        wp = f.get("assessor_workpaper") if isinstance(f.get("assessor_workpaper"), dict) else {}
+        current_state = str(f.get("current_state") or wp.get("current_state") or desc)
+        target_state = str(f.get("target_state") or wp.get("target_state") or "")
+        estimated_effort = str(f.get("estimated_effort") or wp.get("estimated_effort") or "")
+        priority = str(f.get("priority") or wp.get("priority") or "")
         item: dict[str, Any] = {
             "poam_id": poam_id,
             "finding_id": fid,
             "title": title,
             "severity": sev,
+            "priority": priority,
+            "estimated_effort": estimated_effort,
             "risk_owner": risk_owner,
             "system_owner": sys_owner,
             "created_at": created.replace(tzinfo=created.tzinfo or timezone.utc).isoformat(),
             "target_completion_date": target,
             "status": str(pol.get("default_status_open") or "Open"),
             "remediation_plan": plan,
+            "current_state": current_state,
+            "target_state": target_state,
             "validation_required_for_closure": val_close,
             "customer_impact": _customer_impact(sev, pol),
             "risk_acceptance": ra_block,
@@ -310,12 +365,8 @@ def poam_items_from_csv(path: Path) -> list[dict[str, Any]]:
     """Normalize legacy ``poam.csv`` rows into package ``poam_items`` dicts."""
     if not path.is_file():
         return []
-    text = path.read_text(encoding="utf-8")
-    if not text.strip():
-        return []
-    reader = csv.DictReader(io.StringIO(text))
     out: list[dict[str, Any]] = []
-    for row in reader:
+    for row in load_csv_rows(path):
         raw = {k: (v or "") for k, v in row.items()}
         pid = raw.get("POA&M ID") or raw.get("poam_id") or raw.get("POAM ID") or ""
         if not pid:
@@ -329,6 +380,10 @@ def poam_items_from_csv(path: Path) -> list[dict[str, Any]]:
                 "asset_identifier": raw.get("Asset Identifier", ""),
                 "status": raw.get("Status", ""),
                 "source_eval_id": raw.get("Source Eval ID", ""),
+                "current_state": raw.get("Weakness Description", "") or raw.get("Weakness Name", ""),
+                "target_state": raw.get("Target State", "") or "Weakness remediated and validated for closure.",
+                "priority": raw.get("Priority", "") or "not specified",
+                "estimated_effort": raw.get("Estimated Effort", "") or "not specified",
                 "raw_row": raw,
             }
         )
@@ -364,6 +419,12 @@ def write_poam_markdown(path: Path, items: list[dict[str, Any]]) -> None:
         lines.append(f"- **Finding ID:** `{p.get('finding_id', '')}`")
         lines.append(f"- **Controls:** {', '.join(p.get('source_controls') or [])}")
         lines.append(f"- **KSIs:** {', '.join(p.get('source_ksi_ids') or [])}")
+        if p.get("priority") or p.get("estimated_effort"):
+            lines.append(f"- **Priority / effort:** {p.get('priority', '')} / {p.get('estimated_effort', '')}")
+        if p.get("current_state"):
+            lines.append(f"- **Current state:** {p.get('current_state', '')}")
+        if p.get("target_state"):
+            lines.append(f"- **Target state:** {p.get('target_state', '')}")
         lines.append(f"- **Customer impact:** {p.get('customer_impact', '')}")
         lines.append(f"- **Validation for closure:** {p.get('validation_required_for_closure', '')}")
         lines.append("")

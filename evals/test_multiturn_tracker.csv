@@ -1,0 +1,5 @@
+controls,request_text,request_date,due_date,status,owner,assessor/csp comments
+"SAP, Pen Test, CM-2, CM-2(7), CM-8, CM-8(5)", "System inventory (e.g., Integrated Inventory Workbook) (SSP Attachment 13)", 11/07/19, 01/27/20, Locked, Frederick Boateng, "Comment from SecureIT (1/23): System inventory appears to be evolving as some servers are not currently running, however, SAP completed and provided in row 2. Please provide the final, updated copy of the system inventory workbook once testing completes.
+Comment from EconSys (1/24): See attached updated inventory workbook. We removed the stale instances.
+Comment from SecureIT (1/25): We reviewed the attached workbook and note that 3 EC2 instances in the dev environment do not have logging configured. FedRAMP requires all components within the boundary to be logged.
+Comment from EconSys (1/26): Dev instances are out of scope for continuous monitoring per our SSP."

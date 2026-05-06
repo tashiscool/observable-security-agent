@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SI-14, MP-6","SI-14 non-persistence evidence for batch workers showing transient scratch volumes are encrypted wiped on instance stop and exclude swap to persistent disks per policy.",2019-11-22,2020-02-22,Open,Platform Eng,"Comment from Assessor: Evidence must include automation job IDs not operator assertion only.","CSP: SI14-wipeproof-201911.jsonl."
+
+"SC-34, SI-4","SC-34 denial-of-service monitoring configuration listing SYN flood and volumetric anomaly thresholds with on-call escalation paths for SOC.",2019-10-28,2020-01-28,Open,SOC,"Comment from Assessor: Export must come from edge device or scrubber vendor API not slide values only.","CSP: SC34-ddos-pol-201910.yaml."
+
+"AC-19, MDM","AC-19 portable computing device authorization roster with MDM compliance posture OS patch cadence and restricted data-class flags by user cohort.",2019-09-07,2019-12-07,Open,Identity,"Comment from Assessor: Roster must join to IdP group IDs not device nicknames only.","CSP: AC19-roster-201909.csv."
+
+"SC-51, SI-3","SC-51 platform integrity export for bastion hosts listing TPM quote freshness policy expected PCR banks and verification tool output references.",2019-12-18,2020-03-18,Open,Hardening,"Comment from Assessor: Export must cite vendor baseline version tied to image build record.","CSP: SC51-tpm-201912.zip."
+
+"AU-2, AU-12","AU-2 auditable events baseline table mapping each required event type to log source class default enablement and central platform routing rule.",2019-08-30,2019-11-30,Open,Logging,"Comment from Assessor: Table must align to ConMon event catalogue revision frozen for the assessment.","CSP: AU2-baseline-201908.csv."

@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CP-9(1), CP-10","Annual restore exercise results documenting measured RTO and RPO versus SSP targets; include DR ticket or exercise record and lessons learned.",2020-02-05,2020-02-24,Open,Ops,"Comment from Assessor: Need actual timed restore window not only policy excerpt.","CSP: DR-Exec-2020-01 timing sheet pending final sign-off."
+
+"CM-3, CM-4","Infrastructure image promotion RG-204 must reference a single change or service ticket URL traceable in the ITSM index with scope and risk class.",2020-03-10,2020-04-06,Open,Change Mgmt,"Comment from Assessor: No change ticket linked in row notes — cannot close CM-3 sample.","CSP: Will backfill CHG link after CAB retro."
+
+"CM-3, SA-10","Deployment evidence for RG-204: CI job URL with green build hash matching production release tag or IaC apply log for the target account.",2020-03-10,2020-04-06,Open,Release Eng,"Comment from Assessor: Console screenshot alone does not show automated deploy lineage.","CSP: Jenkins build 8841 plus Terraform state snapshot attached."
+
+"CM-3, SI-2","Post-deploy verification evidence for RG-204: smoke tests automated health checks or canary results executed after production rollout.",2020-03-10,2020-04-14,Open,QA,"Comment from Assessor: Login-page-only check insufficient per CMP Table 9 for infra promotion.","CSP: Expanding probe suite; attaching v2."
+
+"CM-3, CM-5","CAB or electronic approval export listing approvers decision and time for CHG-RG-204 including segregation-of-duties evidence.",2020-03-10,2020-04-01,Open,Change Mgmt,"Comment from Assessor: Partial screenshot missing approver identity list and UTC timestamp block.","CSP: Full ServiceNow PDF export uploading 2020-04-02."

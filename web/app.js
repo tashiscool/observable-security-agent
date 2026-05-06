@@ -22,13 +22,35 @@
     correlationReportMd: "",
     agentRunTrace: null,
     agentRunSummaryMd: "",
+    referenceCoverage: null,
+    capabilityInventory: null,
+    reasonablenessFindings: null,
+    liveCollectionCoverage: null,
+    conmonWorkbench: null,
+    publicExposureWorkbench: null,
+    aiBackendStatus: null,
+    packageDiff: null,
+    goldenPackage: null,
+    goldenMetrics: null,
+    goldenEvalResults: null,
+    goldenRunLog: [],
+    goldenReports: {},
+    goldenArtifactHits: [],
     loadMeta: { source: "", errors: [] },
     selectedEval: null,
     selectedGraphKey: null,
     selectedPoamRow: null,
+    selectedGoldenReport: "executive-summary.md",
   };
 
   function artifactUrls(name) {
+    if (name.indexOf("golden/") === 0) {
+      const rel = name.slice("golden/".length);
+      return [
+        new URL("../build/assurance-package-demo/" + rel, window.location.href).href,
+        new URL("sample-data/golden/" + rel, window.location.href).href,
+      ];
+    }
     return [
       new URL("../output/" + name, window.location.href).href,
       new URL("sample-data/" + name, window.location.href).href,
@@ -406,6 +428,7 @@
 
   let evalFilter = "ALL";
   let evalControlFilter = "";
+  let graphTypeFilter = "ALL";
 
   function renderEvalTable() {
     const evs = (state.evalResults && state.evalResults.evaluations) || [];
@@ -448,6 +471,39 @@
       el.innerHTML = "<p class='warn'>Select an evaluation row.</p>";
       return;
     }
+    const matrix = matrixRowsForEval(e.eval_id);
+    const assessorFindings = Array.isArray(e.assessor_findings) ? e.assessor_findings.filter((x) => x && typeof x === "object") : [];
+    const workpaperHtml = assessorFindings.length
+      ? assessorFindings
+          .map((f) => {
+            const steps = Array.isArray(f.remediation_steps) ? f.remediation_steps : [];
+            return `<div class="card" style="margin-bottom:0.75rem">
+              <div class="label">${escapeHtml(f.finding_id || e.eval_id)}</div>
+              <p><strong>Priority:</strong> ${escapeHtml(f.priority || "—")} <span style="color:var(--muted)">Effort: ${escapeHtml(
+                f.estimated_effort || "—"
+              )}</span></p>
+              <p><strong>Current state:</strong> ${escapeHtml(f.current_state || "—")}</p>
+              <p><strong>Target state:</strong> ${escapeHtml(f.target_state || "—")}</p>
+              <ul class="plain">${steps.map((s) => "<li>" + escapeHtml(String(s)) + "</li>").join("")}</ul>
+            </div>`;
+          })
+          .join("")
+      : "<p class='warn'>No assessor workpaper emitted for this evaluation.</p>";
+    const matrixHtml = matrix.length
+      ? `<div class="mono-block">${escapeHtml(
+          JSON.stringify(
+            matrix.map((r) => ({
+              current_state: r.current_state || "",
+              target_state: r.target_state || "",
+              priority: r.priority || "",
+              estimated_effort: r.estimated_effort || "",
+              remediation_steps: r.remediation_steps || "",
+            })),
+            null,
+            2
+          )
+        )}</div>`
+      : "<p class='warn'>No evidence_gap_matrix.csv row loaded for this evaluation.</p>";
     const ga = e.generated_artifacts;
     const arts = Array.isArray(ga) ? ga.join(", ") : typeof ga === "string" ? ga : "—";
     el.innerHTML = `
@@ -461,11 +517,18 @@
         .map((x) => "<li>" + escapeHtml(String(x)) + "</li>")
         .join("")}</ul>
       <h4>Gaps</h4><p>${escapeHtml(e.gap || "")}</p>
+      <h4>Assessor workpaper</h4>${workpaperHtml}
+      <h4>Gap matrix workpaper row</h4>${matrixHtml}
       <h4>Recommended actions</h4><p>${escapeHtml(e.recommended_action || "")}</p>
       <h4>Generated artifacts</h4><p>${escapeHtml(arts)}</p>
       <h4>Derivation trace</h4>
       <div class="mono-block">${escapeHtml(buildDerivationTrace(e))}</div>
     `;
+  }
+
+  function matrixRowsForEval(evalId) {
+    if (!evalId) return [];
+    return (state.gapMatrix || []).filter((r) => String(r.eval_id || "") === String(evalId));
   }
 
   function renderGraph() {
@@ -475,7 +538,9 @@
       list.innerHTML = "<p class='warn'>No evidence_graph.json</p>";
       return;
     }
-    const nodes = flattenGraphNodes(g);
+    renderGraphFilters();
+    renderGraphVisual();
+    const nodes = flattenGraphNodes(g).filter((n) => graphTypeFilter === "ALL" || n.category === graphTypeFilter);
     list.innerHTML = nodes
       .map(
         (n) =>
@@ -489,6 +554,88 @@
         list.querySelectorAll(".graph-node-item").forEach((d) => d.classList.remove("sel"));
         div.classList.add("sel");
         state.selectedGraphKey = div.getAttribute("data-gk");
+        showGraphEdges();
+      });
+    });
+  }
+
+  function renderGraphFilters() {
+    const bar = document.getElementById("graph-filter-bar");
+    if (!bar || !state.evidenceGraph) return;
+    const cats = ["ALL"].concat([...new Set(flattenGraphNodes(state.evidenceGraph).map((n) => n.category))].sort());
+    bar.innerHTML = cats
+      .map((c) => `<button type="button" class="${c === graphTypeFilter ? "active" : ""}" data-graph-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`)
+      .join("");
+    bar.querySelectorAll("[data-graph-cat]").forEach((b) => {
+      b.addEventListener("click", () => {
+        graphTypeFilter = b.getAttribute("data-graph-cat") || "ALL";
+        renderGraph();
+      });
+    });
+  }
+
+  function graphColor(category) {
+    const map = {
+      asset: "#3d8bfd",
+      event: "#f85149",
+      scanner_finding: "#d4a72c",
+      ticket: "#79c0ff",
+      control: "#2ea043",
+      ksi: "#a371f7",
+      poam_item: "#ff7b72",
+      alert_rule: "#56d364",
+      log_source: "#ffa657",
+    };
+    return map[category] || "#8b9bb4";
+  }
+
+  function renderGraphVisual() {
+    const wrap = document.getElementById("graph-visual");
+    const g = state.evidenceGraph;
+    if (!wrap || !g) return;
+    const nodes = flattenGraphNodes(g)
+      .filter((n) => graphTypeFilter === "ALL" || n.category === graphTypeFilter)
+      .slice(0, 36);
+    if (!nodes.length) {
+      wrap.innerHTML = "<p class='warn' style='padding:1rem'>No graph nodes for filter.</p>";
+      return;
+    }
+    const keySet = new Set(nodes.map((n) => n.key));
+    const edges = (g.edges || []).filter((e) => keySet.has(e.from) && keySet.has(e.to)).slice(0, 80);
+    const width = 900;
+    const height = 320;
+    const cx = width / 2;
+    const cy = height / 2;
+    const r = Math.min(width, height) * 0.38;
+    const pos = {};
+    nodes.forEach((n, i) => {
+      const angle = (-Math.PI / 2) + (2 * Math.PI * i) / Math.max(nodes.length, 1);
+      pos[n.key] = { x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r };
+    });
+    const edgeHtml = edges
+      .map((e) => {
+        const a = pos[e.from];
+        const b = pos[e.to];
+        if (!a || !b) return "";
+        return `<line class="gv-edge" x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}"><title>${escapeHtml(e.relationship || "")}</title></line>`;
+      })
+      .join("");
+    const nodeHtml = nodes
+      .map((n) => {
+        const p = pos[n.key];
+        const label = String(n.id || "").slice(0, 20);
+        return `<g class="gv-node" data-gk="${escapeHtml(n.key)}" transform="translate(${p.x.toFixed(1)},${p.y.toFixed(1)})">
+          <circle r="13" fill="${graphColor(n.category)}"></circle>
+          <text x="18" y="4">${escapeHtml(label)}</text>
+          <title>${escapeHtml(n.key)}</title>
+        </g>`;
+      })
+      .join("");
+    wrap.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Evidence graph visualization">${edgeHtml}${nodeHtml}</svg>`;
+    wrap.querySelectorAll(".gv-node").forEach((node) => {
+      node.addEventListener("click", () => {
+        state.selectedGraphKey = node.getAttribute("data-gk");
+        document.querySelectorAll(".graph-node-item").forEach((d) => d.classList.toggle("sel", d.getAttribute("data-gk") === state.selectedGraphKey));
         showGraphEdges();
       });
     });
@@ -818,6 +965,461 @@
     document.getElementById("auditor-md").innerHTML = simpleMdToHtml(state.auditorMd);
   }
 
+  function renderCapabilities() {
+    const ref = state.referenceCoverage || {};
+    const inv = state.capabilityInventory || {};
+    const summary = inv.summary || {};
+    const cards = [
+      ["Reference samples", ref.sample_count || "—"],
+      ["Reference projects", ref.project_count || "—"],
+      ["Implemented capabilities", summary.implemented != null ? summary.implemented : "—"],
+      ["Partial capabilities", summary.partial != null ? summary.partial : "—"],
+      ["Planned capabilities", summary.planned != null ? summary.planned : "—"],
+    ];
+    const cardEl = document.getElementById("capability-cards");
+    if (cardEl) {
+      cardEl.innerHTML = cards
+        .map(([l, v]) => `<div class="card"><div class="label">${escapeHtml(l)}</div><div class="value">${escapeHtml(String(v))}</div></div>`)
+        .join("");
+    }
+    const projects = Array.isArray(ref.projects) ? ref.projects : [];
+    const refEl = document.getElementById("reference-coverage-table");
+    if (refEl) {
+      refEl.innerHTML = projects.length
+        ? `<table class="data"><thead><tr><th>Status</th><th>Project</th><th>Samples</th><th>Fuels</th></tr></thead><tbody>${projects
+            .map(
+              (p) =>
+                `<tr><td><span class="badge ${badgeClass(p.status === "implemented" ? "PASS" : p.status === "partial" ? "PARTIAL" : "OPEN")}">${escapeHtml(
+                  p.status || "unknown"
+                )}</span></td><td>${escapeHtml(p.project || "")}</td><td>${escapeHtml(String(p.samples || ""))}</td><td>${escapeHtml(p.fuels || "")}</td></tr>`
+            )
+            .join("")}</tbody></table>`
+        : "<p class='warn'>No reference_coverage.json loaded.</p>";
+    }
+    const caps = Array.isArray(inv.capabilities) ? inv.capabilities : [];
+    const capEl = document.getElementById("capability-inventory-table");
+    if (capEl) {
+      capEl.innerHTML = caps.length
+        ? `<table class="data"><thead><tr><th>Status</th><th>Capability</th><th>Proof</th></tr></thead><tbody>${caps
+            .map(
+              (c) =>
+                `<tr><td><span class="badge ${badgeClass(c.status === "implemented" ? "PASS" : c.status === "partial" ? "PARTIAL" : "OPEN")}">${escapeHtml(
+                  c.status || "unknown"
+                )}</span></td><td>${escapeHtml(c.capability || "")}</td><td>${escapeHtml(c.proof || "")}</td></tr>`
+            )
+            .join("")}</tbody></table>`
+        : "<p class='warn'>No capability_inventory.json loaded.</p>";
+    }
+  }
+
+  function getGoldenPackage() {
+    return state.goldenPackage || {};
+  }
+
+  function getManifest() {
+    return getGoldenPackage().manifest || {};
+  }
+
+  function statusBadge(status) {
+    const s = String(status || "UNKNOWN").toUpperCase();
+    let cls = "missing";
+    if (["PASS", "COMPLIANT", "FIXED", "READY_FOR_REVIEW", "APPROVED", "SUCCESS"].includes(s)) cls = "pass";
+    else if (["WARN", "PARTIALLY_COMPLIANT", "DRAFT", "NEEDS_HUMAN_REVIEW"].includes(s)) cls = "partial";
+    else if (["FAIL", "NON_COMPLIANT", "INSUFFICIENT_EVIDENCE", "COLLECTOR_FAILED", "EVIDENCE_UNAVAILABLE"].includes(s)) cls = "fail";
+    else if (["OPEN", "RISK_ACCEPTED", "FALSE_POSITIVE", "RETURNED"].includes(s)) cls = "open";
+    return `<span class="badge ${cls}">${escapeHtml(s)}</span>`;
+  }
+
+  function evidenceIdList(ids) {
+    const arr = Array.isArray(ids) ? ids : ids ? [ids] : [];
+    if (!arr.length) return "<span class='warn'>No evidence IDs</span>";
+    return arr.map((id) => `<code>${escapeHtml(String(id))}</code>`).join(" ");
+  }
+
+  function renderGoldenPath() {
+    const pkg = getGoldenPackage();
+    const m = getManifest();
+    const metrics = state.goldenMetrics || {};
+    const evals = state.goldenEvalResults || {};
+    const el = document.getElementById("golden-path-cards");
+    if (!el) return;
+    if (!state.goldenPackage) {
+      el.innerHTML = "<p class='warn'>No golden path package loaded. Run <code>python agent.py golden-path-demo --output-dir build/assurance-package-demo</code>.</p>";
+      return;
+    }
+    const cards = [
+      ["Package", m.packageId || "—"],
+      ["Status", m.packageStatus || "—"],
+      ["Schema", m.schemaValidation || "—"],
+      ["Controls", (m.controlsAssessed || []).length],
+      ["Evidence", m.evidenceCount],
+      ["Findings", m.findingCount],
+      ["AI recommendations", m.aiGeneratedRecommendations],
+      ["Human reviewed", m.humanReviewedRecommendations],
+      ["Unsupported claims blocked", m.unsupportedClaimsBlockedCount],
+      ["Eval pass rate", evals.summary ? `${evals.summary.passed}/${evals.summary.total}` : "—"],
+      ["Open HIGH", metrics.high_findings_open != null ? metrics.high_findings_open : "—"],
+      ["Stale evidence", metrics.stale_evidence_count != null ? metrics.stale_evidence_count : "—"],
+    ];
+    el.innerHTML = cards
+      .map(([l, v]) => {
+        const display = String(v ?? "—").replace(/_/g, " ");
+        return `<div class="card"><div class="label">${escapeHtml(String(l))}</div><div class="value fit-value">${escapeHtml(display)}</div></div>`;
+      })
+      .join("");
+    const stages = [
+      ["Raw scanner/cloud telemetry", "vulnerability_scan.json + cloud_config.json"],
+      ["Normalize", `${(pkg.evidence || []).length} EvidenceArtifact rows, ${(pkg.findings || []).length} NormalizedFinding rows`],
+      ["Validate", `${(pkg.validationResults || []).length} deterministic validator results`],
+      ["Map controls", `${(pkg.controlMappings || []).length} ControlMapping records`],
+      ["RAG context", "bounded source-linked bundles, stale/wrong-scope evidence rejected"],
+      ["Recommend", `${(pkg.agentRecommendations || []).length} human-reviewable recommendations`],
+      ["Review", `${(pkg.humanReviewDecisions || []).length} immutable reviewer decisions`],
+      ["Package", "machine-readable JSON + human-readable Markdown + metrics + evals"],
+    ];
+    const flow = document.getElementById("golden-path-flow");
+    if (flow) {
+      flow.innerHTML = stages
+        .map(([title, body], i) => `<div class="flow-step"><div class="flow-num">${i + 1}</div><strong>${escapeHtml(title)}</strong><p>${escapeHtml(body)}</p></div>`)
+        .join("");
+    }
+    const art = document.getElementById("golden-path-artifacts");
+    if (art) {
+      art.innerHTML = state.goldenArtifactHits.length
+        ? `<table class="data"><thead><tr><th>Artifact</th><th>Loaded from</th></tr></thead><tbody>${state.goldenArtifactHits
+            .map((x) => `<tr><td><code>${escapeHtml(x.name)}</code></td><td>${escapeHtml(x.url)}</td></tr>`)
+            .join("")}</tbody></table>`
+        : "<p class='warn'>No golden path artifacts loaded.</p>";
+    }
+  }
+
+  function renderAssurancePackage() {
+    const pkg = getGoldenPackage();
+    const m = getManifest();
+    const cardsEl = document.getElementById("assurance-manifest-cards");
+    if (!cardsEl) return;
+    if (!state.goldenPackage) {
+      cardsEl.innerHTML = "<p class='warn'>No assurance-package.json loaded.</p>";
+      return;
+    }
+    const insufficient = m.controlsWithInsufficientEvidence || [];
+    const cards = [
+      ["System", m.system || "—"],
+      ["Framework", `${m.framework || "—"} / ${m.baseline || "—"}`],
+      ["Period", `${(m.assessmentPeriod && m.assessmentPeriod.start) || "—"} → ${(m.assessmentPeriod && m.assessmentPeriod.end) || "—"}`],
+      ["Package status", m.packageStatus || "—"],
+      ["Schema validation", m.schemaValidation || "—"],
+      ["Insufficient evidence", insufficient.length],
+    ];
+    cardsEl.innerHTML = cards
+      .map(([l, v]) => `<div class="card"><div class="label">${escapeHtml(String(l))}</div><div class="value" style="font-size:1rem">${escapeHtml(String(v))}</div></div>`)
+      .join("");
+
+    const assessments = pkg.assessmentResults || [];
+    const assessmentByControl = {};
+    assessments.forEach((a) => {
+      assessmentByControl[a.controlId] = a;
+    });
+    const controls = pkg.controls || [];
+    const controlsEl = document.getElementById("assurance-controls");
+    if (controlsEl) {
+      controlsEl.innerHTML = controls.length
+        ? `<table class="data"><thead><tr><th>Status</th><th>Control</th><th>Title</th><th>Evidence IDs</th></tr></thead><tbody>${controls
+            .map((c) => {
+              const a = assessmentByControl[c.controlId] || {};
+              return `<tr><td>${statusBadge(a.status)}</td><td><strong>${escapeHtml(c.controlId || "")}</strong></td><td>${escapeHtml(c.title || "")}</td><td>${evidenceIdList(a.evidenceIds)}</td></tr>`;
+            })
+            .join("")}</tbody></table>`
+        : "<p class='warn'>No controls in package.</p>";
+    }
+    const validationEl = document.getElementById("assurance-validation");
+    if (validationEl) {
+      const rows = (pkg.validationResults || []).slice().sort((a, b) => String(a.controlId || "").localeCompare(String(b.controlId || "")));
+      validationEl.innerHTML = rows.length
+        ? `<table class="data"><thead><tr><th>Status</th><th>Validator</th><th>Control</th><th>Message</th></tr></thead><tbody>${rows
+            .map((r) => `<tr><td>${statusBadge(r.status)}</td><td>${escapeHtml(r.validatorId || "")}</td><td>${escapeHtml(r.controlId || "—")}</td><td>${escapeHtml(r.message || "")}</td></tr>`)
+            .join("")}</tbody></table>`
+        : "<p class='warn'>No validation results.</p>";
+    }
+    const assessEl = document.getElementById("assurance-assessments");
+    if (assessEl) {
+      assessEl.innerHTML = assessments.length
+        ? `<div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))">${assessments
+            .map((a) => `<div class="card"><div class="label">${escapeHtml(a.assessmentId || "")}</div><h3 style="margin:0.25rem 0">${escapeHtml(a.controlId || "")} ${statusBadge(a.status)}</h3><p>${escapeHtml(a.summary || "")}</p><p><strong>Confidence:</strong> ${escapeHtml(String(a.confidence ?? "—"))}</p><p><strong>Evidence IDs:</strong> ${evidenceIdList(a.evidenceIds)}</p><p><strong>Gaps:</strong> ${escapeHtml((a.gaps || []).join(" | ") || "—")}</p></div>`)
+            .join("")}</div>`
+        : "<p class='warn'>No assessment results.</p>";
+    }
+  }
+
+  function renderAssuranceEvidence() {
+    const pkg = getGoldenPackage();
+    const evEl = document.getElementById("assurance-evidence-table");
+    if (!evEl) return;
+    const evidence = pkg.evidence || [];
+    evEl.innerHTML = evidence.length
+      ? `<table class="data"><thead><tr><th>Freshness</th><th>Evidence ID</th><th>Source</th><th>Account / Region</th><th>Resource</th><th>Controls</th><th>Summary</th></tr></thead><tbody>${evidence
+          .map((e) => `<tr><td>${statusBadge(e.freshnessStatus)}</td><td><code>${escapeHtml(e.evidenceId || "")}</code></td><td>${escapeHtml(`${e.sourceSystem || ""} / ${e.sourceType || ""}`)}</td><td>${escapeHtml(`${e.accountId || "—"} / ${e.region || "—"}`)}</td><td>${escapeHtml(e.resourceId || e.resourceArn || "—")}</td><td>${escapeHtml((e.controlIds || []).join(", "))}</td><td>${escapeHtml(e.normalizedSummary || "")}</td></tr>`)
+          .join("")}</tbody></table>`
+      : "<p class='warn'>No evidence artifacts loaded.</p>";
+
+    const findingsEl = document.getElementById("assurance-findings");
+    if (findingsEl) {
+      const findings = (pkg.findings || []).slice().sort((a, b) => String(a.severity || "").localeCompare(String(b.severity || "")));
+      findingsEl.innerHTML = findings.length
+        ? `<div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr))">${findings
+            .map((f) => `<div class="card"><div class="label">${escapeHtml(f.scanner || f.sourceSystem || "")}</div><h3 style="margin:0.25rem 0">${escapeHtml(f.findingId || "")}</h3><p>${statusBadge(f.severity)} ${statusBadge(f.status)}</p><p><strong>${escapeHtml(f.title || "")}</strong></p><p>${escapeHtml(f.description || "")}</p><p><strong>Asset:</strong> ${escapeHtml(f.resourceId || f.imageDigest || "—")}</p><p><strong>Controls:</strong> ${escapeHtml((f.controlIds || []).join(", ") || "—")}</p><p><strong>Evidence IDs:</strong> ${evidenceIdList(f.evidenceIds)}</p></div>`)
+            .join("")}</div>`
+        : "<p class='warn'>No normalized findings loaded.</p>";
+    }
+  }
+
+  function renderHumanReview() {
+    const pkg = getGoldenPackage();
+    const recs = pkg.agentRecommendations || [];
+    const decisions = pkg.humanReviewDecisions || [];
+    const reviewed = new Set(decisions.map((d) => d.recommendationId));
+    const cards = [
+      ["Recommendations", recs.length],
+      ["Human decisions", decisions.length],
+      ["Pending review", recs.filter((r) => !reviewed.has(r.recommendationId)).length],
+      ["Compliance-impacting", recs.filter((r) => r.humanReviewRequired).length],
+      ["Unsupported claims blocked", recs.filter((r) => r.blockedUnsupportedClaims).length],
+    ];
+    const cardsEl = document.getElementById("human-review-cards");
+    if (cardsEl) {
+      cardsEl.innerHTML = cards
+        .map(([l, v]) => `<div class="card"><div class="label">${escapeHtml(String(l))}</div><div class="value">${escapeHtml(String(v))}</div></div>`)
+        .join("");
+    }
+    const recEl = document.getElementById("human-review-recommendations");
+    if (recEl) {
+      recEl.innerHTML = recs.length
+        ? `<table class="data"><thead><tr><th>Review</th><th>Type</th><th>Control</th><th>Recommendation</th><th>Evidence IDs</th></tr></thead><tbody>${recs
+            .slice(0, 24)
+            .map((r) => `<tr><td>${statusBadge(reviewed.has(r.recommendationId) ? "PASS" : "NEEDS_HUMAN_REVIEW")}</td><td>${escapeHtml(r.recommendationType || "")}</td><td>${escapeHtml(r.controlId || "")}</td><td>${escapeHtml(r.summary || "")}</td><td>${evidenceIdList(r.evidenceIds)}</td></tr>`)
+            .join("")}</tbody></table>`
+        : "<p class='warn'>No agent recommendations loaded.</p>";
+    }
+    const decEl = document.getElementById("human-review-decisions");
+    if (decEl) {
+      decEl.innerHTML = decisions.length
+        ? `<table class="data"><thead><tr><th>Decision</th><th>Reviewer</th><th>Control</th><th>Recommendation</th><th>Justification</th><th>Evidence IDs</th></tr></thead><tbody>${decisions
+            .slice(0, 24)
+            .map((d) => `<tr><td>${statusBadge(d.decision)}</td><td>${escapeHtml(d.reviewer || "")}</td><td>${escapeHtml(d.controlId || "")}</td><td><code>${escapeHtml(d.recommendationId || "")}</code></td><td>${escapeHtml(d.justification || "")}</td><td>${evidenceIdList(d.evidenceIds)}</td></tr>`)
+            .join("")}</tbody></table>`
+        : "<p class='warn'>No human review decisions loaded.</p>";
+    }
+  }
+
+  function renderMetricsEvals() {
+    const metrics = state.goldenMetrics || {};
+    const evals = state.goldenEvalResults || {};
+    const cards = [
+      ["Retrieval hit rate", metrics.retrieval_hit_rate != null ? metrics.retrieval_hit_rate : "—"],
+      ["Stale evidence", metrics.stale_evidence_count != null ? metrics.stale_evidence_count : "—"],
+      ["Missing evidence", metrics.missing_evidence_count != null ? metrics.missing_evidence_count : "—"],
+      ["Unsupported claims", metrics.unsupported_claim_count != null ? metrics.unsupported_claim_count : "—"],
+      ["Controls without evidence", metrics.controls_without_evidence != null ? metrics.controls_without_evidence : "—"],
+      ["Assets without scan", metrics.assets_without_scan != null ? metrics.assets_without_scan : "—"],
+      ["High open", metrics.high_findings_open != null ? metrics.high_findings_open : "—"],
+      ["Critical open", metrics.critical_findings_open != null ? metrics.critical_findings_open : "—"],
+    ];
+    const cardsEl = document.getElementById("metrics-cards");
+    if (cardsEl) {
+      cardsEl.innerHTML = cards
+        .map(([l, v]) => `<div class="card"><div class="label">${escapeHtml(String(l))}</div><div class="value">${escapeHtml(String(v))}</div></div>`)
+        .join("");
+    }
+    const raw = document.getElementById("metrics-json");
+    if (raw) raw.textContent = Object.keys(metrics).length ? JSON.stringify(metrics, null, 2) : "No metrics.json loaded.";
+    const evalEl = document.getElementById("golden-eval-results");
+    if (evalEl) {
+      const cases = evals.results || evals.evaluations || [];
+      evalEl.innerHTML = cases.length
+        ? `<table class="data"><thead><tr><th>Result</th><th>Eval</th><th>Expected / actual</th></tr></thead><tbody>${cases
+            .map((e) => `<tr><td>${statusBadge(e.passed === true || e.result === "PASS" ? "PASS" : "FAIL")}</td><td>${escapeHtml(e.evalId || e.eval_id || e.name || "")}</td><td>${escapeHtml((e.summary || e.message || JSON.stringify(e.expected || {})).slice(0, 220))}</td></tr>`)
+            .join("")}</tbody></table>`
+        : evals.summary
+          ? `<div class="mono-block">${escapeHtml(JSON.stringify(evals.summary, null, 2))}</div>`
+          : "<p class='warn'>No eval_results.json loaded.</p>";
+    }
+  }
+
+  function renderReportsLog() {
+    const names = [
+      "executive-summary.md",
+      "control-assessment-report.md",
+      "open-risks.md",
+      "evidence-table.md",
+      "reviewer-decisions.md",
+      "eval_summary.md",
+    ];
+    const tabs = document.getElementById("report-tabs");
+    if (tabs) {
+      tabs.innerHTML = names
+        .map((n) => `<button type="button" class="${n === state.selectedGoldenReport ? "active" : ""}" data-report-name="${escapeHtml(n)}">${escapeHtml(n)}</button>`)
+        .join("");
+      tabs.querySelectorAll("[data-report-name]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.selectedGoldenReport = btn.getAttribute("data-report-name") || "executive-summary.md";
+          renderReportsLog();
+        });
+      });
+    }
+    const report = document.getElementById("selected-report");
+    if (report) {
+      const text = state.goldenReports[state.selectedGoldenReport] || "";
+      report.innerHTML = text ? simpleMdToHtml(text) : "<p class='warn'>Report not loaded.</p>";
+    }
+    const logEl = document.getElementById("agent-run-log-table");
+    if (logEl) {
+      const rows = Array.isArray(state.goldenRunLog) ? state.goldenRunLog : [];
+      logEl.innerHTML = rows.length
+        ? `<table class="data"><thead><tr><th>Status</th><th>Workflow</th><th>Duration</th><th>Schema</th><th>Controls</th><th>Evidence IDs</th><th>Warnings / errors</th></tr></thead><tbody>${rows
+            .map((r) => `<tr><td>${statusBadge(r.status)}</td><td>${escapeHtml(r.workflow || "")}</td><td>${escapeHtml(String(r.durationMs ?? "—"))}</td><td>${statusBadge(r.schemaValid === false ? "FAIL" : "PASS")}</td><td>${escapeHtml((r.controlIds || []).join(", ") || "—")}</td><td>${evidenceIdList(r.evidenceIds)}</td><td>${escapeHtml([...(r.warnings || []), ...(r.errors || [])].join(" | ") || "—")}</td></tr>`)
+            .join("")}</tbody></table>`
+        : "<p class='warn'>No agent-run-log.json loaded.</p>";
+    }
+  }
+
+  function renderReasonableTest() {
+    const doc = state.reasonablenessFindings || {};
+    const contract = document.getElementById("reasonable-contract");
+    if (contract) contract.textContent = doc.evidence_contract || "No reasonableness_findings.json loaded.";
+    const rows = Array.isArray(doc.findings) ? doc.findings : [];
+    const el = document.getElementById("reasonable-findings");
+    if (!el) return;
+    el.innerHTML = rows.length
+      ? rows
+          .map((f) => {
+            const proof = Array.isArray(f.required_proof) ? f.required_proof : [];
+            const supplied = Array.isArray(f.supplied_artifacts) ? f.supplied_artifacts : [];
+            return `<div class="card" style="margin-top:1rem">
+              <div class="label">${escapeHtml(f.gap_type || "")}</div>
+              <h3 style="margin:0.25rem 0">${escapeHtml(f.gap_id || "")} <span class="badge ${badgeClass(
+                f.sufficiency === "fail" ? "FAIL" : f.sufficiency === "partial" ? "PARTIAL" : "PASS"
+              )}">${escapeHtml(f.sufficiency || "unknown")}</span></h3>
+              <p><strong>Controls:</strong> ${escapeHtml((f.control_refs || []).join(", "))}</p>
+              <p><strong>Reason:</strong> ${escapeHtml(f.reason || "")}</p>
+              <div class="split"><div><strong>Required proof</strong><ul class="plain">${proof
+                .map((p) => `<li>${escapeHtml(p)}</li>`)
+                .join("")}</ul></div><div><strong>Supplied artifacts</strong><ul class="plain">${supplied
+                .map((p) => `<li>${escapeHtml(p)}</li>`)
+                .join("")}</ul></div></div>
+              <p><strong>Remediation:</strong> ${escapeHtml(f.recommended_remediation || "")}</p>
+            </div>`;
+          })
+          .join("")
+      : "<p class='warn'>No reasonableness findings loaded.</p>";
+  }
+
+  function renderLiveCoverage() {
+    const doc = state.liveCollectionCoverage || {};
+    const regions = Array.isArray(doc.regions) ? doc.regions : [];
+    const success = regions.reduce((n, r) => n + ((r.successful_calls || []).length || 0), 0);
+    const denied = regions.reduce((n, r) => n + ((r.denied_calls || []).length || 0), 0);
+    const skipped = regions.reduce((n, r) => n + ((r.skipped_services || []).length || 0), 0);
+    const cards = [
+      ["Provider", doc.provider || "—"],
+      ["Regions", regions.length],
+      ["Successful calls", success],
+      ["Denied calls", denied],
+      ["Skipped services", skipped],
+    ];
+    const cardEl = document.getElementById("live-coverage-cards");
+    if (cardEl) {
+      cardEl.innerHTML = cards
+        .map(([l, v]) => `<div class="card"><div class="label">${escapeHtml(l)}</div><div class="value">${escapeHtml(String(v))}</div></div>`)
+        .join("");
+    }
+    const el = document.getElementById("live-coverage-regions");
+    if (!el) return;
+    el.innerHTML = regions.length
+      ? regions
+          .map((r) => {
+            const impacts = Array.isArray(r.confidence_impacts) ? r.confidence_impacts : [];
+            return `<div class="card" style="margin-bottom:1rem"><h3 style="margin-top:0">${escapeHtml(r.region || "")}</h3>
+              <div class="split">
+                <div><strong>Successful calls</strong><ul class="plain">${(r.successful_calls || []).map((x) => `<li>${escapeHtml(x)}</li>`).join("")}</ul></div>
+                <div><strong>Denied / skipped</strong><ul class="plain">${(r.denied_calls || []).map((x) => `<li>${escapeHtml(x)}</li>`).join("")}${(r.skipped_services || [])
+                .map((x) => `<li>skipped: ${escapeHtml(x)}</li>`)
+                .join("")}</ul></div>
+              </div>
+              <strong>Confidence impact</strong>
+              <ul class="plain">${impacts.map((i) => `<li><span class="badge ${badgeClass(i.impact === "low" ? "PASS" : i.impact === "moderate" ? "PARTIAL" : "FAIL")}">${escapeHtml(i.impact || "")}</span> ${escapeHtml(i.eval_id || "")}: ${escapeHtml(i.reason || "")}</li>`).join("")}</ul>
+            </div>`;
+          })
+          .join("")
+      : "<p class='warn'>No live_collection_coverage.json loaded.</p>";
+  }
+
+  function renderConmonWorkbench() {
+    const rows = (state.conmonWorkbench && state.conmonWorkbench.obligations) || [];
+    const el = document.getElementById("conmon-workbench");
+    if (!el) return;
+    el.innerHTML = rows.length
+      ? `<table class="data"><thead><tr><th>Coverage</th><th>Control</th><th>Cadence</th><th>Activity</th><th>Last evidence</th><th>Reasonableness gaps</th></tr></thead><tbody>${rows
+          .map((r) => `<tr><td><span class="badge ${badgeClass(r.coverage === "gap" ? "FAIL" : r.coverage === "partial" ? "PARTIAL" : "PASS")}">${escapeHtml(r.coverage || "")}</span></td><td>${escapeHtml(r.id || "")}</td><td>${escapeHtml(r.cadence || "")}</td><td>${escapeHtml(r.activity || "")}</td><td>${escapeHtml(r.last_evidence || "")}</td><td>${escapeHtml((r.reasonableness_gaps || []).join(" | "))}</td></tr>`)
+          .join("")}</tbody></table>`
+      : "<p class='warn'>No conmon_workbench.json loaded.</p>";
+  }
+
+  function renderPublicExposureWorkbench() {
+    const rows = (state.publicExposureWorkbench && state.publicExposureWorkbench.exposures) || [];
+    const el = document.getElementById("public-exposure-workbench");
+    if (!el) return;
+    el.innerHTML = rows.length
+      ? `<div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))">${rows
+          .map((r) => `<div class="card"><div class="label">${escapeHtml(r.source || "")}</div><h3 style="margin:0.25rem 0">${escapeHtml(r.asset_id || "")}</h3><p><span class="badge ${badgeClass(r.severity === "high" ? "FAIL" : "PARTIAL")}">${escapeHtml(r.severity || "")}</span> ${escapeHtml(r.exposure || "")}</p><p><strong>Status:</strong> ${escapeHtml(r.status || "")}</p><p><strong>Required proof:</strong> ${escapeHtml(r.required_proof || "")}</p></div>`)
+          .join("")}</div>`
+      : "<p class='warn'>No public_exposure_workbench.json loaded.</p>";
+  }
+
+  function renderPackageDiff() {
+    const doc = state.packageDiff || {};
+    const changes = Array.isArray(doc.changes) ? doc.changes : [];
+    const cards = [
+      ["Baseline", doc.baseline || "—"],
+      ["Current", doc.current || "—"],
+      ["Changes", changes.length],
+    ];
+    const cardEl = document.getElementById("package-diff-cards");
+    if (cardEl) {
+      cardEl.innerHTML = cards
+        .map(([l, v]) => `<div class="card"><div class="label">${escapeHtml(l)}</div><div class="value" style="font-size:1rem">${escapeHtml(String(v))}</div></div>`)
+        .join("");
+    }
+    const el = document.getElementById("package-diff-list");
+    if (!el) return;
+    el.innerHTML = changes.length
+      ? `<ul class="plain">${changes.map((c) => `<li><strong>${escapeHtml(c.type || "")}</strong> ${escapeHtml(c.id || "")}: ${escapeHtml(c.summary || "")}</li>`).join("")}</ul>`
+      : "<p class='warn'>No package_diff.json loaded.</p>";
+  }
+
+  function renderAiBackendStatus() {
+    const doc = state.aiBackendStatus || {};
+    const cards = [
+      ["Configured backend", doc.configured_backend || "—"],
+      ["Last mode", doc.last_reasoning_mode || "—"],
+      ["Health", doc.health || "—"],
+      ["Supported backends", (doc.supported_backends || []).length || "—"],
+    ];
+    const cardEl = document.getElementById("ai-backend-cards");
+    if (cardEl) {
+      cardEl.innerHTML = cards
+        .map(([l, v]) => `<div class="card"><div class="label">${escapeHtml(l)}</div><div class="value" style="font-size:1rem">${escapeHtml(String(v))}</div></div>`)
+        .join("");
+    }
+    const contract = document.getElementById("ai-backend-contract");
+    if (contract) {
+      contract.textContent =
+        "Evidence contract:\n" +
+        (doc.evidence_contract || "No ai_backend_status.json loaded.") +
+        "\n\nSupported backends:\n- " +
+        (doc.supported_backends || []).join("\n- ");
+    }
+  }
+
   function buildGroundedPrompt(mode, question) {
     const ev = state.selectedEval;
     const rules = [
@@ -978,10 +1580,29 @@
       ["correlation_report.md", "text"],
       ["agent_run_trace.json", "json"],
       ["agent_run_summary.md", "text"],
+      ["reference_coverage.json", "json"],
+      ["capability_inventory.json", "json"],
+      ["reasonableness_findings.json", "json"],
+      ["live_collection_coverage.json", "json"],
+      ["conmon_workbench.json", "json"],
+      ["public_exposure_workbench.json", "json"],
+      ["ai_backend_status.json", "json"],
+      ["package_diff.json", "json"],
+      ["golden/assurance-package.json", "json"],
+      ["golden/metrics.json", "json"],
+      ["golden/eval_results.json", "json"],
+      ["golden/agent-run-log.json", "json"],
+      ["golden/executive-summary.md", "text"],
+      ["golden/control-assessment-report.md", "text"],
+      ["golden/open-risks.md", "text"],
+      ["golden/evidence-table.md", "text"],
+      ["golden/reviewer-decisions.md", "text"],
+      ["golden/eval_summary.md", "text"],
     ];
     for (const [name, kind] of loads) {
       const hit = await fetchFirstOk(name);
       if (!hit) continue;
+      if (name.indexOf("golden/") === 0) state.goldenArtifactHits.push({ name: name.slice("golden/".length), url: hit.url });
       state.loadMeta.source = hit.url;
       if (kind === "json") {
         const j = await hit.r.json();
@@ -990,11 +1611,27 @@
         if (name === "evidence_graph.json") state.evidenceGraph = j;
         if (name === "correlations.json") state.correlations = j;
         if (name === "agent_run_trace.json") state.agentRunTrace = j;
+        if (name === "reference_coverage.json") state.referenceCoverage = j;
+        if (name === "capability_inventory.json") state.capabilityInventory = j;
+        if (name === "reasonableness_findings.json") state.reasonablenessFindings = j;
+        if (name === "live_collection_coverage.json") state.liveCollectionCoverage = j;
+        if (name === "conmon_workbench.json") state.conmonWorkbench = j;
+        if (name === "public_exposure_workbench.json") state.publicExposureWorkbench = j;
+        if (name === "ai_backend_status.json") state.aiBackendStatus = j;
+        if (name === "package_diff.json") state.packageDiff = j;
+        if (name === "golden/assurance-package.json") state.goldenPackage = j;
+        if (name === "golden/metrics.json") state.goldenMetrics = j;
+        if (name === "golden/eval_results.json") state.goldenEvalResults = j;
+        if (name === "golden/agent-run-log.json") state.goldenRunLog = Array.isArray(j) ? j : [];
       } else if (name.endsWith(".csv")) {
         const t = await hit.r.text();
         const rows = csvToObjects(t);
-        state.poamRows = rows;
-        state.poamHeaders = rows.length ? Object.keys(rows[0]) : [];
+        if (name === "evidence_gap_matrix.csv") {
+          state.gapMatrix = rows;
+        } else if (name === "poam.csv") {
+          state.poamRows = rows;
+          state.poamHeaders = rows.length ? Object.keys(rows[0]) : [];
+        }
       } else {
         const t = await hit.r.text();
         if (name === "instrumentation_plan.md") state.instrumentationMd = t;
@@ -1002,8 +1639,8 @@
         if (name === "secure_agent_architecture.md") state.secureAgentArchMd = t;
         if (name === "auditor_questions.md") state.auditorMd = t;
         if (name === "correlation_report.md") state.correlationReportMd = t;
-        if (name === "evidence_gap_matrix.csv") state.gapMatrix = csvToObjects(t);
         if (name === "agent_run_summary.md") state.agentRunSummaryMd = t;
+        if (name.indexOf("golden/") === 0) state.goldenReports[name.slice("golden/".length)] = t;
       }
     }
 
@@ -1042,6 +1679,19 @@
     });
     renderAuditor();
     renderAgentRun();
+    renderCapabilities();
+    renderGoldenPath();
+    renderAssurancePackage();
+    renderAssuranceEvidence();
+    renderHumanReview();
+    renderMetricsEvals();
+    renderReportsLog();
+    renderReasonableTest();
+    renderLiveCoverage();
+    renderConmonWorkbench();
+    renderPublicExposureWorkbench();
+    renderPackageDiff();
+    renderAiBackendStatus();
 
     if (window.OSAFedRamp20x) {
       await window.OSAFedRamp20x.bootstrap(state);

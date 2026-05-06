@@ -14,6 +14,12 @@ from core.evidence_contract import (
     primary_artifacts_for_prompt,
     user_message_artifact_clause,
 )
+from core.guardrails import (
+    detect_prompt_injection,
+    enforce_guardrails,
+    evaluate_certification_language,
+    evaluate_destructive_action,
+)
 
 TRACE_RULES: dict[str, dict[str, str]] = {
     "CM8_INVENTORY_RECONCILIATION": {
@@ -644,8 +650,18 @@ def run_explain(
         warnings.append(f"LLM unavailable: {ex}")
 
     if llm:
-        used.append("llm")
-        return {"answer": llm, "used_artifacts": used, "warnings": warnings}
+        try:
+            enforce_guardrails(
+                [
+                    evaluate_certification_language(text=llm),
+                    evaluate_destructive_action(action_text=llm),
+                    *detect_prompt_injection([llm]),
+                ]
+            )
+            used.append("llm")
+            return {"answer": llm, "used_artifacts": used, "warnings": warnings}
+        except ValueError as ex:
+            warnings.append(f"LLM response failed guardrail validation; used deterministic fallback: {ex}")
 
     text, w2 = deterministic_answer(
         mode=m,

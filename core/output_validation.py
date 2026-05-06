@@ -57,6 +57,16 @@ _AUDITOR_CONTROL_MARKERS: tuple[str, ...] = (
     "CA-5",
 )
 
+_GAP_MATRIX_ASSESSOR_COLUMNS: frozenset[str] = frozenset(
+    {
+        "current_state",
+        "target_state",
+        "priority",
+        "estimated_effort",
+        "remediation_steps",
+    }
+)
+
 
 def _validate_eval_results_structure(data: dict) -> list[str]:
     errs: list[str] = []
@@ -77,6 +87,44 @@ def _validate_eval_results_structure(data: dict) -> list[str]:
     sem = data.get("semantic_event") or data.get("event")
     if not sem:
         errs.append("eval_results.json missing semantic_event or event")
+    return errs
+
+
+def _assessor_findings_ok(data: dict) -> list[str]:
+    errs: list[str] = []
+    required = {
+        "control_refs",
+        "current_state",
+        "target_state",
+        "remediation_steps",
+        "estimated_effort",
+        "priority",
+    }
+    def check_rows(rows: object, *, label: str) -> None:
+        if not isinstance(rows, list):
+            return
+        for i, e in enumerate(rows):
+            if not isinstance(e, dict):
+                continue
+            if str(e.get("result", "")).upper() not in ("FAIL", "PARTIAL"):
+                continue
+            findings = e.get("assessor_findings")
+            if not isinstance(findings, list) or not findings:
+                errs.append(f"{label}[{i}] ({e.get('eval_id')}): missing assessor_findings[]")
+                continue
+            for j, f in enumerate(findings):
+                if not isinstance(f, dict):
+                    errs.append(f"{label}[{i}].assessor_findings[{j}] must be an object")
+                    continue
+                missing = sorted(k for k in required if k not in f)
+                if missing:
+                    errs.append(
+                        f"{label}[{i}].assessor_findings[{j}] missing required key(s): "
+                        + ", ".join(missing)
+                    )
+
+    check_rows(data.get("evaluations"), label="evaluations")
+    check_rows(data.get("eval_result_records"), label="eval_result_records")
     return errs
 
 
@@ -114,6 +162,19 @@ def _poam_has_generated_row(path: Path) -> bool:
         if pid.startswith("POAM-AUTO"):
             return True
     return False
+
+
+def _evidence_gap_matrix_ok(path: Path) -> list[str]:
+    try:
+        with path.open(encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            headers = set(reader.fieldnames or [])
+    except OSError as e:
+        return [f"evidence_gap_matrix.csv: cannot read ({e})"]
+    missing = sorted(_GAP_MATRIX_ASSESSOR_COLUMNS - headers)
+    if missing:
+        return ["evidence_gap_matrix.csv: missing assessor column(s): " + ", ".join(missing)]
+    return []
 
 
 def _node_count(nodes: object) -> int:
@@ -193,12 +254,19 @@ def _auditor_questions_ok(path: Path) -> list[str]:
     return errs
 
 
-def validate_evidence_package(output_dir: Path) -> list[str]:
+def validate_evidence_package(output_dir: Path, *, mode: str = "demo") -> list[str]:
     """
     Validate that ``output_dir`` contains a complete evidence package.
 
     Returns a list of human-readable errors (empty means success).
+
+    ``mode="demo"`` preserves fixture/demo expectations: at least one FAIL and
+    at least one generated POA&M row. ``mode="live"`` is for arbitrary cloud
+    environments, where all checks may pass and no POA&M rows may be required.
     """
+    mode = (mode or "demo").strip().lower()
+    if mode not in {"demo", "live"}:
+        return [f"Unknown validation mode: {mode!r} (expected demo or live)"]
     od = output_dir.resolve()
     errors: list[str] = []
 
@@ -232,11 +300,12 @@ def validate_evidence_package(output_dir: Path) -> list[str]:
                 errors.append(
                     "eval_results.json missing required eval_id(s): " + ", ".join(missing),
                 )
-            if isinstance(data.get("evaluations"), list) and _count_fail_evaluations(data) < 1:
+            if mode == "demo" and isinstance(data.get("evaluations"), list) and _count_fail_evaluations(data) < 1:
                 errors.append(
                     "eval_results.json: expected at least one evaluation with result FAIL "
                     "(fixture-style gap assessment).",
                 )
+            errors.extend(_assessor_findings_ok(data))
             errors.extend(validate_eval_results_fail_partial_contracts(data))
 
     inst = od / "instrumentation_plan.md"
@@ -248,19 +317,23 @@ def validate_evidence_package(output_dir: Path) -> list[str]:
         errors.extend(_auditor_questions_ok(aud))
 
     poam = od / "poam.csv"
-    if poam.is_file() and not _poam_has_generated_row(poam):
+    if mode == "demo" and poam.is_file() and not _poam_has_generated_row(poam):
         errors.append(
             "poam.csv: expected at least one generated row (poam_id starting with POAM-AUTO-).",
         )
 
+    matrix = od / "evidence_gap_matrix.csv"
+    if matrix.is_file():
+        errors.extend(_evidence_gap_matrix_ok(matrix))
+
     return errors
 
 
-def validate_output_directory(output_dir: Path) -> tuple[list[str], list[str]]:
+def validate_output_directory(output_dir: Path, *, mode: str = "demo") -> tuple[list[str], list[str]]:
     """
     Backward-compatible API: validate the evidence package.
 
     Returns ``(errors, warnings)``. Warnings are currently unused.
     """
-    errs = validate_evidence_package(output_dir)
+    errs = validate_evidence_package(output_dir, mode=mode)
     return errs, []

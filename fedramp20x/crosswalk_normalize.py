@@ -37,6 +37,8 @@ def normalize_rev5_to_ksi_row(row: dict[str, Any]) -> dict[str, Any]:
         v = row.get(k)
         if v is not None and str(v).strip():
             out[k] = str(v).strip()
+    if mt == "secondary" and "trace_note" not in out:
+        out["trace_note"] = "Secondary mapping; source row did not provide trace_note."
     return out
 
 

@@ -53,6 +53,9 @@ def _pipeline_eval_to_record(r: EvalResult) -> dict[str, Any]:
     ksi_ids = m.get("linked_ksi_ids")
     if not isinstance(ksi_ids, list):
         ksi_ids = []
+    assessor_findings = m.get("assessor_findings")
+    if not isinstance(assessor_findings, list):
+        assessor_findings = []
     return {
         "eval_id": r.eval_id,
         "name": str(m.get("name", r.eval_id)),
@@ -67,6 +70,7 @@ def _pipeline_eval_to_record(r: EvalResult) -> dict[str, Any]:
         "generated_artifacts": list(m.get("generated_artifacts", []) or []),
         "linked_ksi_ids": [str(x).strip() for x in ksi_ids if str(x).strip()],
         "remediation_disposition": str(disp).strip(),
+        "assessor_findings": [dict(x) for x in assessor_findings if isinstance(x, dict)],
     }
 
 
@@ -114,7 +118,71 @@ def build_eval_results_document(
     if correlations_data is not None:
         doc["correlations"] = {"source": "correlations.json", "embedded": False}
     if assessment is not None:
+        assets_total = len(assessment.assets)
+        events_total = len(assessment.events)
+        findings_total = len(assessment.scanner_findings)
+        scanner_assets = {t.asset_id for t in assessment.scanner_targets if t.asset_id}
+        log_assets = {ls.asset_id for ls in assessment.log_sources if ls.asset_id and ls.status == "active"}
+        ticket_assets = {aid for t in assessment.tickets for aid in t.linked_asset_ids}
+        open_high_findings = [
+            f
+            for f in assessment.scanner_findings
+            if f.status == "open" and str(f.severity).lower() in ("high", "critical")
+        ]
         doc["assessment_bundle_present"] = True
+        doc["assessment_population_summary"] = {
+            "assets_total": assets_total,
+            "events_total": events_total,
+            "scanner_findings_total": findings_total,
+            "scanner_targets_total": len(assessment.scanner_targets),
+            "log_sources_total": len(assessment.log_sources),
+            "alert_rules_total": len(assessment.alert_rules),
+            "tickets_total": len(assessment.tickets),
+            "assets_with_scanner_target": len(scanner_assets),
+            "assets_with_active_log_source": len(log_assets),
+            "assets_with_linked_ticket": len(ticket_assets),
+            "open_high_critical_findings": len(open_high_findings),
+            "sample_readiness": {
+                "asset_population_available": assets_total > 0,
+                "event_population_available": events_total > 0,
+                "scanner_population_available": len(assessment.scanner_targets) > 0 or findings_total > 0,
+                "ticket_population_available": len(assessment.tickets) > 0,
+            },
+        }
+        doc["subject_inventory"] = {
+            "assets": [
+                {
+                    "asset_id": a.asset_id,
+                    "provider": a.provider,
+                    "asset_type": a.asset_type,
+                    "environment": a.environment,
+                    "criticality": a.criticality,
+                    "raw_ref": a.raw_ref,
+                }
+                for a in assessment.assets
+            ],
+            "events": [
+                {
+                    "event_id": e.event_id,
+                    "semantic_type": e.semantic_type,
+                    "asset_id": e.asset_id,
+                    "provider": e.provider,
+                    "raw_ref": e.raw_ref,
+                }
+                for e in assessment.events
+            ],
+            "findings": [
+                {
+                    "finding_id": f.finding_id,
+                    "asset_id": f.asset_id,
+                    "severity": f.severity,
+                    "status": f.status,
+                    "scanner_name": f.scanner_name,
+                    "raw_ref": f.raw_ref,
+                }
+                for f in assessment.scanner_findings
+            ],
+        }
     else:
         doc["assessment_bundle_present"] = False
     return doc
@@ -301,6 +369,34 @@ def write_correlation_report(
             rem.append(f"{i}. **{r.eval_id}**: *missing: no recommended_action string.*")
     lines.extend(_section_lines("Recommended remediation sequence", rem or ["*missing: no FAIL/PARTIAL evaluations.*"]))
 
+    assessor_lines: list[str] = []
+    for r in fail + partial:
+        findings = (r.machine or {}).get("assessor_findings")
+        if not isinstance(findings, list) or not findings:
+            assessor_lines.append(f"- **{r.eval_id}**: *missing: no structured assessor finding workpaper emitted.*")
+            continue
+        for item in findings[:20]:
+            if not isinstance(item, dict):
+                continue
+            fid = item.get("finding_id") or f"{r.eval_id}-finding"
+            controls = ", ".join(str(c) for c in (item.get("control_refs") or [])) or ", ".join(r.control_refs)
+            steps = item.get("remediation_steps") or []
+            step_s = "; ".join(str(s) for s in steps[:4]) if isinstance(steps, list) else str(steps)
+            assessor_lines.extend(
+                [
+                    f"**{fid}**",
+                    "",
+                    f"- **Controls:** {controls or 'missing'}",
+                    f"- **Priority:** {item.get('priority', 'missing')}",
+                    f"- **Current state:** {item.get('current_state', 'missing')}",
+                    f"- **Target state:** {item.get('target_state', 'missing')}",
+                    f"- **Remediation:** {step_s or 'missing'}",
+                    f"- **Estimated effort:** {item.get('estimated_effort', 'missing')}",
+                    "",
+                ]
+            )
+    lines.extend(_section_lines("Assessor finding workpapers", assessor_lines or ["*missing: no FAIL/PARTIAL evaluations.*"]))
+
     arts: list[str] = [
         f"- `eval_results.json` (machine-readable evaluations).",
         f"- `correlations.json` ({'present' if correlations_data else 'missing'}).",
@@ -373,6 +469,27 @@ def write_auditor_questions(
         [
             "7. **CA-5**: Should this be tracked in the POA&M?",
             "",
+            "## Assessor workpaper prompts",
+            "",
+        ]
+    )
+    workpaper_lines: list[str] = []
+    for r in bundle.eval_results:
+        findings = (r.machine or {}).get("assessor_findings")
+        if not isinstance(findings, list):
+            continue
+        for item in findings[:10]:
+            if not isinstance(item, dict):
+                continue
+            workpaper_lines.append(
+                f"- **{item.get('finding_id', r.eval_id)}**: provide evidence that current state "
+                f"`{item.get('current_state', 'missing')}` has reached target state "
+                f"`{item.get('target_state', 'missing')}`."
+            )
+    qs.extend(workpaper_lines or ["*missing: no structured assessor findings emitted.*"])
+    qs.extend(
+        [
+            "",
             "## Evaluation gaps (verbatim from assessment)",
             "",
         ]
@@ -416,6 +533,12 @@ def write_evidence_gap_matrix_csv(path: Path, bundle: CorrelationBundle) -> None
         "severity",
         "asset_id",
         "gap",
+        "current_state",
+        "target_state",
+        "priority",
+        "estimated_effort",
+        "remediation_steps",
+        "affected_subjects",
         "recommended_action",
         "artifact_needed",
     ]
@@ -430,6 +553,23 @@ def write_evidence_gap_matrix_csv(path: Path, bundle: CorrelationBundle) -> None
                 art_needed = "; ".join(str(x) for x in arts)
             else:
                 art_needed = str(arts) if arts else ""
+            assessor_findings = m.get("assessor_findings")
+            if not isinstance(assessor_findings, list):
+                assessor_findings = []
+            workpapers = [x for x in assessor_findings if isinstance(x, dict)]
+            current_state = " | ".join(str(x.get("current_state") or "").strip() for x in workpapers if str(x.get("current_state") or "").strip())
+            target_state = " | ".join(str(x.get("target_state") or "").strip() for x in workpapers if str(x.get("target_state") or "").strip())
+            priorities = sorted({str(x.get("priority") or "").strip() for x in workpapers if str(x.get("priority") or "").strip()})
+            efforts = sorted({str(x.get("estimated_effort") or "").strip() for x in workpapers if str(x.get("estimated_effort") or "").strip()})
+            steps: list[str] = []
+            subjects: list[str] = []
+            for item in workpapers:
+                raw_steps = item.get("remediation_steps")
+                if isinstance(raw_steps, list):
+                    steps.extend(str(x).strip() for x in raw_steps if str(x).strip())
+                raw_subjects = item.get("affected_subjects")
+                if isinstance(raw_subjects, list):
+                    subjects.extend(str(x).strip() for x in raw_subjects if str(x).strip())
             w.writerow(
                 {
                     "eval_id": r.eval_id,
@@ -438,6 +578,12 @@ def write_evidence_gap_matrix_csv(path: Path, bundle: CorrelationBundle) -> None
                     "severity": sev,
                     "asset_id": asset_id,
                     "gap": (r.gap or "").strip() or "missing",
+                    "current_state": current_state or ((r.gap or "").strip() if result_str(r.result) in ("FAIL", "PARTIAL") else ""),
+                    "target_state": target_state,
+                    "priority": "; ".join(priorities),
+                    "estimated_effort": "; ".join(efforts),
+                    "remediation_steps": "; ".join(dict.fromkeys(steps)),
+                    "affected_subjects": "; ".join(dict.fromkeys(subjects)),
                     "recommended_action": (r.recommended_action or "").strip() or "missing",
                     "artifact_needed": art_needed or "missing",
                 }
@@ -449,6 +595,8 @@ def write_assessment_summary_json(
     assessment: AssessmentBundle | None,
     bundle: CorrelationBundle,
     poam_rows_generated: int,
+    *,
+    assessment_mode: str = "demo",
 ) -> None:
     """Write ``assessment_summary.json`` with inventory counts and eval outcome tallies."""
     pass_count = sum(1 for r in bundle.eval_results if r.result == EvalStatus.PASS)
@@ -464,6 +612,7 @@ def write_assessment_summary_json(
             "alert_rules": None,
             "tickets": None,
             "assessment_bundle": "missing",
+            "assessment_mode": assessment_mode,
             "eval_pass": pass_count,
             "eval_fail": fail_count,
             "eval_partial": partial_count,
@@ -478,6 +627,7 @@ def write_assessment_summary_json(
             "alert_rules": len(assessment.alert_rules),
             "tickets": len(assessment.tickets),
             "assessment_bundle": "present",
+            "assessment_mode": assessment_mode,
             "eval_pass": pass_count,
             "eval_fail": fail_count,
             "eval_partial": partial_count,
@@ -495,6 +645,7 @@ def write_output_bundle(
     assessment: AssessmentBundle | None = None,
     evidence_graph: dict[str, Any] | None = None,
     correlations_data: dict[str, Any] | None = None,
+    assessment_mode: str = "demo",
 ) -> None:
     """
     Write standard assessment outputs under ``output_dir``:
@@ -530,6 +681,7 @@ def write_output_bundle(
         assessment,
         correlation_bundle,
         poam_rows,
+        assessment_mode=assessment_mode,
     )
 
 

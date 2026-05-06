@@ -68,18 +68,53 @@ def map_ocsf_to_semantic_type(rec: dict[str, Any]) -> SemanticType:
     act = str(rec.get("activity_name") or "").lower()
     uid = str(rec.get("category_uid") or "")
     cls = str(rec.get("class_uid") or "")
+    class_name = str(rec.get("class_name") or "").lower()
+    category_name = str(rec.get("category_name") or "").lower()
     title = str((rec.get("finding_info") or {}).get("title") or "").lower()
-    combined = f"{act} {title} {uid} {cls}".lower()
+    api = rec.get("api") if isinstance(rec.get("api"), dict) else {}
+    user = rec.get("user") if isinstance(rec.get("user"), dict) else {}
+    resource = rec.get("resource") if isinstance(rec.get("resource"), dict) else {}
+    combined = " ".join(
+        str(x or "")
+        for x in (
+            act,
+            title,
+            uid,
+            cls,
+            class_name,
+            category_name,
+            api.get("operation"),
+            api.get("service_name"),
+            user.get("type"),
+            resource.get("type"),
+        )
+    ).lower()
+    if any(x in combined for x in ("createuser", "create user", "user created", "add user")):
+        return "identity.user_created"
+    if any(x in combined for x in ("deleteuser", "disable user", "deactivate user", "user disabled")):
+        return "identity.user_disabled"
     if "privilege" in combined or "admin_role" in combined or "role granted" in combined:
         return "identity.admin_role_granted"
+    if "bucket" in combined and ("public" in combined or "policy" in combined):
+        return "storage.policy_changed"
+    if any(x in combined for x in ("policy change", "permission", "attachrolepolicy", "putrolepolicy", "put role policy")):
+        return "identity.permission_changed"
     if "mfa" in combined and ("disabl" in combined or "off" in combined):
         return "identity.mfa_disabled"
+    if "cloudtrail" in combined and ("stoplogging" in combined or "deletetrail" in combined or "audit disabled" in combined):
+        return "logging.audit_disabled"
+    if any(x in combined for x in ("authorizesecuritygroupingress", "authorize security group ingress", "firewall rule", "security group rule")):
+        return "network.firewall_rule_changed"
     if "public" in combined and ("ssh" in combined or "22" in combined or "rdp" in combined or "3389" in combined):
         return "network.public_admin_port_opened"
     if "public" in combined and ("database" in combined or "rds" in combined or "5432" in combined or "3306" in combined):
         return "network.public_database_port_opened"
+    if any(x in combined for x in ("runinstances", "create instance", "instance created", "compute created")):
+        return "compute.untracked_asset_created"
     if "vulnerab" in combined or "cve" in combined or "scanner" in combined:
         return "scanner.high_vulnerability_detected"
+    if "incident" in combined and ("response" in combined or "case" in combined):
+        return "incident.no_response_evidence"
     return "unknown"
 
 

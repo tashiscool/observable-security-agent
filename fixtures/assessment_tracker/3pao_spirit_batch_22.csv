@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SA-11, SA-8","SA-11 static and dynamic application security testing gate evidence for CI pipelines with linked developer remediation tickets per merge in the assessment window.",2019-10-08,2020-01-08,Open,AppSec,"Comment from Assessor: Evidence must cite scanner job IDs and branch names not summary slide only.","CSP: SA11-AST-201910.zip."
+
+"SI-4(23), SI-4","SI-4(23) host-based intrusion detection policy export with alert rules mapping suspicious host events to SOC queues and retention on tamper attempts.",2019-11-25,2020-02-25,Open,SOC,"Comment from Assessor: Export must be vendor API JSON not screenshot collage only.","CSP: HIDS-pol-201911.json."
+
+"RA-5(5), RA-5","RA-5(5) recurring authenticated vulnerability scan reports for privileged infrastructure roles with console scope attestation each cycle.",2019-09-30,2019-12-30,Open,Vuln Mgmt,"Comment from Assessor: Reports must show authenticated session proof not credentialed-in-name-only runs.","CSP: RA55-privscan-201909.tgz."
+
+"CM-7, CM-2","CM-7 least functionality compliance export listing disabled listening services and removed packages compared to approved hardened baseline image digest.",2019-12-01,2020-03-01,Open,Hardening,"Comment from Assessor: Export must join image build record in CMDB not generic CIS PDF only.","CSP: CM7-minfootprint-201912.csv."
+
+"SA-15, SR-5","SA-15 processor agreement addendum naming subprocessors data categories flow-down security clauses and annual reassessment milestones for outsourced analytics.",2020-01-15,2020-04-15,Open,Vendor Risk,"Comment from Assessor: Addendum must cite contract exhibit letter not procurement summary email.","CSP: SA15-addendum-202001.pdf."

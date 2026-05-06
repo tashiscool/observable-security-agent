@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SI-19, SC-8","SI-19 voice and video collaboration protection packet listing media encryption class SRTP settings and hardening baseline tied to supported client builds.",2019-11-10,2020-02-10,Open,Collab Sec,"Comment from Assessor: Packet must cite vendor Hardening Guide revision in CMDB not marketing brief.","CSP: SI19-media-201911.pdf."
+
+"AC-5, CM-5","AC-5 separation-of-duties matrix for IAM and change roles showing incompatible permission pairs for approve versus deploy actions on production paths.",2019-10-01,2020-01-01,Open,IAM,"Comment from Assessor: Matrix must export from access governance tool with rule IDs not spreadsheet only.","CSP: AC5-SoD-201910.csv."
+
+"PM-9, CA-2","PM-9 risk executive function charter naming the accountable official meeting cadence and escalation path to the authorizing official for significant risks.",2019-09-15,2019-12-15,Open,ISSM,"Comment from Assessor: Charter must be signed policy record stored in records repository not email thread.","CSP: PM9-charter-201909-signed.pdf."
+
+"AU-8, AU-3","AU-8 time synchronization evidence listing approved stratum-1 NTP sources monitoring of clock skew alerts and enforcement on in-scope management hosts.",2019-12-20,2020-03-20,Open,Observability,"Comment from Assessor: Evidence must show agent config hashes matching live hosts not sample of two servers only.","CSP: AU8-ntp-201912.zip."
+
+"SC-5, SI-4","SC-5 resource availability policy export for internet edge gateways showing connection rate limits per-source quotas and linkage to capacity monitoring dashboards.",2020-01-05,2020-04-05,Open,Net Eng,"Comment from Assessor: Export must map rule IDs to WAF or load-balancer API objects not Visio only.","CSP: SC5-edge-limits-202001.yaml."

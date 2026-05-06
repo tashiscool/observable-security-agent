@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"AC-3, AC-2","Logical access enforcement rule export for production application roles listing deny-by-default conditions and emergency access break-glass exclusions aligned with AC-3.",2019-10-22,2020-01-22,Open,IAM,"Comment from Assessor: Export must be policy engine or IdP binding extract not Visio narrative only.","CSP: IAM-AC3-bindings-201910.json."
+
+"MP-5, MP-2","Removable media transport and handling log including courier handoff attestations and sealed-bag identifiers for facility-to-vault shipments per MP-5.",2019-11-30,2020-02-28,Open,Physical Sec,"Comment from Assessor: Log must include shipment IDs and destruction crossover receipts not blank template uploads.","CSP: MEDIASHIP-2019-Q4.xlsx."
+
+"SI-10","Input validation and error handling test results for internet-facing REST APIs documenting rejection of malformed JSON payloads and safe error responses per SI-10.",2019-09-05,2019-12-05,Open,AppSec,"Comment from Assessor: Evidence must include request/response samples with ticket references not screenshots only.","CSP: SI10-api-tests-201911.zip."
+
+"AC-6, IA-5(1)","AC-6 least-privilege recertification workbook for service accounts showing API scope minimization proof and quarterly privilege reviews with named reviewers.",2019-12-12,2020-03-15,Open,IAM,"Comment from Assessor: Workbook must map accounts to owning teams and crown-jewel data classes.","CSP: LEASTPRIV-2019-recert.xlsx."
+
+"AU-3, AU-8","Audit record content specification export mapping AU-3 required fields to OS audit VPC flow and identity-provider event schemas in the central log platform.",2019-08-18,2019-11-18,Open,Logging,"Comment from Assessor: Mapping must be versioned artifact tied to schema release used in ConMon not draft memo.","CSP: AU3-schema-map-v2.csv."

@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SI-11, SI-13","System failure and error handling test evidence including controlled fault injection outcomes safe operator messaging and graceful degradation checks per SI-11.",2019-09-10,2019-12-10,Open,Platform Eng,"Comment from Assessor: Evidence must cite test cases and rollback verification not meeting notes only.","CSP: SI11-faulttest-201911.pdf."
+
+"AC-20, SC-8","Authorized distributed processing register listing external compute brokers data categories handled and mandatory encryption posture for each linkage per AC-20.",2019-11-02,2020-02-14,Open,Arch,"Comment from Assessor: Register must join to data-flow revision number in the authorization package.","CSP: AC20-broker-register-v2.csv."
+
+"SA-21, CM-9","Developer environment separation evidence pack listing non-production tenant identifiers firewall deny rules and prohibited production data classes per SA-21.",2019-10-18,2020-01-18,Open,DevOps,"Comment from Assessor: Pack must include live rule export IDs matching diagram revision not narrative only.","CSP: SA21-devsep-201910.zip."
+
+"SC-39, SC-44","Process isolation configuration export for container runtime namespaces showing cgroup limits supervisor policies and blast-radius analysis worksheet per SC-39.",2019-12-05,2020-03-05,Open,Platform Sec,"Comment from Assessor: Export must be orchestrator API output plus worksheet not marketing diagram.","CSP: SC39-rt-export.json."
+
+"IR-8, CP-4","IR-8 tabletop exercise after-action memorandum with participant roster and lessons learned items referenced in the continuity program update tracker.",2019-08-30,2019-11-30,Open,IR Lead,"Comment from Assessor: Memo must name scenarios exercised and time-to-escalation metrics not generic attendance sheet.","CSP: IR8-TTX-201908-memo.docx."

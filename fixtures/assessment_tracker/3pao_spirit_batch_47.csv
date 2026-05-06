@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"CM-3, SA-10","CM-3 security impact analysis checklist for queue worker image bump citing blast radius and rollback plan before promotion to staging worker pool with dependency owner sign-off list.",2019-11-24,2020-02-24,Open,Platform,"Comment from Assessor: Checklist must cite signed architecture decision record IDs not chat transcript exports only.","CSP: CM3-sia-q-201911.pdf."
+
+"CM-3, CP-10","CM-3 production deployment log excerpt for worker image promotion showing artifact digest pinned to signed release manifest hash prior to production deployment with CI provenance object IDs.",2019-10-17,2020-01-17,Open,Release Eng,"Comment from Assessor: Log must show digest matching signed manifest not floating latest tag pointer.","CSP: CM3-dep-q-201910.jsonl."
+
+"CM-3, SA-10","CM-3 post-deploy verification checklist for worker canary rollout with verification evidence URLs to smoke test job consoles and explicit pass or fail outcome fields per verification step.",2019-09-18,2019-12-18,Open,SRE,"Comment from Assessor: Checklist must cite job console permalinks with UTC timestamps not local timezone captures only.","CSP: CM3-ver-q-201909.xlsx."
+
+"CA-5, RA-5","CA-5 official POA&M CSV with SAR appendix row keys refreshed after milestone percent complete closeout aligned to SAR table sections and governance repository object identifiers.",2019-12-22,2020-03-22,Open,ISSM,"Comment from Assessor: CSV must show milestone dates in ISO-8601 not locale-formatted cells only.","CSP: CA5-poam-201912.csv."
+
+"AC-17, SC-7","AC-17 remote access connection matrix mapping VPN gateway tenancy to ingress rule baseline per transit attachment with split-tunnel prohibition callouts and administrative ports exception register.",2020-01-30,2020-04-30,Open,Net Sec,"Comment from Assessor: Matrix must cite live listener config export IDs not Visio-only narrative.","CSP: AC17-vpn-202001.csv."

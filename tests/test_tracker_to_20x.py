@@ -157,6 +157,43 @@ class TestKsiImpacts:
         record_ids = {r.get("eval_id") for r in (eval_doc.get("eval_result_records") or [])}
         assert "TRACKER_EVIDENCE_GAP_ANALYSIS" in record_ids, record_ids
 
+    def test_tracker_eval_carries_assessor_findings(
+        self, tracker_to_20x_run: dict[str, Path]
+    ) -> None:
+        eval_doc = json.loads(
+            (tracker_to_20x_run["out_dir"] / "eval_results.json").read_text(encoding="utf-8")
+        )
+        rows = [
+            e
+            for e in (eval_doc.get("evaluations") or [])
+            if e.get("eval_id") == "TRACKER_EVIDENCE_GAP_ANALYSIS"
+        ]
+        assert rows
+        findings = rows[0].get("assessor_findings")
+        assert isinstance(findings, list) and findings
+        first = findings[0]
+        for key in ("control_refs", "current_state", "target_state", "remediation_steps", "estimated_effort", "priority"):
+            assert first.get(key), key
+
+    def test_tracker_output_directory_validates_after_fold_in(
+        self, tracker_to_20x_run: dict[str, Path]
+    ) -> None:
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(REPO_ROOT / "agent.py"),
+                "validate",
+                "--mode",
+                "demo",
+                "--output-dir",
+                str(tracker_to_20x_run["out_dir"]),
+            ],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, result.stderr + result.stdout
+
     def test_tracker_eval_rolls_up_into_expected_ksis(
         self, tracker_to_20x_run: dict[str, Path]
     ) -> None:
@@ -189,6 +226,8 @@ class TestKsiImpacts:
         assert len(tracker_findings) >= 1, (
             f"expected tracker-derived findings; saw {len(findings)} total"
         )
+        assert all(isinstance(f.get("assessor_workpaper"), dict) for f in tracker_findings)
+        assert all(f.get("current_state") and f.get("target_state") for f in tracker_findings)
 
     def test_tracker_findings_carry_tracker_ksis(
         self, tracker_to_20x_run: dict[str, Path]

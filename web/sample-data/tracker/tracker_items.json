@@ -1,0 +1,486 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-03T19:03:29Z",
+  "source_input": "<repo>/fixtures/assessment_tracker/conmon_19_tracker.csv",
+  "with_meta_event": true,
+  "row_count": 19,
+  "rows": [
+    {
+      "row_index": 1,
+      "controls": [
+        "AC-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Access control procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Access control procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "AC-1",
+        "col_1": "Provide evidence of annual review for: Access control procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Access control procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 2,
+      "controls": [
+        "AU-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Audit and accountability procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Audit and accountability procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "AU-1",
+        "col_1": "Provide evidence of annual review for: Audit and accountability procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Audit and accountability procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 3,
+      "controls": [
+        "CA-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Security assessment and authorization procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Security assessment and authorization procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "CA-1",
+        "col_1": "Provide evidence of annual review for: Security assessment and authorization procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Security assessment and authorization procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 4,
+      "controls": [
+        "CM-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Configuration management procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Configuration management procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "CM-1",
+        "col_1": "Provide evidence of annual review for: Configuration management procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Configuration management procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 5,
+      "controls": [
+        "CP-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Contingency planning procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Contingency planning procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "CP-1",
+        "col_1": "Provide evidence of annual review for: Contingency planning procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Contingency planning procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 6,
+      "controls": [
+        "CP-2"
+      ],
+      "request_text": "Provide evidence of annual review for: Reviews the contingency plan for the information system",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Reviews the contingency plan for the information system review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "CP-2",
+        "col_1": "Provide evidence of annual review for: Reviews the contingency plan for the information system",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Reviews the contingency plan for the information system review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 7,
+      "controls": [
+        "IA-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Identification and authentication procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Identification and authentication procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "IA-1",
+        "col_1": "Provide evidence of annual review for: Identification and authentication procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Identification and authentication procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 8,
+      "controls": [
+        "IR-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Incident response procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Incident response procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "incident",
+      "classification_signals": [
+        "incident response"
+      ],
+      "raw": {
+        "col_0": "IR-1",
+        "col_1": "Provide evidence of annual review for: Incident response procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Incident response procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 9,
+      "controls": [
+        "MA-1"
+      ],
+      "request_text": "Provide evidence of annual review for: System maintenance procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving System maintenance procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "MA-1",
+        "col_1": "Provide evidence of annual review for: System maintenance procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving System maintenance procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 10,
+      "controls": [
+        "MP-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Media protection procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Media protection procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "MP-1",
+        "col_1": "Provide evidence of annual review for: Media protection procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Media protection procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 11,
+      "controls": [
+        "PE-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Physical and environmental protection procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Physical and environmental protection procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "PE-1",
+        "col_1": "Provide evidence of annual review for: Physical and environmental protection procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Physical and environmental protection procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 12,
+      "controls": [
+        "PL-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Security planning procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Security planning procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "PL-1",
+        "col_1": "Provide evidence of annual review for: Security planning procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Security planning procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 13,
+      "controls": [
+        "PL-2"
+      ],
+      "request_text": "Provide evidence of annual review for: Reviews the security plan for the information system",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Reviews the security plan for the information system review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "PL-2",
+        "col_1": "Provide evidence of annual review for: Reviews the security plan for the information system",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Reviews the security plan for the information system review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 14,
+      "controls": [
+        "RA-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Risk assessment procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Risk assessment procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "RA-1",
+        "col_1": "Provide evidence of annual review for: Risk assessment procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Risk assessment procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 15,
+      "controls": [
+        "SA-1"
+      ],
+      "request_text": "Provide evidence of annual review for: System and services acquisition procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving System and services acquisition procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "SA-1",
+        "col_1": "Provide evidence of annual review for: System and services acquisition procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving System and services acquisition procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 16,
+      "controls": [
+        "SC-1"
+      ],
+      "request_text": "Provide evidence of annual review for: System and communications protection procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving System and communications protection procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "SC-1",
+        "col_1": "Provide evidence of annual review for: System and communications protection procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving System and communications protection procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 17,
+      "controls": [
+        "SI-1"
+      ],
+      "request_text": "Provide evidence of annual review for: System and information integrity procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving System and information integrity procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "SI-1",
+        "col_1": "Provide evidence of annual review for: System and information integrity procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving System and information integrity procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 18,
+      "controls": [
+        "PM-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Program management procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Program management procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "PM-1",
+        "col_1": "Provide evidence of annual review for: Program management procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Program management procedures review.",
+        "col_7": "Ticket linked."
+      }
+    },
+    {
+      "row_index": 19,
+      "controls": [
+        "PT-1"
+      ],
+      "request_text": "Provide evidence of annual review for: Personally identifiable information processing and transparency procedures",
+      "request_date": "2026-04-01",
+      "due_date": "2026-05-01",
+      "status": "Open",
+      "owner": "Compliance Team",
+      "assessor_comment": "Need signed memo or ticket proving Personally identifiable information processing and transparency procedures review.",
+      "csp_comment": "Ticket linked.",
+      "category": "other",
+      "classification_signals": [],
+      "raw": {
+        "col_0": "PT-1",
+        "col_1": "Provide evidence of annual review for: Personally identifiable information processing and transparency procedures",
+        "col_2": "2026-04-01",
+        "col_3": "2026-05-01",
+        "col_4": "Open",
+        "col_5": "Compliance Team",
+        "col_6": "Need signed memo or ticket proving Personally identifiable information processing and transparency procedures review.",
+        "col_7": "Ticket linked."
+      }
+    }
+  ]
+}

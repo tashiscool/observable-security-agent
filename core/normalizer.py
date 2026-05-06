@@ -48,7 +48,28 @@ def load_normalized_primary_event(bundle: EvidenceBundle) -> tuple[SemanticEvent
     data = bundle.cloud_events
     events = data if isinstance(data, list) else data.get("events", [])
     if not events:
-        raise FileNotFoundError("No events in evidence bundle cloud_events")
+        asset_id = "org-wide-aws"
+        assets = bundle.discovered_assets
+        items = assets.get("assets", assets.get("items", [])) if isinstance(assets, dict) else assets
+        if isinstance(items, list) and items:
+            first = items[0] if isinstance(items[0], dict) else {}
+            asset_id = str(first.get("asset_id") or first.get("id") or asset_id)
+        elif bundle.declared_inventory_rows:
+            first_inv = bundle.declared_inventory_rows[0]
+            asset_id = str(first_inv.get("asset_id") or first_inv.get("inventory_id") or asset_id)
+        synthetic = {
+            "event_type": "assessment.no_cloud_event_evidence",
+            "provider": "aws",
+            "actor": "observable-security-agent",
+            "asset_id": asset_id,
+            "resource_id": "missing-cloud-events",
+            "timestamp": "",
+            "raw_event_ref": "cloud_events.json#missing",
+            "metadata": {
+                "gap": "No cloud events were loaded; live assessment continues with inventory/log/scanner evidence only."
+            },
+        }
+        return normalize_cloud_event(synthetic, str(bundle.source_root / "cloud_events.json") + "#missing"), [synthetic]
     primary_idx = next((i for i, e in enumerate(events) if e.get("_primary")), 0)
     primary = events[primary_idx]
     ref = str(bundle.source_root / "cloud_events.json") + f"#{primary_idx}"

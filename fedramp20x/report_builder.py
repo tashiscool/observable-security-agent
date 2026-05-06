@@ -482,6 +482,18 @@ def _ksi_by_ksi_md(package: dict[str, Any]) -> str:
                     f"- **`{fid}`** — severity `{f.get('severity')}` — POA&M: {poam_s}\n"
                     f"  - Description (excerpt): {_md_cell(str(f.get('description')), 600)}"
                 )
+                wp = f.get("assessor_workpaper")
+                if isinstance(wp, dict):
+                    steps = [str(x) for x in (wp.get("remediation_steps") or []) if str(x).strip()]
+                    lines.append(
+                        "  - Assessor workpaper: "
+                        f"current `{_md_cell(str(wp.get('current_state')), 220)}` → "
+                        f"target `{_md_cell(str(wp.get('target_state')), 220)}`; "
+                        f"priority `{_md_cell(str(wp.get('priority')), 80)}`, "
+                        f"effort `{_md_cell(str(wp.get('estimated_effort')), 80)}`."
+                    )
+                    if steps:
+                        lines.append("  - Remediation sample: " + "; ".join(_md_cell(s, 180) for s in steps[:3]))
 
         lines.extend(["", "### POA&M references (by KSI linkage)", ""])
         pk = _poam_refs_for_ksi(poam_items, kid)
@@ -743,14 +755,16 @@ def _assessor_summary_md(package: dict[str, Any], bundle_filenames: list[str]) -
             "",
             "## Findings overview",
             "",
-            "| Finding | Severity | Linked KSIs | POA&M (on row) |",
-            "| --- | --- | --- | --- |",
+            "| Finding | Severity | Priority | Effort | Linked KSIs | POA&M (on row) |",
+            "| --- | --- | --- | --- | --- | --- |",
         ]
     )
     for f in findings:
         ks = ", ".join(str(x) for x in (f.get("linked_ksi_ids") or f.get("ksi_ids") or []))
         lines.append(
-            f"| `{f.get('finding_id', '')}` | {f.get('severity', '')} | {ks} | `{f.get('poam_id', '')}` |"
+            f"| `{f.get('finding_id', '')}` | {f.get('severity', '')} | "
+            f"{_md_cell(str(f.get('priority', '')), 80)} | {_md_cell(str(f.get('estimated_effort', '')), 80)} | "
+            f"{ks} | `{f.get('poam_id', '')}` |"
         )
 
     lines.extend(

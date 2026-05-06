@@ -48,6 +48,11 @@ demo_artifacts_manifest.json
 
 # Local validation harness output (reproducible via scripts/validate_everything.py).
 validation_run/
+build/
+evals/test_out/
+output/conmon_19_run/
+output/conmon_reasonableness/
+output_3pao_demo/
 
 # Local mirror/sync logs (scripts/sync_public_github.sh)
 sync_gh.log

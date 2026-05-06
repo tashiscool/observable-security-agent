@@ -47,6 +47,26 @@ def test_ocsf_import_preserves_unmapped_top_level_in_import_extras() -> None:
     assert extras.get("vendor_specific_hint") == {"tool": "fixture"}
 
 
+def test_ocsf_mapping_covers_api_auth_network_storage_and_compute_classes() -> None:
+    samples = [
+        ({"activity_name": "CreateUser", "class_name": "API Activity", "api": {"operation": "CreateUser"}}, "identity.user_created"),
+        (
+            {"activity_name": "AuthorizeSecurityGroupIngress", "class_name": "API Activity", "api": {"operation": "AuthorizeSecurityGroupIngress"}},
+            "network.firewall_rule_changed",
+        ),
+        (
+            {"activity_name": "PutBucketPolicy", "finding_info": {"title": "Public bucket policy changed"}, "resource": {"type": "bucket"}},
+            "storage.policy_changed",
+        ),
+        ({"activity_name": "RunInstances", "class_name": "Cloud Resource Activity"}, "compute.untracked_asset_created"),
+        ({"activity_name": "StopLogging", "api": {"operation": "StopLogging", "service_name": "cloudtrail"}}, "logging.audit_disabled"),
+    ]
+    from providers.ocsf import map_ocsf_to_semantic_type
+
+    for rec, expected in samples:
+        assert map_ocsf_to_semantic_type(rec) == expected
+
+
 def test_security_event_export_preserves_semantic_type() -> None:
     _, events = import_ocsf(FIX_OCSF / "sample_detection.json")
     sem = events[0].semantic_type

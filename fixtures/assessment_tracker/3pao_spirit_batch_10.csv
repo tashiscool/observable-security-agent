@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"PE-3, PE-8","Escorted visitor access log for data center suite entries including escort employee identifier visitor badge number time-in and time-out.",2019-08-01,2019-11-01,Open,Physical Sec,"Comment from Assessor: Log must be access-control system export not handwritten desk binder scan.","CSP: PACS export DC-2019-Q3.csv."
+
+"SC-13","Cryptographic key management procedure export listing key custodians rotation cadence dual-control for KMS and SC-13 organizational-defined requirements.",2019-10-05,2020-01-10,Open,Crypto Eng,"Comment from Assessor: Procedure must name HSM or KMS key hierarchy not generic policy prose only.","CSP: KMP-2020-revB.pdf."
+
+"RA-3","Organizational system security risk assessment report update for the assessment cycle citing inherited cloud controls and residual risk summary per RA-3.",2019-09-20,2019-12-20,Open,Risk Team,"Comment from Assessor: Update must reference control baseline version embedded in the authorization package.","CSP: SAR risk annex draft v4."
+
+"SC-7","Network segmentation diagram and boundary enforcement listing for production VPC tiers showing tier-to-tier deny rules and inspection attachment points.",2019-11-11,2020-02-01,Open,Net Eng,"Comment from Assessor: Listing must include security group IDs matching live config export not Visio-only narrative.","CSP: seg-vpc-prod-201911.json plus diagram."
+
+"SI-3, SI-8","Malware protection configuration export for production subnets with alert rule linkage showing detection events forward to SOC triage queue.",2019-12-03,2020-03-01,Open,SOC,"Comment from Assessor: Export must show agent version and update channel not marketing overview deck.","CSP: EDR_inventory_201912.zip."

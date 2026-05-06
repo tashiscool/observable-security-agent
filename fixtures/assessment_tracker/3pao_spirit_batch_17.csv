@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SI-2, SI-2(2)","SI-2 flaw remediation tracker export linking each published vendor advisory to closed patch ticket identifiers and elapsed remediation time within documented SLA.",2019-11-18,2020-02-18,Open,Vuln Mgmt,"Comment from Assessor: Export must join to CMDB asset keys not advisory titles only.","CSP: REM-tracker-201911.csv."
+
+"SI-15, SC-7","SI-15 guarded information exchange configuration for partner file transfer showing object-type allow lists inspection stage timing and release quarantine timers.",2019-10-05,2020-01-05,Open,Data Exch,"Comment from Assessor: Configuration must be product export with version hash not architecture slide.","CSP: SI15-gw-config-201910.json."
+
+"RA-5(2), RA-5","RA-5(2) weekly vulnerability scan reports archive index with dated export paths for each recurring scan cycle in the assessment period.",2019-09-12,2019-12-12,Open,Vuln Mgmt,"Comment from Assessor: Index must include scanner job name and scope hash not folder screenshot only.","CSP: RA52-weekly-index.csv."
+
+"CM-3(2), CM-4","CM-3(2) evidence pack showing production-impacting changes were tested in an isolated non-production environment using a signed production parity checklist before promotion.",2019-12-14,2020-03-14,Open,Release Eng,"Comment from Assessor: Pack must cite environment ID and checklist version in CMDB.","CSP: CM32-parity-evidence.zip."
+
+"AC-4, SC-7","AC-4 approved information flows matrix documenting allowed protocols data object classes and inspection points between partner VLAN and internal enclave.",2019-08-08,2019-11-08,Open,Net Arch,"Comment from Assessor: Matrix must reference live firewall policy export IDs not Visio-only narrative.","CSP: AC4-flows-201908.xlsx."

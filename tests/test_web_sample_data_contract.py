@@ -82,6 +82,26 @@ def test_sample_poam_csv_readable() -> None:
     assert rows
 
 
+def test_sample_gap_matrix_has_assessor_workpaper_columns() -> None:
+    p = SD / "evidence_gap_matrix.csv"
+    assert p.is_file()
+    rows = list(csv.DictReader(p.read_text(encoding="utf-8").splitlines()))
+    assert rows
+    required = {"current_state", "target_state", "priority", "estimated_effort", "remediation_steps"}
+    assert required <= set(rows[0])
+    gap_rows = [r for r in rows if r.get("result") in {"FAIL", "PARTIAL"}]
+    assert gap_rows
+    assert all(r.get("current_state") and r.get("target_state") for r in gap_rows)
+
+
+def test_app_js_loads_gap_matrix_as_gap_matrix_not_poam() -> None:
+    js = (ROOT / "web" / "app.js").read_text(encoding="utf-8")
+    assert 'if (name === "evidence_gap_matrix.csv")' in js
+    assert "state.gapMatrix = rows" in js
+    assert "matrixRowsForEval" in js
+    assert "Assessor workpaper" in js
+
+
 def test_sample_agent_run_trace_for_explorer() -> None:
     p = SD / "agent_run_trace.json"
     assert p.is_file()
@@ -101,3 +121,47 @@ def test_sample_agent_run_summary_md_present() -> None:
     t = p.read_text(encoding="utf-8")
     assert "bounded" in t.lower() or "Bounded" in t
     assert "policy" in t.lower()
+
+
+def test_assessment_workbench_sample_artifacts_present() -> None:
+    required = {
+        "reference_coverage.json": ("projects", "sample_count"),
+        "capability_inventory.json": ("capabilities", "summary"),
+        "reasonableness_findings.json": ("findings", "evidence_contract"),
+        "live_collection_coverage.json": ("regions", "provider"),
+        "conmon_workbench.json": ("obligations",),
+        "public_exposure_workbench.json": ("exposures",),
+        "ai_backend_status.json": ("supported_backends", "evidence_contract"),
+        "package_diff.json": ("changes",),
+    }
+    for name, keys in required.items():
+        doc = json.loads((SD / name).read_text(encoding="utf-8"))
+        for key in keys:
+            assert key in doc, name
+
+
+def test_app_js_and_index_expose_assessment_workbench_panels() -> None:
+    html = (ROOT / "web" / "index.html").read_text(encoding="utf-8")
+    js = (ROOT / "web" / "app.js").read_text(encoding="utf-8")
+    for panel in (
+        "Capabilities &amp; References",
+        "3PAO Reasonable Test",
+        "Live Collection Coverage",
+        "ConMon Workbench",
+        "Public Exposure Workbench",
+        "Package Diff / History",
+        "AI Backend Status",
+    ):
+        assert panel in html
+    for renderer in (
+        "renderCapabilities",
+        "renderReasonableTest",
+        "renderLiveCoverage",
+        "renderConmonWorkbench",
+        "renderPublicExposureWorkbench",
+        "renderPackageDiff",
+        "renderAiBackendStatus",
+        "renderGraphVisual",
+    ):
+        assert renderer in js
+    assert 'id="graph-visual"' in html

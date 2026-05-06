@@ -24,6 +24,20 @@
         <a class="nav-item" href="#secure-agent" data-panel="secure-agent">Secure Agent Architecture</a>
         <a class="nav-item" href="#agent-run" data-panel="agent-run">Agent run trace</a>
         <a class="nav-item" href="#auditor" data-panel="auditor">Auditor questions</a>
+        <p class="nav-divider">Assessment Workbench</p>
+        <a class="nav-item" href="#capabilities" data-panel="capabilities">Capabilities &amp; References</a>
+        <a class="nav-item" href="#golden-path" data-panel="golden-path">Golden Path Pipeline</a>
+        <a class="nav-item" href="#assurance-package" data-panel="assurance-package">Assurance Package</a>
+        <a class="nav-item" href="#assurance-evidence" data-panel="assurance-evidence">Evidence &amp; Findings</a>
+        <a class="nav-item" href="#human-review" data-panel="human-review">Human Review</a>
+        <a class="nav-item" href="#metrics-evals" data-panel="metrics-evals">Metrics &amp; Evals</a>
+        <a class="nav-item" href="#reports-log" data-panel="reports-log">Reports &amp; Run Log</a>
+        <a class="nav-item" href="#reasonable-test" data-panel="reasonable-test">3PAO Reasonable Test</a>
+        <a class="nav-item" href="#live-coverage" data-panel="live-coverage">Live Collection Coverage</a>
+        <a class="nav-item" href="#conmon" data-panel="conmon">ConMon Workbench</a>
+        <a class="nav-item" href="#public-exposure" data-panel="public-exposure">Public Exposure</a>
+        <a class="nav-item" href="#package-diff" data-panel="package-diff">Package Diff</a>
+        <a class="nav-item" href="#ai-backend" data-panel="ai-backend">AI Backend Status</a>
         <p class="nav-divider">FedRAMP 20x</p>
         <a class="nav-item" href="#20x-dashboard" data-panel="20x-dashboard">20x package dashboard</a>
         <a class="nav-item" href="#20x-ksi" data-panel="20x-ksi">KSI explorer</a>
@@ -78,6 +92,8 @@
 
         <section class="panel" id="panel-graph">
           <h2>Evidence graph explorer</h2>
+          <div class="filters" id="graph-filter-bar"></div>
+          <div id="graph-visual" class="graph-visual"></div>
           <div class="split">
             <div>
               <h3 style="font-size: 0.9rem; color: var(--muted)">Nodes</h3>
@@ -161,6 +177,142 @@
         <section class="panel" id="panel-auditor">
           <h2>Auditor questions</h2>
           <div id="auditor-md" class="md-preview"></div>
+        </section>
+
+        <section class="panel" id="panel-capabilities">
+          <h2>Capabilities &amp; References</h2>
+          <div id="capability-cards" class="cards"></div>
+          <div class="split">
+            <div>
+              <h3 style="font-size: 1rem; color: var(--muted)">Reference Projects</h3>
+              <div id="reference-coverage-table"></div>
+            </div>
+            <div>
+              <h3 style="font-size: 1rem; color: var(--muted)">Capability Status</h3>
+              <div id="capability-inventory-table"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-golden-path">
+          <h2>Golden Path Pipeline</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Browser view of <code>build/assurance-package-demo/</code>. Generate with
+            <code>python agent.py golden-path-demo --output-dir build/assurance-package-demo</code>.
+          </p>
+          <div id="golden-path-cards" class="cards"></div>
+          <div id="golden-path-flow" class="pipeline-flow"></div>
+          <h3 style="font-size: 1rem; color: var(--muted)">Loaded artifacts</h3>
+          <div id="golden-path-artifacts"></div>
+        </section>
+
+        <section class="panel" id="panel-assurance-package">
+          <h2>Assurance Package</h2>
+          <div id="assurance-manifest-cards" class="cards"></div>
+          <div class="split">
+            <div>
+              <h3 style="font-size: 1rem; color: var(--muted)">Controls assessed</h3>
+              <div id="assurance-controls"></div>
+            </div>
+            <div>
+              <h3 style="font-size: 1rem; color: var(--muted)">Validation results</h3>
+              <div id="assurance-validation"></div>
+            </div>
+          </div>
+          <h3 style="font-size: 1rem; color: var(--muted); margin-top: 1rem">Assessment results</h3>
+          <div id="assurance-assessments"></div>
+        </section>
+
+        <section class="panel" id="panel-assurance-evidence">
+          <h2>Evidence &amp; Findings</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Every row preserves source IDs, account/region/resource scope, freshness, control links, and evidence IDs.
+          </p>
+          <h3 style="font-size: 1rem; color: var(--muted)">Evidence artifacts</h3>
+          <div class="table-scroll" id="assurance-evidence-table"></div>
+          <h3 style="font-size: 1rem; color: var(--muted); margin-top: 1rem">Normalized findings and risks</h3>
+          <div id="assurance-findings"></div>
+        </section>
+
+        <section class="panel" id="panel-human-review">
+          <h2>Human Review</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Agent recommendations are drafted from deterministic evidence and remain human-reviewed before compliance-impacting use.
+          </p>
+          <div id="human-review-cards" class="cards"></div>
+          <div class="split">
+            <div>
+              <h3 style="font-size: 1rem; color: var(--muted)">Agent recommendations</h3>
+              <div id="human-review-recommendations"></div>
+            </div>
+            <div>
+              <h3 style="font-size: 1rem; color: var(--muted)">Reviewer decisions</h3>
+              <div id="human-review-decisions"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-metrics-evals">
+          <h2>Metrics &amp; Evals</h2>
+          <div id="metrics-cards" class="cards"></div>
+          <div class="split">
+            <div>
+              <h3 style="font-size: 1rem; color: var(--muted)">Built-in eval harness</h3>
+              <div id="golden-eval-results"></div>
+            </div>
+            <div>
+              <h3 style="font-size: 1rem; color: var(--muted)">Observability metrics JSON</h3>
+              <pre id="metrics-json" class="mono-block" style="max-height: 460px; overflow: auto"></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-reports-log">
+          <h2>Reports &amp; Run Log</h2>
+          <div class="filters" id="report-tabs"></div>
+          <div id="selected-report" class="md-preview md-scroll"></div>
+          <h3 style="font-size: 1rem; color: var(--muted); margin-top: 1rem">Agent run log</h3>
+          <div id="agent-run-log-table"></div>
+        </section>
+
+        <section class="panel" id="panel-reasonable-test">
+          <h2>3PAO Reasonable Test</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Shows whether supplied artifacts would satisfy a reasonable assessor review. Tracker text is context, not proof.
+          </p>
+          <div id="reasonable-contract" class="mono-block"></div>
+          <div id="reasonable-findings"></div>
+        </section>
+
+        <section class="panel" id="panel-live-coverage">
+          <h2>Live Collection Coverage</h2>
+          <p style="color: var(--muted); font-size: 0.9rem">
+            Manifest-first view of successful calls, denied calls, skipped services, and confidence impact.
+          </p>
+          <div id="live-coverage-cards" class="cards"></div>
+          <div id="live-coverage-regions"></div>
+        </section>
+
+        <section class="panel" id="panel-conmon">
+          <h2>ConMon Workbench</h2>
+          <div id="conmon-workbench"></div>
+        </section>
+
+        <section class="panel" id="panel-public-exposure">
+          <h2>Public Exposure Workbench</h2>
+          <div id="public-exposure-workbench"></div>
+        </section>
+
+        <section class="panel" id="panel-package-diff">
+          <h2>Package Diff / History</h2>
+          <div id="package-diff-cards" class="cards"></div>
+          <div id="package-diff-list"></div>
+        </section>
+
+        <section class="panel" id="panel-ai-backend">
+          <h2>AI Backend Status</h2>
+          <div id="ai-backend-cards" class="cards"></div>
+          <div id="ai-backend-contract" class="mono-block"></div>
         </section>
 
         <section class="panel" id="panel-20x-dashboard">

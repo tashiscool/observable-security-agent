@@ -53,6 +53,22 @@ def test_cloudsploit_csv_row_count():
     assert len(iter_cloudsploit_records(SAMPLE_CSV)) == 2
 
 
+def test_iter_cloudsploit_records_handles_semicolon_csv(tmp_path: Path):
+    p = tmp_path / "cloudsploit_semicolon.csv"
+    p.write_text(
+        "plugin;status;severity;resource;region\n"
+        "open_ssh;2;high;arn:aws:ec2:us-east-1:111122223333:security-group/sg-1;us-east-1\n",
+        encoding="utf-8",
+    )
+
+    rows = iter_cloudsploit_records(p)
+    finding = cloudsploit_row_to_scanner_finding(rows[0])
+
+    assert rows[0]["plugin"] == "open_ssh"
+    assert finding.status == "open"
+    assert finding.severity == "high"
+
+
 def test_import_cloudsploit_public_ip_failure_emits_semantic_event():
     findings, events = import_cloudsploit(SAMPLE_JSON, emit_security_events=True)
     assert len(findings) == 2

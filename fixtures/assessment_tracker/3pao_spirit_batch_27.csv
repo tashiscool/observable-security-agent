@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SA-9, RA-3","SA-9 vendor dependency memorandum for serverless build telemetry gap citing operational requirement for agentless coverage plus fedramp deviation routing sheet with AO concurrence date.",2019-11-22,2020-02-22,Open,Supply Chain,"Comment from Assessor: Memorandum must cite vendor FedRAMP package ID not reseller letterhead only.","CSP: SA9-vendor-201911.pdf."
+
+"CP-4, CP-9","CP-4 recovery test evidence packet summarizing measured rto and measured rpo with dr exercise facilitator attestation and cold site handoff timestamps.",2019-10-20,2020-01-20,Open,Continuity,"Comment from Assessor: Packet must cite storage replication lag metrics not agenda-only meeting minutes.","CSP: CP4-restore-201910.pdf."
+
+"SI-4, AU-6","SI-4 sample alert export from SIEM saved search after privileged group modification rule fired including example alert email redacted headers.",2019-09-12,2019-12-12,Open,SOC,"Comment from Assessor: Export must include correlation search job ID not inbox screenshot only.","CSP: SI4-sample-201909.eml."
+
+"RA-5(5), RA-5","RA-5(5) authenticated vulnerability scan reports for payment subnet credentialed administrator sessions showing credentialed scan plugin profile IDs per asset class.",2019-12-05,2020-03-05,Open,Vuln Mgmt,"Comment from Assessor: Reports must list Nessus policy name hash not default scan template.","CSP: RA55-cred-201912.pdf."
+
+"CM-8, RA-2","CM-8 reconcile inventory workbook comparing declared boundary components to live discovery export with discrepancies tab showing duplicate entries by serial.",2019-08-22,2019-11-22,Open,Asset Mgmt,"Comment from Assessor: Workbook must freeze compare timestamp within 24 hours of discovery pull not week-old snapshot.","CSP: CM8-recon-201908.xlsx."

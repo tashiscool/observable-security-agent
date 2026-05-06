@@ -1,0 +1,64 @@
+# Deterministic control mapping rules for normalized evidence and findings.
+#
+# These rules are intentionally conservative:
+# - direct source control IDs are mapped as EXACT_SOURCE_CONTROL by code, not here
+# - configured rules are STATIC_RULE only when they do not conflict with source controls
+# - broad family targets such as AU or IR expand to provided ControlRequirement families
+# - uncertain or conflicting mappings are emitted as NEEDS_REVIEW
+#
+# Supported match fields:
+#   scanner: exact scanner name, case-insensitive
+#   source_type: EvidenceArtifact.sourceType, case-insensitive
+#   resource_type: EvidenceArtifact.resourceType, case-insensitive
+#   evidence_type: keyword required somewhere in evidence/finding text
+#   category_keywords: any keyword required somewhere in evidence/finding text
+#   severities: NormalizedFinding.severity values
+#   controls: target control IDs or control families to expand
+
+rules:
+  - id: vulnerability_findings
+    source_type: vulnerability_scan_json
+    controls: ["RA-5", "SI-2"]
+    rationale: Vulnerability scanner findings support RA-5 scanning and SI-2 flaw remediation.
+
+  - id: nessus_scanner
+    scanner: nessus
+    controls: ["RA-5", "SI-2"]
+    rationale: Nessus output is treated as vulnerability scanning evidence.
+
+  - id: container_scan
+    source_type: container_scan_csv
+    controls: ["RA-5", "SI-2", "CM-6"]
+    rationale: Container scan output supports vulnerability remediation and baseline configuration checks.
+
+  - id: critical_high_vulnerabilities
+    severities: ["CRITICAL", "HIGH"]
+    controls: ["RA-5", "SI-2", "CA-5"]
+    rationale: Critical and high vulnerability findings support scanning, remediation, and POA&M tracking.
+
+  - id: audit_logging_configuration
+    source_type: cloud_config_json
+    category_keywords: ["audit", "logging", "cloudtrail", "cloudwatch", "splunk"]
+    controls: ["AU"]
+    rationale: Audit logging configuration evidence supports the AU family.
+
+  - id: identity_access_evidence
+    category_keywords: ["identity", "iam", "access", "mfa", "password", "privilege", "user", "role"]
+    controls: ["AC", "IA"]
+    rationale: Identity and access evidence supports AC and IA family controls.
+
+  - id: encryption_configuration
+    category_keywords: ["encryption", "kms", "cipher", "tls", "fips", "cryptographic", "certificate"]
+    controls: ["SC-13", "SC"]
+    rationale: Encryption configuration evidence supports cryptographic protection controls.
+
+  - id: configuration_baseline
+    category_keywords: ["cis", "stig", "baseline", "configuration", "hardening", "benchmark"]
+    controls: ["CM-6"]
+    rationale: Configuration baseline findings support CM-6.
+
+  - id: incident_security_event
+    source_type: security_event
+    category_keywords: ["incident", "security event", "guardduty", "alert", "intrusion", "ioc"]
+    controls: ["IR", "AU"]
+    rationale: Incident and security event evidence supports IR and AU family controls.

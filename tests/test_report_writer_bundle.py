@@ -45,8 +45,11 @@ def test_report_files_created_with_expected_auditor_content(tmp_path: Path) -> N
     assert "RA-5(8)" in auditor
     assert "CA-5" in auditor
     assert "prod-api-01" in auditor
+    assert "Assessor workpaper prompts" in auditor
 
     report = (tmp_path / "correlation_report.md").read_text(encoding="utf-8")
+    assert "Current state" in report
+    assert "Target state" in report
     for heading in (
         "Executive summary",
         "What was assessed",
@@ -56,6 +59,7 @@ def test_report_files_created_with_expected_auditor_content(tmp_path: Path) -> N
         "Correlated risky events",
         "Control impact",
         "Recommended remediation sequence",
+        "Assessor finding workpapers",
         "Generated artifacts",
         "Detailed evaluation results",
     ):
@@ -71,7 +75,20 @@ def test_report_files_created_with_expected_auditor_content(tmp_path: Path) -> N
 
     rows = list(csv.DictReader((tmp_path / "evidence_gap_matrix.csv").read_text(encoding="utf-8").splitlines()))
     assert rows and "eval_id" in rows[0]
+    for col in ("current_state", "target_state", "priority", "estimated_effort", "remediation_steps"):
+        assert col in rows[0]
+    gap_rows = [r for r in rows if r.get("result") in ("FAIL", "PARTIAL")]
+    assert gap_rows
+    assert all(r.get("current_state") for r in gap_rows)
+    assert all(r.get("target_state") for r in gap_rows)
+    assert all(r.get("remediation_steps") for r in gap_rows)
 
     summary = json.loads((tmp_path / "assessment_summary.json").read_text(encoding="utf-8"))
     assert summary["assessment_bundle"] == "present"
     assert summary["assets"] >= 1
+
+    eval_doc = json.loads((tmp_path / "eval_results.json").read_text(encoding="utf-8"))
+    pop = eval_doc["assessment_population_summary"]
+    assert pop["assets_total"] >= 1
+    assert pop["sample_readiness"]["asset_population_available"] is True
+    assert "scanner_population_available" in pop["sample_readiness"]

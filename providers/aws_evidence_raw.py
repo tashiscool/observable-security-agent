@@ -69,6 +69,7 @@ class CollectionManifest:
     failed_calls: list[CallFailure] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
+        denied = [f for f in self.failed_calls if "denied" in f.error_code.lower() or "unauthorized" in f.error_code.lower()]
         return {
             "collected_at": self.collected_at,
             "account_id": self.account_id,
@@ -79,7 +80,38 @@ class CollectionManifest:
                 {"call": f.call, "error_code": f.error_code, "message": f.message} for f in self.failed_calls
             ],
             "errors": [f"{f.call}: [{f.error_code}] {f.message}" for f in self.failed_calls],
+            "permission_coverage": {
+                "successful_call_count": len(self.successful_calls),
+                "failed_call_count": len(self.failed_calls),
+                "access_denied_call_count": len(denied),
+                "assessment_confidence": "partial" if self.failed_calls else "complete",
+                "impact": [
+                    {
+                        "call": f.call,
+                        "error_code": f.error_code,
+                        "assessment_impact": _assessment_impact_for_call(f.call),
+                    }
+                    for f in self.failed_calls
+                ],
+            },
         }
+
+
+def _assessment_impact_for_call(call_id: str) -> str:
+    c = call_id.lower()
+    if c.startswith("iam:"):
+        return "Identity and MFA evidence may be incomplete."
+    if c.startswith("ec2:"):
+        return "Inventory, exposure, scanner-scope, or network-log evidence may be incomplete."
+    if c.startswith("cloudtrail:"):
+        return "Cloud control-plane event and audit-log evidence may be incomplete."
+    if c.startswith("guardduty:"):
+        return "Threat detection evidence may be incomplete."
+    if c.startswith("config:") or c.startswith("cloudwatch:"):
+        return "Configuration-rule or alert instrumentation evidence may be incomplete."
+    if c.startswith("s3:") or c.startswith("rds:") or c.startswith("elbv2:"):
+        return "Storage, database, or load-balancer inventory evidence may be incomplete."
+    return "Collected evidence is partial for this API call."
 
 
 def safe_client_call(
@@ -801,6 +833,48 @@ def collect_aws_raw_evidence(
         write_json_file(output_dir / "alert_rules.json", alerts)
         write_json_file(dest / "alert_rules.json", alerts)
 
+        _write_canonical_companion_stubs(output_dir)
+        _write_canonical_companion_stubs(dest)
+
+    _write_canonical_companion_stubs(dest)
+    _write_json_if_missing(
+        dest / "discovered_assets.json",
+        {"collection": {"source": "aws_collect", "account": account_id, "region": region, "as_of": collected_at_iso}, "assets": []},
+    )
+    _write_json_if_missing(dest / "cloud_events.json", [])
+    _write_json_if_missing(dest / "central_log_sources.json", {"siem": "unknown", "sources": []})
+    _write_json_if_missing(dest / "alert_rules.json", {"platform": "unknown", "rules": []})
+
     write_json_file(manifest_path, manifest.to_dict())
 
     return manifest_path
+
+
+def _write_text_if_missing(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if not path.exists():
+        path.write_text(text, encoding="utf-8")
+
+
+def _write_json_if_missing(path: Path, data: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if not path.exists():
+        write_json_file(path, data)
+
+
+def _write_canonical_companion_stubs(root: Path) -> None:
+    """Ensure any raw AWS region root is assessable without hand-created files."""
+    _write_text_if_missing(
+        root / "declared_inventory.csv",
+        "inventory_id,asset_id,name,asset_type,expected_provider,expected_region,expected_private_ip,expected_public_ip,in_boundary,scanner_required,log_required,owner,system_component\n",
+    )
+    _write_text_if_missing(
+        root / "scanner_targets.csv",
+        "asset_id,scanner,target_type,hostname,ip,scan_profile,credentialed,notes\n",
+    )
+    _write_text_if_missing(
+        root / "poam.csv",
+        "poam_id,weakness_name,controls,raw_severity,status,asset_identifier,notes\n",
+    )
+    _write_json_if_missing(root / "scanner_findings.json", {"findings": []})
+    _write_json_if_missing(root / "tickets.json", {"tickets": []})

@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"AU-6, AU-9","AU-6 local auth log slice paired with matches centralized SIEM row for same subject principal within clock skew tolerance window using identical correlation keys.",2019-11-03,2020-02-03,Open,Observability,"Comment from Assessor: Slice must redact subject distinguished names per privacy policy while keeping event IDs.","CSP: AU6-pair-201911.tgz."
+
+"AU-9, SC-28","AU-9 immutable bucket policy export for centralized audit log aggregation landing zone with append-only object lock configuration identifiers and legal hold tag taxonomy.",2019-10-14,2020-01-14,Open,Records,"Comment from Assessor: Export must map to bucket policy version IDs not console screenshot only.","CSP: AU9-immut-201910.json."
+
+"IR-8, IR-4","IR-8 documented response action timeline for suspected incident drill with CISA report linkage and incident closure approval reference IDs stored in case system.",2019-09-19,2019-12-19,Open,IR Lead,"Comment from Assessor: Timeline must cite SIEM search head job IDs not analyst chat transcript only.","CSP: IR8-timeline-201909.pdf."
+
+"SI-4, SC-5","SI-4 GuardDuty notifications routing matrix showing recipient list for high-severity findings and syn flood volumetric threshold tied to dos monitoring policy export name and denial-of-service dashboard linkage.",2020-01-06,2020-04-06,Open,SOC,"Comment from Assessor: Matrix must cite detector IDs matching production org not sandbox account only.","CSP: SI4-gd-202001.csv."
+
+"AC-6, AC-5","AC-6 least privilege review workbook export for IAM roles with privilege recertification completion dates and separation-of-duties matrix excerpt keyed by incompatible role pairs.",2019-12-03,2020-03-03,Open,IAM,"Comment from Assessor: Export must come from access governance tool API pull not spreadsheet only.","CSP: AC6-lpr-201912.xlsx."

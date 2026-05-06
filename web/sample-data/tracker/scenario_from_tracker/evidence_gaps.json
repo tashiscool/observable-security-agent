@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
-  "generated_at": "2026-05-03T02:01:19Z",
-  "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+  "generated_at": "2026-05-06T03:08:14Z",
+  "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
   "total_row_count": 16,
   "evidence_gap_count": 15,
   "informational_item_count": 1,
@@ -11,11 +11,11 @@
       "alert_sample_missing": 1,
       "credentialed_scan_evidence_missing": 1,
       "crypto_fips_evidence_missing": 1,
-      "deviation_request_missing": 1,
       "exploitation_review_missing": 1,
       "identity_listing_missing": 1,
       "inventory_mismatch": 2,
       "local_to_central_log_correlation_missing": 1,
+      "poam_update_missing": 1,
       "response_action_missing": 2,
       "restore_test_missing": 1,
       "sia_missing": 1,
@@ -28,7 +28,7 @@
     {
       "gap_id": "gap-0001-inventory-mismatch",
       "source_item_id": "1",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "CM-8",
         "CM-8(1)",
@@ -38,6 +38,7 @@
       "title": "Inventory mismatch: Provide the latest Integrated Inventory Workbook (IIW) plus an authoritative AWS account dump (EC2, RDS, ELB/ALB, S3, VP",
       "description": "Provide the latest Integrated Inventory Workbook (IIW) plus an authoritative AWS account dump (EC2, RDS, ELB/ALB, S3, VPC) so we can reconcile declared vs. discovered inventory.",
       "assessor_comment": "Prior cycle had stale rows for prod-api-01; please confirm CMDB owner and scrub orphaned entries.",
+      "csp_comment": "Will export from CloudWatch Inventory and TrendMicro inventory; expect to deliver by 2026-04-18.",
       "owner": "CSP Eng",
       "status": "Open",
       "due_date": "2026-04-19",
@@ -52,7 +53,7 @@
     {
       "gap_id": "gap-0002-inventory-mismatch",
       "source_item_id": "2",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "CM-8",
         "CA-7"
@@ -61,6 +62,7 @@
       "title": "Inventory mismatch: Inventory of Load Balancers (ALB/NLB) and S3 buckets including IP ranges and public-exposure flag.",
       "description": "Inventory of Load Balancers (ALB/NLB) and S3 buckets including IP ranges and public-exposure flag.",
       "assessor_comment": null,
+      "csp_comment": "S3 inventory dump generated 2026-04-15; ALB/NLB inventory pending.",
       "owner": "CSP Eng",
       "status": "In Progress",
       "due_date": "2026-04-22",
@@ -75,7 +77,7 @@
     {
       "gap_id": "gap-0003-credentialed-scan-evidence-missing",
       "source_item_id": "3",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "RA-5",
         "RA-5(3)",
@@ -85,6 +87,7 @@
       "title": "Credentialed scan evidence missing: Provide the Nessus scan target list and credentialed-scan profile evidence for the boundary; show that all in-boundary a",
       "description": "Provide the Nessus scan target list and credentialed-scan profile evidence for the boundary; show that all in-boundary assets are in scope and credentialed.",
       "assessor_comment": "Last cycle excluded prod-db-01 RDS subnet; need confirmation it is now in scope.",
+      "csp_comment": "Tenable scan policy attached; will provide credentialed-scan plugin coverage.",
       "owner": "Vuln Mgmt",
       "status": "Open",
       "due_date": "2026-04-26",
@@ -99,7 +102,7 @@
     {
       "gap_id": "gap-0004-vulnerability-scan-evidence-missing",
       "source_item_id": "4",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "RA-5",
         "SI-2"
@@ -108,6 +111,7 @@
       "title": "Vulnerability scan evidence missing: Latest Nessus vulnerability scan reports (full scope) plus Burp web-app scan signatures and any deltas vs. prior cycle.",
       "description": "Latest Nessus vulnerability scan reports (full scope) plus Burp web-app scan signatures and any deltas vs. prior cycle.",
       "assessor_comment": "Highlight any net-new High/Critical findings.",
+      "csp_comment": "Burp scan was rerun against the public ALB; Nessus weekly scan attached.",
       "owner": "Vuln Mgmt",
       "status": "Open",
       "due_date": "2026-04-26",
@@ -122,7 +126,7 @@
     {
       "gap_id": "gap-0005-exploitation-review-missing",
       "source_item_id": "5",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "RA-5(8)"
       ],
@@ -130,6 +134,7 @@
       "title": "Exploitation review missing: Exploitation review for all High/Critical vulnerabilities open >30 days. Show IoC search and historical audit log review",
       "description": "Exploitation review for all High/Critical vulnerabilities open >30 days. Show IoC search and historical audit log review for each finding.",
       "assessor_comment": "Per FedRAMP guidance, HIGH/CRITICAL >30 days require a documented exploitation review with IoC matches and historical log queries.",
+      "csp_comment": "Splunk searches saved under app `vuln_exploit_review`; will provide rendered evidence.",
       "owner": "SOC",
       "status": "Open",
       "due_date": "2026-05-03",
@@ -145,7 +150,7 @@
     {
       "gap_id": "gap-0006-local-to-central-log-correlation-missing",
       "source_item_id": "6",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "AU-2",
         "AU-3",
@@ -156,6 +161,7 @@
       "title": "Local to central log correlation missing: Demonstrate centralized audit log aggregation: provide Splunk dashboards/searches showing CloudTrail, VPC Flow Logs, Clo",
       "description": "Demonstrate centralized audit log aggregation: provide Splunk dashboards/searches showing CloudTrail, VPC Flow Logs, CloudWatch Logs, and OS auth.log are reaching the SIEM.",
       "assessor_comment": "Need both centralized view AND a local log example from a production host to prove forwarder is healthy.",
+      "csp_comment": "Splunk app `aws_central_logs` dashboards; local `auth.log` sample from prod-api-01 attached separately.",
       "owner": "Logging",
       "status": "Open",
       "due_date": "2026-04-19",
@@ -170,7 +176,7 @@
     {
       "gap_id": "gap-0007-alert-sample-missing",
       "source_item_id": "7",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "AU-6",
         "SI-4"
@@ -179,6 +185,7 @@
       "title": "Alert sample missing: Provide the alert rules / saved searches with recipient lists (SOC, IR, IAM Governance) and at least one example alert t",
       "description": "Provide the alert rules / saved searches with recipient lists (SOC, IR, IAM Governance) and at least one example alert that fired and was actioned.",
       "assessor_comment": "We need the recipient list explicitly; ensure GuardDuty notifications also route to a monitored mailbox.",
+      "csp_comment": "Splunk alert export attached; GuardDuty -> EventBridge -> SOC PagerDuty.",
       "owner": "SOC",
       "status": "Open",
       "due_date": "2026-04-26",
@@ -194,7 +201,7 @@
     {
       "gap_id": "gap-0008-response-action-missing",
       "source_item_id": "8",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "SI-4(1)",
         "SI-4(4)"
@@ -203,6 +210,7 @@
       "title": "Response action missing: List CloudWatch alarms and GuardDuty findings considered \"suspicious activity\"; map each to a documented response action",
       "description": "List CloudWatch alarms and GuardDuty findings considered \"suspicious activity\"; map each to a documented response action.",
       "assessor_comment": null,
+      "csp_comment": null,
       "owner": "SOC",
       "status": "Open",
       "due_date": "2026-05-03",
@@ -217,7 +225,7 @@
     {
       "gap_id": "gap-0009-sia-missing",
       "source_item_id": "9",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "CM-3",
         "SI-2"
@@ -226,6 +234,7 @@
       "title": "Sia missing: Sample change tickets in JIRA with full evidence chain: Security Impact Analysis, testing artifacts, CAB approval, deplo",
       "description": "Sample change tickets in JIRA with full evidence chain: Security Impact Analysis, testing artifacts, CAB approval, deployment evidence, post-deploy verification.",
       "assessor_comment": "At least 5 sampled tickets including one VULN-* remediation; verify SIA was performed BEFORE deployment.",
+      "csp_comment": "Pulled CHG-8842, CHG-9011, VULN-9912 from JIRA; will provide SIA + test + approval + deploy + verify per ticket.",
       "owner": "Change Mgmt",
       "status": "Open",
       "due_date": "2026-04-26",
@@ -238,16 +247,17 @@
       "poam_required": true
     },
     {
-      "gap_id": "gap-0010-deviation-request-missing",
+      "gap_id": "gap-0010-poam-update-missing",
       "source_item_id": "10",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "CA-5"
       ],
-      "gap_type": "deviation_request_missing",
-      "title": "Deviation request missing: POA&M updates: Provide the current POA&M with deviation requests, vendor dependencies, and operational requirements clea",
+      "gap_type": "poam_update_missing",
+      "title": "Poam update missing: POA&M updates: Provide the current POA&M with deviation requests, vendor dependencies, and operational requirements clea",
       "description": "POA&M updates: Provide the current POA&M with deviation requests, vendor dependencies, and operational requirements clearly noted.",
       "assessor_comment": "Please cite which open POA&Ms are blocked on vendor or operational requirements vs. internal scheduling.",
+      "csp_comment": "Updated POA&M attached as `poam_2026Q2.csv` with deviation columns.",
       "owner": "GRC",
       "status": "In Progress",
       "due_date": "2026-04-30",
@@ -255,14 +265,14 @@
       "linked_ksi_ids": [
         "KSI-VULN-01"
       ],
-      "recommended_artifact": "poam.csv row with deviation_request_ref + approval evidence",
-      "recommended_validation": "Validate poam.csv deviation columns then re-run CA5_POAM_STATUS",
+      "recommended_artifact": "poam.csv with current status, dates, and milestones",
+      "recommended_validation": "Run CA5_POAM_STATUS",
       "poam_required": true
     },
     {
       "gap_id": "gap-0011-response-action-missing",
       "source_item_id": "11",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "IR-4",
         "IR-6"
@@ -271,6 +281,7 @@
       "title": "Response action missing: Incident response evidence: any suspected or confirmed incidents in the past 12 months, including US-CERT/CISA notificat",
       "description": "Incident response evidence: any suspected or confirmed incidents in the past 12 months, including US-CERT/CISA notifications and incident closure records.",
       "assessor_comment": "If there were no incidents, provide a signed attestation; otherwise provide the IR ticket(s) and CISA report.",
+      "csp_comment": "No confirmed incidents; one suspected (false positive) \u2014 full IR ticket IR-2026-014 attached.",
       "owner": "IR",
       "status": "Open",
       "due_date": "2026-05-10",
@@ -285,7 +296,7 @@
     {
       "gap_id": "gap-0012-crypto-fips-evidence-missing",
       "source_item_id": "12",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "SC-13",
         "SC-28",
@@ -295,6 +306,7 @@
       "title": "Crypto fips evidence missing: FIPS 140-2/3 evidence: list crypto modules in use (AWS KMS, ALB ciphers, RDS encryption-at-rest), cipher list, and key r",
       "description": "FIPS 140-2/3 evidence: list crypto modules in use (AWS KMS, ALB ciphers, RDS encryption-at-rest), cipher list, and key rotation evidence for KMS keys.",
       "assessor_comment": "Confirm ALB TLS cipher list excludes deprecated ciphers; KMS key rotation enabled annually.",
+      "csp_comment": "KMS rotation export + ALB listener policy attached.",
       "owner": "Crypto",
       "status": "Open",
       "due_date": "2026-04-26",
@@ -309,7 +321,7 @@
     {
       "gap_id": "gap-0013-restore-test-missing",
       "source_item_id": "13",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "CP-9",
         "CP-10"
@@ -318,6 +330,7 @@
       "title": "Restore test missing: Backup and recovery evidence: most recent restore test (RTO/RPO measurements) and snapshot evidence for RDS + AMI snapsh",
       "description": "Backup and recovery evidence: most recent restore test (RTO/RPO measurements) and snapshot evidence for RDS + AMI snapshots.",
       "assessor_comment": "Need actual restore-test ticket, not just the policy.",
+      "csp_comment": "Restore test executed 2026-04-22 in DR region; ticket DR-2026-007 attached.",
       "owner": "Ops",
       "status": "Open",
       "due_date": "2026-05-10",
@@ -332,7 +345,7 @@
     {
       "gap_id": "gap-0014-identity-listing-missing",
       "source_item_id": "14",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "AC-2",
         "AC-2(7)",
@@ -342,6 +355,7 @@
       "title": "Identity listing missing: Account listings: full IAM user list with privileged-account tagging, MFA report, and most recent quarterly access revie",
       "description": "Account listings: full IAM user list with privileged-account tagging, MFA report, and most recent quarterly access review.",
       "assessor_comment": "Cross-check that every privileged account has MFA AND was reviewed in the latest cycle.",
+      "csp_comment": "IAM listing + MFA report + Q1 access review export attached.",
       "owner": "IAM Governance",
       "status": "Open",
       "due_date": "2026-04-26",
@@ -356,7 +370,7 @@
     {
       "gap_id": "gap-0015-traffic-flow-policy-missing",
       "source_item_id": "15",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "SC-7",
         "SC-7(11)"
@@ -365,6 +379,7 @@
       "title": "Traffic flow policy missing: Traffic flow / boundary evidence: data flow diagram, security group inventory with ingress/egress rules, and the ports-a",
       "description": "Traffic flow / boundary evidence: data flow diagram, security group inventory with ingress/egress rules, and the ports-and-protocols matrix.",
       "assessor_comment": "Highlight any ingress rule allowing 0.0.0.0/0 to administrative ports.",
+      "csp_comment": "SG inventory + DFD + ports/protocols matrix attached; one tagged exception for break-glass remains.",
       "owner": "Network",
       "status": "Open",
       "due_date": "2026-04-26",
@@ -381,7 +396,7 @@
     {
       "item_id": "info-0016",
       "source_item_id": "16",
-      "source_file": "/Users/tkhan/IdeaProjects/security-infra/observable-security-agent/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
+      "source_file": "<tmp>/validation_run/agent_run_tracker/scenario_from_tracker/tracker_items.json",
       "controls": [
         "AC-2"
       ],

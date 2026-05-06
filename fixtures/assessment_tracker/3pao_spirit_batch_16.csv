@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SI-16, SI-16(3)","Memory protection evidence export from hardened Linux baseline listing kernel flags ASLR DEP-style mitigations and build-to-image traceability per SI-16.",2019-10-12,2020-01-12,Open,Platform Eng,"Comment from Assessor: Export must come from config management not slide excerpt only.","CSP: SI16-hardening-201910.json."
+
+"SC-12, IA-5","SC-12 PIV and derived credential key establishment packet for privileged administrators including certificate chain export to agency trust anchor.",2019-11-05,2020-02-05,Open,IdP Admin,"Comment from Assessor: Packet must show OCSP or CRL posture not self-signed lab only.","CSP: PIV-packet-201911.zip."
+
+"AU-4, AU-12","AU-4 audit event frequency matrix showing which events are generated continuously versus scheduled batch for each in-scope platform with audit events generated counts by hour.",2019-09-18,2019-12-18,Open,Logging,"Comment from Assessor: Matrix must cite SIEM saved definition IDs or log source class codes.","CSP: AU4-frequency-201909.xlsx."
+
+"IA-8, IA-5","IA-8 authenticator identifier reuse prevention report listing decommissioned device identifiers cooling-off policy and recycling approvals per IA-8.",2019-12-01,2020-03-01,Open,IAM,"Comment from Assessor: Report must join to IAM events proving waiting period enforcement.","CSP: IA8-reuse-201912.pdf."
+
+"SC-23, SC-7","Fail-secure boundary behavior test evidence for load-balancer paths documenting session teardown and default-deny posture when upstream health checks fail per SC-23.",2019-08-25,2019-11-25,Open,Net Eng,"Comment from Assessor: Evidence must include packet capture or LB vendor log excerpt not diagram only.","CSP: SC23-failtest-201908.pcapng summary."

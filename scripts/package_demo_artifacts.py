@@ -601,6 +601,7 @@ def package(
         except ValueError:
             pass
     secondary_findings: list[dict[str, object]] = []
+    live_findings: list[dict[str, object]] = []
     for abs_path, arc in kept:
         try:
             text = abs_path.read_text(encoding="utf-8", errors="ignore")
@@ -617,6 +618,20 @@ def package(
                         "preview": f.preview,
                     }
                 )
+    try:
+        sys.path.insert(0, str(REPO_ROOT / "scripts"))
+        import guard_live_artifacts as _live_guard
+    finally:
+        try:
+            sys.path.remove(str(REPO_ROOT / "scripts"))
+        except ValueError:
+            pass
+    live_guard_findings = _live_guard.scan_paths(
+        [p for p, _arc in kept],
+        allowed_accounts=set(_live_guard.DEFAULT_ALLOWED_ACCOUNTS),
+        base=source_root,
+    )
+    live_findings = [f.to_dict() for f in live_guard_findings]
     gates["pre_zip_secret_scan"] = GateResult(
         name="pre_zip_secret_scan",
         ran=True,
@@ -624,7 +639,14 @@ def package(
         status="PASS" if not secondary_findings else "FAIL",
         details={"reportable_findings": secondary_findings},
     )
-    if secondary_findings:
+    gates["pre_zip_live_artifact_guard"] = GateResult(
+        name="pre_zip_live_artifact_guard",
+        ran=True,
+        rc=0 if not live_findings else 1,
+        status="PASS" if not live_findings else "FAIL",
+        details={"reportable_findings": live_findings},
+    )
+    if secondary_findings or live_findings:
         result = PackageResult(
             zip_path=output_zip,
             manifest_path=manifest_path,
@@ -635,8 +657,9 @@ def package(
             started_at=started,
             completed_at=_now_iso(),
             aborted_reason=(
-                f"{len(secondary_findings)} secret-shaped value(s) detected in curated files; "
-                "refusing to package. See pre_zip_secret_scan gate in manifest for redacted details."
+                f"{len(secondary_findings)} secret-shaped value(s) and {len(live_findings)} live cloud "
+                "identifier(s) detected in curated files; refusing to package. See pre_zip_* gates in "
+                "manifest for redacted details."
             ),
         )
         write_manifest(manifest_path, result)

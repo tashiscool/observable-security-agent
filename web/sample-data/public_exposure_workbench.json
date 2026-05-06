@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "exposures": [
+    {"asset_id": "prod-api-01", "exposure": "public admin port", "severity": "high", "source": "scanner import", "status": "open", "required_proof": "Approved exception or remediated security group evidence"},
+    {"asset_id": "public-bucket-demo", "exposure": "public storage policy", "severity": "medium", "source": "scanner import", "status": "needs review", "required_proof": "Bucket policy export and data classification evidence"}
+  ]
+}

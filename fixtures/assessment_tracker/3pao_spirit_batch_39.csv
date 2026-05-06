@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"SA-15, SR-3","SA-15 software supply chain risk reassessment memo citing fedramp deviation path for non-FedRAMP scoring plugin with vendor dependency operational requirement and AO routing sheet date.",2019-11-13,2020-02-13,Open,Supply Chain,"Comment from Assessor: Memo must cite vendor FedRAMP package ID not reseller marketing PDF only.","CSP: SA15-scr-201911.pdf."
+
+"CP-4, CP-9","CP-4 recovery test evidence packet from dr exercise summarizing measured rto and measured rpo versus cold site targets with rto/rpo variance commentary and facilitator roster hash.",2019-10-19,2020-01-19,Open,Continuity,"Comment from Assessor: Packet must cite storage replication lag metrics not agenda-only meeting minutes.","CSP: CP4-rtest-201910.pdf."
+
+"SI-4, AU-6","SI-4 sample alert export bundle with saved search export attachment and example alert email redacted headers for privileged group change detection rule firing in production.",2019-09-26,2019-12-26,Open,SOC,"Comment from Assessor: Bundle must include search head job ID not inbox screenshot only.","CSP: SI4-sample-201909.zip."
+
+"SC-7, RA-2","SC-7 network segmentation diagram bundle tying security group inventory to ports and protocols matrix for internet edge VPC ingress paths with diagram revision hash in repository.",2020-01-22,2020-04-22,Open,Net Sec,"Comment from Assessor: Bundle must cite Terraform state revision hash not slide deck only.","CSP: SC7-seg-202001.pdf."
+
+"SC-13, SC-28","SC-13 FIPS 140 validated cryptographic module inventory with KMS key rotation runbook excerpt mapping encryption at rest controls for RDS storage classes and CMK ARN list.",2019-08-31,2019-11-30,Open,Crypto Eng,"Comment from Assessor: Inventory must map to live KMS key policy version IDs not policy draft link only.","CSP: SC13-fips-201908.csv."

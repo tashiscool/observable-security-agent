@@ -1,0 +1,10 @@
+Controls,Evidence/Request Item,Request Date,Due Date,Status,Owner,Assessor Comments,CSP Comments
+"AU-6, AC-2","AU-6 periodic log review export for privileged path queries with log review sign-off listing reviewer employee IDs and sampled SIEM search query identifiers redacted per privacy policy.",2019-11-12,2020-02-12,Open,Observability,"Comment from Assessor: Export must cite search head revision hashes not analyst inbox screenshots only.","CSP: AU6-prv-201911.pdf."
+
+"CM-8, RA-2","CM-8 reconcile declared workload list versus discovery export with discrepancies tab and duplicate entries column keyed by orchestration cluster plus stale cmdb flag for unresolved attachment rows.",2019-10-04,2020-01-04,Open,Asset Mgmt,"Comment from Assessor: Compare must freeze discovery pull timestamp within 24 hours of workbook generation not week-old extract.","CSP: CM8-dup-201910.xlsx."
+
+"RA-5(1), CM-8","RA-5(1) scanner_targets reconciliation memo proving in-boundary assets in scope for scanning after quarterly workshop roster hash tied to export generation clock and sign-in roster attachment IDs.",2019-09-27,2019-12-27,Open,Vuln Mgmt,"Comment from Assessor: Memo must show roster timestamp within 48 hours of scanner_targets export not stale week.","CSP: RA51-memo-201909.pdf."
+
+"SI-4, AU-6","SI-4 CloudWatch alarms routing matrix with recipient list for IAM breakglass password change rules mapped to control IDs and paging rotation roster version hash.",2020-01-11,2020-04-11,Open,SOC,"Comment from Assessor: Matrix must cite alarm ARNs matching production account not sandbox project only.","CSP: SI4-cw-202001.csv."
+
+"SI-4, IR-4","SI-4 sample alert export bundle with saved search export attachment and example alert email redacted headers for privileged group change detection rule firing in production SIEM tenant.",2019-12-01,2020-03-01,Open,SOC,"Comment from Assessor: Bundle must include search head job ID not inbox screenshot only.","CSP: SI4-sample-201912.zip."
